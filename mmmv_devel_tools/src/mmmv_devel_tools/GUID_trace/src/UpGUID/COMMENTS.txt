@@ -1,0 +1,57 @@
+===========================================================================
+=======================  UpGUID, a GUID Updater ===========================
+===========================================================================
+
+In the context of the UpGUID the acronym "GUID" stands for
+"Globally Unique Identifier".
+http://en.wikipedia.org/wiki/Globally_Unique_Identifier
+
+The only purpose of the UpGUID is to replace all of the
+GUIS in a string with new ones and to do that as
+a stand-alone console tool or as a back-end to extendable IDEs
+that communicate with external filters by using the stdin and stdout.
+
+Only GUIDs that are wrapped in single(') or double(") quotes are
+replaced and that's a feature, not a bug.
+
+The UpGUID is written in Ruby. It depends on the 
+Kibuvits Ruby Library (hereafter: KRL) and uses the value of
+the environment variable KIBUVITS_HOME, but if the KIBUVITS_HOME
+is not defined or has an empty string as its value, then 
+it uses the version of the KRL that ships with the UpGUID
+distribution. 
+
+The UpGUID runs with Ruby 1.9 or newer.
+
+---------------------------------------------------------------------------
+                               Usage
+---------------------------------------------------------------------------
+
+To update the file HotAndCool.fun without using
+the stdin and stdout interface:
+
+       upguid -f ./HotAndCool.fun
+
+The following console line feeds the file HotAndCool.fun to the
+UpGUID through the stdin and the UpGUID returns its output to the
+stdout:
+
+        upguid - < ./HotAndCool.fun
+
+---------------------------------------------------------------------------
+                       Drawbacks and Known Flaws
+---------------------------------------------------------------------------
+
+The current version is not able to replace GUIDs that
+contain a line break. The support for such a feature
+is planned never to exist because GUIDs are defined to
+be without line breaks.
+
+---------------------------------------------------------------------------
+                               License
+---------------------------------------------------------------------------
+The UpGUID is licensed under the BSD license.
+http://www.opensource.org/licenses/bsd-license.php
+
+
+===========================================================================

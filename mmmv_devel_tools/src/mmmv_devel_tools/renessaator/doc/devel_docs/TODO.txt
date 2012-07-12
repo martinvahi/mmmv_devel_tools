@@ -1,0 +1,40 @@
+===========================================================================
+===============  The Renessaator Project wide TODO list  ==================
+===========================================================================
+
+---------------------------------------------------------------------------
+                         Table of Contents
+---------------------------------------------------------------------------
+1. Doable and Reasonable
+2. Some wild Ideas
+
+---------------------------------------------------------------------------
+                    1. Doable and Reasonable
+---------------------------------------------------------------------------
+
+Internally the Renessaator uses a very simple, concise, configuration
+for the associations between a source-file extensions, the language
+name and the out-commenting notation. One could implement support for
+an optional configurations file, where people can add support for 
+additional languages. Practically, the only things that an end user
+has to provide to add support for an additional language, is extension
+string, language name, string mark types and, if supported by the
+language, multi-line out-commenting marks, 
+single-line out-commenting marks. 
+
+
+---------------------------------------------------------------------------
+                        2. Some wild Ideas
+---------------------------------------------------------------------------
+
+May be one might want to make the Renessaator to be recursive, i.e.
+it would execute itself on the code that it uses
+for generating code and the different instances of it
+should pass up the error message so that when one of the
+instances in the stack fails, the one that got started the first
+displays the stack of file names and block names and the error
+in the err block. As of 02.2012 the KRL class Kibuvits_msgc_stack 
+actually supports such branching.
+
+===========================================================================
+

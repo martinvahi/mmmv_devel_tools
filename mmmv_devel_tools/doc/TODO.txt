@@ -1,0 +1,28 @@
+===========================================================================
+==================  mmmv_devel_tools Global TODO list  ====================
+===========================================================================
+
+Currently complete:
+    renessaator, UpGUID
+
+Next things to complete:
+
+    x) Now that Renessaator works again, Sirel
+       improvements.
+
+    1) Vim integration for the renessaator and UpGUID.
+    2) GUID_trace documentation, the main COMMENTS.txt
+    3) JumpGUID comre 
+    4) The dependencies accounting code in KRL
+    5) Breakdancemake, JavaScript compiling bdmroutines.
+    6) Release management.
+
+Semi-bugs:
+    renessaator has a console argument, "--language", while
+    the breakdancemake uses an environment variable, KIBUVITS_LANGUAGE
+    One should refactor the renessaator to use only the 
+    environment variable, the KIBUVITS_LANGUAGE, and remove the 
+    "--language" console argument.
+
+
+===========================================================================

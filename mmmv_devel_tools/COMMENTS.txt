@@ -1,0 +1,40 @@
+===========================================================================
+========================  mmmv_devel_tools  ===============================
+===========================================================================
+
+The mmmv_devel_tools is a collection of software development 
+utilities and IDE integration scripts. 
+
+The tools set depends on Ruby 1.9.x, rubygems, Bash, a set of
+common Linux/BSD command line tools.  The mmmv_devel_tools is 
+Linux/BSD specific and has not been tested on Windows, 
+although it might work with CygWin.
+
+Almost all of the mmmv_devel_tools has been written by 
+the Martin.Vahi@softf1.com and is licensed under the BSD license: 
+http://www.opensource.org/licenses/BSD-3-Clause
+
+---------------------------------------------------------------------------
+                              Setup
+---------------------------------------------------------------------------
+
+The whole tools set depends on multiple environment variables, 
+of which only one is mandatory: 
+
+MMMV_DEVEL_TOOLS_HOME  --- points to the folder that contains 
+                           the COMMENTS.txt that You are currently 
+                           reading.
+
+Optionally the mmmv_devel_tools depends on the following
+environment variables:
+
+KIBUVITS_HOME          --- points to the ./src folder of the 
+                           Kibuvits Ruby Library (KRL). 
+                           If it is not set, a copy of the
+                           KRL is used that is shipped with the
+                           mmmv_devel_tools distribution.
+
+The rest of the setup instructions reside in the 
+$MMMV_DEVEL_TOOLS_HOME/src/etc/COMMENTS.txt  
+
+===========================================================================

@@ -1,0 +1,21 @@
+
+The grammar of this configurations file adheres to the
+specification of the Kibuvits_str.configstylestr_2_ht(...),
+which is part of the Kibuvits Ruby Library.
+
+The main grammar rule is that parameters must be declared
+only once and any line that is not part of a heredoc
+and does not contain an unescaped equals sign is a comment.
+An escaped equals sign looks like this: \=
+
+One path per line.
+s_project_source_folder_paths=HEREDOC
+HEREDOC_END
+
+One path per line.
+s_project_dependencies_source_folder_paths=HEREDOC
+HEREDOC_END
+
+GUID_trace_s_path_of_the_text_file_that_contains_a_string_with_GUIDs=HEREDOC
+        $MMMV_DEVEL_TOOLS_HOME/src/bonnet/tmp/stderr_output_for_GUID_trace.txt 
+HEREDOC_END

@@ -1,0 +1,35 @@
+
+The ScriptEclipse is a proprietary Eclipse extension
+from http://www.viplugin.com/scripteclipse/
+
+Some of the documents that are needed for writing 
+ScriptEclipse scripts reside at:
+
+http://help.eclipse.org/helios/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fui%2FIWorkbenchActionConstants.html
+http://help.eclipse.org/helios/index.jsp?topic=%2Forg.eclipse.jdt.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fjdt%2Fui%2Factions%2FIJavaEditorActionDefinitionIds.html
+
+Both of the links point to pages that have some text like 
+
+---verbatim--start---
+    Action definition ID of the refactor -> change type action (value "blablabla").
+---verbatim--end-----
+
+The "blablabla" is just an ID in the form of a string and
+it has to be fed to the ScriptEclipse like that:
+
+---verbatim--start---
+    EclipseUtils.callHandlerAction("blablabla")
+---verbatim--end-----
+
+The "blablabla" resembles the actual class hierarchy 
+by "accident", by coincidence, and in essence it's just
+an unstructured blob of text.
+
+An example of 2 other ScriptEclipse commands that 
+are probably useful:
+
+---verbatim--start---
+    puts "Hello ScriptEclipse"
+    EclipseUtils.showConsole()
+---verbatim--end-----
+

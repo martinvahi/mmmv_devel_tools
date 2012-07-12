@@ -1,0 +1,52 @@
+===========================================================================
+==========================  IDE_integration  ==============================
+===========================================================================
+
+The mmmv_devel_tools sub-project, IDE_integration, consists of 
+integrated development environment (IDE) specific scripts that
+facilitate the use of the rest of the mmmv_devel_tools sub-projects
+within IDE-s.
+
+---------------------------------------------------------------------------
+                    Dependencies and Requirements
+---------------------------------------------------------------------------
+
+x) Ruby 1.9.x
+
+x) UNIX-like operating system, only Linux has been tested, but
+   it might work with CygWin. 
+
+x) Bash 
+
+x) The environment variable MMMV_DEVEL_TOOLS_HOME must be set properly.
+
+x) The dependencies of the tools that one wants to start by 
+   using the IDE_integration components have to be met.
+
+---------------------------------------------------------------------------
+                    Current Level of Completeness
+---------------------------------------------------------------------------
+
+Eclipse
+  |
+  +--ScriptEclipse
+       |
+       +--UpGUID      --- Practically as good as it gets.
+       |
+       +--renessaator 
+            |       
+            +--run    --- Practically as good as it gets.
+            |       
+            +-- Currently the sample block generation has 
+                not been implemented. The renessaator does 
+                not even support it yet.
+
+KomodoIDE
+  |
+  +--v_6_x
+       |
+       +--JumpGUID  --- Needs a heavy rewrite, almost nonexistent.
+
+
+===========================================================================
+

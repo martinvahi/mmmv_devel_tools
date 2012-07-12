@@ -1,0 +1,56 @@
+===========================================================================
+==========================  Renessaator  ==================================
+===========================================================================
+
+Renessaator is a Ruby application for inline code generation.
+
+It's like the PHP and Java Server Pages, except that in stead
+of generating HTML by inlining blocks of PHP or Java, 
+one generates source of one programming language by 
+inlining blocks of other programming language.
+
+Programming language to be generated is determined by a 
+file name extension and the generating programming language is
+declared within the source code generation block.
+
+Currently supported generating languages are: Ruby, PHP
+
+Currently supported target languages are: 
+    Ruby, PHP, C++, JavaScript, C, Java
+
+Examples can be found from ./doc/lesson_01_hello_world
+
+---------------------------------------------------------------------------
+                         Table of Contents
+---------------------------------------------------------------------------
+1. Dependencies
+2. TODO
+
+---------------------------------------------------------------------------
+                        1. Dependencies
+---------------------------------------------------------------------------
+
+Ruby 1.9.x or newer, rubygems, 
+Bash and other common Linux command line tools.
+
+The environment variable, MMMV_DEVEL_TOOLS_HOME, has to be set
+properly. (Pleas see the mmmv_devel_tools introductory COMMENTS.txt
+for further details on the environment setup.)
+
+The Renessaator and its applications depend heavily on the 
+Kibuvits Ruby Library.
+
+---------------------------------------------------------------------------
+                            2. TODO
+---------------------------------------------------------------------------
+
+TODO: One should make the renessaator to be recursive, i.e.
+      that it would execute itself on the code that it uses
+      for generating code and the different instances of it
+      should pass down the err message so that when one of the
+      instances in the stack fails, the one that got started the first
+      displays the stack of file names and block names and the error
+      in the err block.
+
+===========================================================================
+
