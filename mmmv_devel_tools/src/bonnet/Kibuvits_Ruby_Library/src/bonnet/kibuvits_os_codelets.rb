@@ -44,11 +44,11 @@ end # if
 require "rubygems"
 require "monitor"
 if defined? KIBUVITS_HOME
-   require  KIBUVITS_HOME+"/include/kibuvits_boot.rb"
    require  KIBUVITS_HOME+"/include/kibuvits_msgc.rb"
+   require  KIBUVITS_HOME+"/include/kibuvits_io.rb"
 else
-   require  "kibuvits_boot.rb"
    require  "kibuvits_msgc.rb"
+   require  "kibuvits_io.rb"
 end # if
 require "singleton"
 #==========================================================================
@@ -76,17 +76,35 @@ class Kibuvits_os_codelets
          s_out=$kibuvits_lc_kibuvits_ostype_unixlike
       elsif 	s.include? 'bsd' # on DesktopBSD it's "i386-freebsd7"
          s_out=$kibuvits_lc_kibuvits_ostype_unixlike
-      elsif 	s.include? 'java' # JRuby
-         s_out=$kibuvits_lc_kibuvits_ostype_java
       elsif (s.include? 'win')||(s.include? 'mingw')
          s_out=$kibuvits_lc_kibuvits_ostype_windows
+      elsif 	s.include? 'java' # JRuby
+         s_out=$kibuvits_lc_kibuvits_ostype_java
+         if system("ver")
+            s_out=$kibuvits_lc_kibuvits_ostype_windows
+         else
+            s_fp="/tmp/"+generate_tmp_file_name()
+            if system("uname")
+               if system("uname > s_fp")
+                  if File.exists? s_fp
+                     s=file2str(s_fp)
+                     File.delete s_fp
+                     if s.include? "CYGWIN"
+                        s_out=$kibuvits_lc_kibuvits_ostype_windows
+                     end # if
+                  end # if
+               end # if
+               File.delete s_fp if File.exists? s_fp
+            end # if
+         end # if
       else
          kibuvits_throw 'RUBY_PLATFORM=='+RUBY_PLATFORM+
          ' is not supported by this library.'
       end # elsif
       # There's no point of synchronizing it, because all
       # threads will insert a same result.
-      @@cache[s_key]=""+s_out
+
+      @@cache[s_key]=$kibuvits_lc_emptystring+s_out
       return s_out
    end # get_os_type
 

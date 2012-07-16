@@ -35,7 +35,7 @@
 
 ---------------------------------------------------------------------------
 
-This file is a mess, because it has to contain everithing it needs.
+This file is a mess, because it has to contain everything it needs.
 The reason is that it is meant to be executed by a JRuby interpreter
 that is embedded to an IDE and any kind of local gem repository
 setup makes it difficult, time consuming, to get started, not to 
@@ -147,7 +147,7 @@ class T_mmmv_devel_tools_IDE_integration_common_mess_core_KRL
          file.close
       rescue Exception =>err
          raise "No comments. s_a_string=="+s_a_string+"\n"+err.to_s+"\n\n"
-      end # rescure
+      end # rescue
    end # str2file
 
    #--------------------------------------------------------------------------
@@ -201,7 +201,7 @@ class T_mmmv_devel_tools_IDE_integration_common_mess_core_KRL
          s_out=kibuvits_hack_to_break_circular_dependency_between_io_and_str_kibuvits_s_concat_array_of_strings(ar_lines)
       rescue Exception =>err
          raise "\n"+err.to_s+"\n\ns_file_path=="+s_file_path+"\n\n"
-      end # rescure
+      end # rescue
       return s_out
    end # file2str
 
@@ -321,6 +321,11 @@ class T_mmmv_devel_tools_IDE_integration_common_mess_t1
       s_out=""
       begin
          cmd="/bin/bash "+s_fp_script+" 1> "+s_fp_stdout+" 2> "+s_fp_stderr+" "
+         # It can probably be made to work on Windows, if the system(cmd) 
+         # is replaced with the KRL's sh(cmd), but the sh(cmd) has many 
+         # dependencies and given that the sh related part in the KRL is 
+         # a bit experimental, one just does not want to copy/paste them in 
+         # here yet.
          b_success,console_output=system(cmd)
          if b_application_works_by_editing_input_files
             s_out=@@core_KRL.file2str(s_fp_in)

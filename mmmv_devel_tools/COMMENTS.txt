@@ -7,8 +7,7 @@ utilities and IDE integration scripts.
 
 The tools set depends on Ruby 1.9.x, rubygems, Bash, a set of
 common Linux/BSD command line tools.  The mmmv_devel_tools is 
-Linux/BSD specific and has not been tested on Windows, 
-although it might work with CygWin.
+Linux/BSD specific.
 
 Almost all of the mmmv_devel_tools has been written by 
 the Martin.Vahi@softf1.com and is licensed under the BSD license: 
@@ -37,4 +36,19 @@ KIBUVITS_HOME          --- points to the ./src folder of the
 The rest of the setup instructions reside in the 
 $MMMV_DEVEL_TOOLS_HOME/src/etc/COMMENTS.txt  
 
+---------------------------------------------------------------------------
+                        Remarks for Newcomers
+---------------------------------------------------------------------------
+Officially the mmmv_devel_tools is not supported on Windows,
+but some of its sub-projects (renessaator, UpGUID) might work
+under Windows, if they are started in the CygWin(http://www.cygwin.com/ ) 
+Bash environment and the CygWin has been installed to 
+
+    c:\cygwin 
+
+The current version of mmmv_devel_tools Eclipse IDE integration 
+does not work under windows, because the IDE_integration Ruby scripts 
+have not been updated.
+
 ===========================================================================
+

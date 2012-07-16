@@ -23,11 +23,35 @@ Examples can be found from ./doc/lesson_01_hello_world
 ---------------------------------------------------------------------------
                          Table of Contents
 ---------------------------------------------------------------------------
-1. Dependencies
-2. TODO
+1. Use Cases
+2. Dependencies
+3. TODO
 
 ---------------------------------------------------------------------------
-                        1. Dependencies
+                           1. Use Cases
+---------------------------------------------------------------------------
+As of 2012.07 it seems to me, martin.vahi@softf1.com, 
+that the only scenarios, where renessaator is useful are:
+
+x) Dumb, built-in, structured code duplication, like most of the C++ and 
+   C header files.
+
+x) Speed-optimized code, where the algorithm properties make it 
+   unacceptably laborous to write the code manually. 
+   (One possible scheme of a speed-optimized algorithm that is too 
+   laborous to implement manually: generate tables, apply optimizations, 
+   and then write the code according to the tables.)
+
+x) Code, where reflection can not be used due to speed considerations.
+
+x) Cases, where reflection or OO techniques in general would 
+   hinder IDE code completion support. For example, locally declared
+   variables are likely to be offered by the IDE code completion,
+   but dynamically created variables (JavaScript, Ruby, etc.) are
+   firmly known only at run time and lack the IDE code completion support.
+
+---------------------------------------------------------------------------
+                        2. Dependencies
 ---------------------------------------------------------------------------
 
 Ruby 1.9.x or newer, rubygems, 
@@ -41,7 +65,7 @@ The Renessaator and its applications depend heavily on the
 Kibuvits Ruby Library.
 
 ---------------------------------------------------------------------------
-                            2. TODO
+                            3. TODO
 ---------------------------------------------------------------------------
 
 TODO: One should make the renessaator to be recursive, i.e.

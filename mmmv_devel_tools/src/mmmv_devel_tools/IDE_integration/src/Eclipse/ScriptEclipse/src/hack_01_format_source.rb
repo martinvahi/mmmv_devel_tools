@@ -1,5 +1,5 @@
 # Call Eclipse action
-# @@dontparse
+# dontparse
 # @@name hack_01_format_source
 # @@shortcut ALT+o
 

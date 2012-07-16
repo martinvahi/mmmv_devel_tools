@@ -62,39 +62,21 @@ end # if
 
 #==========================================================================
 
-# Writes a script to a file and executes it. Returns a hashtable with
-# keys "s_stdout" and "s_stderr". The values that are pointed by the keys
-# are always strings.
-#
-# The line breaks within the s_stdout, s_stderr have been normalized
-# to the "\n". In case of Windows the 2 header lines and the footer line
-# have been removed from the s_stdout.
-def sh(s_shell_script)
+# It's a sub-function of the function sh
+def sh_unix(s_shell_script)
    if KIBUVITS_b_DEBUG
       kibuvits_typecheck binding(), String, s_shell_script
    end # if
    s_fp_script=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
    s_fp_stdout=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
    s_fp_stderr=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
-   s_ostype=Kibuvits_os_codelets.instance.get_os_type
-   cmd=nil
-   case s_ostype
-   when "kibuvits_ostype_unixlike"
-      cmd="bash "+s_fp_script+" 1>"+s_fp_stdout+" 2>"+s_fp_stderr+" ;"
-   when "kibuvits_ostype_windows"
-      cmd=s_fp_script+" 1>"+s_fp_stdout+" 2>"+s_fp_stderr+" "
-      # It's probably more fault tolerant to feed
-      # only windows line breaks to the windows console/batch file
-      # processor.
-      s_shell_script=Kibuvits_str.normalise_linebreaks(s_shell_script,"\r\n")
-   else
-   end # case
+   cmd="bash "+s_fp_script+" 1>"+s_fp_stdout+" 2>"+s_fp_stderr+" ;"
    str2file(s_shell_script,s_fp_script)
    str2file($kibuvits_lc_emptystring,s_fp_stdout)
    str2file($kibuvits_lc_emptystring,s_fp_stderr)
    ht_stdstreams=Kibuvits_io.creat_empty_ht_stdstreams
    begin
-      b_success,console_output=system(cmd)
+      b_success=system(cmd)
    rescue Exception=>e
       File.delete(s_fp_script)
       File.delete(s_fp_stdout)
@@ -108,29 +90,74 @@ def sh(s_shell_script)
    File.delete(s_fp_script)
    File.delete(s_fp_stdout)
    File.delete(s_fp_stderr)
-   if s_ostype=="kibuvits_ostype_windows"
-      # The windows stdout contains 2 header lines and one footer line.
-      i_number_of_lines=Kibuvits_str.count_substrings(
-      s_stdout,$kibuvits_lc_linebreak)+1
-      if i_number_of_lines<3
-         kibuvits_throw "On Windows there should be at least "+
-         "3 lines in the stdout. i_number_of_lines=="+
-         i_number_of_lines.to_s
-      end # if
-      i_last_copyable_line_number=i_number_of_lines-1
-      s=""
-      i=0
-      s_stdout.each_line do |s_line|
-         i=i+1
-         break if i_last_copyable_line_number<i
-         next if i<=2
-         s=s+$kibuvits_lc_linebreak if 3<i
-         s=s+Kibuvits_str.clip_tail_by_str(s_line,$kibuvits_lc_linebreak)
-      end # loop
-      s_stdout=s
-   end # if
    ht_stdstreams[$kibuvits_lc_s_stdout]=s_stdout
    ht_stdstreams[$kibuvits_lc_s_stderr]=s_stderr
+   return ht_stdstreams
+end # sh_unix
+
+# It's a sub-function of the function sh
+def sh_windows(s_shell_script)
+   if KIBUVITS_b_DEBUG
+      kibuvits_typecheck binding(), String, s_shell_script
+   end # if
+   s_fp_script0=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
+   s_fp_script=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
+   s_fp_stdout=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
+   s_fp_stderr=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
+   cmd="export PATH=\"/bin:/usr/bin:/sbin:/cygdrive/c/Windows:$PATH\"; "+
+   "bash "+s_fp_script+" 1>"+s_fp_stdout+" 2>"+s_fp_stderr+" ;"
+   str2file(cmd,s_fp_script0)
+   str2file(s_shell_script,s_fp_script)
+   str2file($kibuvits_lc_emptystring,s_fp_stdout)
+   str2file($kibuvits_lc_emptystring,s_fp_stderr)
+   ht_stdstreams=Kibuvits_io.creat_empty_ht_stdstreams
+   begin
+      b_success=system("c:/cygwin/bin/bash "+s_fp_script0)
+   rescue Exception=>e
+      File.delete(s_fp_script0)
+      File.delete(s_fp_script)
+      File.delete(s_fp_stdout)
+      File.delete(s_fp_stderr)
+      kibuvits_throw e.message.to_s
+   end # try-catch
+   s_stdout=Kibuvits_str.normalise_linebreaks(
+   file2str(s_fp_stdout),$kibuvits_lc_linebreak)
+   s_stderr=Kibuvits_str.normalise_linebreaks(
+   file2str(s_fp_stderr),$kibuvits_lc_linebreak)
+   File.delete(s_fp_script0)
+   File.delete(s_fp_script)
+   File.delete(s_fp_stdout)
+   File.delete(s_fp_stderr)
+   ht_stdstreams[$kibuvits_lc_s_stdout]=s_stdout
+   ht_stdstreams[$kibuvits_lc_s_stderr]=s_stderr
+   return ht_stdstreams
+end # sh_windows
+
+
+# Writes a script to a file and executes it in Bash. Returns a hashtable with
+# keys "s_stdout" and "s_stderr". The values that are pointed by the keys
+# are always strings.
+#
+# The line breaks within the s_stdout, s_stderr have been normalized
+# to the "\n". In case of Windows the 2 header lines and the footer line
+# have been removed from the s_stdout.
+def sh(s_shell_script)
+   if KIBUVITS_b_DEBUG
+      kibuvits_typecheck binding(), String, s_shell_script
+   end # if
+   s_ostype=Kibuvits_os_codelets.instance.get_os_type
+   ht_stdstreams=nil
+   case s_ostype
+   when "kibuvits_ostype_unixlike"
+      ht_stdstreams=sh_unix(s_shell_script)
+   when "kibuvits_ostype_windows"
+      ht_stdstreams=sh_windows(s_shell_script)
+   else
+      # One case, where it happens: "kibuvits_ostype_java"
+      kibuvits_throw("Operating system with the "+
+      "Kibuvits Ruby Library operating system type \""+
+      s_ostype+"\" is not supported by this function.")
+   end # case
    return ht_stdstreams
 end # sh
 

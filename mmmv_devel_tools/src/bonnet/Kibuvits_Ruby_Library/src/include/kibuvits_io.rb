@@ -43,9 +43,9 @@ end # if
 require "rubygems"
 require "monitor"
 if defined? KIBUVITS_HOME
-   require KIBUVITS_HOME+"/bonnet/kibuvits_os_codelets.rb"
+   require KIBUVITS_HOME+"/include/kibuvits_boot.rb"
 else
-   require "kibuvits_os_codelets.rb"
+   require "kibuvits_boot.rb"
 end # if
 
 KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE=false if !defined? KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
@@ -69,8 +69,14 @@ def write_to_stdout data
 end # write_to_stdout
 
 #--------------------------------------------------------------------------
+# DEPRECATED
 def kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path(
    s_file_path, s_local_pwd_where_the_file_resides)
+   raise Exception.new("This function is expected to be deprecated. "+
+   "This exception message exists only to allow one to detect the regions of "+
+   "code that need to be updated.")
+   # The code below is here just in case the test-period results
+   # lead to a conclusion that this fuction here is useful after all.
    s_p=nil
    s_local_pwd=nil
    if KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
@@ -84,24 +90,24 @@ def kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute
    s_local_pwd=s_local_pwd_where_the_file_resides
    s_p=s_local_pwd+"/"+s_p.sub(/^[.][\/]/,"") if s_p[0..0]!="/"
    s_p=s_p.gsub(/[\/]+/,"/")
-   # TODO: check, whether the path goes higher than the root.
+   # DEPRECATED TODO: check, whether the path goes higher than the root.
    # for example, "/../something" is illegal.
    return s_p
 end # kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path
 
 #--------------------------------------------------------------------------
-def str2file(s_a_string, s_fp_osspecific)
+def str2file(s_a_string, s_fp)
    begin
       if KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
          if KIBUVITS_b_DEBUG
             bn=binding()
             kibuvits_typecheck bn, String, s_a_string
-            kibuvits_typecheck bn, String, s_fp_osspecific
+            kibuvits_typecheck bn, String, s_fp
          end # if
       end # if
-      s_fp_osspecific=kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path(
-      s_fp_osspecific, Dir.pwd.to_s)
-      file=File.open(s_fp_osspecific, "w")
+      #s_fp=kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path(
+      #s_fp, Dir.pwd.to_s)
+      file=File.open(s_fp, "w")
       file.write(s_a_string)
       file.close
    rescue Exception =>err
@@ -149,8 +155,9 @@ def file2str(s_file_path)
    # do not use the Kibuvits Ruby Library.
    s_fp=nil
    if defined? kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path
-      s_fp=kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path(
-      s_file_path,Dir.pwd)
+      #s_fp=kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path(
+      #s_file_path,Dir.pwd)
+      s_fp=s_file_path
    else
       s_fp=s_file_path
    end # if
