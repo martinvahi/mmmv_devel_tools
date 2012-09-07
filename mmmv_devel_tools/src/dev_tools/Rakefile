@@ -1,0 +1,28 @@
+
+require "rubygems"
+require "rake"
+
+
+task :build_for_deployment do
+   raise(Exception.new("subject to completion"))
+end
+
+task :build_for_testing do
+   raise(Exception.new("subject to completion"))
+end
+
+
+task :default do
+   ar_task_names=Array.new
+   Rake.application.tasks.each {|x_task| ar_task_names<<x_task.to_s}
+   puts "\n\nCurrently no other tasks than the default one have been implemented but, \n"+
+   "in the future the list of implemented tasks might look like this:\n\n"
+   #puts "\n\nAvailable Rake functions:\n\n"
+   ar_task_names.sort!
+   s_1="                "
+   ar_task_names.each do |s_task_name|
+      puts s_1+s_task_name.to_s
+   end # loop
+   puts "\n\n"
+end
+

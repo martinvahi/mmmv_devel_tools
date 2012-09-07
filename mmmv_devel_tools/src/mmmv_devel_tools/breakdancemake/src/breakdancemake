@@ -1,0 +1,16 @@
+#!/bin/bash
+#==========================================================================
+
+if [ "$MMMV_DEVEL_TOOLS_HOME" == "" ]; then
+        echo"" 
+        echo"" 
+        echo "Mandatory environment variable, MMMV_DEVEL_TOOLS_HOME, has not been set. "
+        echo"" 
+        echo"" 
+        exit;
+fi
+
+BREAKDANCEMAKE_HOME="$MMMV_DEVEL_TOOLS_HOME/src/mmmv_devel_tools/breakdancemake"
+
+ruby -Ku $BREAKDANCEMAKE_HOME/src/bonnet/breakdancemake.rb $1 $2 $3 $4 $5 $6 $7 $8 $9 
+

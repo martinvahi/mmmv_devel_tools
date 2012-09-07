@@ -1,0 +1,2 @@
+content jumpguid_err_msgs_display jar:jumpguid_err_msgs_display.jar!/content/ xpcnativewrappers=yes
+overlay chrome://komodo/content/komodo.xul chrome://jumpguid_err_msgs_display/content/overlay.xul

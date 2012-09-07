@@ -22,6 +22,14 @@ string, language name, string mark types and, if supported by the
 language, multi-line out-commenting marks, 
 single-line out-commenting marks. 
 
+Currently Renessaator can not be used on HTML or XML, because
+HTML and XML do not have single-liner comment tags. Remove that
+artificial limitation.
+
+Add a mode to it where it generates a renessaator block 
+template and places it next to the first occurrence of a 
+buoy that is given by a special console argument.
+
 
 ---------------------------------------------------------------------------
                         2. Some wild Ideas

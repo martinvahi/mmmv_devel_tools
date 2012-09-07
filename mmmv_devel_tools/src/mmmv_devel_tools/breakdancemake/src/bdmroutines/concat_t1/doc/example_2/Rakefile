@@ -1,0 +1,90 @@
+#!/opt/ruby/bin/ruby -Ku
+#==========================================================================
+=begin
+
+ Copyright 2012, martin.vahi@softf1.com that has an
+ Estonian personal identification code of 38108050020.
+
+Permission is hereby granted, free of charge, to any 
+person obtaining a copy of this software and associated 
+documentation files (the "Software"), to deal in the 
+Software without restriction, including without limitation 
+the rights to use, copy, modify, merge, publish, distribute, 
+sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, 
+subject to the following conditions: 
+
+The above copyright notice and this permission notice shall 
+be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE 
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Exception: if this file is used as a template, then
+everything in this file is in public domain and the deletion
+of this MIT-license header is encouraged.
+
+=end
+#==========================================================================
+require "rake"
+#--------------------------------------------------------------------------
+
+x=ENV["MMMV_DEVEL_TOOLS_HOME"]
+if (x==nil)||(x=="")
+   puts "Mandatory environment variable, MMMV_DEVEL_TOOLS_HOME, "+
+   "has not been set. "
+   exit
+end # if
+MMMV_DEVEL_TOOLS_HOME=x
+BREAKDANCEMAKE_HOME=MMMV_DEVEL_TOOLS_HOME+"/src/mmmv_devel_tools/breakdancemake"
+
+require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_cl.rb"
+
+#--------------------------------------------------------------------------
+
+def declare_config_if_not_already_declared
+   return if (defined? @b_config_already_declared)!=nil
+   ar_paths_of_concatenable_files=["./demo_data/kitty_1.txt","./demo_data/kitty_2.txt"]
+   s_concatenation_output_file_path="./demo_data/kitty_1_plus_kitty_2.js"
+
+   ht_bdmroutine_config=Hash.new
+   ht_bdmroutine_config["ar_paths_of_concatenable_files"]=ar_paths_of_concatenable_files
+   ht_bdmroutine_config["s_concatenation_output_file_path"]=s_concatenation_output_file_path
+
+   Breakdancemake.declare_configuration("concat_t1",ht_bdmroutine_config)
+   @b_config_already_declared=true
+end # declare_config_if_not_already_declared
+
+
+task :run_demo do
+   declare_config_if_not_already_declared()
+   argv=Array.new # argv as if it were the ARGV
+   argv<<"concat_t1" # bdmroutine name
+   argv<<"--plain"
+
+   # The YUI compressor option is fancier than the "--plain",
+   # but only one of the options can be used at once
+   #argv<<"--yui_compressor_t1"
+   Breakdancemake.run(argv)
+end
+
+task :default do
+   ar_task_names=Array.new
+   Rake.application.tasks.each {|x_task| ar_task_names<<x_task.to_s}
+   ar_task_names.sort!
+   puts "\n\nAvailable Rake functions:\n\n"
+   s_1="                "
+   ar_task_names.each do |s_task_name|
+      puts s_1+s_task_name.to_s
+   end # loop
+   puts "\n\n"
+end
+
+#==========================================================================
+

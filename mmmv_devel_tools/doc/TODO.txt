@@ -24,5 +24,12 @@ Semi-bugs:
     environment variable, the KIBUVITS_LANGUAGE, and remove the 
     "--language" console argument.
 
+Low-priority but interesting:
+    The primary show-stopper for running the mmmv_devel_tools
+    on windows is the kibuvits_shell.rb. Secondary show-stopper
+    is some windows specific branching crap at the kibuvits_io.rb. 
+    Best chances for success on Windows 7 seems to be with the cygwin 
+    version that comes with the Git Windows installer.
+
 
 ===========================================================================

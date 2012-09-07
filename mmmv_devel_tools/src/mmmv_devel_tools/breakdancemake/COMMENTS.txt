@@ -1,0 +1,274 @@
+===========================================================================
+========================  breakdancemake  =================================
+===========================================================================
+
+WARNING: The current version of the breakdancemake is still 
+         a work in progress, it's API can change and it has not been 
+         extensively used in production.
+
+The breakdancemake addresses a situation, where there are 
+multiple projects that use at least partly common build scripts. 
+The build scripts are easier to keep consistent, up to date, 
+if there exists only one, central, copy of the scripts.
+
+For example, in a setting, where there is a multi-person team working 
+for years on a single application, there is de facto only one 
+build script collection. If a freelance software developer
+has multiple small, client specific, projects, then there appears
+an overhead of maintaining the different build script collections. 
+
+The build scripts tend to use some external tools. 
+When developing some legacy projects, then it might not be financially 
+feasible to fully refactor the projects to use the new set of build tools, 
+libraries, etc. In the case of the breakdancemake the build scripts and 
+the tools are packaged together and that makes it possible to create 
+almost self-contained development releases, which can co-exist 
+in the same machine with other projects without almost any 
+administration overhead.
+
+One way to see the breakdancemake is that it's a namespace for routines that 
+are common among various build, test and otherwise maintenance scripts.
+The routines in the namespace are called "bdmroutines" to avoid
+the collision with the general term "routine". An Estonian 
+translation to the "bdmroutine" is: "bdmfunktsioon".
+
+
+---------------------------------------------------------------------------
+                         Table of Contents
+---------------------------------------------------------------------------
+
+1.  breakdancemake Setup
+2.  Hello World
+3.  How to add new Bdmroutines to the breakdancemake 
+4.  About bdmservices
+5.  How it all fits Together
+6.  License
+7.  Caveats
+8.  Miscellaneous
+9.  TODO
+
+
+---------------------------------------------------------------------------
+                       1.  breakdancemake Setup
+---------------------------------------------------------------------------
+
+The breakdancemake has been implemented in Ruby.
+The version of the breakdancemake that is accompanied by 
+this COMMENTS.txt is Linux specific and depends on bash. 
+The breakdancemake depends on machine specific settings, which 
+can be automatically updated by calling:
+ruby -Ku ./src/setup/update_deployment.rb
+
+Another thing that is not compulsory, but is recommended, is 
+to add the ./src to the PATH. The rest of the text in this file
+has an assumption that the ./src has been added to the PATH.
+
+As the breakdancemake is just a namespace to bdmroutines, the setup 
+requirements depend on the bdmroutines that one wants to use.
+If the bdmroutines do not depend on each-other, then it is possible to use
+subpart of the bdmroutines without meeting the setup requirements of the
+bdmroutines that one does not use.
+
+bdmroutine specific setup instructions are expected to be available in
+./src/bdmroutines/<bdmroutine name>/doc
+
+
+---------------------------------------------------------------------------
+                       2.  Hello World
+---------------------------------------------------------------------------
+
+The list of bdmroutines that declare themselves to be set up properly,
+ready for use, can be displayed by:
+
+breakdancemake ls
+
+The list of bdmroutines that declare themselves to be 
+not ready for use, can be displayed by :
+
+breakdancemake ls --inactive
+
+A command for displaying bdmroutine status, e.g. info why 
+the bdmroutine declares itself to be unavailable:
+
+breakdancemake status <bdmroutine name>
+
+General calling convention, provided that 
+the ./src is within the PATH:
+breakdancemake <bdmroutine_name> <bdmroutine_specific_commandline_arguments>
+
+bdmroutine summary:
+breakdancemake help <bdmroutine_name> 
+
+
+---------------------------------------------------------------------------
+            3.  How to add new Bdmroutines to the breakdancemake 
+---------------------------------------------------------------------------
+
+All of the bdmroutines reside in the folder 
+./src/bdmroutines
+
+Folder names in the ./src/bdmroutines must match with the 
+name of the bdmroutine that the ./src/bdmroutines subfolder
+contains.
+
+The bdmroutine "ls", which resides in
+./src/bdmroutines/ls
+is both, a code example and a vital bdmroutine of the breakdancemake.
+
+To create a new bdmroutine named "my_new_awesome_bdmroutine", one should
+cp -f -R ./src/bdmroutines/ls ./src/bdmroutines/my_new_awesome_bdmroutine
+and edit the 
+./src/bdmroutines/my_new_awesome_bdmroutine/bdmroutine.rb
+
+The bdmroutine class interface is described in the 
+./src/bonnet/breakdancemake_bdmroutine.rb
+
+If the my_new_awesome_bdmroutine depends on bdmroutine named
+"some_other_bdmroutine", then the instance of the some_other_bdmroutine
+can be obtained through the singleton of type Breakdancemake, which 
+is described in the 
+./src/bonnet/breakdancemake_cl.rb
+
+The class Breakdancemake singleton handles the scanning of the 
+./src/bdmroutines
+The main entry to the breakdancemake is Breakdancemake.run .
+
+
+---------------------------------------------------------------------------
+                       4.  About bdmservices
+---------------------------------------------------------------------------
+
+bdmroutines can depend on web services or on applications that are 
+accessible through the PATH.
+
+In the context of the breakdancemake the web services and 
+the applications on the PATH are commonly called 
+bdmservices (Estonian: bdmteenused).
+
+A command for listing all bdmservices that are active and 
+have detectors present in the ./src/bdmservice_detectors:
+
+breakdancemake sls 
+
+A command for listing all bdmservices that are not available, but 
+have detectors present in the ./src/bdmservice_detectors:
+
+breakdancemake sls --inactive
+
+A command for displaying bdmservice status, i.e. why the bdmservice
+detector considers the bdmservice to be inaccessible:
+
+breakdancemake sstatus <bdmservice name>
+
+The set of bdmservices can be extended almost like the 
+set of bdmroutines. A code example can be found from the 
+folder of the bdemservice "git":
+./src/bdmservice_detactors/git
+
+
+---------------------------------------------------------------------------
+                      5.  How it all fits Together
+---------------------------------------------------------------------------
+The purpose of the breakdancemake is to allow a single copy of 
+build scripts combined with some of the tools that the build scripts 
+depend on to be used in multiple projects. 
+
+The projects depend on breakdancemake and the build scripts that 
+have been packaged with the breakdancemake. The packaged versions 
+of the build scripts are called bdmroutines and they are 
+distributed with the breakdancemake. 
+
+The bdmroutines and the projects may depend on some tools/services, 
+generally called as bdmservices, that have not been packaged 
+with the breakdancemake. The availability of bdmservices can be 
+determined by bdmservice detectors that are distributed with the 
+breakdancemake.
+
+Some of the bdmroutines have project specific configuration. 
+For example, a bdmroutine might need a list of project specific
+file paths. Project specific configuration and dependency relations
+are packaged to Ruby instances that are called bdmprojectdescriptors.
+
+The bdmroutines, bdmservice detectors, bdmprojectdescriptors 
+are commonly called bdmcomponents. All bdmcomponents implement 
+the bdmcomponent specification that determines their shared API 
+and common fields semantics and format. The bdmcomponent API is
+defined in class Breakdancemake_bdmcomponent, which resides in 
+
+    ./src/bonnet/breakdancemake_bdmcomponent.rb
+
+It's up to the project specific build script to instantiate 
+bdmprojectdescriptors. A relatively complex Hallo World resides at:
+
+    ./src/bdmroutines/concat_t1/doc/example_3
+
+Template for projects that use the breakdancemake:
+
+    ./doc/JavaScript_and_CSS_files_renaming_example/Rakefile
+
+---------------------------------------------------------------------------
+                              6.  License
+---------------------------------------------------------------------------
+
+The breakdancemake itself is under the BSD license, but the 
+bdmroutines may have other OSI (http://www.opensource.org ) approved
+licenses. Each of the files contains a header that 
+describes its license. Demo code is usually under the MIT license.
+
+
+---------------------------------------------------------------------------
+                             7.  Caveats
+---------------------------------------------------------------------------
+
+The breakdancemake contains its own, private, copy of the 
+KRL (Kibuvits Ruby Library), which resides either at 
+./src/bonnet/lib/KRL_local_copy
+or 
+./src/bonnet/lib/KRL_shoddy_temporary_version_in_a_truly_bad_state
+
+When developing the bdmroutine interface implementations, 
+one might want to keep in mind that the local KRL copy might 
+be out of date, despite the fact that the breakdancemake 
+always ships with the newest version of the KRL. The workaround:
+use the newest version of breakdancemake for any new projects and
+update the older projects that use breakdancemake to use the newest
+version of the breakdancemake. (Updating older projects can be 
+considerable amount fo work, but that's the policy here.) 
+
+---------------------------------------------------------------------------
+                           8.  Miscellaneous
+---------------------------------------------------------------------------
+
+The output language of the breakdancemake is influenced by the 
+KIBUVITS_LANGUAGE. For example, "et" corresponds to Estonian. 
+A bash shell source example:
+
+        KIBUVITS_LANGUAGE="et" ./src/breakdancemake ls
+
+
+---------------------------------------------------------------------------
+                                9.  TODO
+---------------------------------------------------------------------------
+
+To simplify the creation of new bdmroutines and bdmservice detectors 
+the list of loadable and instantiable bdmroutines and bdmservice detectors 
+is created dynamically by scanning folders 
+./src/bdmroutines and ./src/bdmservice_detectors
+
+From speed and memory usage point of view the scanning and 
+instantiation should take place only once per breakdancemake run and
+that includes cases, where one of the bdmroutines is calling other
+bdmroutines. In the current version that is not always the case.
+To fix this, one should pass around a Kibuvits_msgc_stack instance
+with every bdmroutine run and check its content. To make this happen,
+one has to introduce substantial modifications to the internal API
+of the breakdancemake. The applications that use the current
+version of the breakdancemake and re-execute the breakdancemake
+for every bdmroutine call do not, necessarily, have to modify
+their bdmprojectdescriptor.rb-s, at least, probably, not substantially.
+However, this change does imply that all of the bdmroutines have to 
+go through a thorough refactoring.  
+
+
+===========================================================================
+ 

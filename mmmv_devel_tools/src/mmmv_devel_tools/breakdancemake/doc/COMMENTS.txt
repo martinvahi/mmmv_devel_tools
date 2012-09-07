@@ -1,0 +1,19 @@
+===========================================================================
+======================  breakdancemake doc Folder =========================
+===========================================================================
+
+This time the hello world is actually relatively complex and resides in:
+
+    ./../src/bdmroutines/concat_t1/doc/example_3
+
+
+The 
+
+   ./JavaScript_and_CSS_files_renaming_example
+
+demonstrates one of the most classical cases, where the 
+breakdancemake is useful.
+
+
+===========================================================================
+ 

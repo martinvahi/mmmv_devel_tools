@@ -31,11 +31,15 @@ Eclipse
   |
   +--ScriptEclipse
        |
-       +--UpGUID      --- Practically as good as it gets.
+       +--UpGUID      --- Practically as good as it gets, but 
+       |                  sometimes it crashes 
+       |                  due to Eclipse, not ScriptEclipse, bugs.
        |
        +--renessaator 
             |       
-            +--run    --- Practically as good as it gets.
+            +--run    --- Practically as good as it gets, but
+            |             sometimes it crashes 
+            |             due to Eclipse, not ScriptEclipse, bugs.
             |       
             +-- Currently the sample block generation has 
                 not been implemented. The renessaator does 
@@ -46,6 +50,11 @@ KomodoIDE
   +--v_6_x
        |
        +--JumpGUID  --- Needs a heavy rewrite, almost nonexistent.
+       |
+       +--renessaator
+            |
+            +--run  --- It's a mess, but it works on Linux without
+                        tinkering.
 
 
 ===========================================================================

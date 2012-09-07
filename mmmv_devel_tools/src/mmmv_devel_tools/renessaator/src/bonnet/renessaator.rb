@@ -358,7 +358,7 @@ class Renessaator_core
       ht_needles=Hash.new
       ht_needles[s_gen_guid]=s_gen
       ht_needles[s_src_guid]=s_src
-      s_block=Kibuvits_str.batchreplace(ht_needles,
+      s_block=Kibuvits_str.s_batchreplace(ht_needles,
       s_frame_with_filecommenttags)
       # There is a file comment tag prior to the whole block GUID.
       # So, in order to avoid duplicating it, the first comment tag
@@ -399,7 +399,7 @@ class Renessaator_core
          return if msgcs.b_failure
          ht_s_blocks[s_guid]=ht_block[@lc_s_block]
       end # loop
-      s_out=Kibuvits_str.batchreplace ht_s_blocks,s_frame
+      s_out=Kibuvits_str.s_batchreplace ht_s_blocks,s_frame
       return s_out
    end # run
 
@@ -741,18 +741,18 @@ class Renessaator_console_UI
             end # try-catch
          end # if
          if b_failure
-            throw "\nSomething went so wrong that there is \n"+
+            kibuvits_throw "\nSomething went so wrong that there is \n"+
             "not even a decent error message available.\n\n"
          end # if
-         throw s_out if b_rescue_applied #We're screwed.
+         kibuvits_throw s_out if b_rescue_applied #We're screwed.
          if b_throw_on_input_verification_failures
             # The idea behind the "textbraces" is that
             # IDE plugins can extract the input verification
             # message from the whole throw message.
             s_ceremony="RENESSAATOR_INPUT_VERIFICATION_FAILURE_MESSAGE_"
-            s_out2="\n"+s_ceremony+"START "+s_out+
+            s_out2="\n"+s_ceremony+"START \n"+s_out+
             @lc_space+s_ceremony+"END\n"
-            throw s_out2
+            kibuvits_throw s_out2
          else
             puts s_out
          end # if
@@ -803,23 +803,23 @@ class Renessaator_console_UI
       s_fp_template=@s_renessaator_selftests_home+"/template1.rb"
       msgcs=Kibuvits_msgc_stack.new
       run_test_with_testsource s_fp_template,msgcs
-      throw "test 1 msgcs.to_s=="+msgcs.to_s if msgcs.b_failure
+      kibuvits_throw "test 1 msgcs.to_s=="+msgcs.to_s if msgcs.b_failure
 
       s_fp_template=@s_renessaator_selftests_home+"/template2.rb"
       msgcs.clear
       #run_test_with_testsource s_fp_template,msgcs
-      throw "test 2" if msgcs.b_failure
+      kibuvits_throw "test 2" if msgcs.b_failure
 
       s_fp_template=@s_renessaator_selftests_home+"/template3.rb"
       msgcs.clear
       #run_test_with_testsource s_fp_template,msgcs
-      #throw "test 3" if !msgcs.b_failure
-      #throw "test 3.1" if msgcs[msgcs.length-2].i_message_code!=6
+      #kibuvits_throw "test 3" if !msgcs.b_failure
+      #kibuvits_throw "test 3.1" if msgcs[msgcs.length-2].i_message_code!=6
 
       s_fp_template=@s_renessaator_selftests_home+"/template4.rb"
       msgcs.clear
       #run_test_with_testsource s_fp_template,msgcs
-      throw "test 4" if msgcs.b_failure
+      kibuvits_throw "test 4" if msgcs.b_failure
    end # test_1
 
    def Renessaator_console_UI.test_1

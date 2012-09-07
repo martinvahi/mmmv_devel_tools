@@ -38,10 +38,13 @@
 This file is a mess, because it has to contain everything it needs.
 The reason is that it is meant to be executed by a JRuby interpreter
 that is embedded to an IDE and any kind of local gem repository
-setup makes it difficult, time consuming, to get started, not to 
-mention that the gem repository depends on the environment variable 
-GEM_HOME, which might be in use for other projects, more traditional
-use.
+setup makes it difficult, time consuming, to get started. Another reason
+is that the JRuby just crashes on Kibuvits Ruby Library due to 
+weak UTF-8 support. 
+
+The solution is that the JRuby is used for really minimal things
+and a lot is delegated to the native Ruby by having the 
+JRuby writing scripts for the native Ruby to execute.
 
 =end
 #==========================================================================
@@ -49,6 +52,8 @@ use.
 if !defined? KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
    KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE=false
 end # if
+
+
 
 
 # Practically all of the content of this class has been
@@ -110,26 +115,6 @@ class T_mmmv_devel_tools_IDE_integration_common_mess_core_KRL
       an_io.close
    end # write_to_stdout
 
-   def kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path(
-      s_file_path, s_local_pwd_where_the_file_resides)
-      s_p=nil
-      s_local_pwd=nil
-      if KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
-         if KIBUVITS_b_DEBUG
-            bn=binding()
-            kibuvits_typecheck bn, String, s_file_path
-            kibuvits_typecheck bn, String, s_local_pwd_where_the_file_resides
-         end # if
-      end # if
-      s_p=s_file_path
-      s_local_pwd=s_local_pwd_where_the_file_resides
-      s_p=s_local_pwd+"/"+s_p.sub(/^[.][\/]/,"") if s_p[0..0]!="/"
-      s_p=s_p.gsub(/[\/]+/,"/")
-      # TODO: check, whether the path goes higher than the root.
-      # for example, "/../something" is illegal.
-      return s_p
-   end # kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path
-
    #--------------------------------------------------------------------------
    def str2file(s_a_string, s_fp_osspecific)
       begin
@@ -140,8 +125,6 @@ class T_mmmv_devel_tools_IDE_integration_common_mess_core_KRL
                kibuvits_typecheck bn, String, s_fp_osspecific
             end # if
          end # if
-         s_fp_osspecific=kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path(
-         s_fp_osspecific, Dir.pwd.to_s)
          file=File.open(s_fp_osspecific, "w")
          file.write(s_a_string)
          file.close
@@ -174,21 +157,10 @@ class T_mmmv_devel_tools_IDE_integration_common_mess_core_KRL
       if defined? KIBUVITS_b_DEBUG
          if KIBUVITS_b_DEBUG
             kibuvits_typecheck binding(), String, s_file_path
-            if !defined? kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path
-               s="3ff80352-1591-43af-b61c-5023b0d11cd7" # a var to make the GUID match a regex
-               kibuvits_throw("If the control flow is in this area, \""+
-               s+"\", it is expected that the file2str is called while it is part of the "+
-               "Kibuvits Ruby Library. In here the tested method must exist.")
-            end # if
          end # if
       end # if
       s_fp=nil
-      if defined? kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path
-         s_fp=kibuvits_hack_to_break_circular_dependency_between_io_and_fs_ensure_absolute_path(
-         s_file_path,Dir.pwd)
-      else
-         s_fp=s_file_path
-      end # if
+      s_fp=s_file_path
       s_emptystring="" # to avoid repeated instantiation
       s_out=s_emptystring
       ar_lines=Array.new
@@ -321,10 +293,10 @@ class T_mmmv_devel_tools_IDE_integration_common_mess_t1
       s_out=""
       begin
          cmd="/bin/bash "+s_fp_script+" 1> "+s_fp_stdout+" 2> "+s_fp_stderr+" "
-         # It can probably be made to work on Windows, if the system(cmd) 
-         # is replaced with the KRL's sh(cmd), but the sh(cmd) has many 
-         # dependencies and given that the sh related part in the KRL is 
-         # a bit experimental, one just does not want to copy/paste them in 
+         # It can probably be made to work on Windows, if the system(cmd)
+         # is replaced with the KRL's sh(cmd), but the sh(cmd) has many
+         # dependencies and given that the sh related part in the KRL is
+         # a bit experimental, one just does not want to copy/paste them in
          # here yet.
          b_success,console_output=system(cmd)
          if b_application_works_by_editing_input_files

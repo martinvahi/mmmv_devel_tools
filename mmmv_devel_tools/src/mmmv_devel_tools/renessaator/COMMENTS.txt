@@ -25,13 +25,13 @@ Examples can be found from ./doc/lesson_01_hello_world
 ---------------------------------------------------------------------------
 1. Use Cases
 2. Dependencies
-3. TODO
+3. Caveats
 
 ---------------------------------------------------------------------------
                            1. Use Cases
 ---------------------------------------------------------------------------
 As of 2012.07 it seems to me, martin.vahi@softf1.com, 
-that the only scenarios, where renessaator is useful are:
+that the only scenarios, where renessaator is useful, are:
 
 x) Dumb, built-in, structured code duplication, like most of the C++ and 
    C header files.
@@ -65,16 +65,15 @@ The Renessaator and its applications depend heavily on the
 Kibuvits Ruby Library.
 
 ---------------------------------------------------------------------------
-                            3. TODO
+                            3. Caveats
 ---------------------------------------------------------------------------
 
-TODO: One should make the renessaator to be recursive, i.e.
-      that it would execute itself on the code that it uses
-      for generating code and the different instances of it
-      should pass down the err message so that when one of the
-      instances in the stack fails, the one that got started the first
-      displays the stack of file names and block names and the error
-      in the err block.
+Currently Renessaator can not be used on HTML or XML, because
+HTML and XML do not have single-liner comment tags. Internally the 
+Renessaator connects subsequent single-liner comments to a single
+comment block, which means that the absence of single-liner commenting
+possibility is not a fundamental showstopper, but a shortcoming of 
+the current implementation of the Renessaator.
 
 ===========================================================================
 

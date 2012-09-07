@@ -1,0 +1,15 @@
+===========================================================================
+==========  A few Words About the YUI Compressor jar file  ================
+===========================================================================
+
+The full source of it is in 
+<the bdmroutine "concat_t1" home folder>/attic
+
+
+yuicompressor-2.4.2.jar     --- Tried and tested in production.
+
+yuicompressor-2.4.8pre.jar  --- Seems to be fine, but as of 2012.08 
+                                it has not been extensively tested 
+                                in production. Built with Java 7.
+
+===========================================================================

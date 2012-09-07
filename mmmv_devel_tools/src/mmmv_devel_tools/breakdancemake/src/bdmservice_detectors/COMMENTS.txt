@@ -1,0 +1,21 @@
+===========================================================================
+========================  bdmservice Detectors  ===========================
+===========================================================================
+
+A bdmservice (Estonian: bdmteenus) is an application 
+that is not part of the breakdancemake. 
+
+For example bdmroutines are not bdmservices.
+The bdmservices are either available over a network or 
+reside on the PATH or are accessible by some other means.
+
+Each of the bdmservices has a name, which must match 
+with the name of the folder where their bdmservice_detector.rb resides.
+The name of the example bdmservice detector is "git".
+
+The bdmservice detector interface resides in 
+../bonnet/breakdancemake_bdmservice_detector.rb
+
+
+===========================================================================
+

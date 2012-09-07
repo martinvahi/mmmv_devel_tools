@@ -39,10 +39,7 @@
 =end
 #==========================================================================
 
-require "rubygems"
-require "monitor"
 require "singleton"
-
 
 # The reason, why the following if-else blocks are not within a function
 # is that the Ruby interpreter requires the constant initialization to be
@@ -74,7 +71,7 @@ if !defined? KIBUVITS_HOME
    else
       # use the local copy of the KRL
       KIBUVITS_HOME=MMMV_DEVEL_TOOLS_HOME+
-      "/src/bonnet/Kibuvits_Ruby_Library/src"
+      "/src/bonnet/lib/Kibuvits_Ruby_Library/src"
    end # if
 end # if
 
@@ -109,7 +106,7 @@ if !defined? KIBUVITS_s_NUMERICAL_VERSION
    puts msg
    exit
 end # if
-s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.0.1"
+s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.0.2"
 if KIBUVITS_s_NUMERICAL_VERSION!=s_expected_KIBUVITS_s_NUMERICAL_VERSION
    msg="\nThis version of the mmmv_devel_tools expects the Ruby constant, \n"+
    "KIBUVITS_s_NUMERICAL_VERSION, to have the value of \""+s_expected_KIBUVITS_s_NUMERICAL_VERSION+"\", \n"+

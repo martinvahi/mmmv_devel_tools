@@ -1,0 +1,30 @@
+===========================================================================
+===============================  DumpGUID  ================================
+===========================================================================
+
+
+---------------------------------------------------------------------------
+                         manual_dump_by_web_form
+---------------------------------------------------------------------------
+
+That's the most basic version of it and it's useful for doing the 
+testing on any web browser and on any machine. 
+
+For example, it allows one to run the server and to do 
+the coding on one machine and to run the web browser on 
+another machine and to copy-past the remote machine/browser
+specific error message to the wild.txt right from that remote machine. 
+
+The path to the wild.txt in the  manual_dump_by_web_form.php has to 
+be updated, but it's just part of the setup process anyway. :-)
+
+---------------------------------------------------------------------------
+                             To Do
+---------------------------------------------------------------------------
+
+A lot.
+
+---------------------------------------------------------------------------
+
+===========================================================================
+

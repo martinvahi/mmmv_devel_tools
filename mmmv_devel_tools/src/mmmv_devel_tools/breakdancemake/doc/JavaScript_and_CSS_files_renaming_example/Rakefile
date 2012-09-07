@@ -1,0 +1,165 @@
+#!/opt/ruby/bin/ruby -Ku
+#==========================================================================
+=begin
+
+ Copyright 2012, martin.vahi@softf1.com that has an
+ Estonian personal identification code of 38108050020.
+
+Permission is hereby granted, free of charge, to any
+person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the
+Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall
+be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Exception: if this file is used as a template, then
+everything in this file is in public domain and the deletion
+of this MIT-license header is encouraged.
+
+=end
+#==========================================================================
+require "rake"
+
+#--------------------------------------------------------------------------
+
+x=ENV["MMMV_DEVEL_TOOLS_HOME"]
+if (x==nil)||(x=="")
+   puts "Mandatory environment variable, MMMV_DEVEL_TOOLS_HOME, "+
+   "has not been set. "
+   exit
+end # if
+MMMV_DEVEL_TOOLS_HOME=x
+BREAKDANCEMAKE_HOME=MMMV_DEVEL_TOOLS_HOME+"/src/mmmv_devel_tools/breakdancemake"
+
+require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_cl.rb"
+
+#--------------------------------------------------------------------------
+# The class names of bdmprojectdescritpors must have
+# the prefix of "Breakdancemake_bdmprojectdescriptor_".
+class Breakdancemake_bdmprojectdescriptor_a_demo_project < Breakdancemake_bdmprojectdescriptor
+
+   private
+   #--------------------------------------------------------------------------
+   def assemble_project_JavaScript_files_array
+      @ar_project_JavaScript_file_paths=Array.new
+      @ar_project_JavaScript_file_paths<<(@s_project_fp_prefix_1+"/demo_file_1a_v42.js")
+      @ar_project_JavaScript_file_paths<<(@s_project_fp_prefix_1+"/demo_file_1b_v42.js")
+   end # assemble_project_JavaScript_files_array
+
+   #--------------------------------------------------------------------------
+
+
+   #--------------------------------------------------------------------------
+
+   def ht_concat_t1_config
+      ht_out=Hash.new
+      ht_out["ar_paths_of_concatenable_files"]=@ar_project_JavaScript_file_paths
+      ht_out["s_concatenation_output_file_path"]=@s_fp_jspile
+      return ht_out
+   end # ht_concat_t1_config
+
+   #--------------------------------------------------------------------------
+
+   #--------------------------------------------------------------------------
+
+   public
+
+   # It has to be a method in stead of  an array, because
+   # due to the CSS and JavaScript file version update the
+   # CSS and JavaScript file get renamed.
+   def ar_CSS_files_array
+      ar_out=Dir::glob(@s_project_fp_prefix_1+"/demo_2_file_v*.css")
+      return ar_out
+   end # ar_CSS_files_array
+
+   attr_reader :s_project_fp_prefix_1
+
+   attr_reader :ar_project_JavaScript_file_paths
+   attr_reader :s_fp_jspile
+   attr_reader :i_project_JavaScript_and_CSS_version
+
+   def initialize
+      super
+      @s_bdmcomponent_name="A_demo_project"
+      @s_project_fp_prefix_1=BREAKDANCEMAKE_HOME+
+      "/doc/JavaScript_and_CSS_files_renaming_example/demo_data"
+
+      @i_project_JavaScript_and_CSS_version=50
+      @s_fp_jspile=@s_project_fp_prefix_1+"/x_v"+
+      i_project_JavaScript_and_CSS_version.to_s+".js"
+
+      assemble_project_JavaScript_files_array()
+      @ht_configurations["concat_t1"]=ht_concat_t1_config()
+   end # initialize
+
+end # Breakdancemake_bdmprojectdescriptor_a_demo_project
+
+if !defined? BDMPROJECTDESCRIPTOR
+   BDMPROJECTDESCRIPTOR=Breakdancemake_bdmprojectdescriptor_a_demo_project.new
+   Breakdancemake.declare_bdmcomponent(BDMPROJECTDESCRIPTOR)
+end # if
+
+#--------------------------------------------------------------------------
+def build_JavaScript
+   argv=Array.new # argv as if it were the ARGV
+   argv<<"concat_t1" # bdmroutine name
+   argv<<"--plain"
+   # The YUI compressor option is fancier than the "--plain",
+   # but only one of the options can be used at once
+   #argv<<"--yui_compressor_t1"
+   Breakdancemake.run(argv)
+end # build_JavaScript
+
+def update_version
+   msgcs=Breakdancemake.instance.msgcs
+
+   ar_1=BDMPROJECTDESCRIPTOR.ar_CSS_files_array()
+   ar_1<<BDMPROJECTDESCRIPTOR.s_fp_jspile
+   ar_or_s_renamable_file_paths=ar_1
+
+   Kibuvits_apparch_specific.update_file_version_t1(
+   ar_or_s_renamable_file_paths,[],
+   BDMPROJECTDESCRIPTOR.i_project_JavaScript_and_CSS_version,
+   msgcs)
+   if msgcs.b_failure()
+      puts msgcs.to_s
+      exit
+   end # if
+end # update_version
+
+#--------------------------------------------------------------------------
+
+task :build do
+   build_JavaScript()
+   sh("sync;")
+   update_version()
+end # build
+
+task :default do
+   ar_task_names=Array.new
+   Rake.application.tasks.each {|x_task| ar_task_names<<x_task.to_s}
+   ar_task_names.sort!
+   puts "\n\nAvailable Rake functions:\n\n"
+   s_1="                "
+   ar_task_names.each do |s_task_name|
+      puts s_1+s_task_name.to_s
+   end # loop
+   puts "\n\n"
+end # default
+
+#==========================================================================
+

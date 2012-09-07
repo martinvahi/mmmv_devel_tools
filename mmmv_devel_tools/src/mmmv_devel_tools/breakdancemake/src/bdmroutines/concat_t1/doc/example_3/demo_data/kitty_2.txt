@@ -1,0 +1,5 @@
+
+function func_in_kitty_2(){
+    // some smart stuff resides in here
+} // func_in_kitty_2
+

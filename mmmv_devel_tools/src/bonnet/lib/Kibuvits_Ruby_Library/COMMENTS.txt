@@ -1,0 +1,14 @@
+===========================================================================
+==============  Kibuvits Ruby Library Temporary Release  ==================
+===========================================================================
+
+This version exists only to fulfill dependencies of other projects.
+The documentation of it is in a very shoddy state. Some of the selftests
+are incomplete and there exist regions within the KRL that need 
+refactoring.
+
+This version is really not even targeted to developers other than 
+the original author, martin.vahi@softf1.com.
+
+===========================================================================
+

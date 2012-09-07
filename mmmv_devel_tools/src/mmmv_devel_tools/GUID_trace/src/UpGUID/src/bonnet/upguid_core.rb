@@ -122,7 +122,6 @@ class GUID_trace_UpGUID_core
    public
 
    def do_it_on_a_file s_file_path
-      s_file_path=Kibuvits_fs.ensure_absolute_path(s_file_path,Dir.pwd)
       xof_veirfy_file_path s_file_path
       s_source=file2str(s_file_path)
       s_source_new = replace_guids(s_source)

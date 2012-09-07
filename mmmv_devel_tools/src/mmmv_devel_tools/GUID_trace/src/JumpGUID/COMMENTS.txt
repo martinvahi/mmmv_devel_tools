@@ -1,0 +1,25 @@
+===========================================================================
+============================  JumpGUID  ===================================
+===========================================================================
+
+As the JumpGUID is part of the GUID_trace, the introduction 
+resides in the COMMENTS.txt file of the GUID_trace.
+
+JumpGUID consists of 2 parts: backend and IDE drivers.
+
+
+---------------------------------------------------------------------------
+                               To Do
+---------------------------------------------------------------------------
+
+complete this COMMENTS file. Currently the JumpGUID is in 
+working condition, but, well, one has to write a setup guide.
+For short: One has to create 2 KomodoIDE macros/tools by using
+copies of the ./src/implementation_1/JumpGUID_KomodoIDE_macro.js
+and configure them. There's a setup block at the start of the 
+JumpGUID_KomodoIDE_macro_impl1_inc.js
+
+---------------------------------------------------------------------------
+
+===========================================================================
+

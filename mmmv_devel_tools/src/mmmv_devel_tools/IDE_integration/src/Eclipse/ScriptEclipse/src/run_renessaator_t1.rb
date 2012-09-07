@@ -12,7 +12,9 @@ if s_mmmv_devel_tools_home.class==NilClass
    ", is not set."
    exit
 end # if
-s_path_1=s_mmmv_devel_tools_home+
+MMMV_DEVEL_TOOLS_HOME=s_mmmv_devel_tools_home if !defined? MMMV_DEVEL_TOOLS_HOME
+
+s_path_1=MMMV_DEVEL_TOOLS_HOME+
 "/src/mmmv_devel_tools/IDE_integration/src/bonnet/common_mess_t1.rb"
 require s_path_1
 
@@ -24,7 +26,7 @@ ob_editor_input=ob_editor.getEditorInput()
 s_file_name=ob_editor_input.getName().gsub(/[\s]/,"")
 
 s_args=" --files "
-s_console_app_path=s_path_1=s_mmmv_devel_tools_home+
+s_console_app_path=MMMV_DEVEL_TOOLS_HOME+
 "/src/mmmv_devel_tools/renessaator/src/renessaator "
 
 s_old=EclipseUtils.getTextOfActiveEditor()

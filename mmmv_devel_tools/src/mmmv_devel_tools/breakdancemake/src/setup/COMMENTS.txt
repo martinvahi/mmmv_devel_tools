@@ -1,0 +1,15 @@
+===========================================================================
+=====================  breakdancemake Setup  ==============================
+===========================================================================
+
+The breakdancemake is Linux/BSD specific and depends on bash.
+The deployment updating script must be executed with the "Ku" parameters:
+
+        ruby -Ku  ./update_deployment.rb
+
+As the breakdancemake is not yet a big project, the rest of the
+introductory setup instructions reside in the ./../../COMMENTS.txt
+
+
+===========================================================================
+
