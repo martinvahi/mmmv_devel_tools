@@ -1,4 +1,0 @@
-
-This is a stub file to allow a source repository system
-like Git to store the existence of the parent folder
-that contains it.
