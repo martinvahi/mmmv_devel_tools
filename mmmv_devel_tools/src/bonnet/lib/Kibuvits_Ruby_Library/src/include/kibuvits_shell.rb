@@ -44,7 +44,6 @@ if !defined? KIBUVITS_SHELL_RB_INCLUDED
       KIBUVITS_HOME=x if (x!=nil and x!="")
    end # if
 
-   require "monitor"
    require "singleton"
    if defined? KIBUVITS_HOME
       require  KIBUVITS_HOME+"/include/kibuvits_io.rb"
@@ -159,6 +158,21 @@ def sh(s_shell_script)
    end # case
    return ht_stdstreams
 end # sh
+
+#--------------------------------------------------------------------------
+
+# The same as the sh(...), except that it
+# prints the output streams, if there's any output.
+def kibuvits_sh_writeln2console_t1(s_shell_script)
+   ht_stdstreams=sh(s_shell_script)
+   s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
+   s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
+   puts s_stdout if 0<s_stdout.length
+   if 0<s_stderr.length
+      puts $kibuvits_lc_linebreak+s_stderr+$kibuvits_lc_linebreak
+   end # if
+   return ht_stdstreams
+end # kibuvits_sh_writeln2console_t1
 
 #--------------------------------------------------------------------------
 

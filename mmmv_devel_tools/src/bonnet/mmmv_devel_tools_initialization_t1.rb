@@ -93,9 +93,9 @@ end # if
 s_kibuvits_boot_path=KIBUVITS_HOME+"/include/kibuvits_boot.rb"
 require s_kibuvits_boot_path
 
-# As the API of the
+# Due to a fact that the API of the
 # Kibuvits Ruby Library (KRL, http://kibuvits.rubyforge.org/ )
-# is allowed to change between different versions, the
+# is allowed to change between different versions, 
 # applications that use the KRL must be tied to a specific
 # version of the KRL.
 if !defined? KIBUVITS_s_NUMERICAL_VERSION
@@ -106,7 +106,7 @@ if !defined? KIBUVITS_s_NUMERICAL_VERSION
    puts msg
    exit
 end # if
-s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.0.2"
+s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.1.0"
 if KIBUVITS_s_NUMERICAL_VERSION!=s_expected_KIBUVITS_s_NUMERICAL_VERSION
    msg="\nThis version of the mmmv_devel_tools expects the Ruby constant, \n"+
    "KIBUVITS_s_NUMERICAL_VERSION, to have the value of \""+s_expected_KIBUVITS_s_NUMERICAL_VERSION+"\", \n"+

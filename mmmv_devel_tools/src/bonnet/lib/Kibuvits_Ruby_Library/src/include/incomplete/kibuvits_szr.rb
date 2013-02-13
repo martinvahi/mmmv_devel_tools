@@ -43,7 +43,9 @@ end # if
 
 # The "included" const. has to be befor the "require" clauses
 # to be available, when the code within the require clauses probes for it.
-KIBUVITS_SZR_INCLUDED=true
+if !defined? KIBUVITS_SZR_INCLUDED
+   KIBUVITS_SZR_INCLUDED=true
+end # if
 
 require "monitor"
 if defined? KIBUVITS_HOME
@@ -310,15 +312,15 @@ class Kibuvits_szr
    #-----------------------------------------------------------------------
 
    def serialize_by_ht_p(a_binding,ob,ht_p,ht_szr_explicit)
-ht_szr=nil
+      ht_szr=nil
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, Binding, a_binding
          kibuvits_typecheck bn, [Hash], ht_p
          kibuvits_typecheck bn, [NilClass], ht_szr_explicit
          serialize_assert_ht_p_if_not_nil(bn,ht_p)
-else
-ht_szr=ht_p[$kibuvits_typecheck]
+      else
+         ht_szr=ht_p[$kibuvits_typecheck]
       end # if
 
       s_out=nil

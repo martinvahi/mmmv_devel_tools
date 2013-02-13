@@ -41,8 +41,6 @@ if !defined? KIBUVITS_HOME
    KIBUVITS_HOME=x if (x!=nil and x!="")
 end # if
 
-require "monitor"
-
 if defined? KIBUVITS_HOME
    require  KIBUVITS_HOME+"/include/kibuvits_msgc.rb"
    require  KIBUVITS_HOME+"/include/kibuvits_ix.rb"
@@ -1874,5 +1872,5 @@ end # class Kibuvits_str
 
 #==========================================================================
 # Samples:
-# POOLELI uue msgc spec'i peale on vaja yle minna
+# TODO: Start using the new msgc spec
 # puts Kibuvits_str.selftest.to_s

@@ -298,6 +298,74 @@ class Kibuvits_apparch_specific
 
    #-----------------------------------------------------------------------
 
+   # Throws, if the s_or_ar_environment_variable_names depicts
+   # an environment variable that has not been added to the
+   # tests or the string that is an environment variable name candidate
+   # does not qualify to be a variable name.
+   def b_softf1_com_envs_NOT_OK(s_or_ar_environment_variable_names,msgcs)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [String,Array], s_or_ar_environment_variable_names
+         kibuvits_typecheck bn, Kibuvits_msgc_stack,msgcs
+      end # if
+      ar_env_names=Kibuvits_ix.normalize2array(s_or_ar_environment_variable_names)
+      bn_1=nil
+      ar_file_names=nil
+      ar_folder_names=nil
+      b_x=nil
+      ar_env_names.each do |s_env_name|
+         bn_1=binding()
+         kibuvits_assert_ok_to_be_a_varname_t1(bn_1,s_env_name)
+         case s_env_name
+         when "KIBUVITS_HOME"
+            ar_file_names=["include/kibuvits_boot.rb","include/kibuvits_all.rb"]
+            ar_folder_names=["include","bonnet","dev_tools/selftests"]
+            b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
+            s_env_name,msgcs,ar_file_names,ar_folder_names)
+            return true if b_x
+            next
+         when "SIREL_HOME"
+            ar_file_names=["COMMENTS.txt","src/devel/src/sirel_core.php","src/devel/src/sirel.php"]
+            ar_folder_names=["src/devel/src/bonnet","src/devel/src/lib/spyc"]
+            b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
+            s_env_name,msgcs,ar_file_names,ar_folder_names)
+            return true if b_x
+            next
+         when "RAUDROHI_HOME"
+            s_0="src/release/third_party/gnu_org/freefont/2011/"+
+            "with_raudrhoi_specific_modifications/"+
+            "raudrohi_thirdpartyspecificversion_1_FreeMono.ttf"
+            ar_file_names=["COMMENTS.txt","src/dev_tools/Rakefile","src/devel/raudrohi_base.js","src/devel/raudrohi_core.js",s_0]
+            ar_folder_names=["src/dev_tools/javascript_language_tests"]
+            b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
+            s_env_name,msgcs,ar_file_names,ar_folder_names)
+            return true if b_x
+            next
+         when "MMMV_DEVEL_TOOLS_HOME"
+            ar_file_names=["COMMENTS.txt","src/etc/mmmv_devel_tools_fallback_configuration.txt"]
+            ar_folder_names=["src/mmmv_devel_tools","src/bonnet"]
+            b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
+            s_env_name,msgcs,ar_file_names,ar_folder_names)
+            return true if b_x
+            next
+         else
+            msg="\nEnvironment variable named "+s_env_name+
+            " is not yet supported by this function.\n"
+            kibuvits_throw(msg)
+         end # case s_env_name
+      end # loop
+      return false
+   end # b_softf1_com_envs_NOT_OK
+
+   def Kibuvits_apparch_specific.b_softf1_com_envs_NOT_OK(
+      s_or_ar_environment_variable_names,msgcs)
+      b_out=Kibuvits_apparch_specific.instance.b_softf1_com_envs_NOT_OK(
+      s_or_ar_environment_variable_names,msgcs)
+      return b_out
+   end # Kibuvits_apparch_specific.b_softf1_com_envs_NOT_OK
+
+   #-----------------------------------------------------------------------
+
    public
    include Singleton
    # The Kibuvits_apparch_specific.selftest analogue is

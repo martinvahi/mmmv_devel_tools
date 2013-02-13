@@ -40,7 +40,6 @@ if !defined? KIBUVITS_HOME
    KIBUVITS_HOME=x if (x!=nil and x!="")
 end # if
 
-require "monitor"
 require "pathname"
 if defined? KIBUVITS_HOME
    require  KIBUVITS_HOME+"/include/kibuvits_msgc.rb"
@@ -816,7 +815,7 @@ class Kibuvits_fs
       ar_fp.each do |s_fp|
          if !File.exists? s_fp
             kibuvits_throw("The file or folder \n"+s_fp+
-            "\ndoes not exist. GUID='78ab0a5c-994f-4773-a34a-b3a210208cd7'\n")
+            "\ndoes not exist. GUID='502524a2-7dbe-471a-aa3a-516260e0acd7'\n")
          end # if
          if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
             if File.directory? s_fp
@@ -825,23 +824,11 @@ class Kibuvits_fs
             end # if
             return
          end # if
-         File.chmod(700,s_fp)
-         if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
-            if File.directory? s_fp
-               ar=Dir.glob(s_fp+$kibuvits_lc_slashstar)
-               chmod_recursive_secure_7(ar)
-            end # if
-            return
-         end # if
-         File.chmod(770,s_fp)
-         if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
-            if File.directory? s_fp
-               ar=Dir.glob(s_fp+$kibuvits_lc_slashstar)
-               chmod_recursive_secure_7(ar)
-            end # if
-            return
-         end # if
-         File.chmod(777,s_fp)
+         # If the owner of the current process is not the
+         # owner of the file and the file had previously
+         # a permission of 0770, then "chmod 0700 filename"
+         # would lock the user out.
+         File.chmod(0777,s_fp) # access descrition must contain 4 digits, or a flaw is introduced
          if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
             if File.directory? s_fp
                ar=Dir.glob(s_fp+$kibuvits_lc_slashstar)
@@ -853,7 +840,7 @@ class Kibuvits_fs
          s_1="The folder " if File.directory? s_fp
          kibuvits_throw(s_1+",\n"+s_fp+
          "\nexists, but its access rights could not be changed to 7 for \n"+
-         "the owner of the current process. GUID='4048c954-b9b2-4eb9-a34a-b3a210208cd7'")
+         "the owner of the current process. GUID='d1fc312f-b40e-4c4e-a33a-516260e0acd7'")
       end # loop
    end # chmod_recursive_secure_7
 
@@ -881,7 +868,7 @@ class Kibuvits_fs
             kibuvits_throw("There exists some sort of a flaw, because the "+s_1+"\n"+s_fp+
             "\ncould not be deleted despite the fact that recursive chmod-ding \n"+
             "takes, or at least should take, place before the recursive deletion.\n"+
-            "GUID='3b574da4-414c-4aa3-8415-d07030208cd7'\n")
+            "GUID='b2c8bb54-f014-44ac-b13a-516260e0acd7'\n")
          end # if
       end # loop
    end # impl_rm_fr_part_1
@@ -925,7 +912,7 @@ class Kibuvits_fs
          # and the Pathname.new("/").to_s=="/"
          if !File.writable? s_parent_path
             kibuvits_throw("Folder \n"+s_parent_path+
-            "\nis not writable. GUID='4d1d62e2-ad03-4a79-9e2e-934320208cd7'\n")
+            "\nis not writable. GUID='453f40f6-50d2-48c1-a93a-516260e0acd7'\n")
          end # if
          s_fp=s_file_or_folder_path
          chmod_recursive_secure_7(s_fp) # throws, if the chmod-ding fails
@@ -936,6 +923,371 @@ class Kibuvits_fs
    def Kibuvits_fs.rm_fr(ar_or_s_file_or_folder_path)
       Kibuvits_fs.instance.rm_fr(ar_or_s_file_or_folder_path)
    end # Kibuvits_fs.rm_fr
+
+   #----------------------------------------------------------------------
+   def b_not_suitable_to_be_a_file_path_t1(s_path_candidate,msgcs)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, String,s_path_candidate
+         kibuvits_typecheck bn, Kibuvits_msgc_stack,msgcs
+      end # if
+      i_0=s_path_candidate.length
+      s_1=s_path_candidate.gsub(/[\n\r]/,$kibuvits_lc_emptystring)
+      i_1=s_1.length
+      if i_0!=i_1
+         s_default_msg="\ns_path_candidate==\""+s_path_candidate+
+         "\", but file paths are not allowed to contain line breaks.\n"
+         s_message_id="1"
+         b_failure=false
+         msgcs.cre(s_default_msg,s_message_id,b_failure)
+         s_default_msg="\ns_path_candidate==\""+s_path_candidate+
+         "\", kuid failirajad ei saa sisaldada reavahetusi.\n"
+         msgcs.last["Estonian"]=s_default_msg
+         return true
+      end # if
+      s_1=s_path_candidate.gsub(/^[\t\s]/,$kibuvits_lc_emptystring)
+      i_1=s_1.length
+      if i_0!=i_1
+         s_default_msg="\ns_path_candidate==\""+s_path_candidate+
+         "\", but file paths are not allowed to start with spaces or tabs.\n"
+         s_message_id="2"
+         b_failure=false
+         msgcs.cre(s_default_msg,s_message_id,b_failure)
+         s_default_msg="\ns_path_candidate==\""+s_path_candidate+
+         "\", kuid failirajad ei saa alata tühikute ning tabulatsioonimärkidega.\n"
+         msgcs.last["Estonian"]=s_default_msg
+         return true
+      end # if
+      s_1=s_path_candidate.gsub(/[\t\s]$/,$kibuvits_lc_emptystring)
+      i_1=s_1.length
+      if i_0!=i_1
+         s_default_msg="\ns_path_candidate==\""+s_path_candidate+
+         "\", but file paths are not allowed to end with spaces or tabs.\n"
+         s_message_id="3"
+         b_failure=false
+         msgcs.cre(s_default_msg,s_message_id,b_failure)
+         s_default_msg="\ns_path_candidate==\""+s_path_candidate+
+         "\", kuid failirajad ei saa lõppeda tühikute ning tabulatsioonimärkidega.\n"
+         msgcs.last["Estonian"]=s_default_msg
+         return true
+      end # if
+      # In Linux "//hi////there///" is equivalent to "/hi/there/ and hence legal.
+      # The "/////////////////" is equivalent to "/" and hence also legal.
+      s_1=s_path_candidate.gsub(/(^[.]{3})|([\/][.]{3})/,$kibuvits_lc_emptystring)
+      i_1=s_1.length
+      if i_0!=i_1
+         s_default_msg="\ns_path_candidate==\""+s_path_candidate+
+         "\",\n but file paths are not allowed to contain three "+
+         "sequential dots at the \nstart of the path or right after a slash.\n"
+         s_message_id="4"
+         b_failure=false
+         msgcs.cre(s_default_msg,s_message_id,b_failure)
+         s_default_msg="\ns_path_candidate==\""+s_path_candidate+
+         "\", kuid failirajad ei või sisaldada kolme järjestikust punkti .\n"+
+         "failiraja alguses või vahetult pärast kaldkriipsu.\n"
+         msgcs.last["Estonian"]=s_default_msg
+         return true
+      end # if
+      return false
+   end # b_not_suitable_to_be_a_file_path_t1
+
+   def Kibuvits_fs.b_not_suitable_to_be_a_file_path_t1(s_path_candidate,msgcs)
+      b_out=Kibuvits_fs.instance.b_not_suitable_to_be_a_file_path_t1(
+      s_path_candidate,msgcs)
+      return b_out
+   end # Kibuvits_fs.b_not_suitable_to_be_a_file_path_t1
+
+   #----------------------------------------------------------------------
+
+   # It only works with Linux paths and it does not check for
+   # file/folder existence, i.e. its output is derived by
+   # performing string operations.
+   # def s_normalize_path_t1(s_path_candidate,msgcs)
+   # if KIBUVITS_b_DEBUG
+   # bn=binding()
+   # kibuvits_typecheck bn, String,s_path_candidate
+   # kibuvits_typecheck bn, Kibuvits_msgc_stack,msgcs
+   # end # if
+   # TODO: complete it
+   # end # s_normalize_path_t1
+   # def Kibuvits_fs.s_normalize_path_t1(s_path_candidate,msgcs)
+   # end # Kibuvits_fs.s_normalize_path_t1
+
+   #----------------------------------------------------------------------
+   private
+
+   def b_env_not_set_or_has_improper_path_t1_exc_verif1(ar_of_strings,msgcs)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, Array,ar_of_strings
+         kibuvits_typecheck bn, Kibuvits_msgc_stack,msgcs
+      end # if
+      ar_of_strings.each do |x_candidate|
+         if b_not_suitable_to_be_a_file_path_t1(x_candidate,msgcs)
+            s_default_msg="\n\""+x_candidate.to_s+
+            "\",\n is not considered to be suitable for a "+
+            "file or folder base name. \n"+
+            "GUID='3f556f84-40c2-42fb-b33a-516260e0acd7'\n\n"
+            #s_message_id="throw_1"
+            #b_failure=false
+            #msgcs.cre(s_default_msg,s_message_id,b_failure)
+            #msgcs.last["Estonian"]="\n"+x_candidate.to_s+
+            #", omab väärtust, mis ei sobi faili nimeks.\n"
+            kibuvits_throw(s_default_msg)
+         end # if
+         # Control flow will reach here only, if the
+         # x_candidate.length!=0. Points are legal in file names
+         # like "awesome.txt"
+         #    i_0=x_candidate.length
+         #    s_1=x_candidate.gsub(/[\\\/]/,$kibuvits_lc_emptystring)
+         #    i_1=s_1.length
+         #    if  i_0!=i_1
+         #    s_default_msg="\n\""+x_candidate.to_s+
+         #    "\",\n is not considered to be suitable for a "+
+         #    "file or folder base name. \n"+
+         #    "GUID='663c5651-e080-45d8-b32a-516260e0acd7'\n\n"
+         #s_message_id="throw_1"
+         #b_failure=false
+         #msgcs.cre(s_default_msg,s_message_id,b_failure)
+         #msgcs.last["Estonian"]="\n"+x_candidate.to_s+
+         #", omab väärtust, mis ei sobi faili nimeks.\n"
+         #    kibuvits_throw(s_default_msg)
+         #    end # if
+      end # loop
+   end # b_env_not_set_or_has_improper_path_t1_exc_verif1
+
+   def b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist(
+      s_environment_variable_name,s_env_value,s_path,msgcs)
+      b_missing=false
+      if !File.exists? s_path
+         s_default_msg="\nThe environment variable, "+
+         s_environment_variable_name+"==\""+s_env_value+
+         "\",\n has a wrong value, because a file or a folder "+
+         "with the path of \n"+s_path+"\n does not esist.\n"
+         s_message_id="4"
+         b_failure=false
+         msgcs.cre(s_default_msg,s_message_id,b_failure)
+         msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
+         s_environment_variable_name+"==\""+s_env_value+
+         "\"\n, omab vale väärtust, sest faili ega kataloogi rajaga\n"+
+         s_path+"\n ei eksisteeri.\n"
+         b_missing=true
+      end # if
+      return b_missing
+   end # b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist
+
+
+   public
+
+   # The evironment variable that is referenced by the
+   # s_environment_variable_name is tested to have a value of a
+   # full path to an existing folder or a file.
+   #
+   # If the environment variable references a file, then
+   # the files and folders that are listed in the
+   # s_or_ar_file_names  and the s_or_ar_folder_names
+   # are searched from the same folder that contains the file.
+   #
+   # If the environment variable references a folder, then
+   # the files and folders that are listed in the
+   # s_or_ar_file_names  and the s_or_ar_folder_names
+   # are searched from the folder that is referenced by the
+   # environment variable.
+   #
+   # If the s_or_ar_file_names and/or the s_or_ar_folder_names differ
+   # from an empty array, then they are expected to depict either basenames or
+   # relative paths relative to the folder that is searched.
+   #
+   # If "true" is returned, then a Kibuvits_msgc instance is added to
+   # the msgcs. The Kibuvits_msgc instance has its b_failure value set to "false".
+   def b_env_not_set_or_has_improper_path_t1(s_environment_variable_name,
+      msgcs=Kibuvits_msgc_stack.new,
+      s_or_ar_file_names=$kibuvits_lc_emptyarray,
+      s_or_ar_folder_names=$kibuvits_lc_emptyarray)
+      bn=binding() # Is in use also outside of the DEBUG block.
+      if KIBUVITS_b_DEBUG
+         kibuvits_typecheck bn, String,s_environment_variable_name
+         kibuvits_typecheck bn, [Array,String],s_or_ar_file_names
+         kibuvits_typecheck bn, [Array,String],s_or_ar_folder_names
+         kibuvits_typecheck bn, Kibuvits_msgc_stack,msgcs
+         if s_or_ar_file_names.class==Array
+            ar=s_or_ar_file_names
+            ar.each do |x_candidate|
+               bn_1=binding()
+               kibuvits_typecheck bn_1, String,x_candidate
+            end # loop
+         end # if
+         if s_or_ar_folder_names.class==Array
+            ar=s_or_ar_folder_names
+            ar.each do |x_candidate|
+               bn_1=binding()
+               kibuvits_typecheck bn_1, String,x_candidate
+            end # loop
+         end # if
+      end # if KIBUVITS_b_DEBUG
+      s_or_ar_file_names=[] if s_or_ar_file_names.class==NilClass
+      s_or_ar_folder_names=[] if s_or_ar_file_names.class==NilClass
+      ar_file_names=Kibuvits_ix.normalize2array(s_or_ar_file_names)
+      ar_folder_names=Kibuvits_ix.normalize2array(s_or_ar_folder_names)
+
+      kibuvits_assert_ok_to_be_a_varname_t1(bn,s_environment_variable_name)
+      x_env_value=ENV[s_environment_variable_name]
+      if (x_env_value==nil)||(x_env_value==$kibuvits_lc_emptystring)
+         s_default_msg="\nThe environment variable, "+s_environment_variable_name+
+         ", does not exist or it has an empty string as its value.\n"
+         s_message_id="1"
+         b_failure=false
+         msgcs.cre(s_default_msg,s_message_id,b_failure)
+         msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+s_environment_variable_name+
+         ", ei eksisteeri või talle on omistatud väärtuseks tühi sõne.\n"
+         return true
+      end # if
+      if b_not_suitable_to_be_a_file_path_t1(x_env_value,msgcs)
+         s_default_msg="\nThe environment variable, "+s_environment_variable_name+
+         ", does not have a value that \nis considered to be "+
+         "suitable to be a file path.\n"
+         s_message_id="2"
+         b_failure=false
+         msgcs.cre(s_default_msg,s_message_id,b_failure)
+         msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+s_environment_variable_name+
+         ", omab väärtust, mis ei sobi faili rajaks.\n"
+         return true
+      end # if
+      b_env_not_set_or_has_improper_path_t1_exc_verif1(ar_file_names,msgcs)
+      b_env_not_set_or_has_improper_path_t1_exc_verif1(ar_folder_names,msgcs)
+      s_env_value=x_env_value
+      if !File.exists? s_env_value
+         s_default_msg="\nThe file or folder that the environment variable, "+
+         s_environment_variable_name+", references does not exist.\n"
+         s_message_id="3"
+         b_failure=false
+         msgcs.cre(s_default_msg,s_message_id,b_failure)
+         msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+s_environment_variable_name+
+         ", poolt viidatud fail või kataloog ei eksisteeri.\n"
+         return true
+      end # if
+      rgx_multislash=/[\/]+/
+      s_folder_path_1=s_env_value.gsub(rgx_multislash,$kibuvits_lc_slash)
+      if s_folder_path_1!=$kibuvits_lc_slash
+         if File.file?(s_env_value)
+            ob_fp=Pathname.new(s_env_value).realpath.parent
+            s_folder_path_1=ob_fp.to_s
+         end # if
+      end # if
+      s_folder_path_1=(s_folder_path_1+"/").gsub(rgx_multislash,$kibuvits_lc_slash)
+      s_path=nil
+      b_0=nil
+      ar_file_names.each do |s_basename|
+         # TODO:  filter the s_path through Kibuvits_fs.s_normalize_path_t1
+         s_path=s_folder_path_1+s_basename
+         b_0=b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist(
+         s_environment_variable_name,s_env_value,s_path,msgcs)
+         return true if b_0
+         if !File.file? s_path
+            s_default_msg="\nThe environment variable, "+
+            s_environment_variable_name+"==\""+s_env_value+
+            "\",\n is suspected to have a wrong value, because "+
+            "a file with the path of \n"+s_path+
+            "\n does not esist, but a folder with the same path does exist.\n"
+            s_message_id="5"
+            b_failure=false
+            msgcs.cre(s_default_msg,s_message_id,b_failure)
+            msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
+            s_environment_variable_name+"==\""+s_env_value+
+            "\"\n, korral kahtlustatakse vale väärtust, sest faili rajaga\n"+
+            s_path+"\n ei eksisteeri, kuid sama rajaga kataloog eksisteerib.\n"
+            return true
+         end # if
+      end # loop
+      ar_folder_names.each do |s_basename|
+         s_path=s_folder_path_1+s_basename
+         # TODO:  filter the s_path through Kibuvits_fs.s_normalize_path_t1
+         b_0=b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist(
+         s_environment_variable_name,s_env_value,s_path,msgcs)
+         return true if b_0
+         if File.file? s_path
+            s_default_msg="\nThe environment variable, "+
+            s_environment_variable_name+"==\""+s_env_value+
+            "\",\n is suspected to have a wrong value, because "+
+            "a folder with the path of \n"+s_path+
+            "\n does not esist, but a file with the same path does exist.\n"
+            s_message_id="6"
+            b_failure=false
+            msgcs.cre(s_default_msg,s_message_id,b_failure)
+            msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
+            s_environment_variable_name+"==\""+s_env_value+
+            "\"\n, korral kahtlustatakse vale väärtust, sest kataloogi rajaga\n"+
+            s_path+"\n ei eksisteeri, kuid sama rajaga fail eksisteerib.\n"
+            return true
+         end # if
+      end # loop
+      return false
+   end # b_env_not_set_or_has_improper_path_t1
+
+   def Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
+      s_environment_variable_name, msgcs=Kibuvits_msgc_stack.new,
+      s_or_ar_file_names=$kibuvits_lc_emptyarray,
+      s_or_ar_folder_names=$kibuvits_lc_emptyarray)
+      b_out=Kibuvits_fs.instance.b_env_not_set_or_has_improper_path_t1(
+      s_environment_variable_name,msgcs,s_or_ar_file_names,s_or_ar_folder_names )
+      return b_out
+   end # Kibuvits_fs.b_env_not_set_or_has_improper_path_t1
+
+   #----------------------------------------------------------------------
+   # Folder paths have to be full paths.
+   # Throws, if the folder does not exist or could not be found.
+   #
+   # It temporarily changes the working directory to the s_fp_directory.
+   def ar_glob_locally_t1(ar_or_s_fp_directory,ar_or_s_glob_string)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [String,Array], ar_or_s_fp_directory
+         kibuvits_typecheck bn, [String,Array], ar_or_s_glob_string
+
+         if ar_or_s_fp_directory.class==Array
+            ar_or_s_fp_directory.each do |s_fp_folder|
+               kibuvits_assert_string_min_length(bn,s_fp_folder,1)
+            end # loop
+         else
+            kibuvits_assert_string_min_length(bn,ar_or_s_fp_directory,1)
+         end # if
+
+         if ar_or_s_glob_string.class==Array
+            ar_or_s_glob_string.each do |s_globstring|
+               kibuvits_assert_string_min_length(bn,s_globstring,1)
+            end # loop
+         else
+            kibuvits_assert_string_min_length(bn,ar_or_s_glob_string,1)
+         end # if
+      end # if
+      ar_fp_folder=Kibuvits_ix.normalize2array(ar_or_s_fp_directory)
+      ar_globstrings=Kibuvits_ix.normalize2array(ar_or_s_glob_string)
+
+      ht_test_failures=verify_access(ar_fp_folder,"readable,is_directory")
+      s_output_message_language="English"
+      b_throw=true
+      exit_if_any_of_the_filesystem_tests_failed(ht_test_failures,
+      s_output_message_language,b_throw)
+
+      ar_out=Array.new
+      s_fp_wd_orig=Dir.getwd
+      ar_1=nil
+      ar_fp_folder.each do |s_fp_folder|
+         Dir.chdir(s_fp_folder)
+         ar_globstrings.each do |s_globstring|
+            ar_1=Dir.glob(s_globstring)
+            ar_out.concat(ar_1)
+         end # loop
+         Dir.chdir(s_fp_wd_orig)
+      end # loop
+      return ar_out
+   end # ar_glob_locally_t1
+
+   def Kibuvits_fs.ar_glob_locally_t1(ar_or_s_fp_directory,ar_or_s_glob_string)
+      ar_out=Kibuvits_fs.instance.ar_glob_locally_t1(
+      ar_or_s_fp_directory,ar_or_s_glob_string)
+      return ar_out
+   end # Kibuvits_fs.ar_glob_locally_t1
 
    #----------------------------------------------------------------------
 

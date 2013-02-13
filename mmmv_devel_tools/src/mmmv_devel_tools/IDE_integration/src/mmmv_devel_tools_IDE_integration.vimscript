@@ -1,0 +1,77 @@
+:" A this code can be used as ~/.vimrc, i.e. it's a vimscript source.
+:" author: Martin Vahi (martin.vahi@eesti.ee)
+:" This file is in public domain. :-)
+:"
+:" This file implements 2 Vim commands:
+:" 1)   RenessaatorExecute
+:" 2)   RenessaatorBlockTemplate
+:"
+:" The first one, the RenessaatorExecute, executes
+:" the Renessaator on the current buffer. The second one,
+:" the RenessaatorBlockTemplate inserts a Renessaator
+:" block template to the current buffer. The comment marks
+:" of the template are chosen automatically according to
+:" the file extension of the current file.
+:"
+:" The command RenessaatorBlockTemplate is broken for
+:" languages that are not supported by the Renessaator. Actually,
+:" it's the Renessaator itself that generates the template. The
+:" vimscript part is just a wrapper.
+:"
+:" The command definitions reside at the end of this file, so anyone
+:" can change their names. Probably one wants to
+:" use some personalized, shorter, names for the commands, but
+:" for the sake of clarification they're quite long in this "standard"
+:" script.
+:"
+:" One has to set up an environment variable named RENESSAATOR_HOME
+:" for the commands to work. The RENESSAATOR_HOME should point
+:" to the folder, where the renessaator.rb resides. Also, one 
+:" should not forget to install the renessaator dependencies, 
+:" mainly, the Kibuvits Ruby Library 
+:" (http://rubyforge.org/projects/kibuvits/ )
+:"
+:"------------------------------------------------------------------------
+:fun! MV_execute_bashscript_t1(linebreakLESS_script_as_a_string)
+:	let aaa0=a:linebreakLESS_script_as_a_string
+:	let aaa1=escape(aaa0,"\"\\\'")
+:	let aaa0="r! NONSENSE_ENVIRONMENT_VARIABLE=\"`".aaa1."`\""
+:	exec aaa0
+:endfun "MV_execute_bashscript_t1()
+:"------------------------------------------------------------------------
+:fun! MV_Renessaator_cmd()
+:	mark P
+:       let x=@p
+:       redir @p|:set autoread?|:redir END
+:       let xx=@p
+:       let @p=x
+:       set autoread
+:       w
+:       let command_string="$RENESSAATOR_HOME/renessaator.rb -f ".@%
+:	call MV_execute_bashscript_t1(command_string)
+:       bufdo :e
+:"      One just couldn't get rid of the line break in the @p
+:	if xx=="\nnoautoread"
+:               set noautoread
+:		en
+:	'P
+:endfun "MV_Renessaator_cmd()
+:"------------------------------------------------------------------------
+:fun! MV_go2line_t1(line_number)
+:	let command=":".a:line_number
+:	exec command
+:endfun "MV_go2line_t1()
+:"------------------------------------------------------------------------
+:fun!  MV_Renessaator_generate_block_template_cmd()
+:       let vimscript_command_string="r! $RENESSAATOR_HOME/renessaator.rb --the_displaying_of_a_block_template -f ".@%
+:	exec vimscript_command_string
+:	let line_number=line(".")
+:       let xx=line_number-2
+:	call MV_go2line_t1(xx)
+:endfun  "MV_Renessaator_generate_block_template_cmd()
+:
+:"------------------------------------------------------------------------
+:
+:command -nargs=0 RenessaatorExecute call MV_Renessaator_cmd()
+:command -nargs=0 RenessaatorBlockTemplate call MV_Renessaator_generate_block_template_cmd()
+:"------------------------------------------------------------------------

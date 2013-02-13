@@ -153,6 +153,7 @@ class Kibuvits_formula
 
    def create_Riemann_integral(forumla_for_the_function,formula_for_the_dx_part,
       upper_limit=nil,lower_limit=nil)
+      # TODO: complete it
    end # create_Riemann_integral
 
    #----------end-of-convenience-methods------------------------------

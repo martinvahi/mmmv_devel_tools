@@ -42,7 +42,7 @@ end # if
 
 # The "included" const. has to be befor the "require" clauses
 # to be available, when the code within the require clauses probes for it.
-KIBUVITS_MSGC_INCLUDED=true
+KIBUVITS_MSGC_INCLUDED=true if !defined? KIBUVITS_MSGC_INCLUDED
 
 require "monitor"
 if defined? KIBUVITS_HOME

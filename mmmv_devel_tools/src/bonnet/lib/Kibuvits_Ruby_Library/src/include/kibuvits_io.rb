@@ -40,7 +40,6 @@ if !defined? KIBUVITS_HOME
    KIBUVITS_HOME=x if (x!=nil and x!="")
 end # if
 
-require "monitor"
 if defined? KIBUVITS_HOME
    require KIBUVITS_HOME+"/include/kibuvits_boot.rb"
 else

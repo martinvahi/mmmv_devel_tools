@@ -38,14 +38,14 @@
 #==========================================================================
 # Common initialization stuff:
 
+require 'pathname'
+
 if !defined? KIBUVITS_HOME
-   x=ENV['KIBUVITS_HOME']
-   KIBUVITS_HOME=x if (x!=nil and x!="")
+   KIBUVITS_HOME=Pathname.new(__FILE__).realpath.parent.parent.to_s
 end # if
 
 KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE=true if !defined? KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
 
-require 'pathname'
 # The difference between the APPLICATION_STARTERRUBYFILE_PWD and the
 # working directory is that if a script that uses the Kibuvits Ruby Library
 # has a path of /tmp/explanation/x.rb and it s called by:
@@ -91,7 +91,7 @@ end # if
 # The Ruby gem infrastructure requires a version that consists
 # of only numbers and dots. For library forking related
 # version checks there is another constant: KIBUVITS_s_VERSION.
-KIBUVITS_s_NUMERICAL_VERSION="1.0.2" if !defined? KIBUVITS_s_NUMERICAL_VERSION
+KIBUVITS_s_NUMERICAL_VERSION="1.1.0" if !defined? KIBUVITS_s_NUMERICAL_VERSION
 
 # The reason, why the version does not consist of only
 # numbers and points is that every application is
@@ -116,13 +116,6 @@ KIBUVITS_s_VERSION="kibuvits_"+KIBUVITS_s_NUMERICAL_VERSION.to_s if !defined? KI
 # self-declare it.
 # KIBUVITS_TMP_FOLDER_PATH=ENV['HOME'].to_s+"/tmp"
 
-if !defined? RUBYPATH
-   x=ENV['RUBYPATH']
-   RUBYPATH=x if (x!=nil and x!="")
-end # if
-
-KIBUVITS_s_CMD_RUBY="cd "+RUBYPATH+" ; ruby -Ku "
-
 KIBUVITS_b_DEBUG=true if !defined? KIBUVITS_b_DEBUG
 
 #--------------------------------------------------------------------------
@@ -134,6 +127,7 @@ $kibuvits_lc_dollarsign="$".freeze
 $kibuvits_lc_powersign="^".freeze
 $kibuvits_lc_dot=".".freeze
 $kibuvits_lc_comma=",".freeze
+$kibuvits_lc_semicolon=";".freeze
 
 $kibuvits_lc_lbrace="(".freeze
 $kibuvits_lc_rbrace=")".freeze
@@ -144,6 +138,7 @@ $kibuvits_lc_rsqbrace="]".freeze
 $kibuvits_lc_questionmark="?".freeze
 $kibuvits_lc_star="*".freeze
 $kibuvits_lc_plus="+".freeze
+$kibuvits_lc_minus="-".freeze
 $kibuvits_lc_pillar="|".freeze
 $kibuvits_lc_slash="/".freeze
 $kibuvits_lc_slashstar="/*".freeze
@@ -165,11 +160,13 @@ $kibuvits_lc_szrtype_ht_p="szrtype_ht_p".freeze
 $kibuvits_lc_szrtype_instance="szrtype_instance".freeze
 $kibuvits_lc_si_number_of_elements="si_number_of_elements".freeze
 $kibuvits_lc_b_failure="b_failure".freeze
+@@s_lc_i_kibuvits_ar_ix_1="i_kibuvits_ar_ix_1".freeze
 
 $kibuvits_lc_boolean="boolean".freeze
 $kibuvits_lc_sb_true="t".freeze
 $kibuvits_lc_sb_false="f".freeze
 
+$kibuvits_lc_timestamp="timestamp".freeze
 $kibuvits_lc_year="year".freeze
 $kibuvits_lc_month="month".freeze
 $kibuvits_lc_day="day".freeze
@@ -177,6 +174,15 @@ $kibuvits_lc_hour="hour".freeze
 $kibuvits_lc_minute="minute".freeze
 $kibuvits_lc_second="second".freeze
 $kibuvits_lc_nanosecond="nanosecond".freeze
+
+$kibuvits_lc_longitude="longitude".freeze
+$kibuvits_lc_latitude="latitude".freeze
+$kibuvits_lc_name="name".freeze
+$kibuvits_lc_any="any".freeze
+$kibuvits_lc_outbound="outbound".freeze
+$kibuvits_lc_inbound="inbound".freeze
+$kibuvits_lc_ob_vx_first_entry="ob_vx_first_entry".freeze
+$kibuvits_lc_i_vxix="i_vxix".freeze
 
 $kibuvits_lc_ht_p="ht_p".freeze
 $kibuvits_lc_ht_szr="ht_szr".freeze
@@ -220,11 +226,22 @@ $kibuvits_lc_s_status="s_status".freeze
 $kibuvits_lc_s_mode_throw="s_mode_throw".freeze
 $kibuvits_lc_s_mode_exit="s_mode_exit".freeze
 $kibuvits_lc_s_mode_return_msg="s_mode_return_msg".freeze
+#--------------------------------------------------------------------------
+$kibuvits_lc_emptyarray=Array.new.freeze
 
 #--------------------------------------------------------------------------
 $kibuvits_s_language=$kibuvits_lc_uk # application level i18n setting.
 x=ENV["KIBUVITS_LANGUAGE"]
 $kibuvits_s_language=x if (x!=nil and x!="")
+#--------------------------------------------------------------------------
+
+if !defined? KIBUVITS_s_CMD_RUBY
+   kibuvits_tmpvar_s_rbpath=`which ruby`
+   kibuvits_tmpvar_s_rbpath.sub!(/[\n\r]$/,"")
+   kibuvits_tmpvar_s_rbpath=Pathname.new(kibuvits_tmpvar_s_rbpath).realpath.parent.to_s
+   KIBUVITS_s_CMD_RUBY="cd "<<kibuvits_tmpvar_s_rbpath<<" ; ruby -Ku "
+end # if
+
 #--------------------------------------------------------------------------
 
 def kibuvits_s_exception_2_stacktrace(e)
@@ -765,6 +782,34 @@ def kibuvits_assert_string_min_length(a_binding,s_in,i_min_length,
 end # kibuvits_assert_string_min_length
 
 #--------------------------------------------------------------------------
+def kibuvits_b_not_suitable_for_a_varname_t1(s_in)
+   if KIBUVITS_b_DEBUG
+      bn=binding()
+      kibuvits_typecheck bn, String, s_in
+   end # if
+   i_0=s_in.length
+   return true if i_0==0
+   s_1=s_in.gsub(/[\t\s\n\r;:|,.$<>+-\/\[\](){}\\]/,$kibuvits_lc_emptystring)
+   return true if s_1.length!=i_0
+   return false
+end # kibuvits_b_not_suitable_for_a_varname_t1
+
+def kibuvits_assert_ok_to_be_a_varname_t1(a_binding,s_in,
+   s_optional_error_message_suffix=nil)
+   if KIBUVITS_b_DEBUG
+      bn=binding()
+      kibuvits_typecheck bn, Binding, a_binding
+      kibuvits_typecheck bn, String, s_in
+      kibuvits_typecheck bn, [NilClass,String],s_optional_error_message_suffix
+   end # if
+   if kibuvits_b_not_suitable_for_a_varname_t1(s_in)
+      s_varname=kibuvits_s_varvalue2varname(a_binding,s_in)
+      kibuvits_throw("\n"+s_varname+"==\""+s_in.to_s+
+      "\" is not suitable for a variable name. \n",a_binding)
+   end # if
+end # kibuvits_assert_ok_to_be_a_varname_t1
+
+#--------------------------------------------------------------------------
 
 def kibuvits_assert_arrayix(a_binding,ar,
    i_array_index_candidate_or_array_of_array_index_candidates,
@@ -1019,6 +1064,61 @@ def kibuvits_assert_is_inherited_from_and_does_not_equal_with_class(a_binding,ob
 end # kibuvits_assert_is_inherited_from_and_does_not_equal_with_class
 
 #--------------------------------------------------------------------------
+
+# If the ob_or_ar_or_ht is an Array or a hashtable(Hash),then the ob is
+# compared with the content of the Array or the values of the hashtable.
+def kibuvits_assert_is_among_values(a_binding,ob_or_ar_or_ht,
+   ob,s_optional_error_message_suffix=nil)
+   ar_values=nil
+   if ob_or_ar_or_ht.class==Array
+      ar_values=ob_or_ar_or_ht
+   else
+      if ob_or_ar_or_ht.class==Hash
+         ar_values=ob_or_ar_or_ht.values
+      else
+         ar_values=[ob_or_ar_or_ht]
+      end # if
+   end # if
+   b_throw=true
+   ar_values.each do |x_value|
+      if ob==x_value
+         b_throw=false
+         break
+      end # if
+   end # loop
+   if b_throw
+      b_list_assembleable=true
+      ar_values.each do |x_value|
+         cl=x_value.class
+         if (cl!=String)&&(cl!=Fixnum)&&(cl!=Rational)&&(cl!=Bignum)
+            b_list_assembleable=false
+            break
+         end # if
+      end # loop
+      s_varname=kibuvits_s_varvalue2varname(a_binding,ob)
+      s_varname="<an objec>" if s_varname.length==0
+      msg="\n\n"+s_varname+
+      " does not have a value that is among the set of valid values. \n"+
+      s_varname+"=="+ob.to_s
+      if b_list_assembleable
+         b_nonfirst=false
+         s_list=$kibuvits_lc_emptystring
+         ar_values.each do |x_value|
+            s_list=s_list+", " if b_nonfirst
+            b_nonfirst=true
+            s_list=s_list+x_value.to_s
+         end # loop
+         msg=msg+"\nList of valid values: "+s_list+".\n"
+      end # if
+      if s_optional_error_message_suffix.class==String
+         msg=msg+"\n"+s_optional_error_message_suffix
+      end # if
+      msg=msg+"\n\n"
+      kibuvits_throw(msg,a_binding)
+   end # if
+end # kibuvits_assert_is_among_values
+
+#--------------------------------------------------------------------------
 $kibuvits_lc_kibuvits_eval_t1_s1=($kibuvits_lc_emptystring+
 "ar_in=ObjectSpace._id2ref(").freeze
 $kibuvits_lc_kibuvits_eval_t1_s2=($kibuvits_lc_emptystring+
@@ -1168,6 +1268,20 @@ end # kibuvits_call_by_ar_of_args
 
 #--------------------------------------------------------------------------
 
+# An example:
+#
+# ob_func=kibuvits_dec_lambda do |x|
+#     puts "Hello "+x.to_s+" !"
+#     end # block
+# ob_func.call("handsome")
+#
+def kibuvits_dec_lambda(&block)
+   ob_block=block
+   return ob_block
+end # kibuvits_dec_lambda
+
+#--------------------------------------------------------------------------
+
 #=========---KRL-selftests-infrastructure-start---=========================
 
 # The .selftest methods depend on this function. This function is
@@ -1183,7 +1297,6 @@ def kibuvits_testeval(a_binding,teststring)
    "end # try-catch\n"
    eval(s_script,a_binding)
 end #kibuvits_testeval
-
 
 # Returns a boolean value.
 def kibuvits_block_throws

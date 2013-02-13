@@ -64,6 +64,8 @@ class Kibuvits_htoper
    def initialize
    end # initialize
 
+   #--------------------------------------------------------------------------
+
    # Returns the value that is returned from the &block
    # by the ruby block analogue of the ruby function return(...),
    # the next(...).
@@ -145,6 +147,8 @@ class Kibuvits_htoper
       return x_out
    end # Kibuvits_htoper.run_in_htspace
 
+   #--------------------------------------------------------------------------
+
    # ht[s_key]=ht[s_key]+x_value_to_add
    #
    # The ht[s_key] must have the + operator/method defined
@@ -164,7 +168,7 @@ class Kibuvits_htoper
          else
             kibuvits_assert_ht_has_keys(bn,ht,s_key)
          end # if
-      end # if
+      end # if DEBUG
       a=ht[s_key]
       x_sum=a+x_value_to_add
       ht[s_key]=x_sum
@@ -175,6 +179,35 @@ class Kibuvits_htoper
       x_sum=Kibuvits_htoper.instance.plus(ht,s_key,x_value_to_add,a_binding)
       return x_sum
    end # Kibuvits_htoper.plus
+
+   #--------------------------------------------------------------------------
+
+   # A sparse variables are inspired by sparce matrices.
+   # A semi-sparse variable is a variable that is instantiated and
+   # inited to the default value at the very first read access.
+   def x_getset_semisparse_var(ht,s_varname,x_var_default_value)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, Hash,ht
+         kibuvits_assert_ok_to_be_a_varname_t1(bn,s_varname)
+      end # if DEBUG
+      x_out=nil
+      if ht.has_key? s_varname
+         x_out=ht[s_varname]
+      else
+         x_out=x_var_default_value
+         ht[s_varname]=x_var_default_value
+      end # if
+      return x_out
+   end # x_getset_semisparse_var
+
+   def Kibuvits_htoper.x_getset_semisparse_var(ht,s_varname,x_var_default_value)
+      x_out=Kibuvits_htoper.instance.x_getset_semisparse_var(
+      ht,s_varname,x_var_default_value)
+      return x_out
+   end # Kibuvits_htoper.x_getset_semisparse_var
+
+   #--------------------------------------------------------------------------
 
    public
    include Singleton
