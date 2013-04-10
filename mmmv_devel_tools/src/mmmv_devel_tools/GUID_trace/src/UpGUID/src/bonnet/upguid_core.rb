@@ -1,4 +1,4 @@
-#
+#!/usr/bin/env ruby
 #==========================================================================
 =begin
  Copyright since 2009,  martin.vahi@softf1.com that has an
@@ -36,22 +36,23 @@
 =end
 #==========================================================================
 
-x=ENV["MMMV_DEVEL_TOOLS_HOME"]
-if (x==nil)||(x=="")
-   puts "Mandatory environment variable, MMMV_DEVEL_TOOLS_HOME, "+
-   "has not been set. "
-   exit
+if !defined? UPGUID_CORE_RB_INCLUDED
+   UPGUID_CORE_RB_INCLUDED =true
+   if !defined? MMMV_DEVEL_TOOLS_HOME
+      require 'pathname'
+      s_0=Pathname.new(__FILE__).realpath.parent.parent.parent.parent.parent.parent.parent.parent.to_s
+      MMMV_DEVEL_TOOLS_HOME=s_0.freeze
+   end # if
+
+   require MMMV_DEVEL_TOOLS_HOME+"/src/bonnet/mmmv_devel_tools_initialization_t1.rb"
+
+   require KIBUVITS_HOME+"/src/include/kibuvits_io.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_argv_parser.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_refl.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_apparch_specific.rb"
 end # if
-MMMV_DEVEL_TOOLS_HOME=x
-
-require MMMV_DEVEL_TOOLS_HOME+"/src/bonnet/mmmv_devel_tools_initialization_t1.rb"
-
-require KIBUVITS_HOME+"/include/kibuvits_io.rb"
-require KIBUVITS_HOME+"/include/kibuvits_shell.rb"
-require KIBUVITS_HOME+"/include/kibuvits_argv_parser.rb"
-require KIBUVITS_HOME+"/include/kibuvits_fs.rb"
-require KIBUVITS_HOME+"/include/kibuvits_refl.rb"
-require KIBUVITS_HOME+"/include/kibuvits_apparch_specific.rb"
 
 #==========================================================================
 

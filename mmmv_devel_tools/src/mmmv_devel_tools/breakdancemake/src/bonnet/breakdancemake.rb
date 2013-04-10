@@ -1,4 +1,4 @@
-#!ruby -Ku
+#!/usr/bin/env ruby
 #==========================================================================
 =begin
 
@@ -36,19 +36,22 @@
 
 =end
 #==========================================================================
-# TODO: Rewrite it so that it works with the Linux command-line
-#       completion.
 
-x=ENV["MMMV_DEVEL_TOOLS_HOME"]
-if (x==nil)||(x=="")
-   puts "Mandatory environment variable, MMMV_DEVEL_TOOLS_HOME, "+
-   "has not been set. "
-   exit
+if !defined? MMMV_DEVEL_TOOLS_HOME
+   x=ENV["MMMV_DEVEL_TOOLS_HOME"]
+   if (x==nil)||(x=="")
+      puts "\nThe environment variable, MMMV_DEVEL_TOOLS_HOME, \n"+
+      "should have been defined in the bash script that calls this ruby file.\n"+
+      "GUID=='f18df51e-0d7e-4e7b-82a5-60b101b13dd7'\n\n"
+      exit
+   end # if
+   MMMV_DEVEL_TOOLS_HOME=x
 end # if
-MMMV_DEVEL_TOOLS_HOME=x
-BREAKDANCEMAKE_HOME=MMMV_DEVEL_TOOLS_HOME+"/src/mmmv_devel_tools/breakdancemake"
 
-require BREAKDANCEMAKE_HOME+"/src/bonnet/lib/breakdancemake_inclusions.rb"
+if !defined? BREAKDANCEMAKE_HOME
+   BREAKDANCEMAKE_HOME=MMMV_DEVEL_TOOLS_HOME+"/src/mmmv_devel_tools/breakdancemake"
+end # if
+
 require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_cl.rb"
 
 #--------------------------------------------------------------------------

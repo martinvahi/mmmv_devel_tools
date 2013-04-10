@@ -2,7 +2,7 @@
 ===============  mmmv_devel_tools Configuration Files  ====================
 ===========================================================================
 
-The following mmmv_devel_tools sub-projects contains references to 
+The following mmmv_devel_tools sub-projects contain references to 
 all of the mmmv_devel_tools sub-projects that depend on 
 configuration files: 
 
@@ -10,17 +10,19 @@ configuration files:
     mmmv_devel_tools.GUID_trace.DumpGUID
 
 All of the preferences that are described in a mmmv_devel_tools
-configuration file, form a configuration file specific
+configuration file form a configuration file specific
 set, where the preferences are the elements of the set.
 
 There are 3 sets, which are assembled from the following
 3 configurations files:
 
-    set_1) mmmv_devel_tools_fallback_configuration.txt
-    set_2) mmmv_devel_tools_default_configuration.txt
-    set_3) <An optional runtime configuration file that is determined 
-            by a path string, which is fed to the application
-            by using the --configuration console argument.>
+    set_1) mmmv_devel_tools_fallback_configuration
+    set_2) mmmv_devel_tools_default_configuration
+    set_3) An optional runtime configuration file that is determined 
+           by a path string, which is fed to the application
+           by using the --configuration console argument.>, 
+           provided that the application supports that
+           option.
 
 set_2 and set_3 are used for assembling set_2_3, where elements
 of set_2 have been overridden by elements of set_3. The elements of 
@@ -37,21 +39,6 @@ Illustration:
     set_1     = { a=1,       c=11,        e=111, f=1111 }
     set_1_2_3 = { a=2, b=22, c=3 , d=333, e=222, f=1111 }
 
-The reason, why there are 2 files, the 
-    mmmv_devel_tools_fallback_configuration.txt and the 
-    mmmv_devel_tools_default_configuration.txt
-instead of just one file, for example, 
-    mmmv_devel_tools_default_configuration.txt
-is that the 
-    mmmv_devel_tools_fallback_configuration.txt 
-forms a template for the 
-    mmmv_devel_tools_default_configuration.txt
-and that makes it possible to edit the global configuration
-without overwriting the template and without cluttering the 
-personal global configuration file, the 
-    mmmv_devel_tools_default_configuration.txt
-with default stuff that one does not find interesting.
- 
 
 ===========================================================================
 

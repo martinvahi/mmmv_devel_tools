@@ -21,7 +21,7 @@ is not defined or has an empty string as its value, then
 it uses the version of the KRL that ships with the UpGUID
 distribution. 
 
-The UpGUID runs with Ruby 1.9 or newer.
+The UpGUID runs with Ruby 2.0 or newer.
 
 ---------------------------------------------------------------------------
                                Usage

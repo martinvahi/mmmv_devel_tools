@@ -12,7 +12,8 @@ puts "Howdy from template 2."
 #
 # RENESSAATOR_SOURCE_START
 # puts "# This Renessaator generated output block "
-# puts "# did not exist in the template.'
+# puts "# did not exist in the template."
+# puts "# and this string has inproper end-quote'
 # RENESSAATOR_SOURCE_END
 #
 # RENESSAATOR_BLOCK_END

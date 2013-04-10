@@ -1,4 +1,4 @@
-#
+#!/usr/bin/env ruby
 #==========================================================================
 =begin
  Copyright since 2009,  martin.vahi@softf1.com that has an
@@ -36,10 +36,18 @@
 =end
 #==========================================================================
 
-require "rubygems"
-require 'pathname'
-UPGUID_RB_PWD=Pathname.new($0).realpath.parent.to_s if not defined? UPGUID_RB_PWD
-require UPGUID_RB_PWD+"/upguid_core.rb"
+if !defined? UPGUID_HOME
+   x=ENV["UPGUID_HOME"]
+   if (x==nil)||(x=="")
+      puts "\nThe environment variable, UPGUID_HOME, \n"+
+      "should have been defined in the bash script that calls this ruby file.\n"+
+      "GUID=='e23a143c-57a6-4150-a0fe-a11011b13dd7'\n\n"
+      exit
+   end # if
+   UPGUID_HOME=x
+end # if
+
+require UPGUID_HOME+"/src/bonnet/upguid_core.rb"
 
 #==========================================================================
 

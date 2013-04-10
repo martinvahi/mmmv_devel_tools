@@ -1,0 +1,13 @@
+===========================================================================
+=========================  jumpguid_core.rb  ==============================
+===========================================================================
+
+A shell command for searching the project source files 
+with searchstring  "4434":
+
+    ./jumpguid_core testmode_1 4434
+
+It's OK to use any other linebreakless, "small enough" (for the RAM
+and CPU to handle), string in stead of the 4434.
+
+===========================================================================

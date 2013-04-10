@@ -1,4 +1,4 @@
-#!/opt/ruby/bin/ruby -Ku
+#!/usr/bin/env ruby
 #==========================================================================
 =begin
 
@@ -36,25 +36,25 @@
 
 =end
 #==========================================================================
-BREAKDANCEMAKE_CL_INCLUDED=true
 
-require 'pathname'
-
-if !defined? BREAKDANCEMAKE_HOME
-   BREAKDANCEMAKE_HOME=Pathname.new($0).realpath.parent.parent.parent.to_s
+if !defined? BREAKDANCEMAKE_CL_INCLUDED
+   BREAKDANCEMAKE_CL_INCLUDED=true
+   if !defined? BREAKDANCEMAKE_HOME
+      # Has to be derived here from __FILE__ for cases, where
+      # a Rakefile loads mmmv_devel_tools.
+      require 'pathname'
+      s_0=Pathname.new(__FILE__).realpath.parent.parent.parent.to_s
+      BREAKDANCEMAKE_HOME=s_0.freeze
+   end # if
+   require BREAKDANCEMAKE_HOME+"/src/bonnet/lib/breakdancemake_inclusions.rb"
 end # if
-require BREAKDANCEMAKE_HOME+"/src/bonnet/lib/breakdancemake_inclusions.rb"
 
 #==========================================================================
-# All of the breakdancemake core classes should be
-# loaded ("required") before the loading of this file, but
-# the loading takes place within the
-# BREAKDANCEMAKE_HOME+"/src/bonnet/lib/breakdancemake_inclusions.rb"
-#--------------------------------------------------------------------------
 
 class Breakdancemake
    attr_reader :s_lc_1, :s_lc_2
    attr_reader :msgcs
+   attr_reader :s_version
 
    # The @ht_bdmroutines is publicly readable, because some
    # bdmroutines depend on other bdmroutines anyway and that way
@@ -70,7 +70,7 @@ class Breakdancemake
    attr_reader :ob_core_ui_texts
 
    attr_reader :b_bdmprojectdescriptor_rb_loaded
-   def initialize msgcs=Kibuvits_msgc_stack.new
+   def initialize
       @ht_bdmroutines=Hash.new
       @ht_bdmroutines_classes=Hash.new
       @ht_bdmservice_detectors=Hash.new
@@ -85,7 +85,7 @@ class Breakdancemake
 
       @s_lc_1="<The @s_bdmcomponent_name is not yet properly initialized>".freeze
       @s_lc_2="<The @s_bdmcomponent_name is not yet properly initialized>".freeze
-      @msgcs=msgcs
+      @msgcs=C_mmmv_devel_tools_global_singleton.msgcs()
       @b_bdmroutine_classes_loaded=false
       @b_bdmservice_detector_classes_loaded=false
 
@@ -102,7 +102,16 @@ class Breakdancemake
       @x_impl_b_bdmprojectdescriptor_rb_is_available_cache_set=false
       @x_impl_b_bdmprojectdescriptor_rb_is_available_cache=false
       @b_bdmprojectdescriptor_rb_loaded=false
+
+      @mx_bdmcomponent_registration=Mutex.new
+      @s_version="v_1_1_0"
    end #initialize
+
+
+   def Breakdancemake.s_version
+      s_version=""+Breakdancemake.instance.s_version
+      return s_version
+   end # Breakdancemake.
 
    def Breakdancemake.get_instance
       ob=Breakdancemake.instance
@@ -188,13 +197,13 @@ class Breakdancemake
 
    def verify_bdmprojectdescriptor(ob_bdmprojectdescriptor_candidate)
       verify_bdmcomponent_interface(ob_bdmprojectdescriptor_candidate)
-      if !ob_bdmprojectdescriptor_candidate.kind_of? Breakdancemake_bdmprojectdescriptor
+      if !ob_bdmprojectdescriptor_candidate.kind_of? Breakdancemake_bdmprojectdescriptor_base
          kibuvits_throw("The ob_bdmprojectdescriptor_candidate.class=="+
          ob_bdmprojectdescriptor_candidate.class.to_s+
-         " is not derived from class Breakdancemake_bdmprojectdescriptor, but "+
+         " is not derived from class Breakdancemake_bdmprojectdescriptor_base, but "+
          "to meet the bdmprojectdescriptor specifications every "+
          "bdmprojectdescriptor has to be derived from the "+
-         "class Breakdancemake_bdmprojectdescriptor.")
+         "class Breakdancemake_bdmprojectdescriptor_base.")
       end # if
       bn=binding()
       kibuvits_assert_class_name_prefix(bn,ob_bdmprojectdescriptor_candidate,
@@ -202,7 +211,7 @@ class Breakdancemake
 
       s_assertion_msg_suffix= $kibuvits_lc_emptystring+
       "The ob_bdmprojectdescriptor_candidate.class=="+ob_bdmprojectdescriptor_candidate.class.to_s+
-      " is derived from the class Breakdancemake_bdmprojectdescriptor. "
+      " is derived from the class Breakdancemake_bdmprojectdescriptor_base. "
 
       kibuvits_assert_responds_2_method(bn,ob_bdmprojectdescriptor_candidate,
       :ht_configurations,s_assertion_msg_suffix)
@@ -300,139 +309,165 @@ class Breakdancemake
       verify_bdmroutine_interface(ob_bdmroutine)
 
       cl=ob_bdmroutine.class
-      if @ht_bdmroutines_classes.has_key? cl
-         bn=binding()
-         kibuvits_throw("There exist a collision of bdmroutine classes. "+
-         "More than one bdmroutine is of class "+cl.to_s+
-         ". bdmroutine class collisions are not allowed.",bn)
-      end # if
-      @ht_bdmroutines_classes[cl]=ob_bdmroutine
+      @mx_bdmcomponent_registration.synchronize do
+         if @ht_bdmroutines_classes.has_key? cl
+            bn=binding()
+            kibuvits_throw("There exist a collision of bdmroutine classes. "+
+            "More than one bdmroutine is of class "+cl.to_s+
+            ". bdmroutine class collisions are not allowed.",bn)
+         end # if
+         @ht_bdmroutines_classes[cl]=ob_bdmroutine
 
-      s_bdmcomponent_name=ob_bdmroutine.s_bdmcomponent_name
-      if @ht_bdmroutines.has_key? s_bdmcomponent_name
-         bn=binding()
-         kibuvits_throw("There exist a collision of bdmroutine names. "+
-         "More than one bdmroutine has a name of \""+s_bdmcomponent_name+
-         "\", but each bdmroutine must have a unique name. The collision might "+
-         "have been introduced during development by copying the source of one "+
-         "bdmroutine source to the second and then forgetting to edit the "+
-         "value of the @s_bdmcomponent_name within the "+
-         "constructor of the new bdmroutine.",bn)
-      end # if
-      if @ht_bdmservice_detectors.has_key? s_bdmcomponent_name
-         bn=binding()
-         #TODO: replace it with a "polite" puts(...);exit
-         #      The quotes around the "polite" are
-         #      due to Estonian language peculiarities.
-         kibuvits_throw("There exist a collision between bdmservice detector names "+
-         "and bdmroutine names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
-      end # if
-      if @ht_bdmprojectdescriptors.has_key? s_bdmcomponent_name
-         bn=binding()
-         #TODO: replace it with a "polite" puts(...);exit
-         #      The quotes around the "polite" are
-         #      due to Estonian language peculiarities.
-         kibuvits_throw("There exist a collision between bdmprojectdescriptor names "+
-         "and bdmroutine names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
-      end # if
+         s_bdmcomponent_name=ob_bdmroutine.s_bdmcomponent_name
+         if @ht_bdmroutines.has_key? s_bdmcomponent_name
+            bn=binding()
+            kibuvits_throw("There exist a collision of bdmroutine names. "+
+            "More than one bdmroutine has a name of \""+s_bdmcomponent_name+
+            "\", but each bdmroutine must have a unique name. The collision might "+
+            "have been introduced during development by copying the source of one "+
+            "bdmroutine source to the second and then forgetting to edit the "+
+            "value of the @s_bdmcomponent_name within the "+
+            "constructor of the new bdmroutine.",bn)
+         end # if
+         if @ht_bdmservice_detectors.has_key? s_bdmcomponent_name
+            bn=binding()
+            #TODO: replace it with a "polite" puts(...);exit
+            #      The quotes around the "polite" are
+            #      due to Estonian language peculiarities.
+            kibuvits_throw("There exist a collision between bdmservice detector names "+
+            "and bdmroutine names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
+         end # if
+         if @ht_bdmprojectdescriptors.has_key? s_bdmcomponent_name
+            bn=binding()
+            #TODO: replace it with a "polite" puts(...);exit
+            #      The quotes around the "polite" are
+            #      due to Estonian language peculiarities.
+            kibuvits_throw("There exist a collision between bdmprojectdescriptor names "+
+            "and bdmroutine names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
+         end # if
 
-      @ht_bdmroutines[s_bdmcomponent_name]=ob_bdmroutine
+         @ht_bdmroutines[s_bdmcomponent_name]=ob_bdmroutine
+      end # synchronize
    end # declare_bdmroutine
 
    def declare_bdmservice_detector(ob_bdmservice_detector)
       verify_bdmservice_detector_interface(ob_bdmservice_detector)
 
       cl=ob_bdmservice_detector.class
-      if @ht_bdmservice_detectors_classes.has_key? cl
-         bn=binding()
-         kibuvits_throw("There exist a collision of bdmservice detector "+
-         "classes. More than one bdmservice detector is of class "+cl.to_s+
-         ". bdmservice detector class collisions are not allowed.",bn)
-      end # if
-      @ht_bdmservice_detectors_classes[cl]=ob_bdmservice_detector
+      @mx_bdmcomponent_registration.synchronize do
+         if @ht_bdmservice_detectors_classes.has_key? cl
+            bn=binding()
+            kibuvits_throw("There exist a collision of bdmservice detector "+
+            "classes. More than one bdmservice detector is of class "+cl.to_s+
+            ". bdmservice detector class collisions are not allowed.",bn)
+         end # if
+         @ht_bdmservice_detectors_classes[cl]=ob_bdmservice_detector
 
-      s_bdmcomponent_name=ob_bdmservice_detector.s_bdmcomponent_name
-      if @ht_bdmservice_detectors.has_key? s_bdmcomponent_name
-         bn=binding()
-         #TODO: replace it with a "polite" puts(...);exit
-         #      The quotes around the "polite" are
-         #      due to Estonian language peculiarities.
-         kibuvits_throw("There exist a collision of bdmservice detector names. "+
-         "More than one bdmservice detector has a name of \""+s_bdmcomponent_name+
-         "\", but each bdmservice detector must have a unique name. The collision might "+
-         "have been introduced during development by copying the source of one "+
-         "bdmservice detector source to the second and then forgetting to edit the "+
-         "value of the @s_bdmcomponent_name within the "+
-         "constructor of the new bdmservice detector.",bn)
-      end # if
-      if @ht_bdmroutines.has_key? s_bdmcomponent_name
-         bn=binding()
-         #TODO: replace it with a "polite" puts(...);exit
-         #      The quotes around the "polite" are
-         #      due to Estonian language peculiarities.
-         kibuvits_throw("There exist a collision between bdmservice detector names "+
-         "and bdmroutine names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
-      end # if
-      if @ht_bdmprojectdescriptors.has_key? s_bdmcomponent_name
-         bn=binding()
-         #TODO: replace it with a "polite" puts(...);exit
-         #      The quotes around the "polite" are
-         #      due to Estonian language peculiarities.
-         kibuvits_throw("There exist a collision between bdmprojectdescriptor "+
-         "names and bdmservice detector names. The colliding name is: \""+
-         s_bdmcomponent_name+"\"",bn)
-      end # if
-      @ht_bdmservice_detectors[s_bdmcomponent_name]=ob_bdmservice_detector
+         s_bdmcomponent_name=ob_bdmservice_detector.s_bdmcomponent_name
+         if @ht_bdmservice_detectors.has_key? s_bdmcomponent_name
+            bn=binding()
+            #TODO: replace it with a "polite" puts(...);exit
+            #      The quotes around the "polite" are
+            #      due to Estonian language peculiarities.
+            kibuvits_throw("There exist a collision of bdmservice detector names. "+
+            "More than one bdmservice detector has a name of \""+s_bdmcomponent_name+
+            "\", but each bdmservice detector must have a unique name. The collision might "+
+            "have been introduced during development by copying the source of one "+
+            "bdmservice detector source to the second and then forgetting to edit the "+
+            "value of the @s_bdmcomponent_name within the "+
+            "constructor of the new bdmservice detector.",bn)
+         end # if
+         if @ht_bdmroutines.has_key? s_bdmcomponent_name
+            bn=binding()
+            #TODO: replace it with a "polite" puts(...);exit
+            #      The quotes around the "polite" are
+            #      due to Estonian language peculiarities.
+            kibuvits_throw("There exist a collision between bdmservice detector names "+
+            "and bdmroutine names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
+         end # if
+         if @ht_bdmprojectdescriptors.has_key? s_bdmcomponent_name
+            bn=binding()
+            #TODO: replace it with a "polite" puts(...);exit
+            #      The quotes around the "polite" are
+            #      due to Estonian language peculiarities.
+            kibuvits_throw("There exist a collision between bdmprojectdescriptor "+
+            "names and bdmservice detector names. The colliding name is: \""+
+            s_bdmcomponent_name+"\"",bn)
+         end # if
+         @ht_bdmservice_detectors[s_bdmcomponent_name]=ob_bdmservice_detector
+      end # synchronize
    end # declare_bdmservice_detector
 
    def declare_bdmprojectdescriptor(ob_bdmprojectdescriptor)
       verify_bdmprojectdescriptor(ob_bdmprojectdescriptor)
-
       cl=ob_bdmprojectdescriptor.class
-      if @ht_bdmprojectdescriptor_classes.has_key? cl
-         bn=binding()
-         kibuvits_throw("There exist a collision of bdmprojectdescriptor "+
-         "classes. More than one bdmprojectdescriptor is of class "+cl.to_s+
-         ". bdmprojectdescriptor class collisions are not allowed.",bn)
-      end # if
-      @ht_bdmprojectdescriptor_classes[cl]=ob_bdmprojectdescriptor
+      @mx_bdmcomponent_registration.synchronize do
+         if @ht_bdmprojectdescriptor_classes.has_key? cl
+            bn=binding()
+            kibuvits_throw("There exist a collision of bdmprojectdescriptor "+
+            "classes. More than one bdmprojectdescriptor is of class "+cl.to_s+
+            ". bdmprojectdescriptor class collisions are not allowed.",bn)
+         end # if
+         @ht_bdmprojectdescriptor_classes[cl]=ob_bdmprojectdescriptor
 
-      s_bdmcomponent_name=ob_bdmprojectdescriptor.s_bdmcomponent_name
-      if @ht_bdmprojectdescriptors.has_key? s_bdmcomponent_name
-         bn=binding()
-         #TODO: replace it with a "polite" puts(...);exit
-         #      The quotes around the "polite" are
-         #      due to Estonian language peculiarities.
-         kibuvits_throw("There exist a collision of bdmprojectdescriptor names. "+
-         "More than one bdmprojectdescriptor has a name of \""+s_bdmcomponent_name+
-         "\", but each bdmprojectdescriptor must have a unique name. The collision might "+
-         "have been introduced during development by copying the source of one "+
-         "bdmprojectdescriptor source to the second and then forgetting to edit the "+
-         "value of the @s_bdmcomponent_name within the "+
-         "constructor of the new bdmprojectdescriptor.",bn)
-      end # if
-      if @ht_bdmroutines.has_key? s_bdmcomponent_name
-         bn=binding()
-         #TODO: replace it with a "polite" puts(...);exit
-         #      The quotes around the "polite" are
-         #      due to Estonian language peculiarities.
-         kibuvits_throw("There exist a collision between bdmprojectdescriptor names "+
-         "and bdmroutine names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
-      end # if
-      if @ht_bdmservice_detectors.has_key? s_bdmcomponent_name
-         bn=binding()
-         #TODO: replace it with a "polite" puts(...);exit
-         #      The quotes around the "polite" are
-         #      due to Estonian language peculiarities.
-         kibuvits_throw("There exist a collision between bdmprojectdescriptor names "+
-         "and bdmservice detector names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
-      end # if
-      @ht_bdmprojectdescriptors[s_bdmcomponent_name]=ob_bdmprojectdescriptor
+         s_bdmcomponent_name=ob_bdmprojectdescriptor.s_bdmcomponent_name
+         if @ht_bdmprojectdescriptors.has_key? s_bdmcomponent_name
+            bn=binding()
+            #TODO: replace it with a "polite" puts(...);exit
+            #      The quotes around the "polite" are
+            #      due to Estonian language peculiarities.
+            kibuvits_throw("There exist a collision of bdmprojectdescriptor names. "+
+            "More than one bdmprojectdescriptor has a name of \""+s_bdmcomponent_name+
+            "\", but each bdmprojectdescriptor must have a unique name. The collision might "+
+            "have been introduced during development by copying the source of one "+
+            "bdmprojectdescriptor source to the second and then forgetting to edit the "+
+            "value of the @s_bdmcomponent_name within the "+
+            "constructor of the new bdmprojectdescriptor.",bn)
+         end # if
+         if @ht_bdmroutines.has_key? s_bdmcomponent_name
+            bn=binding()
+            #TODO: replace it with a "polite" puts(...);exit
+            #      The quotes around the "polite" are
+            #      due to Estonian language peculiarities.
+            kibuvits_throw("There exist a collision between bdmprojectdescriptor names "+
+            "and bdmroutine names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
+         end # if
+         if @ht_bdmservice_detectors.has_key? s_bdmcomponent_name
+            bn=binding()
+            #TODO: replace it with a "polite" puts(...);exit
+            #      The quotes around the "polite" are
+            #      due to Estonian language peculiarities.
+            kibuvits_throw("There exist a collision between bdmprojectdescriptor names "+
+            "and bdmservice detector names. The colliding name is: \""+s_bdmcomponent_name+"\"",bn)
+         end # if
 
-      # The bdmroutines and bdmservice detectors have that line
-      # in the load-blabla methods.
-      @ht_bdmcomponents=@ht_bdmroutines.merge(@ht_bdmservice_detectors).merge(@ht_bdmprojectdescriptors)
-      @ht_configurations.merge!(ob_bdmprojectdescriptor.ht_configurations)
+         ht_intersection=Kibuvits_finite_sets.intersection(@ht_configurations,
+         ob_bdmprojectdescriptor.ht_configurations)
+         if 0<ht_intersection.size
+            bn=binding()
+            #TODO: replace it with a "polite" puts(...);exit
+            #      The quotes around the "polite" are
+            #      due to Estonian language peculiarities.
+            kibuvits_throw("\nThere exist a collision, where multiple bdmprojectdescriptors \n"+
+            "contain configuration for bdmservice \""+ht_intersection.keys[0].to_s+"\".\n"+
+            "The name of one of the participating bdmcomponents is: \""+
+            s_bdmcomponent_name+"\"\n\n"+
+            "    Proposed solution: in stead of trying to do everything during a single \n"+
+            "    Breakdancemake run, run the Breakdancemake multiple times and use \n"+
+            "    the method Breakdancemake.undeclare_all_bdmprojectdescriptors() after every run.\n\n",bn)
+         end # if
+         #-------------------------------------------------
+         @ht_bdmprojectdescriptors[s_bdmcomponent_name]=ob_bdmprojectdescriptor
+
+         # The bdmroutines and bdmservice detectors have that line
+         # in the load-blabla methods.
+         @ht_bdmcomponents=@ht_bdmroutines.merge(@ht_bdmservice_detectors).merge(@ht_bdmprojectdescriptors)
+
+         # The configurations merger is not a problem, because
+         # all of the loaded configuration can be reset, deleted
+         # with the method "undeclare_all_bdmprojectdescriptors".
+         @ht_configurations.merge!(ob_bdmprojectdescriptor.ht_configurations)
+      end # synchronize
    end # declare_bdmprojectdescriptor
 
    public
@@ -456,6 +491,21 @@ class Breakdancemake
    def Breakdancemake.declare_bdmcomponent(ob_bdmcomponent)
       Breakdancemake.instance.declare_bdmcomponent(ob_bdmcomponent)
    end # Breakdancemake.declare_bdmcomponent
+
+   def undeclare_all_bdmprojectdescriptors
+      @mx_bdmcomponent_registration.synchronize do
+         @ht_bdmprojectdescriptors.keys.each do |s_bdmcomponent_name|
+            @ht_bdmcomponents.delete(s_bdmcomponent_name)
+         end # loop
+         @ht_configurations.clear
+         @ht_bdmprojectdescriptor_classes.clear
+         @ht_bdmprojectdescriptors.clear
+      end # synchronize
+   end # undeclare_all_bdmprojectdescriptors
+
+   def Breakdancemake.undeclare_all_bdmprojectdescriptors
+      Breakdancemake.instance.undeclare_all_bdmprojectdescriptors()
+   end # Breakdancemake.undeclare_all_bdmprojectdescriptors
 
    #-----------------------------------------------------------------------
    private
@@ -542,7 +592,7 @@ class Breakdancemake
                kibuvits_throw("b_bdmprojectdescriptor_rb_is_available()==false, but "+
                "the file candidate, \""+@s_lc_fp_bdmprojectdescriptor_rb.to_s+"\", is a regular "+
                "file that is properly readable. "+
-               "GUID=='83244359-165b-4431-a24f-12a361b18cd7'")
+               "GUID=='94fc6334-bb31-4c1f-91e4-012201b13dd7'")
             end # if
          end # if
       end # if
@@ -590,7 +640,7 @@ class Breakdancemake
       end # rescue
       if KIBUVITS_b_DEBUG
          if b_thrown
-            #kibuvits_throw("GUID='ea4eb041-cc37-450f-834f-12a361b18cd7', "+
+            #kibuvits_throw("GUID='aff0f157-7df7-4403-b4e4-012201b13dd7', "+
             #"s_msg=="+s_msg)
          end # if
       end # if
@@ -637,18 +687,20 @@ class Breakdancemake
          kibuvits_assert_string_min_length(bn,s_bdmcomponent_name,1)
       end # if
       ob_config=nil
-      if @ht_configurations.has_key? s_bdmcomponent_name
-         ob_config=@ht_configurations[s_bdmcomponent_name]
-         return ob_config
-      end # if
-      if b_bdmroutine_configuration_from_bdmprojectdescriptor_rb_is_available(
-      s_bdmcomponent_name)
-         if !@ht_configurations.has_key? s_bdmcomponent_name
-            kibuvits_throw("s_bdmcomponent_name=="+s_bdmcomponent_name.to_s+
-            "\nGUID='a87e3955-a6fc-48b4-a34f-12a361b18cd7'")
+      @mx_bdmcomponent_registration.synchronize do
+         if @ht_configurations.has_key? s_bdmcomponent_name
+            ob_config=@ht_configurations[s_bdmcomponent_name]
+            return ob_config
          end # if
-         ob_config=@ht_configurations[s_bdmcomponent_name]
-      end # if
+         if b_bdmroutine_configuration_from_bdmprojectdescriptor_rb_is_available(
+            s_bdmcomponent_name)
+            if !@ht_configurations.has_key? s_bdmcomponent_name
+               kibuvits_throw("s_bdmcomponent_name=="+s_bdmcomponent_name.to_s+
+               "\nGUID='81fead5c-029d-47d1-b1d4-012201b13dd7'")
+            end # if
+            ob_config=@ht_configurations[s_bdmcomponent_name]
+         end # if
+      end # synchronize
       return ob_config
    end # x_get_configuration_t1
 
@@ -678,31 +730,33 @@ class Breakdancemake
       ht_out=Hash.new
       s_bdmcomponent_name=ob_bdmroutine.s_bdmcomponent_name
       x_out=nil
-      if ob_bdmroutine.b_ready_for_use()
-         ht_out[$kibuvits_lc_s_mode]=$kibuvits_lc_s_mode_active
-         ht_out[$kibuvits_lc_s_status]=@ob_core_ui_texts.s_breakdancemake_cl_bdmfunction_is_ready_for_use_t1(
-         s_language)
-      else
-         if b_bdmprojectdescriptor_rb_is_available()
-            s=s_bdmcomponent_name
-            if b_bdmprojectdescriptor_rb_has_been_loaded_and_the_bdmroutine_configuration_is_missing(s)
-               ht_out[$kibuvits_lc_s_mode]=$kibuvits_lc_s_mode_inactive
-               ht_out[$kibuvits_lc_s_status]=@ob_core_ui_texts.s_breakdancemake_cl_bdmfunction_is_inactive_due_to_to_missing_config_t1(
-               s_language,s_bdmcomponent_name)
-            else
-               # Something is wrong with the available config.
-               ht_out[$kibuvits_lc_s_mode]=$kibuvits_lc_s_mode_inactive_due_to_undetermined_reason
-               ht_out[$kibuvits_lc_s_status]=@ob_core_ui_texts.s_breakdancemake_cl_bdmfunction_is_inactive_despite_the_config_availability(
-               s_language,s_bdmcomponent_name)
-               #ht_out[$kibuvits_lc_s_status]=@ob_core_ui_texts.s_breakdancemake_cl_bdmfunction_is_inactive_for_undetermined_reasons_t1(
-               #s_language,s_bdmcomponent_name)
-            end # if
+      @mx_bdmcomponent_registration.synchronize do
+         if ob_bdmroutine.b_ready_for_use()
+            ht_out[$kibuvits_lc_s_mode]=$kibuvits_lc_s_mode_active
+            ht_out[$kibuvits_lc_s_status]=@ob_core_ui_texts.s_breakdancemake_cl_bdmfunction_is_ready_for_use_t1(
+            s_language)
          else
-            ht_out[$kibuvits_lc_s_mode]=$kibuvits_lc_s_mode_inactive
-            ht_out[$kibuvits_lc_s_status]=s_bdmroutine_status_if_the_bdmprojectdescriptor_rb_is_not_available_t1(
-            s_language,s_bdmcomponent_name)
+            if b_bdmprojectdescriptor_rb_is_available()
+               s=s_bdmcomponent_name
+               if b_bdmprojectdescriptor_rb_has_been_loaded_and_the_bdmroutine_configuration_is_missing(s)
+                  ht_out[$kibuvits_lc_s_mode]=$kibuvits_lc_s_mode_inactive
+                  ht_out[$kibuvits_lc_s_status]=@ob_core_ui_texts.s_breakdancemake_cl_bdmfunction_is_inactive_due_to_to_missing_config_t1(
+                  s_language,s_bdmcomponent_name)
+               else
+                  # Something is wrong with the available config.
+                  ht_out[$kibuvits_lc_s_mode]=$kibuvits_lc_s_mode_inactive_due_to_undetermined_reason
+                  ht_out[$kibuvits_lc_s_status]=@ob_core_ui_texts.s_breakdancemake_cl_bdmfunction_is_inactive_despite_the_config_availability(
+                  s_language,s_bdmcomponent_name)
+                  #ht_out[$kibuvits_lc_s_status]=@ob_core_ui_texts.s_breakdancemake_cl_bdmfunction_is_inactive_for_undetermined_reasons_t1(
+                  #s_language,s_bdmcomponent_name)
+               end # if
+            else
+               ht_out[$kibuvits_lc_s_mode]=$kibuvits_lc_s_mode_inactive
+               ht_out[$kibuvits_lc_s_status]=s_bdmroutine_status_if_the_bdmprojectdescriptor_rb_is_not_available_t1(
+               s_language,s_bdmcomponent_name)
+            end # if
          end # if
-      end # if
+      end # synchronize
       return ht_out
    end # ht_bdmroutine_status_if_bdmprojectdescriptor_rb_is_compulsory_t1
 
@@ -867,7 +921,7 @@ class Breakdancemake
       s_ob_name=s_bdmcomponent_name
       if !ht_objects.has_key? s_ob_name
          kibuvits_throw("s_ob_name=="+s_ob_name.to_s+
-         "\nGUID='3ec19a04-8933-4764-944f-12a361b18cd7'")
+         "\nGUID='2620fb26-93d6-42c1-95d4-012201b13dd7'")
       end # if
       ht_dependency_relations=ht_objects[s_ob_name].ht_dependency_relations
       sym_b_ready_for_use="b_ready_for_use".to_sym
@@ -899,7 +953,7 @@ class Breakdancemake
          end # if
       end # loop
       kibuvits_throw("s_ob_name=="+s_ob_name.to_s+
-      "\nGUID='55f3d51e-db5d-4418-a33f-12a361b18cd7'")
+      "\nGUID='d3f16a44-87e4-4489-a5d4-012201b13dd7'")
    end # b_s_dependencies_are_met
 
    def Breakdancemake.b_s_dependencies_are_met(s_bdmcomponent_name,
@@ -981,7 +1035,7 @@ class Breakdancemake
          kibuvits_throw("s_mode=="+s_mode+
          ", but this method does not yet support that mode.")
       end # case s_mode
-      kibuvits_throw("GUID='36e0fcb4-b9c0-4aeb-813f-12a361b18cd7'")
+      kibuvits_throw("GUID='2ecbc653-004c-4cbc-92d4-012201b13dd7'")
    end # assertxmsg_dependencies_are_met
 
    def Breakdancemake.assertxmsg_dependencies_are_met(s_language,
@@ -1001,7 +1055,9 @@ class Breakdancemake
          bn=binding()
          kibuvits_typecheck bn, String, s_bdmcomponent_name
       end # if
-      @ht_configurations[s_bdmcomponent_name]=ob_bdmroutine_configuration
+      @mx_bdmcomponent_registration.synchronize do
+         @ht_configurations[s_bdmcomponent_name]=ob_bdmroutine_configuration
+      end # synchronize
    end # declare_configuration
 
    def Breakdancemake.declare_configuration(s_bdmcomponent_name,ob_bdmroutine_configuration)
@@ -1015,65 +1071,67 @@ class Breakdancemake
 
    def run_load_bdmprojectdescriptor_rb_if_needed(s_language,ob_bdmroutine)
       s_bdmcomponent_name=ob_bdmroutine.s_bdmcomponent_name
-      if !@ht_configurations.has_key? s_bdmcomponent_name
-         b_bdmprojectdescriptor_rb_is_available(b_use_cached_value=false) # for updating
-         if ob_bdmroutine.b_requires_runtime_configuration()
-            if !@b_bdmprojectdescriptor_rb_loaded
-               if !b_bdmprojectdescriptor_rb_is_available(b_use_cached_value=true)
-                  s_msg=s_bdmroutine_status_if_the_bdmprojectdescriptor_rb_is_not_available_t1(
-                  s_language,s_bdmcomponent_name)
-                  puts(s_msg);exit
-               end # if
-               thrx_load_bdmprojectdescriptor_rb()
-            end # if
-            if !@ht_configurations.has_key? s_bdmcomponent_name
-               s_out=@ob_core_ui_texts.s_msg_bdmprojectdescriptor_rb_misses_configuration_t1(
-               s_language,s_bdmcomponent_name)
-               puts(s_out);exit
-            end # if
-         else
-            if ob_bdmroutine.b_optionally_uses_runtime_configuration()
+      @mx_bdmcomponent_registration.synchronize do
+         if !@ht_configurations.has_key? s_bdmcomponent_name
+            b_bdmprojectdescriptor_rb_is_available(b_use_cached_value=false) # for updating
+            if ob_bdmroutine.b_requires_runtime_configuration()
                if !@b_bdmprojectdescriptor_rb_loaded
-                  if b_bdmprojectdescriptor_rb_is_available(b_use_cached_value=true)
-                     thrx_load_bdmprojectdescriptor_rb()
+                  if !b_bdmprojectdescriptor_rb_is_available(b_use_cached_value=true)
+                     s_msg=s_bdmroutine_status_if_the_bdmprojectdescriptor_rb_is_not_available_t1(
+                     s_language,s_bdmcomponent_name)
+                     puts(s_msg);exit
+                  end # if
+                  thrx_load_bdmprojectdescriptor_rb()
+               end # if
+               if !@ht_configurations.has_key? s_bdmcomponent_name
+                  s_out=@ob_core_ui_texts.s_msg_bdmprojectdescriptor_rb_misses_configuration_t1(
+                  s_language,s_bdmcomponent_name)
+                  puts(s_out);exit
+               end # if
+            else
+               if ob_bdmroutine.b_optionally_uses_runtime_configuration()
+                  if !@b_bdmprojectdescriptor_rb_loaded
+                     if b_bdmprojectdescriptor_rb_is_available(b_use_cached_value=true)
+                        thrx_load_bdmprojectdescriptor_rb()
+                     end # if
                   end # if
                end # if
             end # if
          end # if
-      end # if
-      # One should not exit/throw, if one finds some
-      # bdmroutine names in the @ht_configurations that
-      # does not exist in the installation, because during
-      # bdmroutine development one might want to draft the
-      # "Makefile" content before actually completing the
-      # bdmroutine code.
-      #
-      # However, for bdmroutines that are part of the installation
-      # and really, never, use anything from the bdmprojectdescriptor.rb,
-      # one should stop the execution with an error message,
-      # because it takes just a few lines of publicly declared
-      # and illustrated bdmroutines' interface code to declare
-      # the bdmroutine as bdmprojectdescriptor.rb user and one might
-      # have written the existing bdmroutine name as a mistake.
-      #
-      # For example: if one develops a bdmroutine named "is" that
-      # uses the bdmprojectdescriptor.rb, but
-      # accidentally writes to the bdmprojectdescriptor.rb its name as "ls",
-      # while the "ls" is an existing bdmroutine that does not ever
-      # use the bdmprojectdescriptor.rb, then one can detect the mis-naming
-      # mistake and the following check comes handy:
-      b_does_not_use_the_bdmprojectdescriptor_rb_at_all=nil
-      @ht_bdmroutines.each_pair do |s_bdmcomponent_name,ob_bdmroutine|
-         next if !@ht_configurations.has_key? s_bdmcomponent_name
-         b_does_not_use_the_bdmprojectdescriptor_rb_at_all=true
-         b_does_not_use_the_bdmprojectdescriptor_rb_at_all=false if ob_bdmroutine.b_requires_runtime_configuration()
-         b_does_not_use_the_bdmprojectdescriptor_rb_at_all=false if ob_bdmroutine.b_optionally_uses_runtime_configuration()
-         if b_does_not_use_the_bdmprojectdescriptor_rb_at_all
-            s_out=@ob_core_ui_texts.s_msg_bdmprojectdescriptor_rb_contains_config_for_nonconfiguser_t1(
-            s_language,s_bdmcomponent_name)
-            puts(s_out);exit
-         end # if
-      end # loop
+         # One should not exit/throw, if one finds some
+         # bdmroutine names in the @ht_configurations that
+         # does not exist in the installation, because during
+         # bdmroutine development one might want to draft the
+         # "Makefile" content before actually completing the
+         # bdmroutine code.
+         #
+         # However, for bdmroutines that are part of the installation
+         # and really, never, use anything from the bdmprojectdescriptor.rb,
+         # one should stop the execution with an error message,
+         # because it takes just a few lines of publicly declared
+         # and illustrated bdmroutines' interface code to declare
+         # the bdmroutine as bdmprojectdescriptor.rb user and one might
+         # have written the existing bdmroutine name as a mistake.
+         #
+         # For example: if one develops a bdmroutine named "is" that
+         # uses the bdmprojectdescriptor.rb, but
+         # accidentally writes to the bdmprojectdescriptor.rb its name as "ls",
+         # while the "ls" is an existing bdmroutine that does not ever
+         # use the bdmprojectdescriptor.rb, then one can detect the mis-naming
+         # mistake and the following check comes handy:
+         b_does_not_use_the_bdmprojectdescriptor_rb_at_all=nil
+         @ht_bdmroutines.each_pair do |s_bdmcomponent_name,ob_bdmroutine|
+            next if !@ht_configurations.has_key? s_bdmcomponent_name
+            b_does_not_use_the_bdmprojectdescriptor_rb_at_all=true
+            b_does_not_use_the_bdmprojectdescriptor_rb_at_all=false if ob_bdmroutine.b_requires_runtime_configuration()
+            b_does_not_use_the_bdmprojectdescriptor_rb_at_all=false if ob_bdmroutine.b_optionally_uses_runtime_configuration()
+            if b_does_not_use_the_bdmprojectdescriptor_rb_at_all
+               s_out=@ob_core_ui_texts.s_msg_bdmprojectdescriptor_rb_contains_config_for_nonconfiguser_t1(
+               s_language,s_bdmcomponent_name)
+               puts(s_out);exit
+            end # if
+         end # loop
+      end # synchronize
    end # run_load_bdmprojectdescriptor_rb_if_needed
 
    #--------------------------------------------------------------------------
@@ -1204,6 +1262,6 @@ end # class Breakdancemake
 
 #--------------------------------------------------------------------------
 # Breakdancemake.run(ARGV)
-
+#puts "hobune breakdancemake_cl.rb's"
 #==========================================================================
 

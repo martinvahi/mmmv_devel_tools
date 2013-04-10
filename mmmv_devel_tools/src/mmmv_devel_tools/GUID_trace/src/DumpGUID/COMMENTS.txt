@@ -1,30 +1,23 @@
 ===========================================================================
-===============================  DumpGUID  ================================
+==============================  DumpGUID  =================================
 ===========================================================================
 
+The DumpGUID is a sub-project of GUID_trace. 
+The task of the DumpGUID is to facilitate the transfer of 
+stderr/stdout/<JavaScrit error console>
+content to a GUID_trace specific text file.
 
----------------------------------------------------------------------------
-                         manual_dump_by_web_form
----------------------------------------------------------------------------
+The JumpGUID core reads that text file and extract GUIDs from there. 
+The GUIDs are then used as search strings for automatically 
+looking up and opening source files that threw the exceptions.
 
-That's the most basic version of it and it's useful for doing the 
-testing on any web browser and on any machine. 
+----------------------------------------------------------------------------
+                        manual_dump_by_web_form
+----------------------------------------------------------------------------
 
-For example, it allows one to run the server and to do 
-the coding on one machine and to run the web browser on 
-another machine and to copy-past the remote machine/browser
-specific error message to the wild.txt right from that remote machine. 
-
-The path to the wild.txt in the  manual_dump_by_web_form.php has to 
-be updated, but it's just part of the setup process anyway. :-)
-
----------------------------------------------------------------------------
-                             To Do
----------------------------------------------------------------------------
-
-A lot.
-
----------------------------------------------------------------------------
+The manual_dump_by_web_form implements a web form that submits its 
+content to the text file.  The path of the text file is obtained 
+automatically from GUID_trace configuration.
 
 ===========================================================================
 

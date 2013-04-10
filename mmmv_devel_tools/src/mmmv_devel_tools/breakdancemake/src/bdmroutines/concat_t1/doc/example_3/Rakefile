@@ -50,7 +50,7 @@ require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_cl.rb"
 #--------------------------------------------------------------------------
 # The class names of bdmprojectdescritpors must have
 # the prefix of "Breakdancemake_bdmprojectdescriptor_".
-class Breakdancemake_bdmprojectdescriptor_a_demo_project < Breakdancemake_bdmprojectdescriptor
+class Breakdancemake_bdmprojectdescriptor_a_demo_project < Breakdancemake_bdmprojectdescriptor_base
 
    private
    def ht_assemble_config

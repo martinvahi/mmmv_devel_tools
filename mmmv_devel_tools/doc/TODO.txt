@@ -3,19 +3,17 @@
 ===========================================================================
 
 Currently complete:
-    renessaator, UpGUID
+    renessaator, UpGUID, 
+
+Currently functional but need improvement:
+    JumpGUID, DumpGUID, breakdancemake,
 
 Next things to complete:
 
-    x) Now that Renessaator works again, Sirel
-       improvements.
-
-    1) Vim integration for the renessaator and UpGUID.
-    2) GUID_trace documentation, the main COMMENTS.txt
-    3) JumpGUID comre 
-    4) The dependencies accounting code in KRL
-    5) Breakdancemake, JavaScript compiling bdmroutines.
-    6) Release management.
+    1)  Vim integration for the renessaator and UpGUID.
+    3)  Eclipse IDE-driver for JumpGUID
+    3a) Study, if it is possible to create a script-based 
+        IDE-driver for the JetBrains WebStorm IDE.
 
 Semi-bugs:
     renessaator has a console argument, "--language", while

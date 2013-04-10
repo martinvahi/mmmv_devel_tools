@@ -2,12 +2,9 @@
 #==========================================================================
 
 if [ "$MMMV_DEVEL_TOOLS_HOME" == "" ]; then
-        echo"" 
-        echo"" 
-        echo "Mandatory environment variable, MMMV_DEVEL_TOOLS_HOME, has not been set. "
-        echo"" 
-        echo"" 
-        exit;
+        export S_FP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+        export MMMV_DEVEL_TOOLS_HOME="`cd $S_FP_DIR/../../../../; pwd`"
+        unset S_FP_DIR
 fi
 
 BREAKDANCEMAKE_HOME="$MMMV_DEVEL_TOOLS_HOME/src/mmmv_devel_tools/breakdancemake"

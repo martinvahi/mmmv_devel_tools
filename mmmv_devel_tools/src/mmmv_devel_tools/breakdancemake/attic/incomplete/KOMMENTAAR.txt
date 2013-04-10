@@ -1,0 +1,21 @@
+
+
+
+Virtuaal-serveri "uname -a" v2ljund on selline:
+
+FreeBSD arcturus.elkdata.ee 7.1-STABLE FreeBSD 7.1-STABLE #1: 
+Thu Aug 19 22:47:28 EEST 2010 root@arcturus.elkdata.ee:/usr/obj/usr/src/sys/ELKDATA amd64 
+
+
+reduce
+  |
+  +--|reduce_linux_i686
+  |  |   |
+  |  |   +--linux_i686
+  |  |
+  |  |
+  |  |reduce_freebsd_amd64
+  |  |   |
+  |  |   +--freebsd_amd64
+  |  |
+  |  |

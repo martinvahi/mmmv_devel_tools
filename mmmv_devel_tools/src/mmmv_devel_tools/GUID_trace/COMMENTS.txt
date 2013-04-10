@@ -7,128 +7,130 @@ In the context of the GUID_trace the acronym "GUID" stands for
 http://en.wikipedia.org/wiki/Globally_Unique_Identifier
 
 ---------------------------------------------------------------------------
-                           W A R N I N G
----------------------------------------------------------------------------
-Not all of the components of the GUID_trace are ready and 
-of those that have prototypes, only some of them have been 
-published within this project. The documentation here covers also
-the parts that are not published or might not have even a working
-prototype. However, anything that is published in the ./src , does
-work in some useful manner.
-
----------------------------------------------------------------------------
                          Table of Contents
 ---------------------------------------------------------------------------
 1. Introduction
 2. Dependencies
 3. Setup
 4. Currently Published Components
-5. Components that have Unpublished Prototypes
+5. Components that Might be part of this Project in the Future
 6. License
+7. TODO
 
 ---------------------------------------------------------------------------
                           1. Introduction
 ---------------------------------------------------------------------------
 
 The GUID_trace is based on the idea that if a project source code,
-regardless of programming language, contains unique strings, 
-for example, GUID-s, then it is possible to recursively search (grep) the 
-project source tree and have a text editor or an IDE open the 
-source file and display the exact row and column, where the 
-unique string, which could be a GUID, resides.
+regardless of programming language, contains unique strings,
+for example, GUID-s, then it is possible to recursively search (grep) the
+project source tree and have a text editor or an IDE open the
+source file and display the exact row and column of the source file,
+where the unique string, which could be a GUID, resides.
 
-If the GUiD-s are part of exception messages, then it is possible
-to use regular expressions to extract a stack of GUID-s 
-from a stack of exception messages, stderr output. 
+If GUiDs are part of exception messages, then it is possible
+to use regular expressions to extract a stack of GUID-s
+from a stack of exception messages. The stack of exception messages
+might be an stderr output.
 
-If one has the stack of GUID-s, then one can script some IDE-s,
-for example, KomodoIDE and probably also the Eclipse (with the help of 
-http://www.viplugin.com/scripteclipse/ ), to move an imaginary cursor 
-up and down within that stack of GUID-s with a side effect that
-after every move the IDE opens exactly the column and the row 
-of a source file, where the GUID that is selected by the
-imaginary cursor resides.
+If there exists a stack of GUID-s, then it is possible to
+script some IDE-s, for example, the KomodoEdit (www.opencomodo.com)
+and the Eclipse (with the help of http://www.viplugin.com/scripteclipse/ ),
+to move an imaginary cursor up and down the stack of GUID-s,
+with a side effect that after every move the IDE opens exactly the
+row of a source file, where the selected GUID resides.
 
-This means that in stead of looking at the stderr or JavaScript 
+This means that in stead of looking at the stderr or JavaScript
 console stack trace and then opening the file "manually", one can
 just hit a few key combinations that correspond to up or down
-arrow keys and the IDE just opens a row and column of a file that
-contains the GUID.  For example, the benefit of an IDE over 
-web browser built-in JavaScript navigator is that 
-the IDE can edit the actual project sources, but 
+arrow keys and the IDE opens the row of the file that
+contains the GUID.  For example, the benefit of an IDE over
+web browser built-in JavaScript navigator is that
+the IDE can edit the actual project sources, but
 the web browser has only access to a copy of the JavaScript sources.
 
-The GUID_trace toolset is applicable to any programming language that 
-supports exceptions and has a possibility to dump at least one 
-exception message per run.  For example, the GUID_trace allows 
-to debug JavaScript libraries in somewhat web browser independent manner.
+The GUID_trace toolset is applicable to any programming language that
+supports exceptions and has a possibility to print/display at least one
+exception message per run. The GUID_trace allows to debug JavaScript
+libraries in somewhat web browser independent manner.
 
 ---------------------------------------------------------------------------
                            2. Dependencies
 ---------------------------------------------------------------------------
 
-The GUID_trace has been written in Ruby, version 1.9 or newer, and 
-the GUID_trace depends on Bash and a set of console tools that are 
-available on Linux/BSD. 
-
-The main dependency is Kibuvits Ruby Library (hereafter: KRL). The KRL 
-is Linux/BSD specific.
+The GUID_trace has been writtenn in Ruby, version 2.0 or newer, and
+the GUID_trace depends on Bash, grep, various other Linux command line
+tools and the Kibuvits Ruby Library (hereafter: KRL).
+The KRL is Linux specific, but sub-parts of it might work with cygwin.
 
 Ruby related dependencies include projects like rubygems and rake.
 
 The rest of the dependencies are optional and depend on IDE-s that
-one wants to use. For example, in the case of the KomodoIDE there
-are no additional dependencies, but in the case of the Eclipse, the 
-http://www.viplugin.com/scripteclipse/ 
-is necessary.
+one wants to use. For example, in the case of the KomodoEdit there
+are no additional dependencies, but in the case of the Eclipse, the
+http://www.viplugin.com/scripteclipse/ is mandatory.
 
 ---------------------------------------------------------------------------
                            3. Setup
 ---------------------------------------------------------------------------
 
-The GUID_trace uses settings from the mmmv_devel_tools settings system, 
-which is described at 
-$MMMV_DEVEL_TOOLS_HOME/src/etc/COMMENTS.txt  
+The GUID_trace uses settings from the mmmv_devel_tools settings system,
+which is described at
 
-Within the settings system, i.e. set of configurations files
-the names of the GUID_trace specific configuration variables 
-start with the prefix: "GUID_trace_"
+    $MMMV_DEVEL_TOOLS_HOME/src/etc/COMMENTS.txt
 
-The GUID_trace also uses the following configuration variables:
-    s_project_source_folder_paths
-    s_project_dependencies_source_folder_paths
+Proper value of the environment variable,
+MMMV_DEVEL_TOOLS_HOME, is mandatory.
 
 ---------------------------------------------------------------------------
                    4. Currently Published Components
 ---------------------------------------------------------------------------
 
-UpGUID       --- Searches GUIDs from a string or a file and replaces 
-                 each of them with a newly generated, unique, GUID. 
+UpGUID       --- The UpGUID is useful in a situations, where
+                 code gets copy/pasted or code templates are used and
+                 all GUIDs are required to be unique.
 
-                 It's usefulness comes from the fact that during development 
-                 code tends to be copy/pasted or code templates 
-                 might be used and that might duplicate GUIDs. 
-                 The UpGUID, with proper IDE scripting, updates
-                 the GUIDs so that all GUIDs within the single file or 
-                 a string are unique.
+                 The UpGUID searches a string or a file for a GUID that is
+                 surrounded by quotation marks and replaces
+                 each of the GUIDs with a newly generated, unique, GUID.
+
+                 The quotation marks can be either
+                 single quotes (') or doublequotes ("), but a pair of them
+                 must consist of only one kind of quotation marks.
+
+
+JumpGUID     --- Scripts that allow IDE-s to navigate the stack of GUIDs
+                 that is assembled from the stderr output.
+
+                 JumpGUID core parses the stderr output string,
+                 assembles the stack of GUIDs and implements the
+                 book-keeping.
+
+                 JumpGUID IDE drivers are the scripts that the IDEs load.
+
+DumpGUID     --- Facilitates the gransfer of stderr string to the JumpGUID.
 
 
 ---------------------------------------------------------------------------
-            5. Components that have Unpublished Prototypes
+      5. Components that Might be part of this Project in the Future
 ---------------------------------------------------------------------------
-The current version of those components is such a mess that 
-they are not even published. I, martin.vahi@softf1.com,
-do have initial prototypes of them for my own, personal, use, but
-they are not clean/good enough to be shared with others.
 
-JumpGUID     --- The JumpGUID contains 2 parts: backend and IDE drivers.
-                 
+IDE_jump --- One day one might open a file at a specific
+             location in one IDE and then have a second IDE display
+             the same file at the same location by a keystroke.
 
 ---------------------------------------------------------------------------
                           6. License
 ---------------------------------------------------------------------------
 Most, if not all, of the GUID_trace is licensed under the BSD license.
 http://www.opensource.org/licenses/bsd-license.php
+
+
+---------------------------------------------------------------------------
+                          7. TODO
+---------------------------------------------------------------------------
+
+Documentation, screencasts.
 
 
 ===========================================================================

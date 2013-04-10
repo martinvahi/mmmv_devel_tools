@@ -42,6 +42,13 @@
 #--------------------------------------------------------------------------
 if !defined? BREAKDANCEMAKE_INCLUSIONS_INCLUDED
 
+   #require "rubygems"
+   require 'pathname'
+   require "monitor"
+   require "find"
+   require "singleton"
+   require 'thread'
+
    if !defined? MMMV_DEVEL_TOOLS_HOME
       raise(Exception.new("The assumption is that this file is included after "+
       "the MMMV_DEVEL_TOOLS_HOME has been defined."))
@@ -58,30 +65,21 @@ if !defined? BREAKDANCEMAKE_INCLUSIONS_INCLUDED
    # require clauses probes for it.
    BREAKDANCEMAKE_INCLUSIONS_INCLUDED=true
 
-   # The gems "rubygems" and "pathname" are needed for
-   # initiating the BREAKDANCEMAKE_HOME, which
-   # is expected to be already defined at this point.
-   #require "rubygems"
-   #require "pathname"
-
-   require "monitor"
-   require "find"
-   require "singleton"
-
    if !defined? KIBUVITS_HOME
       KIBUVITS_HOME=BREAKDANCEMAKE_HOME+"/src/bonnet/lib/KRL_local_copy/src"
    end # if
 
    if defined? KIBUVITS_HOME
-      require  KIBUVITS_HOME+"/include/kibuvits_io.rb"
-      require  KIBUVITS_HOME+"/include/kibuvits_fs.rb"
-      require  KIBUVITS_HOME+"/include/kibuvits_ProgFTE.rb"
-      require  KIBUVITS_HOME+"/include/kibuvits_str.rb"
-      require  KIBUVITS_HOME+"/include/kibuvits_shell.rb"
-      require  KIBUVITS_HOME+"/include/kibuvits_htoper.rb"
-      require  KIBUVITS_HOME+"/include/kibuvits_i18n_msgs_t1.rb"
-      require  KIBUVITS_HOME+"/include/kibuvits_dependencymetrics_t1.rb"
-      require  KIBUVITS_HOME+"/include/kibuvits_apparch_specific.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_io.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_ProgFTE.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_htoper.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_i18n_msgs_t1.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_dependencymetrics_t1.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_apparch_specific.rb"
+      require  KIBUVITS_HOME+"/src/include/kibuvits_finite_sets.rb"
    else
       require  "kibuvits_io.rb"
       require  "kibuvits_fs.rb"
@@ -92,6 +90,7 @@ if !defined? BREAKDANCEMAKE_INCLUSIONS_INCLUDED
       require  "kibuvits_i18n_msgs_t1.rb"
       require  "kibuvits_dependencymetrics_t1.rb"
       require  "kibuvits_apparch_specific.rb"
+      require  "kibuvits_finite_sets.rb"
    end # if
 
    # The breakdancemake framework depends on the constants.
@@ -101,7 +100,7 @@ if !defined? BREAKDANCEMAKE_INCLUSIONS_INCLUDED
    require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_bdmcomponent.rb"
    require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_bdmroutine.rb"
    require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_bdmservice_detector.rb"
-   require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_bdmprojectdescriptor.rb"
+   require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_bdmprojectdescriptor_base.rb"
 
    # Due to the dependencies it must be the last one loaded.
    require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_cl.rb"

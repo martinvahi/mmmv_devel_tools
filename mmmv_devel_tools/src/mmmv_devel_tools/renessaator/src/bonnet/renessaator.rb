@@ -1,4 +1,4 @@
-#!/opt/ruby/bin/ruby -Ku
+#!/usr/bin/env ruby
 #==========================================================================
 =begin
 
@@ -37,25 +37,25 @@
 =end
 #==========================================================================
 
-x=ENV["MMMV_DEVEL_TOOLS_HOME"]
-if (x==nil)||(x=="")
-   puts "Mandatory environment variable, MMMV_DEVEL_TOOLS_HOME, "+
-   "has not been set. "
-   exit
+if !defined? RENESSAATOR_RB_INCLUDED
+   RENESSAATOR_RB_INCLUDED=true
+   if !defined? MMMV_DEVEL_TOOLS_HOME
+      require 'pathname'
+      s_0=Pathname.new(__FILE__).realpath.parent.parent.parent.parent.parent.parent.to_s
+      MMMV_DEVEL_TOOLS_HOME=s_0.freeze
+   end # if
+
+   require MMMV_DEVEL_TOOLS_HOME+"/src/bonnet/mmmv_devel_tools_initialization_t1.rb"
+
+   require KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_argv_parser.rb"
+   require KIBUVITS_HOME+"/src/include/deprecated/kibuvits_deprecated_str.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_comments_detector.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_eval.rb"
+   require KIBUVITS_HOME+"/src/include/kibuvits_file_intelligence.rb"
 end # if
-MMMV_DEVEL_TOOLS_HOME=x
 
-require MMMV_DEVEL_TOOLS_HOME+"/src/bonnet/mmmv_devel_tools_initialization_t1.rb"
-
-require KIBUVITS_HOME+"/include/kibuvits_io.rb"
-require KIBUVITS_HOME+"/include/kibuvits_shell.rb"
-require KIBUVITS_HOME+"/include/kibuvits_argv_parser.rb"
-require KIBUVITS_HOME+"/include/kibuvits_comments_detector.rb"
-require KIBUVITS_HOME+"/include/kibuvits_fs.rb"
-require KIBUVITS_HOME+"/include/kibuvits_eval.rb"
-require KIBUVITS_HOME+"/include/kibuvits_file_intelligence.rb"
-
-require "singleton"
 #==========================================================================
 
 class Renessaator_core
@@ -191,7 +191,7 @@ class Renessaator_core
       msgcs=ht_opmem[@lc_msgcs]
       ht_block=ht_opmem[@lc_ht_block]
       s_block_frame=ht_block[@lc_s_block_frame]
-      ht_params=Kibuvits_str.configstylestr_2_ht(s_block_frame,msgcs)
+      ht_params=Kibuvits_deprecated_str.configstylestr_2_ht(s_block_frame,msgcs)
       if !ht_params.has_key? @lc_tl_s_block_src_lang
          msgcs.cre "Renessaator block parameter \""+
          @lc_tl_s_block_src_lang+"\" is missing.",6.to_s
@@ -455,6 +455,7 @@ class Renessaator_console_UI
    def initialize
       @lc_space=" "
       @s_renessaator_selftests_home=Renessaator_core.instance.s_renessaator_selftests_home
+      @mx=Mutex.new
    end #initialize
 
    private
@@ -569,11 +570,12 @@ class Renessaator_console_UI
    end # normalize_ht_args
 
    def run_renessaator_file_path_2_file_container_directory s_file_path
-      ar=Kibuvits_fs.path2array(s_file_path)
-      ar_wd=Array.new
-      (ar.length-1).times {|i| ar_wd<<ar[i]} # (-1).times===0.times
-      s_working_directory=Kibuvits_fs.array2path(ar_wd)
-      return s_working_directory
+      if s_file_path.length==0
+         kibuvits_throw("\n\ns_file_path.length==0\n"+
+         "\nGUID='917a8d42-cf62-4393-91a9-331301b13dd7'")
+      end #if
+      s_out=Pathname.new(s_file_path).realpath.parent.to_s
+      return s_out
    end # run_renessaator_file_path_2_file_container_directory
 
    def run_renessaator ht_args, msgcs
@@ -668,14 +670,14 @@ class Renessaator_console_UI
    # TODO: Get rid of this method by refactoring the argv parser.
    # Also replace the
    # ht_grammar['--run-test']=1 with ht_grammar['--run-test']=(-1)
-   def dirty_workaround_to_the_lack_of_zeroormore_parse_option ht_args,msgcs
+   def dirty_workaround_to_the_lack_of_zeroormore_parse_option ar_argv,ht_args,msgcs
       return true if ht_args['--run-test']!=nil
       ht_grammar2=create_ht_grammar
       ht_grammar2['--run-test']=0
-      ht_args2=Kibuvits_argv_parser.run ht_grammar2, ARGV,msgcs
+      ht_args2=Kibuvits_argv_parser.run ht_grammar2, ar_argv,msgcs
       return true if ht_args2['--run-test']!=nil
       ht_grammar2['--run-test']=(-1)
-      ht_args2=Kibuvits_argv_parser.run ht_grammar2, ARGV,msgcs
+      ht_args2=Kibuvits_argv_parser.run ht_grammar2, ar_argv,msgcs
       return true if ht_args2['--run-test']!=nil
       return false
    end # dirty_workaround_to_the_lack_of_zeroormore_parse_option
@@ -699,64 +701,77 @@ class Renessaator_console_UI
    end # exit_if_bloc_printing_requested
 
    public
-   def run
-      msgcs=Kibuvits_msgc_stack.new
-      ht_grammar=create_ht_grammar
-      ht_args=Kibuvits_argv_parser.run ht_grammar, ARGV,msgcs
-      if dirty_workaround_to_the_lack_of_zeroormore_parse_option(ht_args,msgcs)
-         run_selftests_from_console ht_args, msgcs
-         exit
-      end # if
-      Kibuvits_argv_parser.verify_parsed_input ht_grammar, ht_args, msgcs
-      normalize_ht_args ht_args
-      # TODO: the language parameter goes lost with the ext_if funcs.
-      exit_if_true ht_args,msgcs.b_failure
-      exit_if_true ht_args,help_requested_or_erroneous_console_input(ht_args)
-      exit_if_bloc_printing_requested ht_args,msgcs
-      run_renessaator ht_args, msgcs
-      if msgcs.b_failure
-         b_failure=false
-         s_out=""
-         b_throw_on_input_verification_failures=false
-         b_rescue_applied=false
-         begin
-            if ht_args['--throw_on_input_verification_failures']!=nil
-               b_throw_on_input_verification_failures=true
-            end # if
-            s_out=""+msgcs.to_s[ht_args['--language'][0]]
-         rescue
-            b_failure=true
-            # TODO: The next line should be outcommented,
-            #b_rescue_applied=true
-            # but here's a dirty workaround so this bug is left
-            # to the future, because one is really busy at the
-            # time of writing this comment.
-         end # try-catch
-         if b_failure
+
+   # It's separate from the method run() to allow
+   # the Renessaator to be called from other ruby scripts
+   # without renitializing it for every run. The clumbersome
+   # ar_argv is used to use only a single point of entry.
+   def run_by_ar_argv(ar_argv,msgcs)
+      @mx.synchronize do
+         ht_grammar=create_ht_grammar
+         ht_args=Kibuvits_argv_parser.run ht_grammar, ar_argv,msgcs
+         if dirty_workaround_to_the_lack_of_zeroormore_parse_option(ar_argv,ht_args,msgcs)
+            run_selftests_from_console ht_args, msgcs
+            exit
+         end # if
+         Kibuvits_argv_parser.verify_parsed_input ht_grammar, ht_args, msgcs
+         normalize_ht_args ht_args
+         # TODO: the language parameter gets lost with the ext_if funcs.
+         exit_if_true ht_args,msgcs.b_failure
+         exit_if_true ht_args,help_requested_or_erroneous_console_input(ht_args)
+         exit_if_bloc_printing_requested ht_args,msgcs
+         run_renessaator ht_args, msgcs
+         if msgcs.b_failure
             b_failure=false
+            s_out=""
+            b_throw_on_input_verification_failures=false
+            b_rescue_applied=false
             begin
-               s_out=""+msgcs.to_s
+               if ht_args['--throw_on_input_verification_failures']!=nil
+                  b_throw_on_input_verification_failures=true
+               end # if
+               s_out=""+msgcs.to_s[ht_args['--language'][0]]
             rescue
                b_failure=true
+               # TODO: The next line should be outcommented,
+               #b_rescue_applied=true
+               # but here's a dirty workaround so this bug is left
+               # to the future, because one is really busy at the
+               # time of writing this comment.
             end # try-catch
+            if b_failure
+               b_failure=false
+               begin
+                  s_out=""+msgcs.to_s
+               rescue
+                  b_failure=true
+               end # try-catch
+            end # if
+            if b_failure
+               kibuvits_throw "\nSomething went so wrong that there is \n"+
+               "not even a decent error message available.\n\n"
+            end # if
+            kibuvits_throw s_out if b_rescue_applied #We're screwed.
+            if b_throw_on_input_verification_failures
+               # The idea behind the "textbraces" is that
+               # IDE plugins can extract the input verification
+               # message from the whole throw message.
+               s_ceremony="RENESSAATOR_INPUT_VERIFICATION_FAILURE_MESSAGE_"
+               s_out2="\n"+s_ceremony+"START \n"+s_out+
+               @lc_space+s_ceremony+"END\n"
+               kibuvits_throw s_out2
+            else
+               puts s_out
+            end # if
          end # if
-         if b_failure
-            kibuvits_throw "\nSomething went so wrong that there is \n"+
-            "not even a decent error message available.\n\n"
-         end # if
-         kibuvits_throw s_out if b_rescue_applied #We're screwed.
-         if b_throw_on_input_verification_failures
-            # The idea behind the "textbraces" is that
-            # IDE plugins can extract the input verification
-            # message from the whole throw message.
-            s_ceremony="RENESSAATOR_INPUT_VERIFICATION_FAILURE_MESSAGE_"
-            s_out2="\n"+s_ceremony+"START \n"+s_out+
-            @lc_space+s_ceremony+"END\n"
-            kibuvits_throw s_out2
-         else
-            puts s_out
-         end # if
-      end # if
+      end # synchronize
+   end # run_by_ar_argv
+
+   def run
+      ar_argv=Array.new.concat(ARGV)
+      msgcs=C_mmmv_devel_tools_global_singleton.msgcs()
+      run_by_ar_argv(ar_argv,msgcs)
+      ar_argv.clear
    end # run
 
    private
@@ -846,8 +861,6 @@ class Renessaator_console_UI
 end # class Renessaator_console_UI
 
 #==========================================================================
-rsc=Renessaator_console_UI.new
-s_out=rsc.run
-
+#Renessaator_console_UI.new.run()
 
 #==========================================================================

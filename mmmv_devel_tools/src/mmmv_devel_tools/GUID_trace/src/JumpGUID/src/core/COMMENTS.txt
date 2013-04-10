@@ -1,0 +1,55 @@
+===========================================================================
+===========================  jumpguid_core  ===============================
+===========================================================================
+
+The JumpGUID core searches project folders recursively for
+GUIDs (globally unique identifiers) that are enclosed to
+single quotes or double quotes. An example:
+
+"2d72a150-df41-4380-9395-8372b0713dd7"
+'58bb6e18-4a6b-4a8a-9351-5192b0713dd7'
+
+The list of project folders is obtained from mmmv_devel_tools
+configuration. The list of GUID-s to search for is
+obtained from a text file that contains stderr or stdout content, where
+the stack of exception messages contains the GUIDs. The path of the
+exception stack text file is obtained from the mmmv_devel_tools
+configuration.
+
+The stack of exception messages that contains GUIDs is used for
+assembling a stack of GUIDs, where the GUIDs are in the same
+order as they appear in the stack of exception messages.
+The stack of GUIDs has an imaginary cursor, which can be moved
+upwards and downwards. The cursor will not "overflow to the other end",
+i.e. by after ordering the cursor to move downwards more times then the
+length of the stack of GUIDs, the cursor resides in the lowest
+position.
+
+If the stack of GUIDs is empty, none of the commands throws an
+exception, but the jumpguid_core generates a text file with
+a message and returns the parameters of that file.
+
+A shell command for listing related configuration:
+
+  jumpguid_core  ls config
+
+---------------------------------------------------------------------------
+                   Shell Commands that IDE Drivers use
+---------------------------------------------------------------------------
+
+  jumpguid_core  get_file_path up
+                               down
+                               no_cursor_movement
+
+
+  jumpguid_core  get_line_number up
+                                 down
+                                 no_cursor_movement
+
+
+  jumpguid_core  ls config
+                    guidstack_file_path
+
+
+===========================================================================
+
