@@ -1,4 +1,4 @@
-#!/opt/ruby/bin/ruby -Ku
+#!/usr/bin/env ruby
 #==========================================================================
 
 require "singleton"
@@ -55,13 +55,19 @@ if !defined? KIBUVITS_s_NUMERICAL_VERSION
    puts msg
    exit
 end # if
-s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.3.0"
+s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.4.0"
 if KIBUVITS_s_NUMERICAL_VERSION!=s_expected_KIBUVITS_s_NUMERICAL_VERSION
    msg="\nThis version of the mmmv_devel_tools expects the Ruby constant, \n"+
-   "KIBUVITS_s_NUMERICAL_VERSION, to have the value of \""+s_expected_KIBUVITS_s_NUMERICAL_VERSION+"\", \n"+
-   "but the KIBUVITS_s_NUMERICAL_VERSION=="+KIBUVITS_s_NUMERICAL_VERSION.to_s+"\n\n"
+   "KIBUVITS_s_NUMERICAL_VERSION, to have the value of \""+
+   s_expected_KIBUVITS_s_NUMERICAL_VERSION+"\", \n"+
+   "but the KIBUVITS_s_NUMERICAL_VERSION=="+
+   KIBUVITS_s_NUMERICAL_VERSION.to_s+"\n\n"
    puts msg
    exit
+end # if
+
+if !defined? MMMV_DEVEL_TOOLS_VERSION
+   MMMV_DEVEL_TOOLS_VERSION="1.3.0"
 end # if
 
 require KIBUVITS_HOME+"/src/include/kibuvits_msgc.rb"
