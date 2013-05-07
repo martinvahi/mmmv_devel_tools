@@ -57,12 +57,9 @@ x) Cases, where reflection or OO techniques in general would
 Ruby 1.9.x or newer, rubygems, 
 Bash and other common Linux command line tools.
 
-The environment variable, MMMV_DEVEL_TOOLS_HOME, has to be set
-properly. (Pleas see the mmmv_devel_tools introductory COMMENTS.txt
-for further details on the environment setup.)
-
 The Renessaator and its applications depend heavily on the 
-Kibuvits Ruby Library.
+Kibuvits Ruby Library (http://kibuvits.rubyforge.org/ ), 
+which is bundled with the mmmv_devel_tools package.
 
 ---------------------------------------------------------------------------
                             3. Caveats

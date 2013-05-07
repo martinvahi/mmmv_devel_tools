@@ -77,10 +77,7 @@ http://www.viplugin.com/scripteclipse/ is mandatory.
 The GUID_trace uses settings from the mmmv_devel_tools settings system,
 which is described at
 
-    $MMMV_DEVEL_TOOLS_HOME/src/etc/COMMENTS.txt
-
-Proper value of the environment variable,
-MMMV_DEVEL_TOOLS_HOME, is mandatory.
+    ./../../../src/etc/COMMENTS.txt
 
 ---------------------------------------------------------------------------
                    4. Currently Published Components

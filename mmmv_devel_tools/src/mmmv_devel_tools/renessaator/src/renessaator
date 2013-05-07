@@ -1,12 +1,9 @@
 #!/bin/bash 
 
-if [ "$MMMV_DEVEL_TOOLS_HOME" == "" ]; then
-        export S_FP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-        export MMMV_DEVEL_TOOLS_HOME="`cd $S_FP_DIR/../../../../; pwd`"
-        unset S_FP_DIR
-fi
+export S_FP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+MMMV_DEVEL_TOOLS_HOME="`cd $S_FP_DIR/../../../../; pwd`"
+unset S_FP_DIR
 
 export RENESSAATOR_HOME="$MMMV_DEVEL_TOOLS_HOME/src/mmmv_devel_tools/renessaator" 
 `which ruby` -Ku  $RENESSAATOR_HOME/src/bonnet/renessaator_bashwrapper_component_t1.rb  $1 $2 $3 $4 $5 $6 $7 $8 $9 
-
 

@@ -1,0 +1,90 @@
+===========================================================================
+==========================  IDE_integration  ==============================
+===========================================================================
+
+The mmmv_devel_tools sub-project, IDE_integration, consists of 
+integrated development environment (IDE) specific scripts that
+facilitate the use of the rest of the mmmv_devel_tools sub-projects
+from IDE-s.
+
+Some of the IDE_integration related code resides in other 
+mmmv_devel_tools projects' folders and might not 
+even be referenced from the IDE_integration project.
+
+---------------------------------------------------------------------------
+                    Dependencies and Requirements
+---------------------------------------------------------------------------
+
+x) Ruby 2.0.x
+
+x) UNIX-like operating system, only Linux has been tested, but
+   it might work with CygWin. 
+
+x) Bash 
+
+x) The dependencies of the tools that one wants to start by 
+   using the IDE_integration components have to be met.
+
+---------------------------------------------------------------------------
+                     Current Level of Completion
+---------------------------------------------------------------------------
+
+www_openkomodo_com v_8_0_0
+  |
+  |
+  +--JumpGUID         --- Tested and works. The IDE integration script
+                          resides in one of the JumpGUID project sub-folders.
+
+
+JetBrains WebStorm v_6_0_1
+  |
+  +--PMIP 
+       |
+       +--UpGUID      --- Tested and works.
+       |
+       |
+       +--renessaator --- Tested and works.
+       |
+       |
+       +--JumpGUID    --- Untested, but complete to the point that
+                          the only thing left to be add (till testing 
+                          shows otherwise) is "open_file(s_full_path)".
+
+                          The question:
+                          http://stackoverflow.com/questions/16377001/open-a-file-by-using-a-jetbrains-webstorm-pmip-script
+
+
+
+Eclipse
+  |
+  +--ScriptEclipse    --- Currently untested and therefore considered 
+       |                  to be unusable, but once upon a time 
+       |                  the situation was as follows:
+       |             
+       |
+       |
+       |
+       +--UpGUID      --- Practically as good as it gets, but 
+       |                  sometimes it crashes 
+       |                  due to Eclipse, not ScriptEclipse, bugs.
+       |
+       +--renessaator 
+            |       
+            +--run    --- Practically as good as it gets, but
+            |             sometimes it crashes 
+            |             due to Eclipse, not ScriptEclipse, bugs.
+            |       
+            +-- Currently the sample block generation has 
+                not been implemented. The renessaator does 
+                not even support it yet.
+
+
+
+Vim (script)          --- A total mess. The vimscript has 
+  |                       never been completed.
+  |
+  +--...
+
+
+===========================================================================
+

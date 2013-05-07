@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/opt/ruby/bin/ruby -Ku
 #==========================================================================
 
 require "singleton"
@@ -11,17 +11,15 @@ require "singleton"
 #  A_CAT="Tom"
 # , but, those are the rules.
 
-x=ENV["MMMV_DEVEL_TOOLS_HOME"]
-if (x==nil)||(x=="")
-   puts("\nMandatory environment variable, MMMV_DEVEL_TOOLS_HOME, \n"+
-   "has not been set.\n\n")
-   exit
-end # if
 if !defined? MMMV_DEVEL_TOOLS_HOME
    raise(Exception.new("The Ruby constant, MMMV_DEVEL_TOOLS_HOME, "+
    "should have been defined before the control flow reaches the "+
    "file, from where this exception is thrown."))
    exit
+end # if
+
+if !defined? MMMV_DEVEL_TOOLS_VERSION
+   MMMV_DEVEL_TOOLS_VERSION="2.0.0"
 end # if
 
 if !defined? KIBUVITS_HOME
@@ -41,6 +39,7 @@ end # if
 
 s_kibuvits_boot_path=KIBUVITS_HOME+"/src/include/kibuvits_boot.rb"
 require s_kibuvits_boot_path
+require KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
 
 # Due to a fact that the API of the
 # Kibuvits Ruby Library (KRL, http://kibuvits.rubyforge.org/ )
@@ -58,16 +57,10 @@ end # if
 s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.4.0"
 if KIBUVITS_s_NUMERICAL_VERSION!=s_expected_KIBUVITS_s_NUMERICAL_VERSION
    msg="\nThis version of the mmmv_devel_tools expects the Ruby constant, \n"+
-   "KIBUVITS_s_NUMERICAL_VERSION, to have the value of \""+
-   s_expected_KIBUVITS_s_NUMERICAL_VERSION+"\", \n"+
-   "but the KIBUVITS_s_NUMERICAL_VERSION=="+
-   KIBUVITS_s_NUMERICAL_VERSION.to_s+"\n\n"
+   "KIBUVITS_s_NUMERICAL_VERSION, to have the value of \""+s_expected_KIBUVITS_s_NUMERICAL_VERSION+"\", \n"+
+   "but the KIBUVITS_s_NUMERICAL_VERSION=="+KIBUVITS_s_NUMERICAL_VERSION.to_s+"\n\n"
    puts msg
    exit
-end # if
-
-if !defined? MMMV_DEVEL_TOOLS_VERSION
-   MMMV_DEVEL_TOOLS_VERSION="1.3.0"
 end # if
 
 require KIBUVITS_HOME+"/src/include/kibuvits_msgc.rb"
@@ -252,20 +245,87 @@ class C_mmmv_devel_tools_global_singleton
    end # C_mmmv_devel_tools_global_singleton.s_config_hash_t1
 
    #-----------------------------------------------------------------------
+   private
+   def run_renessaator_t1_b_run_on_unmodified_files(
+      ar_or_s_fp_additional_folders_and_files_to_watch_for_changes,
+      i_observable_files_cache_max_size)
+      b_run_on_unmodified_files=true
+      b_run_on_unmodified_files=Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(
+      ar_or_s_fp_additional_folders_and_files_to_watch_for_changes,
+      i_observable_files_cache_max_size)
+      return b_run_on_unmodified_files
+   end # run_renessaator_t1_b_run_on_unmodified_files
 
-   def run_renessaator_t1(ar_or_s_file_paths)
+   public
+   # Renessaator code generation blocks may include, depend, on
+   # files that are not listed in the ar_or_s_file_paths.
+   # Those files should be listed in the
+   # ar_or_s_fp_additional_folders_and_files_to_watch_for_changes
+   def run_renessaator_t1(ar_or_s_file_paths,
+      ar_or_s_fp_additional_folders_and_files_to_watch_for_changes,
+      i_observable_files_cache_max_size)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, [Array,String], ar_or_s_file_paths
+         kibuvits_typecheck bn, [Array,String], ar_or_s_fp_additional_folders_and_files_to_watch_for_changes
+         kibuvits_typecheck bn, [Fixnum,Bignum], i_observable_files_cache_max_size
          if ar_or_s_file_paths.class==String
-            kibuvits_assert_string_min_length(bn,ar_or_s_file_paths,1)
+            kibuvits_assert_string_min_length(bn,ar_or_s_file_paths,2)
          else  # ar_or_s_file_paths.class==Array
             kibuvits_typecheck_ar_content(bn,String,ar_or_s_file_paths)
             # Lazy-hack: one just hopes that
             # the string lengths in the ar_or_s_file_paths are OK.
          end # if
+         ar_short=ar_or_s_fp_additional_folders_and_files_to_watch_for_changes
+         if ar_short.class==String
+            kibuvits_assert_string_min_length(bn,ar_short,2)
+         else  # ar_short.class==Array
+            kibuvits_typecheck_ar_content(bn,String,ar_short)
+         end # if
       end # if
-      if !defined? @@ob_renessaator_ui
+      b_run_on_unmodified_files=run_renessaator_t1_b_run_on_unmodified_files(
+      ar_or_s_fp_additional_folders_and_files_to_watch_for_changes,
+      i_observable_files_cache_max_size)
+      if !defined? @s_run_renessaator_t1_cache_fp
+         @s_run_renessaator_t1_cache_fp=MMMV_DEVEL_TOOLS_HOME+
+         "/src/bonnet/tmp/mmmv_devel_tools_sys_run_renessaator_t1_cache.txt"
+      end # if
+      ht_cache=nil
+      ar_fp_2_renessaator=nil
+      ar_fp=Kibuvits_ix.normalize2array(ar_or_s_file_paths)
+      if b_run_on_unmodified_files
+         ar_fp_2_renessaator=ar_fp
+      else
+         if File.exists? @s_run_renessaator_t1_cache_fp
+            s_progfte=file2str(@s_run_renessaator_t1_cache_fp)
+            ht_cache=Kibuvits_ProgFTE.to_ht(s_progfte)
+         else
+            ht_cache=Hash.new
+         end # if
+         ar_fp_2_renessaator=Array.new
+         ht_failures=Kibuvits_fs.verify_access(ar_fp,"readable,is_file")
+         s_output_message_language="English"
+         b_throw=false
+         Kibuvits_fs.exit_if_any_of_the_filesystem_tests_failed(ht_failures,
+         s_output_message_language, b_throw)
+         s_mtime=nil
+         ar_fp.each do |s_fp|
+            s_mtime=File.mtime(s_fp).to_s
+            if ht_cache.has_key? s_fp
+               if s_mtime!=ht_cache[s_fp]
+                  ar_fp_2_renessaator<<s_fp
+               end # if
+            else
+               ar_fp_2_renessaator<<s_fp
+            end # if
+         end # loop
+      end # if
+
+      if ar_fp_2_renessaator.size==0
+         # There's no point for letting the renessaator throw here.
+         return
+      end # if
+      if !defined? @ob_renessaator_ui
          # One of the benefits for creating an instance of the Renessaator
          # over here in stead calling it from console is that this
          # way the startup of a new instance of ruby interpreter
@@ -273,22 +333,41 @@ class C_mmmv_devel_tools_global_singleton
          # Kibuvits Ruby Library is avoided.
          require(MMMV_DEVEL_TOOLS_HOME+
          "/src/mmmv_devel_tools/renessaator/src/bonnet/renessaator.rb")
-         @@ob_renessaator_ui=Renessaator_console_UI.new
+         @ob_renessaator_ui=Renessaator_console_UI.new
       end # if
-      ar_fp=Kibuvits_ix.normalize2array(ar_or_s_file_paths)
-      if ar_fp.size==0
-         # There's no point for letting the renessaator throw here.
-         return
+      #----------------------------------
+      # "+" is used in stead of the "concat(...)" due to a Ruby memory corruption flaw
+      ar_argv=["--files"]+ar_fp_2_renessaator
+      #----------------------------------
+      @ob_renessaator_ui.run_by_ar_argv(ar_argv,@msgcs_)
+      #------------------------------------------------------
+      if ht_cache==nil
+         if File.exists? @s_run_renessaator_t1_cache_fp
+            s_progfte=file2str(@s_run_renessaator_t1_cache_fp)
+            ht_cache=Kibuvits_ProgFTE.to_ht(s_progfte)
+         else
+            ht_cache=Hash.new
+         end # if
       end # if
-      ar_argv=["--files"]
-      ar_argv.concat(ar_fp)
-      @@ob_renessaator_ui.run_by_ar_argv(ar_argv,@msgcs_)
+      # The next line allows more than i_observable_files_cache_max_size files to be cached.
+      ht_cache=Hash.new if i_observable_files_cache_max_size<ht_cache.keys.size
+      s_mtime=nil
+      ar_fp_2_renessaator.each do |s_fp|
+         s_mtime=File.mtime(s_fp).to_s
+         ht_cache[s_fp]=s_mtime
+      end # loop
+      s_progfte=Kibuvits_ProgFTE.from_ht(ht_cache)
+      str2file(s_progfte,@s_run_renessaator_t1_cache_fp)
    end # run_renessaator_t1
 
    def C_mmmv_devel_tools_global_singleton.run_renessaator_t1(
-      ar_or_s_file_paths)
+      ar_or_s_file_paths,
+      ar_or_s_fp_additional_folders_and_files_to_watch_for_changes,
+      i_observable_files_cache_max_size)
       C_mmmv_devel_tools_global_singleton.instance.run_renessaator_t1(
-      ar_or_s_file_paths)
+      ar_or_s_file_paths,
+      ar_or_s_fp_additional_folders_and_files_to_watch_for_changes,
+      i_observable_files_cache_max_size)
    end # C_mmmv_devel_tools_global_singleton.run_renessaator_t1
 
    #-----------------------------------------------------------------------

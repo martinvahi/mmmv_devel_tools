@@ -33,17 +33,14 @@ of this MIT-license header is encouraged.
 =end
 #==========================================================================
 require "rake"
-#--------------------------------------------------------------------------
+require 'pathname'
 
-x=ENV["MMMV_DEVEL_TOOLS_HOME"]
-if (x==nil)||(x=="")
-   puts "Mandatory environment variable, MMMV_DEVEL_TOOLS_HOME, "+
-   "has not been set. "
-   exit
+if !defined? MMMV_DEVEL_TOOLS_HOME
+   ob_pth_0=Pathname.new(__FILE__).realpath.parent
+   ob_pth_1=ob_pth_0.parent.parent.parent.parent.parent
+   MMMV_DEVEL_TOOLS_HOME=ob_pth_1.parent.parent.parent.to_s
 end # if
-MMMV_DEVEL_TOOLS_HOME=x
 BREAKDANCEMAKE_HOME=MMMV_DEVEL_TOOLS_HOME+"/src/mmmv_devel_tools/breakdancemake"
-
 require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_cl.rb"
 
 #--------------------------------------------------------------------------

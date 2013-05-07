@@ -75,9 +75,8 @@ class GUID_trace_UpGUID_core
       ar_replacements=Array.new
       i=0
       s_tmprplmnt=""
-      s_regex_core=".{8}[-].{4}[-].{4}[-].{4}[-].{12}"
-      s_regex_single_quotes="[']"+s_regex_core+"[']"
-      s_regex_double_quotes="[\"]"+s_regex_core+"[\"]"
+      s_regex_single_quotes=$kibuvits_lc_GUID_regex_single_quotes_t1
+      s_regex_double_quotes=$kibuvits_lc_GUID_regex_double_quotes_t1
       old_GUID=nil
       go_on=true
       while go_on do

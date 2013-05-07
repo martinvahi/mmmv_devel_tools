@@ -28,9 +28,7 @@
 		if(array_key_exists('s_for_dumping', $_POST)===true) {
 			$s_dump=$_POST['s_for_dumping'];
 		} // if
-		$s_env_name='MMMV_DEVEL_TOOLS_HOME';
-		$s_env_mmmv_devel_tools_home=''.getenv($s_env_name);
-		//-----------------------------------------------
+		//-------------start-of-hack---------------------
 		// A hack to conpensate the fact that the web server
 		// runs as a different user and therefore does not
 		// have the same environment variables set as the
@@ -61,7 +59,7 @@
 
 		<?php
 		if($b_mmmv_devel_tools_defined===FALSE) {
-			echo('Mandatory environment variable, '.$s_env_name.
+			echo('An optional environment variable, '.$s_env_name.
 				', has not been set.<br/>'.
 				'Path of the file, where to dump the form content, '.
 				'could not be determined.<br/>');

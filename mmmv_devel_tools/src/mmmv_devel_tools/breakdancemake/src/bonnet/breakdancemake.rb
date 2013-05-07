@@ -38,20 +38,15 @@
 #==========================================================================
 
 if !defined? MMMV_DEVEL_TOOLS_HOME
-   x=ENV["MMMV_DEVEL_TOOLS_HOME"]
-   if (x==nil)||(x=="")
-      puts "\nThe environment variable, MMMV_DEVEL_TOOLS_HOME, \n"+
-      "should have been defined in the bash script that calls this ruby file.\n"+
-      "GUID=='f18df51e-0d7e-4e7b-82a5-60b101b13dd7'\n\n"
-      exit
-   end # if
-   MMMV_DEVEL_TOOLS_HOME=x
+   require 'pathname'
+   ob_pth_0=Pathname.new(__FILE__).realpath.parent
+   ob_pth_1=ob_pth_0.parent.parent.parent.parent.parent
+   MMMV_DEVEL_TOOLS_HOME=ob_pth_1.to_s
 end # if
 
 if !defined? BREAKDANCEMAKE_HOME
    BREAKDANCEMAKE_HOME=MMMV_DEVEL_TOOLS_HOME+"/src/mmmv_devel_tools/breakdancemake"
 end # if
-
 require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_cl.rb"
 
 #--------------------------------------------------------------------------

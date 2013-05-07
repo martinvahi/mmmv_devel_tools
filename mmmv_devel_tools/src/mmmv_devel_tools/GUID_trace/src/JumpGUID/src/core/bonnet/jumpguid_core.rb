@@ -159,7 +159,7 @@ class JumpGUID_core
 
       # The ht_load_copy_of_ht_db(...) adds additional
       # limitations to the ht_searchhints.
-      @i_max_number_of_searchhints=100
+      @i_max_number_of_searchhints=400
 
       @s_fp_db=MMMV_DEVEL_TOOLS_HOME+"/src/bonnet/tmp/JumpGUID_core_db.txt"
       @s_fp_msgfile=MMMV_DEVEL_TOOLS_HOME+"/src/bonnet/tmp/JumpGUID_core_msgfile.txt"
@@ -303,7 +303,7 @@ class JumpGUID_core
       # information in the stack.
       #ht_stack.clear
       ht_new_stack_candidate=Hash.new
-      rgx_0=/.{8}[-].{4}[-].{4}[-].{4}[-].{12}/
+      rgx_0=Regexp.new($kibuvits_lc_GUID_regex_core_t1)
       s_errstack=file2str(@s_fp_errstack)
       ar_GUIDS=s_errstack.scan(rgx_0)
       lc_s_GUIDsHash="s_GUIDsHash".freeze
@@ -341,7 +341,7 @@ class JumpGUID_core
    #
    # Sample of a single line of the grep output:
    #
-   # /home/cute/x.js:1036:	'1822e023-b96e-46e5-a4cf-029021f13dd7');
+   # /home/cute/x.js:1036:	'41422df2-df1e-4b4a-b93f-902230614dd7');
    #
    def update_location_record_t1_process_grep_output_line(
       ht_stack,s_line,rgx_1,rgx_2,s_errix,s_lc_locavail)
@@ -352,19 +352,19 @@ class JumpGUID_core
       end # if
       if ix==0 # contradictory situation, flawed grep output
          kibuvits_throw("\nix==0 s_line==\""+s_line+"\"\n"+
-         "GUID='63e1e827-b1fa-4b87-94cf-029021f13dd7'\n")
+         "GUID='5a9f4d83-6e85-4023-8e5f-902230614dd7'\n")
       end # if
       s_fp=s_line[0..(ix-1)]
       ht_stack[@lc_s_file_path+s_errix]=s_fp
       md=s_line.match(rgx_2)
       if md==nil
          kibuvits_throw("\nmd==nil\n"+
-         "GUID='a1a207ff-6f3f-44ae-a7cf-029021f13dd7'\n")
+         "GUID='3b5abb82-54bc-4ad3-b95f-902230614dd7'\n")
       end # if
       s_0=md[0] # like ":1036:"
       if s_0.length<=2
          kibuvits_throw("\ns_0==\""+s_0+"\"\n"+
-         "GUID='2f9520d4-308e-4f9c-92bf-029021f13dd7'\n")
+         "GUID='e4e9606b-76f1-434a-b1e9-902230614dd7'\n")
       end # if
       si_line_number=s_0[1..(-2)]
       ht_stack[@lc_si_line_number+s_errix]=si_line_number
@@ -376,7 +376,7 @@ class JumpGUID_core
       #
       # Sample of a single line of the grep output:
       #
-      # /home/cute/x.js:1036:	'77f8cf17-d3e1-4000-b3bf-029021f13dd7');
+      # /home/cute/x.js:1036:	'28aeb8d2-7965-4e40-a228-902230614dd7');
       #
       s_grep_output=s_get_grep_output(s_GUID,s_fp_hint_or_nil)
       s_grep_output.each_line do |s_line|
@@ -395,23 +395,23 @@ class JumpGUID_core
       i_len=ar_argv.size
       if i_len<2
          kibuvits_throw("\nar_argv.size=="+i_len.to_s+
-         "\nGUID='35c2cc54-5eec-4565-83bf-029021f13dd7'\n")
+         "\nGUID='4ee5e294-e65e-4cf8-9038-902230614dd7'\n")
       end # if
       i_cursor_position=@ht_db[@lc_s_i_cursor_position]
       i_stack_length=@ht_db[@lc_s_i_stack_length]
       if i_stack_length==0
          kibuvits_throw("\ni_stack_length==0 \n"+
-         "GUID='6b341d2f-4063-44f0-a5bf-029021f13dd7'\n")
+         "GUID='26520d71-4002-4a3f-b728-902230614dd7'\n")
       end # if
       if i_cursor_position<0
          kibuvits_throw("\ni_cursor_position=="+i_cursor_position.to_s+
-         " < 0 \nGUID='4466fa4b-01d1-4790-a2bf-029021f13dd7'\n")
+         " < 0 \nGUID='40fa2105-1952-4c16-8e18-902230614dd7'\n")
       end # if
       ix_max=i_stack_length-1
       if ix_max<i_cursor_position
          kibuvits_throw("\n(i_stack_length-1) == "+ix_max.to_s+
          " < i_cursor_position=="+i_cursor_position.to_s+
-         " \nGUID='e592ec4f-9267-44ae-93bf-029021f13dd7'\n")
+         " \nGUID='44915f23-cad6-4e29-a748-902230614dd7'\n")
       end # if
       ht_stack=@ht_db[@lc_s_ht_stack]
       s_errix=i_cursor_position.to_s
@@ -500,7 +500,7 @@ class JumpGUID_core
       else
          kibuvits_throw("\ns_cursor_movement==\""+s_cursor_movement+
          "\", is not yet supported by this function.\n"+
-         "GUID='2b98dfb5-5401-48ad-82bf-029021f13dd7'\n")
+         "GUID='6ff61f62-f312-4a64-ae28-902230614dd7'\n")
       end # case s_cursor_movement
       @ht_db[@lc_s_i_cursor_position]=i_cursor_position_new
    end # move_cursor_if_necessary
@@ -520,14 +520,14 @@ class JumpGUID_core
       s_errix=i_cursor_position.to_s
       s_0=@lc_s_sb_location_avaliable+s_errix
       kibuvits_assert_ht_has_keys(bn,ht_stack,s_0,
-      "GUID='26d4f542-aa48-4dc6-a3bf-029021f13dd7'\n\n")
+      "GUID='95ea30f4-94b4-474f-9d48-902230614dd7'\n\n")
       if ht_stack[s_0]==$kibuvits_lc_sb_false
          s_out="1";
          return s_out
       end # if
       s_0=@lc_si_line_number+s_errix
       kibuvits_assert_ht_has_keys(bn,ht_stack,s_0,
-      "GUID='5215b556-d24b-49a1-b4bf-029021f13dd7'\n\n")
+      "GUID='b59a0188-0bc9-459d-8e48-902230614dd7'\n\n")
       s_out=ht_stack[s_0]
       return s_out
    end # s_core_cmd_get_line_number
@@ -547,11 +547,11 @@ class JumpGUID_core
       s_errix=i_cursor_position.to_s
       s_0=@lc_s_sb_location_avaliable+s_errix
       kibuvits_assert_ht_has_keys(bn,ht_stack,s_0,
-      "GUID='6a20f226-6e30-481c-a2bf-029021f13dd7'\n\n")
+      "GUID='32b4ba23-f84a-4a9e-a238-902230614dd7'\n\n")
       if ht_stack[s_0]==$kibuvits_lc_sb_false
          s_0=@lc_s_GUID+s_errix
          kibuvits_assert_ht_has_keys(bn,ht_stack,s_0,
-         "GUID='38f48c23-eea4-46c9-b4af-029021f13dd7'\n\n")
+         "GUID='b2cbc3a5-6076-408b-8f57-902230614dd7'\n\n")
          s_GUID=ht_stack[s_0]
          msg="\n"+s_GUID+"\ncould not be found.\n\n"+
          C_mmmv_devel_tools_global_singleton.s_configuration_summary()
@@ -560,7 +560,7 @@ class JumpGUID_core
       end # if
       s_0=@lc_s_file_path+s_errix
       kibuvits_assert_ht_has_keys(bn,ht_stack,s_0,
-      "GUID='3b3ef2c1-761e-4601-95af-029021f13dd7'\n\n")
+      "GUID='2f139fc3-2850-48ee-b757-902230614dd7'\n\n")
       s_out=ht_stack[s_0]
       return s_out
    end # s_core_cmd_get_file_path
@@ -592,7 +592,7 @@ class JumpGUID_core
          print i_cursor_position.to_s
       else
          kibuvits_throw("\n\n"+s_assemble_format_desc_msg()+
-         "GUID='35632c05-3697-4412-baaf-029021f13dd7'\n\n")
+         "GUID='4410055e-56b4-425c-aa47-902230614dd7'\n\n")
       end # case s_ls_param
       puts s_out
    end # act_core_cmd_ls
@@ -632,7 +632,7 @@ class JumpGUID_core
       if i_len!=2
          kibuvits_throw("\n\nar_argv.size==\""+i_len.to_s+
          s_assemble_format_desc_msg+
-         "GUID='36440639-4d0e-4147-b2af-029021f13dd7'\n\n")
+         "GUID='6f55736c-75b9-4542-a867-902230614dd7'\n\n")
       end
       s_core_cmd=ar_argv[0]
       s_out=$kibuvits_lc_emptystring
@@ -653,7 +653,7 @@ class JumpGUID_core
          else
             kibuvits_throw("\n\ns_core_cmd==\""+s_core_cmd+
             "\", is not yet supported by this function.\n"+
-            "GUID='94af9b7f-b2c2-42f8-b9af-029021f13dd7'\n\n")
+            "GUID='72517dc3-83e1-4346-b027-902230614dd7'\n\n")
          end # case s_core_cmd
          save_ht_db()
       end # synchronize

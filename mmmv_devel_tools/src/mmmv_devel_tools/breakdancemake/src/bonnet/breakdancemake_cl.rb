@@ -103,7 +103,7 @@ class Breakdancemake
       @x_impl_b_bdmprojectdescriptor_rb_is_available_cache=false
       @b_bdmprojectdescriptor_rb_loaded=false
 
-      @mx_bdmcomponent_registration=Mutex.new
+      @mx_bdmcomponent_registration=Monitor.new
       @s_version="v_1_1_0"
    end #initialize
 
