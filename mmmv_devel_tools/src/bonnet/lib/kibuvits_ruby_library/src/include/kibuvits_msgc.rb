@@ -619,8 +619,8 @@ class Kibuvits_msgc_stack
             end # if
          end # loop
       end # synchronize
-      # "".each_line{|x| puts("["+x.sub(/[\n\r]$/,"")+"]")} outputs only "", not "[]"
-      # "hi\nthere".each_line{|x| puts("["+x.sub(/[\n\r]$/,"")+"]")} outputs "[hi]\n[there]\n"
+      # "".each_line{|x| kibuvits_writeln("["+x.sub(/[\n\r]$/,"")+"]")} outputs only "", not "[]"
+      # "hi\nthere".each_line{|x| kibuvits_writeln("["+x.sub(/[\n\r]$/,"")+"]")} outputs "[hi]\n[there]\n"
       s_1=$kibuvits_lc_emptystring
       s_lc_spaces=$kibuvits_lc_space*2
       rgx_2=/([\s]|[\n\r])+$/
@@ -762,12 +762,12 @@ class Kibuvits_msgc_stack
       s_1=msgcs_1.to_s
       s_2=Kibuvits_szr.serialize(bn,msgcs_1)
       msgcs_x=Kibuvits_szr.deserialize(bn,s_2)
-      #puts "--------------------------\n"
+      #kibuvits_writeln "--------------------------\n"
       s_3=msgcs_x.to_s
       # The test method might be called more than one,
       # which explains the multiple printouts for
-      #puts s_3
-      #puts "AAA--------------------------\n"
+      #kibuvits_writeln s_3
+      #kibuvits_writeln "AAA--------------------------\n"
       kibuvits_throw "test 1" if s_1!=s_3
    end # Kibuvits_msgc_stack.test_serialization_and_to_s
 
@@ -789,5 +789,5 @@ end # class Kibuvits_msgc_stack
 
 #==========================================================================
 #Kibuvits_msgc.selftest
-#puts Kibuvits_msgc_stack.selftest.to_s
+#kibuvits_writeln Kibuvits_msgc_stack.selftest.to_s
 

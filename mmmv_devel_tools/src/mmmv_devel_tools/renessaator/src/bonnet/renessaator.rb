@@ -468,6 +468,7 @@ class Renessaator_console_UI
       ht_grammar['--the_displaying_of_a_block_template']=0
       ht_grammar['--help']=0
       ht_grammar['-?']=0
+      ht_grammar['-?bt']=0
       ht_grammar['-h']=0
       ht_grammar['--fail']=(-1)
       ht_grammar['--failid']=(-1)
@@ -476,10 +477,12 @@ class Renessaator_console_UI
       ht_grammar['--file']=(-1)
       ht_grammar['--keel']=1
       ht_grammar['--bloki_malli_kuvamine']=0
+      ht_grammar['--juhusliku_bloki_malli_kuvamine']=0
       ht_grammar['--run-test']=1
       ht_grammar['--language']=1
       ht_grammar['--configuration']=1
       ht_grammar['--throw_on_input_verification_failures']=0
+      ht_grammar['--the_displaying_of_a_random_block_example']=0
       return ht_grammar
    end # create_ht_grammar
 
@@ -487,9 +490,24 @@ class Renessaator_console_UI
       # This whole method assumes that the console args
       # have been normalized prior to a call to this method.
       return true if ht_args['--help']!=nil
-      b_out=(ht_args['--files']==nil)
-      b_out=b_out&&(ht_args['--run-test']==nil)
-      return b_out
+      # The rest here implements a check that verifies that
+      # the console arguments conform to the "business logic" of
+      # the renessaator.
+      b_1=(ht_args['--files']!=nil)
+      b_2=(ht_args['--run-test']!=nil)
+      b_3=(ht_args['--the_displaying_of_a_block_template']!=nil)
+      b_4=(ht_args['--the_displaying_of_a_random_block_example']!=nil)
+
+      b_1_only=((b_1)&&(!b_2)&&(!b_3)&&(!b_4)) # exec code generation
+      b_2_only=((!b_1)&&(b_2)&&(!b_3)&&(!b_4))
+      b_3_only=((!b_1)&&(!b_2)&&(b_3)&&(!b_4))
+      b_4_only=((!b_1)&&(!b_2)&&(!b_3)&&(b_4))
+
+      b_3_case_1=((b_1)&&(!b_2)&&(b_3)&&(!b_4))
+
+      b_input_ok=(b_1_only||b_2_only||b_4_only||b_3_case_1)
+      b_failure=(!b_input_ok)
+      return b_failure
    end # help_requested_or_erroneous_console_input
 
    def helpstring ht_args
@@ -499,7 +517,8 @@ class Renessaator_console_UI
       "<file path(s)>) |\n"+
       "  --the_displaying_of_a_block_template (-f | --file ) "+
       "<file path>  |\n"+
-      "  --run-test (<name of the test>|Spooky <to list the names of the tests>)  \n"+
+      "  --run-test (<name of the test>|Spooky <to list the names of the tests>)  |\n"+
+      "  (--the_displaying_of_a_random_block_example | -?bt) \n"+
       "\n"
       s_langspec=ht_args['--language'][0]
       if (s_langspec=='Estonian')
@@ -508,14 +527,16 @@ class Renessaator_console_UI
          "  (--bloki-id <bloki nimi>)? (-f | --failid) "+
          "<failide rada/rajad> |\n"+
          "  --bloki_malli_kuvamine     (-f | --fail  ) "+
-         "<faili rada>          \n\n"
+         "<faili rada>   |       \n"+
+         "  (--juhusliku_bloki_malli_kuvamine | -?bt) \n"+
+         "\n"
       end # if
       return s_out
    end # helpstring
 
    def exit_if_true ht_args,b_exit
       if b_exit
-         puts helpstring(ht_args)
+         kibuvits_writeln helpstring(ht_args)
          exit
       end # if
    end # exit_if_true
@@ -543,7 +564,7 @@ class Renessaator_console_UI
          when "english"
             ht_args['--language']=['English'] # for correct case
          else
-            puts "\n\n--language==\""+s_lang+
+            kibuvits_writeln "\n\n--language==\""+s_lang+
             "\", but the only\n"+
             "supported values are \"Estonian\" and \"English\".\n\n"
             exit
@@ -565,6 +586,7 @@ class Renessaator_console_UI
       ht_normspec['--files']=['--failid','-f']
       ht_normspec['--block-id']=['--bloki-id']
       ht_normspec['--the_displaying_of_a_block_template']=['--bloki_malli_kuvamine']
+      ht_normspec['--the_displaying_of_a_random_block_example']=['--juhusliku_bloki_malli_kuvamine',"-?bt"]
       Kibuvits_argv_parser.normalize_parsing_result(ht_normspec, ht_args)
       normalize_ht_args_lang ht_args
    end # normalize_ht_args
@@ -581,7 +603,7 @@ class Renessaator_console_UI
    def run_renessaator ht_args, msgcs
       normalize_ht_args ht_args#for assumption localization, used in selftests
       ar_file_path_candidates=ht_args['--files']
-      puts helpstring(ht_args) if ar_file_path_candidates.length==0
+      kibuvits_writeln helpstring(ht_args) if ar_file_path_candidates.length==0
       ht_filesystemtest_failures=Kibuvits_fs.verify_access(
       ar_file_path_candidates,"is_file,readable,writable")
       if 0<ht_filesystemtest_failures.length
@@ -656,7 +678,7 @@ class Renessaator_console_UI
                s_out=s_out+@lc_space+s_method_name
             end  # if
          end # loop
-         puts s_out+"\n\n"
+         kibuvits_writeln s_out+"\n\n"
          return
       end # if
       #eval("Renessaator_console_UI."+s_test_method_name,binding())
@@ -689,16 +711,35 @@ class Renessaator_console_UI
       if msgcs.b_failure
          if ht_args['--language']!=nil
             s_language=ht_args['--language'][0]
-            puts msgcs.to_s[s_language]
+            kibuvits_writeln msgcs.to_s[s_language]
          else
-            puts msgcs.to_s
+            kibuvits_writeln msgcs.to_s
          end # if
          exit
       end # if
       s_block_template=Renessaator_core.get_bloc_template(s_file_language,msgcs)
-      puts s_block_template
+      kibuvits_writeln s_block_template
       exit
    end # exit_if_bloc_printing_requested
+
+   # The exit_if_bloc_printing_requested partly duplicates this mehtod.
+   def exit_if_template_printing_requested ht_args, msgcs
+      return if ht_args['--the_displaying_of_a_random_block_example']==nil
+      s_block_template=Renessaator_core.get_bloc_template("ruby",msgcs)
+      if msgcs.b_failure
+         if ht_args['--language']!=nil
+            s_language=ht_args['--language'][0]
+            kibuvits_writeln msgcs.to_s[s_language]
+         else
+            kibuvits_writeln msgcs.to_s
+         end # if
+         exit
+      end # if
+      s_msg="\nRenessaator block example for a Ruby file:\n\n"+
+      s_block_template+$kibuvits_lc_doublelinebreak
+      kibuvits_writeln s_msg
+      exit
+   end # exit_if_template_printing_requested
 
    public
 
@@ -720,6 +761,7 @@ class Renessaator_console_UI
          exit_if_true ht_args,msgcs.b_failure
          exit_if_true ht_args,help_requested_or_erroneous_console_input(ht_args)
          exit_if_bloc_printing_requested ht_args,msgcs
+         exit_if_template_printing_requested ht_args,msgcs
          run_renessaator ht_args, msgcs
          if msgcs.b_failure
             b_failure=false
@@ -761,7 +803,7 @@ class Renessaator_console_UI
                @lc_space+s_ceremony+"END\n"
                kibuvits_throw s_out2
             else
-               puts s_out
+               kibuvits_writeln s_out
             end # if
          end # if
       end # synchronize

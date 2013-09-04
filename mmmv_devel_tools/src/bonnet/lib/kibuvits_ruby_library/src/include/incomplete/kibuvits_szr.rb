@@ -613,5 +613,5 @@ class Kibuvits_szr
 end # class Kibuvits_szr
 
 #==========================================================================
-#puts Kibuvits_szr.selftest.to_s
+#kibuvits_writeln Kibuvits_szr.selftest.to_s
 

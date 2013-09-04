@@ -164,7 +164,7 @@ class Kibuvits_refl
          kibuvits_throw "test 8"
       end # if
       def ob.crazy_singleton_method
-         puts "whatever"
+         kibuvits_writeln "whatever"
       end # crazy_singleton_method
       msgcs.clear
       rgx=/crazy_si.+/
@@ -512,7 +512,7 @@ class Kibuvits_refl
    #        def initialize
    #        end
    #        def X.hi
-   #            puts "Hi there!"
+   #            kibuvits_writeln "Hi there!"
    #        end
    #    end # class X
    #    X.new.hi
@@ -558,7 +558,7 @@ class Kibuvits_refl
 
       ht_static_metohds_2_copy.each_key do |s_method_name|
          sym=str2sym(s_method_name)
-         cl.send(:define_method,sym){|ff| puts ff.to_s}
+         cl.send(:define_method,sym){|ff| kibuvits_writeln ff.to_s}
       end # loop
       ht_cache_on_class[lc_s_b_public_static_methods_in_instance_metods_namespace]=true
    end # cp_all_public_static_methods_2_instance_methods_namespace
@@ -585,4 +585,4 @@ end # class Kibuvits_refl
 #s_method_type="public"
 #msgcs=Kibuvits_msgc_stack.new
 #ht=Kibuvits_refl.get_methods_by_name(rgx,ob,s_method_type,msgcs)
-#puts Kibuvits_refl.selftest.to_s
+#kibuvits_writeln Kibuvits_refl.selftest.to_s

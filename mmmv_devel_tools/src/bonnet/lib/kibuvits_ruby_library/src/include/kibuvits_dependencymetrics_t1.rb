@@ -113,6 +113,10 @@ end # if
 # "greater than" or "equal to" one. That is to say, in the
 # case of the boolean version the threshold equals 1 .
 #
+# If the ht_dependency_relations does not contain any keys,
+# then all dependencies are considered to be met and the
+# threshold is considered to be reached.
+#
 class Kibuvits_dependencymetrics_t1
    def initialize
    end # initialize
@@ -149,13 +153,15 @@ class Kibuvits_dependencymetrics_t1
             # does not have any substitutes.
          else
             kibuvits_throw("ht_dependency_relations[\""+s_key+"\"].class=="+
-            s_clname+", which is not supported in this role.")
+            s_clname+", which is not supported in this role."+
+            "\nGUID=='134fc76e-47a5-497a-a23c-b170d0615dd7'")
          end # case x_value.class
       end # loop
       if ht_dependency_relations.has_key? s_dependent_object_name
          kibuvits_throw("ht_dependency_relations.has_key?("+
          "s_dependent_object_name)==true, "+
-         "s_dependent_object_name=="+s_dependent_object_name)
+         "s_dependent_object_name=="+s_dependent_object_name+
+         "\nGUID=='21520433-4782-4358-b53c-b170d0615dd7'")
       end # if
    end # verify_ht_dependency_relations_format
 
@@ -172,7 +178,7 @@ class Kibuvits_dependencymetrics_t1
       if !ob.respond_to? sym_avail
          kibuvits_throw("Object with the name "+s_ob_name+
          " exist, but it does not have a public method called "+sym_avail.to_s+
-         "\nGUID='4fdd4d45-2ec2-4214-8355-322160818cd7'.")
+         "\nGUID='b523a6df-81f4-42fd-852c-b170d0615dd7'.")
       end # if
       if ht_cycle_detection_opmem.has_key? s_ob_name
          # This if-clause here has to be before the
@@ -202,7 +208,7 @@ class Kibuvits_dependencymetrics_t1
          i_n_of_keys=ar_ht_row_keys.length
          if i_n_of_keys!=1
             kibuvits_throw("i_n_of_keys=="+i_n_of_keys.to_s+
-            "\nGUID='1028827a-30b8-4e08-a765-322160818cd7'.")
+            "\nGUID='1f328fec-980e-4430-a32c-b170d0615dd7'.")
          end # if
       end # if
       s_ix0_ob_name=ar_ht_row_keys[0]
@@ -219,7 +225,7 @@ class Kibuvits_dependencymetrics_t1
       else
          if cl_x_substs!=Array
             kibuvits_throw("cl_x_substs=="+cl_x_substs.to_s+
-            "\nGUID='62c211f2-d329-4285-a275-322160818cd7'.")
+            "\nGUID='cdca9a30-93ac-415b-852c-b170d0615dd7'.")
          end # if
       end # if
       ar_subst=x_substs
@@ -349,6 +355,11 @@ class Kibuvits_dependencymetrics_t1
          if s_or_sym_method.class==String
             kibuvits_assert_string_min_length(bn,s_or_sym_method,1)
          end # if
+         if ht_objects.size==0
+            kibuvits_throw("ht_objects.size==0, but the ht_objects \n"+
+            "must contain at least the dependent object."+
+            ".\nGUID='ebabc62c-c272-4d29-922c-b170d0615dd7'.")
+         end # if
          sym_avail=s_or_sym_method
          sym_avail=s_or_sym_method.to_sym if s_or_sym_method.class==String
          i_par_len=nil
@@ -356,14 +367,14 @@ class Kibuvits_dependencymetrics_t1
             if !ob.respond_to? sym_avail
                kibuvits_throw("Object with the name "+s_ob_name+
                "  does not have a public method called "+sym_avail.to_s+
-               "\nGUID='292a9e75-44fb-484d-8525-322160818cd7'.")
+               "\nGUID='18bce3d4-c7d0-4818-a12c-b170d0615dd7'.")
             else
                i_par_len=ob.method(sym_avail).parameters.length
                if i_par_len!=2
                   kibuvits_throw("Object with the name "+s_ob_name+
                   "  does have a public method called "+sym_avail.to_s+
                   ",\nbut the number of parameters of that method equals "+i_par_len.to_s+
-                  ".\nGUID='4f675f93-9d7a-4727-9415-322160818cd7'.")
+                  ".\nGUID='28bbc701-373e-49a2-a52c-b170d0615dd7'.")
                end # if
             end # if
          end # loop
@@ -376,14 +387,18 @@ class Kibuvits_dependencymetrics_t1
             kibuvits_throw("Object with the name "+s_ob_name+
             "  does have a public method called "+sym_avail.to_s+
             ",\nbut the number of parameters of that method equals "+i_par_len.to_s+
-            ".\nGUID='2ad397f1-44e0-4d69-8a35-322160818cd7'.")
+            ".\nGUID='02f2875d-6bb7-4132-b22c-b170d0615dd7'.")
          end # if
       end # if KIBUVITS_b_DEBUG
+      ht_out=Hash.new
       if fd_threshold<0
          kibuvits_throw("fd_threshold=="+fd_threshold.to_s+" < 0"+
-         "\nGUID='15c950e1-4197-43bf-b615-322160818cd7'.")
+         "\nGUID='9388be1c-aac6-45d1-832c-b170d0615dd7'.")
       end # if
-      ht_out=Hash.new
+      if ht_dependency_relations.keys.size==0 # dependencies do not exist
+         fd_out=fd_threshold
+         return fd_out, ht_out
+      end # if
       fd_out=0.to_r
       if ht_cycle_detection_opmem.has_key? s_dependent_object_name
          return fd_out, ht_out
@@ -417,7 +432,7 @@ class Kibuvits_dependencymetrics_t1
             if KIBUVITS_b_DEBUG
                if s_1!=s_key
                   kibuvits_throw("s_1=="+s_1.to_s+",  s_key=="+s_key.to_s+
-                  "\nGUID='1abf2b64-c31b-4e47-8545-322160818cd7'.")
+                  "\nGUID='05a80023-cb33-4da7-832c-b170d0615dd7'.")
                end # if
             end # if
             ht_out[s_1]=ht_out_row[s_1]
@@ -440,7 +455,7 @@ class Kibuvits_dependencymetrics_t1
       end # loop
       if fd_out<0
          kibuvits_throw("fd_out=="+fd_out.to_s+" < 0 "+
-         "\nGUID='160e2391-4a0d-4c5e-9a55-322160818cd7'.")
+         "\nGUID='fc38e1c6-23a5-429e-a71c-b170d0615dd7'.")
       end # if
       ht_cycle_detection_opmem.delete(s_dependent_object_name)
       return fd_out, ht_out

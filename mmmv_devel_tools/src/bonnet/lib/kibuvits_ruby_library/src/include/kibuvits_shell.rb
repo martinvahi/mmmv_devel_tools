@@ -126,6 +126,7 @@ def sh_windows(s_shell_script)
    return ht_stdstreams
 end # sh_windows
 
+$kibuvits_lc_mx_sh=Mutex.new
 
 # Writes a script to a file and executes it in Bash. Returns a hashtable with
 # keys "s_stdout" and "s_stderr". The values that are pointed by the keys
@@ -140,17 +141,19 @@ def sh(s_shell_script)
    end # if
    s_ostype=Kibuvits_os_codelets.instance.get_os_type
    ht_stdstreams=nil
-   case s_ostype
-   when "kibuvits_ostype_unixlike"
-      ht_stdstreams=sh_unix(s_shell_script)
-   when "kibuvits_ostype_windows"
-      ht_stdstreams=sh_windows(s_shell_script)
-   else
-      # One case, where it happens: "kibuvits_ostype_java"
-      kibuvits_throw("Operating system with the "+
-      "Kibuvits Ruby Library operating system type \""+
-      s_ostype+"\" is not supported by this function.")
-   end # case
+   $kibuvits_lc_mx_sh.synchronize do
+      case s_ostype
+      when "kibuvits_ostype_unixlike"
+         ht_stdstreams=sh_unix(s_shell_script)
+      when "kibuvits_ostype_windows"
+         ht_stdstreams=sh_windows(s_shell_script)
+      else
+         # One case, where it happens: "kibuvits_ostype_java"
+         kibuvits_throw("Operating system with the "+
+         "Kibuvits Ruby Library operating system type \""+
+         s_ostype+"\" is not supported by this function.")
+      end # case
+   end # synchronize
    return ht_stdstreams
 end # sh
 
@@ -162,9 +165,9 @@ def kibuvits_sh_writeln2console_t1(s_shell_script)
    ht_stdstreams=sh(s_shell_script)
    s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
    s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
-   puts s_stdout if 0<s_stdout.length
+   kibuvits_writeln s_stdout if 0<s_stdout.length
    if 0<s_stderr.length
-      puts $kibuvits_lc_linebreak+s_stderr+$kibuvits_lc_linebreak
+      kibuvits_writeln $kibuvits_lc_linebreak+s_stderr+$kibuvits_lc_linebreak
    end # if
    return ht_stdstreams
 end # kibuvits_sh_writeln2console_t1

@@ -146,13 +146,13 @@ end # class Kibuvits_iterable_tree_t1_node
 # end # create_a_demo_tree
 #
 # tree=create_a_demo_tree
-# puts "\n\n--------- Node names by \"each_node\" loop: -----------\n"
-# tree.each_node {|a_node| print a_node.name}
-# puts "\n\n--------- Node names by a Java Iterator-like loop: -----------\n"
-# 9.times { x=tree.next; print x.name }
-# puts "\n\n-- Node names by Java Iterator-like loop after iteration reset: --\n"
+# kibuvits_writeln "\n\n--------- Node names by \"each_node\" loop: -----------\n"
+# tree.each_node {|a_node| kibuvits_write a_node.name}
+# kibuvits_writeln "\n\n--------- Node names by a Java Iterator-like loop: -----------\n"
+# 9.times { x=tree.next; kibuvits_write x.name }
+# kibuvits_writeln "\n\n-- Node names by Java Iterator-like loop after iteration reset: --\n"
 # tree.reset_the_iteration_state
-# 5.times { x=tree.next; print x.name }
-# puts "\n\nThe end of story. Thanks for watching. :) \n\n"
+# 5.times { x=tree.next; kibuvits_write x.name }
+# kibuvits_writeln "\n\nThe end of story. Thanks for watching. :) \n\n"
 #=========================================================================
 

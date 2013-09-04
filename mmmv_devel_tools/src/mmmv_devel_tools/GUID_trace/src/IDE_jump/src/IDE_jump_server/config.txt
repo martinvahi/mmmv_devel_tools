@@ -1,0 +1,2 @@
+infocation_for_KomodoIDE="plapla"
+infocation_for_NetBeans="plapla"

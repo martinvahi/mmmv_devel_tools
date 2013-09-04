@@ -188,7 +188,7 @@ class Kibuvits_cg
       "CC[CODEGENERATION_BLANK_GUID_1]DD\n"+
       "CC[CODEGENERATION_BLANK_GUID_1]DD"
       s=Kibuvits_cg.fill_form("",s_form) # To see, that it doesn't throw.
-      #puts "\n\n{"+s+"}\n\n"
+      #kibuvits_writeln "\n\n{"+s+"}\n\n"
    end # Kibuvits_cg.test_fill_form
 
    public

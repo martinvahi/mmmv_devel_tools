@@ -81,6 +81,17 @@ class Kibuvits_comments_detector
       ar_ruby=[ht_ruby1]
       @ht_multiliner["ruby"]=ar_ruby
 
+      ht_bash1=Hash.new
+      ht_bash1[@lc_start_tag]=": << 'A_BASH_HEREDOCHACK_TAG'"
+      ht_bash1[@lc_end_tag]="A_BASH_HEREDOCHACK_TAG"
+      ar_ruby=[ht_bash1]
+      # The bash heredoc tags have to be at the
+      # start of the line like the Ruby heredoc tags.
+      #
+      # Credits for the Bash heredoc hack go to
+      # http://unix.stackexchange.com/questions/37411/multiline-shell-script-comments-how-does-this-work
+      @ht_multiliner["bash"]=ar_ruby
+
       ht_xml1=Hash.new
       ht_xml1[@lc_start_tag]="<!--"
       ht_xml1[@lc_end_tag]="-->"

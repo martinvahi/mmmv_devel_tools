@@ -331,7 +331,7 @@ class Breakdancemake
          end # if
          if @ht_bdmservice_detectors.has_key? s_bdmcomponent_name
             bn=binding()
-            #TODO: replace it with a "polite" puts(...);exit
+            #TODO: replace it with a "polite" kibuvits_writeln(...);exit
             #      The quotes around the "polite" are
             #      due to Estonian language peculiarities.
             kibuvits_throw("There exist a collision between bdmservice detector names "+
@@ -339,7 +339,7 @@ class Breakdancemake
          end # if
          if @ht_bdmprojectdescriptors.has_key? s_bdmcomponent_name
             bn=binding()
-            #TODO: replace it with a "polite" puts(...);exit
+            #TODO: replace it with a "polite" kibuvits_writeln(...);exit
             #      The quotes around the "polite" are
             #      due to Estonian language peculiarities.
             kibuvits_throw("There exist a collision between bdmprojectdescriptor names "+
@@ -366,7 +366,7 @@ class Breakdancemake
          s_bdmcomponent_name=ob_bdmservice_detector.s_bdmcomponent_name
          if @ht_bdmservice_detectors.has_key? s_bdmcomponent_name
             bn=binding()
-            #TODO: replace it with a "polite" puts(...);exit
+            #TODO: replace it with a "polite" kibuvits_writeln(...);exit
             #      The quotes around the "polite" are
             #      due to Estonian language peculiarities.
             kibuvits_throw("There exist a collision of bdmservice detector names. "+
@@ -379,7 +379,7 @@ class Breakdancemake
          end # if
          if @ht_bdmroutines.has_key? s_bdmcomponent_name
             bn=binding()
-            #TODO: replace it with a "polite" puts(...);exit
+            #TODO: replace it with a "polite" kibuvits_writeln(...);exit
             #      The quotes around the "polite" are
             #      due to Estonian language peculiarities.
             kibuvits_throw("There exist a collision between bdmservice detector names "+
@@ -387,7 +387,7 @@ class Breakdancemake
          end # if
          if @ht_bdmprojectdescriptors.has_key? s_bdmcomponent_name
             bn=binding()
-            #TODO: replace it with a "polite" puts(...);exit
+            #TODO: replace it with a "polite" kibuvits_writeln(...);exit
             #      The quotes around the "polite" are
             #      due to Estonian language peculiarities.
             kibuvits_throw("There exist a collision between bdmprojectdescriptor "+
@@ -413,7 +413,7 @@ class Breakdancemake
          s_bdmcomponent_name=ob_bdmprojectdescriptor.s_bdmcomponent_name
          if @ht_bdmprojectdescriptors.has_key? s_bdmcomponent_name
             bn=binding()
-            #TODO: replace it with a "polite" puts(...);exit
+            #TODO: replace it with a "polite" kibuvits_writeln(...);exit
             #      The quotes around the "polite" are
             #      due to Estonian language peculiarities.
             kibuvits_throw("There exist a collision of bdmprojectdescriptor names. "+
@@ -426,7 +426,7 @@ class Breakdancemake
          end # if
          if @ht_bdmroutines.has_key? s_bdmcomponent_name
             bn=binding()
-            #TODO: replace it with a "polite" puts(...);exit
+            #TODO: replace it with a "polite" kibuvits_writeln(...);exit
             #      The quotes around the "polite" are
             #      due to Estonian language peculiarities.
             kibuvits_throw("There exist a collision between bdmprojectdescriptor names "+
@@ -434,7 +434,7 @@ class Breakdancemake
          end # if
          if @ht_bdmservice_detectors.has_key? s_bdmcomponent_name
             bn=binding()
-            #TODO: replace it with a "polite" puts(...);exit
+            #TODO: replace it with a "polite" kibuvits_writeln(...);exit
             #      The quotes around the "polite" are
             #      due to Estonian language peculiarities.
             kibuvits_throw("There exist a collision between bdmprojectdescriptor names "+
@@ -445,7 +445,7 @@ class Breakdancemake
          ob_bdmprojectdescriptor.ht_configurations)
          if 0<ht_intersection.size
             bn=binding()
-            #TODO: replace it with a "polite" puts(...);exit
+            #TODO: replace it with a "polite" kibuvits_writeln(...);exit
             #      The quotes around the "polite" are
             #      due to Estonian language peculiarities.
             kibuvits_throw("\nThere exist a collision, where multiple bdmprojectdescriptors \n"+
@@ -592,7 +592,7 @@ class Breakdancemake
                kibuvits_throw("b_bdmprojectdescriptor_rb_is_available()==false, but "+
                "the file candidate, \""+@s_lc_fp_bdmprojectdescriptor_rb.to_s+"\", is a regular "+
                "file that is properly readable. "+
-               "GUID=='94fc6334-bb31-4c1f-91e4-012201b13dd7'")
+               "GUID=='2f6a981b-74a3-406e-b160-f2a0a0615dd7'")
             end # if
          end # if
       end # if
@@ -640,7 +640,7 @@ class Breakdancemake
       end # rescue
       if KIBUVITS_b_DEBUG
          if b_thrown
-            #kibuvits_throw("GUID='aff0f157-7df7-4403-b4e4-012201b13dd7', "+
+            #kibuvits_throw("GUID='2fc52b34-078a-47b4-a160-f2a0a0615dd7', "+
             #"s_msg=="+s_msg)
          end # if
       end # if
@@ -696,7 +696,7 @@ class Breakdancemake
             s_bdmcomponent_name)
             if !@ht_configurations.has_key? s_bdmcomponent_name
                kibuvits_throw("s_bdmcomponent_name=="+s_bdmcomponent_name.to_s+
-               "\nGUID='81fead5c-029d-47d1-b1d4-012201b13dd7'")
+               "\nGUID='2f6bd354-a2f2-4296-a160-f2a0a0615dd7'")
             end # if
             ob_config=@ht_configurations[s_bdmcomponent_name]
          end # if
@@ -787,7 +787,7 @@ class Breakdancemake
          end # if
       end # if
       if b_display_default_help
-         puts s_summary_for_identities(s_language)
+         kibuvits_writeln s_summary_for_identities(s_language)
          exit
       end # if
    end # run_display_default_help_msg_and_exit_if_necessary
@@ -809,7 +809,7 @@ class Breakdancemake
          msg=@ob_core_ui_texts.s_breakdancemake_cl_msg_1(
          s_language,s_bdmcomponent_name_candidate)
          msg=msg+s_error_message_suffix if s_error_message_suffix!=nil
-         puts msg
+         kibuvits_writeln msg
          exit
       end # if
    end # verify_bdmroutine_existence
@@ -830,7 +830,7 @@ class Breakdancemake
             msg=@ob_core_ui_texts.s_breakdancemake_cl_msg_3(
             s_language,s_routine_name_candidate)
             msg=msg+s_error_message_suffix if s_error_message_suffix!=nil
-            puts msg
+            kibuvits_writeln msg
             exit
          end # if
       end # if
@@ -885,7 +885,7 @@ class Breakdancemake
          # TODO: improve the error message.
          msg=Kibuvits_i18n_msgs_t1.s_msg_method_is_missing_t1(
          s_language,ob_bdmroutine_config,sym.to_s,a_binding)
-         puts(msg);exit
+         kibuvits_writeln(msg);exit
       end # if
    end # exec_task_from_bdmprojectdescriptor_rb_or_exit_with_msg
 
@@ -921,9 +921,10 @@ class Breakdancemake
       s_ob_name=s_bdmcomponent_name
       if !ht_objects.has_key? s_ob_name
          kibuvits_throw("s_ob_name=="+s_ob_name.to_s+
-         "\nGUID='2620fb26-93d6-42c1-95d4-012201b13dd7'")
+         "\nGUID='97f44121-6354-4630-b360-f2a0a0615dd7'")
       end # if
-      ht_dependency_relations=ht_objects[s_ob_name].ht_dependency_relations
+      ob_bdmcomponent=ht_objects[s_ob_name]
+      ht_dependency_relations=ob_bdmcomponent.ht_dependency_relations
       sym_b_ready_for_use="b_ready_for_use".to_sym
       fd_availability, ht_selected_dependencies=Kibuvits_dependencymetrics_t1.fd_ht_get_availability(
       s_ob_name,ht_dependency_relations,ht_objects,sym_b_ready_for_use,
@@ -953,7 +954,7 @@ class Breakdancemake
          end # if
       end # loop
       kibuvits_throw("s_ob_name=="+s_ob_name.to_s+
-      "\nGUID='d3f16a44-87e4-4489-a5d4-012201b13dd7'")
+      "\nGUID='2668f5c1-53f6-4396-8260-f2a0a0615dd7'")
    end # b_s_dependencies_are_met
 
    def Breakdancemake.b_s_dependencies_are_met(s_bdmcomponent_name,
@@ -1022,20 +1023,21 @@ class Breakdancemake
       end # if
       s_name=s_name_of_the_unmet_dependency
       msg=@ob_core_ui_texts.s_breakdancemake_cl_dependencies_are_not_met_t1(
-      s_language,s_x_name,s_name)
+      s_language,s_x_name,s_name)+
+      "GUID='d2539930-fd22-4cf4-a250-f2a0a0215dd7'\n\n"
 
       case s_mode
       when $kibuvits_lc_s_mode_throw
          kibuvits_throw(msg)
       when $kibuvits_lc_s_mode_exit
-         puts(msg);exit
+         kibuvits_writeln(msg);exit
       when $kibuvits_lc_s_mode_return_msg
          return b_deps_met, msg
       else
          kibuvits_throw("s_mode=="+s_mode+
          ", but this method does not yet support that mode.")
       end # case s_mode
-      kibuvits_throw("GUID='2ecbc653-004c-4cbc-92d4-012201b13dd7'")
+      kibuvits_throw("GUID='5ef49656-69cd-42cf-8250-f2a0a0615dd7'")
    end # assertxmsg_dependencies_are_met
 
    def Breakdancemake.assertxmsg_dependencies_are_met(s_language,
@@ -1079,14 +1081,14 @@ class Breakdancemake
                   if !b_bdmprojectdescriptor_rb_is_available(b_use_cached_value=true)
                      s_msg=s_bdmroutine_status_if_the_bdmprojectdescriptor_rb_is_not_available_t1(
                      s_language,s_bdmcomponent_name)
-                     puts(s_msg);exit
+                     kibuvits_writeln(s_msg);exit
                   end # if
                   thrx_load_bdmprojectdescriptor_rb()
                end # if
                if !@ht_configurations.has_key? s_bdmcomponent_name
                   s_out=@ob_core_ui_texts.s_msg_bdmprojectdescriptor_rb_misses_configuration_t1(
                   s_language,s_bdmcomponent_name)
-                  puts(s_out);exit
+                  kibuvits_writeln(s_out);exit
                end # if
             else
                if ob_bdmroutine.b_optionally_uses_runtime_configuration()
@@ -1128,7 +1130,7 @@ class Breakdancemake
             if b_does_not_use_the_bdmprojectdescriptor_rb_at_all
                s_out=@ob_core_ui_texts.s_msg_bdmprojectdescriptor_rb_contains_config_for_nonconfiguser_t1(
                s_language,s_bdmcomponent_name)
-               puts(s_out);exit
+               kibuvits_writeln(s_out);exit
             end # if
          end # loop
       end # synchronize
@@ -1192,6 +1194,56 @@ class Breakdancemake
       s_bdmcomponent_name_candidate,ar_parameters)
    end # Breakdancemake.run_bdmroutine
 
+   #-----------------------------------------------------------------------
+
+   # ar_parameters==ARGV[1..(-1)]
+   # i_min_n_of_bdmroutine_params inSet {0..i_max_n_of_bdmroutine_params}
+   # i_max_n_of_bdmroutine_params inSet {(-1)..intMax}
+   def bdmroutine_init_t1(s_language,ar_parameters,
+      i_min_n_of_bdmroutine_params,i_max_n_of_bdmroutine_params,
+      ob_bdmcomponent)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, String, s_language
+         kibuvits_typecheck bn, Array, ar_parameters
+         kibuvits_typecheck bn, Fixnum, i_min_n_of_bdmroutine_params
+         kibuvits_typecheck bn, Fixnum, i_max_n_of_bdmroutine_params
+         if i_max_n_of_bdmroutine_params!=(-1)
+            if i_max_n_of_bdmroutine_params<i_min_n_of_bdmroutine_params
+               kibuvits_throw("i_max_n_of_bdmroutine_params=="+i_max_n_of_bdmroutine_params.to_s+
+               " < i_min_n_of_bdmroutine_params=="+i_min_n_of_bdmroutine_params.to_s+
+               "\nGUID=='36c277b9-2272-4bcc-b150-f2a0a0615dd7'")
+            end # if
+         end # if
+         if i_max_n_of_bdmroutine_params<(-1)
+            kibuvits_throw("i_max_n_of_bdmroutine_params=="+i_max_n_of_bdmroutine_params.to_s+" < (-1) "+
+            "\nGUID=='651a4c1e-40ca-4b9e-9450-f2a0a0615dd7'")
+         end # if
+         if i_min_n_of_bdmroutine_params<0
+            kibuvits_throw("i_min_n_of_bdmroutine_params=="+i_min_n_of_bdmroutine_params.to_s+" < 0 "+
+            "\nGUID=='4fc31922-d16f-47bb-9250-f2a0a0615dd7'")
+         end # if
+      end # if
+      ob_bdmcomponent.send(:breakdancemake_bdmroutine_verify_number_of_parameters_t1,
+      s_language,ar_parameters,
+      i_min_n_of_bdmroutine_params,i_max_n_of_bdmroutine_params)
+      load_bdmservice_detector_classes_if_not_already_loaded()
+      s_bdmcomponent_name=ob_bdmcomponent.s_bdmcomponent_name
+      assertxmsg_dependencies_are_met(s_language,s_bdmcomponent_name)
+      if !ob_bdmcomponent.b_ready_for_use()
+         kibuvits_writeln ob_bdmcomponent.s_status(s_language)
+         exit
+      end # if
+   end # bdmroutine_init_t1
+
+   def Breakdancemake.bdmroutine_init_t1(s_language,ar_parameters,
+      i_min_n_of_bdmroutine_params,i_max_n_of_bdmroutine_params,
+      ob_bdmcomponent)
+      Breakdancemake.instance.bdmroutine_init_t1(s_language,ar_parameters,
+      i_min_n_of_bdmroutine_params,i_max_n_of_bdmroutine_params,
+      ob_bdmcomponent)
+   end # Breakdancemake.bdmroutine_init_t1
+
    #--------------------------------------------------------------------------
    private
 
@@ -1220,6 +1272,16 @@ class Breakdancemake
       return ar_parameters
    end # run_ar_extract_bdmroutine_arguments_from_console_arguments
 
+   #----------------------------------------------------------
+
+   def ar_run_remove_empty_strings_from_list_of_args(ar_console_arguments)
+      ar_out=Array.new
+      ar_console_arguments.each do |x|
+         ar_out<<x if 0<x.length
+      end # loop
+      return ar_out
+   end # ar_run_remove_empty_strings_from_list_of_args
+
    public
 
    # The main and only entry to the breakdancemake.
@@ -1233,20 +1295,21 @@ class Breakdancemake
             kibuvits_assert_string_min_length(bn,s_language,1)
          end # if
       end # if
+      ar_cleaned_console_args=ar_run_remove_empty_strings_from_list_of_args(ar_console_arguments)
       if s_language.class==String
          @s_language=s_language
       else
          s_language=@s_language
       end # if
       run_display_default_help_msg_and_exit_if_necessary(
-      s_language,ar_console_arguments)
+      s_language,ar_cleaned_console_args)
       load_bdmroutine_classes_if_not_already_loaded
-      s_bdmcomponent_name_candidate=ar_console_arguments[0].gsub(/\n\r/,
+      s_bdmcomponent_name_candidate=ar_cleaned_console_args[0].gsub(/\n\r/,
       $kibuvits_lc_emptystring)
       verify_bdmroutine_existence(s_language,s_bdmcomponent_name_candidate,
       s_summary_for_identities(s_language))
       ar_parameters=run_ar_extract_bdmroutine_arguments_from_console_arguments(
-      ar_console_arguments)
+      ar_cleaned_console_args)
       run_bdmroutine_impl(s_language,s_bdmcomponent_name_candidate,
       ar_parameters,b_started_from_console=true)
    end # run
@@ -1262,6 +1325,5 @@ end # class Breakdancemake
 
 #--------------------------------------------------------------------------
 # Breakdancemake.run(ARGV)
-#puts "hobune breakdancemake_cl.rb's"
 #==========================================================================
 

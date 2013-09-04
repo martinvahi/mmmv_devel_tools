@@ -752,6 +752,6 @@ end #class Kibuvits_ProgFTE
 #    s_progfte=Kibuvits_ProgFTE.from_ht(ht)
 #    ht.clear
 #    ht2=Kibuvits_ProgFTE.to_ht(s_progfte)
-#    puts ht2['Welcome']
-#    puts ht2['with XML']
+#    kibuvits_writeln ht2['Welcome']
+#    kibuvits_writeln ht2['with XML']
 

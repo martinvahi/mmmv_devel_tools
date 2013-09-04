@@ -69,29 +69,18 @@ if !defined? BREAKDANCEMAKE_INCLUSIONS_INCLUDED
       KIBUVITS_HOME=BREAKDANCEMAKE_HOME+"/src/bonnet/lib/KRL_local_copy/src"
    end # if
 
-   if defined? KIBUVITS_HOME
-      require  KIBUVITS_HOME+"/src/include/kibuvits_io.rb"
-      require  KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
-      require  KIBUVITS_HOME+"/src/include/kibuvits_ProgFTE.rb"
-      require  KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
-      require  KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
-      require  KIBUVITS_HOME+"/src/include/kibuvits_htoper.rb"
-      require  KIBUVITS_HOME+"/src/include/kibuvits_i18n_msgs_t1.rb"
-      require  KIBUVITS_HOME+"/src/include/kibuvits_dependencymetrics_t1.rb"
-      require  KIBUVITS_HOME+"/src/include/kibuvits_apparch_specific.rb"
-      require  KIBUVITS_HOME+"/src/include/kibuvits_finite_sets.rb"
-   else
-      require  "kibuvits_io.rb"
-      require  "kibuvits_fs.rb"
-      require  "kibuvits_ProgFTE.rb"
-      require  "kibuvits_str.rb"
-      require  "kibuvits_shell.rb"
-      require  "kibuvits_htoper.rb"
-      require  "kibuvits_i18n_msgs_t1.rb"
-      require  "kibuvits_dependencymetrics_t1.rb"
-      require  "kibuvits_apparch_specific.rb"
-      require  "kibuvits_finite_sets.rb"
-   end # if
+   require  KIBUVITS_HOME+"/src/include/kibuvits_io.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_ProgFTE.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_htoper.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_i18n_msgs_t1.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_dependencymetrics_t1.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_apparch_specific.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_finite_sets.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_argv_parser.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_keyboard.rb"
 
    # The breakdancemake framework depends on the constants.
    $breakdancemake_lc_default_task="default_task".freeze

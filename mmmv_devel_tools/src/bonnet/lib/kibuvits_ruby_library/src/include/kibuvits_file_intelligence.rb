@@ -95,12 +95,15 @@ class Kibuvits_file_intelligence
          s_file_language="HTML"
       when "xml"
          s_file_language="XML"
+      when "bash"
+         s_file_language="Bash"
       else
          msgcs.cre "Either the file extension is not supported or "+
-         "the file extension extraction failed. File extension "+
-         "candidate is:"+s_file_extension, 1.to_s
+         "the file extension extraction failed.\n"+
+         "File extension candidate is: "+s_file_extension, 1.to_s
          msgcs.last["Estonian"]="Faililaiend on kas toetamata või ei õnnestunud "+
-         "faililaiendit eraldada. Faililaiendi kandidaat on:"+s_file_extension
+         "faililaiendit eraldada. \n"+
+         "Faililaiendi kandidaat on:"+s_file_extension
       end # case
       return s_file_language
    end # file_language_by_file_extension

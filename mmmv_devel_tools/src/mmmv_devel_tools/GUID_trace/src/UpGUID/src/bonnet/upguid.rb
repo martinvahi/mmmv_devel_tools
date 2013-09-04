@@ -39,7 +39,7 @@
 if !defined? UPGUID_HOME
    x=ENV["UPGUID_HOME"]
    if (x==nil)||(x=="")
-      puts "\nThe environment variable, UPGUID_HOME, \n"+
+      kibuvits_writeln "\nThe environment variable, UPGUID_HOME, \n"+
       "should have been defined in the bash script that calls this ruby file.\n"+
       "GUID=='e23a143c-57a6-4150-a0fe-a11011b13dd7'\n\n"
       exit
@@ -87,7 +87,7 @@ class GUID_trace_UpGUID_console_UI
       msgcs=ht_opmem[@lc_msgcs]
       return if !msgcs.b_failure
       s=msgcs.to_s+"\n"+get_help_message+"\n\n"
-      puts s
+      kibuvits_writeln s
       exit
    end # exit_if_failure
 
@@ -112,7 +112,7 @@ class GUID_trace_UpGUID_console_UI
          s="\nThere is no test with a name of \""+
          s_test_name+"\".\n\n"+
          "Supported values are: "+s_valid_list+".\n\n"
-         puts s
+         kibuvits_writeln s
          exit
       end # if
       eval(s_test_name,binding())
@@ -144,21 +144,21 @@ class GUID_trace_UpGUID_console_UI
       s_template_file_path,@s_fp_tests_folder,self) do |s_tmp_file_path,ob_self|
          sh "ruby "+__FILE__+" -f "+s_tmp_file_path
          s=file2str(s_tmp_file_path)
-         puts s
+         kibuvits_writeln s
       end # block
    end # test_1
 
    def test_2
       if Kibuvits_os_codelets.get_os_type!="kibuvits_ostype_unixlike"
-         puts "\ntest_2 is supported only on unixlike operating systems.\n\n"
+         kibuvits_writeln "\ntest_2 is supported only on unixlike operating systems.\n\n"
          return
       end # if
       s_template_file_path=@s_fp_tests_folder+"/template1.txt"
       Kibuvits_apparch_specific.xof_run_bloc_on_a_copy_of_a_template(
       s_template_file_path,@s_fp_tests_folder,self) do |s_tmp_file_path,ob_self|
          ht_stdstreams=sh ""+__FILE__+" - < "+s_tmp_file_path
-         puts "\nstdout==\n\n"+ht_stdstreams['s_stdout'].to_s+"\n\n"
-         puts "\nstderr==\n\n"+ht_stdstreams['s_stderr'].to_s+"\n\n"
+         kibuvits_writeln "\nstdout==\n\n"+ht_stdstreams['s_stdout'].to_s+"\n\n"
+         kibuvits_writeln "\nstderr==\n\n"+ht_stdstreams['s_stderr'].to_s+"\n\n"
       end # block
    end # test_2
 
@@ -170,14 +170,14 @@ class GUID_trace_UpGUID_console_UI
       s_template_file_path,@s_fp_tests_folder,self) do |s_tmp_file_path,ob_self|
          sh "ruby "+__FILE__+" -f "+s_tmp_file_path+" "+s_tmp_file_path
          s=file2str(s_tmp_file_path)
-         puts s
+         kibuvits_writeln s
       end # block
    end # test_3
 
    public
    def run
       if ARGV.length==0
-         puts get_help_message
+         kibuvits_writeln get_help_message
          exit
       end # if
       ht_opmem=create_ht_opmem

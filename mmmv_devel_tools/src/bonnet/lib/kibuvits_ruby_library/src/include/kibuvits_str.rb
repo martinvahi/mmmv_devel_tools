@@ -560,7 +560,7 @@ class Kibuvits_str
       ar_pieces=Array.new
       ar_piece=[s_haystack, nil]
       ar_pieces<<ar_piece
-      ar_subst_needle=""
+      ar_subst_needle=$kibuvits_lc_emptystring
       ar_piece=nil
       ar_pieces2=Array.new
       ar_subst_needle_pairs.length.times do |i|
@@ -574,16 +574,16 @@ class Kibuvits_str
          ar_pieces=ar_pieces2
          ar_pieces2=Array.new
       end # loop
-      s_out=""
-      #s_out.force_encoding("utf-8")
       n=ar_pieces.length-1
-      s_subst=""
+      ar_s=Array.new
       n.times do |i|
          ar_piece=ar_pieces[i]
-         s_out<<ar_piece[0]
-         s_out<<ar_piece[1]
+         ar_s<<ar_piece[0]
+         ar_s<<ar_piece[1]
       end # loop
-      s_out<<(ar_pieces[n])[0]
+      ar_s<<(ar_pieces[n])[0]
+      s_out=kibuvits_s_concat_array_of_strings(ar_s)
+      #s_out.force_encoding("utf-8")
       return s_out
    end # s_batchreplace
 
@@ -1374,7 +1374,7 @@ class Kibuvits_str
       when "note_in_msgcs"
          # One does nothing.
       when "print_and_exit"
-         puts msgcs.to_s(s_language_to_use_for_printing)
+         kibuvits_writeln msgcs.to_s(s_language_to_use_for_printing)
          exit
       when "exit"
          exit
@@ -1582,4 +1582,4 @@ end # class Kibuvits_str
 #==========================================================================
 # Samples:
 # TODO: Start using the new msgc spec
-# puts Kibuvits_str.selftest.to_s
+# kibuvits_writeln Kibuvits_str.selftest.to_s

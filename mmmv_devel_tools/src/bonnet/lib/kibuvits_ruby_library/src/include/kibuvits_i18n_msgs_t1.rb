@@ -175,7 +175,41 @@ class Kibuvits_i18n_msgs_t1
       s_out=Kibuvits_i18n_msgs_t1.instance.s_msg_method_is_missing_t1(
       s_language,ob,s_method_name,a_binding)
       return s_out
-   end # Kibuvits_i18n_msgs_t1.s_msg_regular_file_exists_but_it_is_not_readable_t1
+   end # Kibuvits_i18n_msgs_t1.s_msg_method_is_missing_t1
+
+   #-----------------------------------------------------------------------
+
+   def s_msg_negative_value_not_allowed_t1(s_language,s_x_var_name,x_var)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, String, s_language
+         kibuvits_typecheck bn, String, s_x_var_name
+         kibuvits_typecheck bn, [Fixnum,Float,Bignum,Rational], x_var
+         if (0<=x_var)
+            kibuvits_throw("x_var == "+x_var.to_s+
+            "\nis expected to be negative."+
+            "\nGUID=='5fc9a817-fe88-4c7e-8358-6242a0715dd7'")
+         end # if
+      end # if
+      s_0=$kibuvits_lc_emptystring+
+      s_x_var_name+" == "+x_var.to_s+" < 0"
+      s_out=nil
+      case s_language
+      when $kibuvits_lc_et
+         s_out=s_0+",\nkuid negatiivne väärtus pole muutujale "+
+         s_x_var_name+" lubatud.\n\n"
+      else # probably s_language=="uk"
+         s_out=s_0+",\nbut the "+s_x_var_name+" must not be negative.\n\n"
+      end # case s_language
+      return s_out
+   end # s_msg_negative_value_not_allowed_t1
+
+   def Kibuvits_i18n_msgs_t1.s_msg_negative_value_not_allowed_t1(
+      s_language,s_x_var_name,x_var)
+      s_out=Kibuvits_i18n_msgs_t1.instance.s_msg_negative_value_not_allowed_t1(
+      s_language,s_x_var_name,x_var)
+      return s_out
+   end # Kibuvits_i18n_msgs_t1.s_msg_negative_value_not_allowed_t1
 
    #-----------------------------------------------------------------------
    include Singleton

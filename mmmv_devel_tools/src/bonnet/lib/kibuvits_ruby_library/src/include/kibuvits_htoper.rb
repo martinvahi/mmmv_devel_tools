@@ -208,6 +208,51 @@ class Kibuvits_htoper
 
    #--------------------------------------------------------------------------
 
+
+   # Copies all ht keys to a binding context so that
+   # each key-value pair will form a variable-value pair in the binding.
+   #
+   # All keys of the ht must be strings.
+   #
+   #  # Needs to be dormant till the ruby-lang.org flaw #8438 gets fixed.
+   #
+   #def ht2binding(ob_binding,ht)
+   #if KIBUVITS_b_DEBUG
+   #bn=binding()
+   #kibuvits_typecheck bn, Binding, ob_binding
+   #kibuvits_typecheck bn, Hash, ht
+   #ht.each_key do |x_key|
+   #bn_1=binding()
+   #kibuvits_assert_ok_to_be_a_varname_t1(bn_1,x_key)
+   #end # loop
+   #end # if DEBUG
+   #ar_for_speed=Array.new
+   #ht.each_pair do |s_key,x_value|
+   #kibuvits_set_var_in_scope(ob_binding,s_key,x_value,ar_for_speed)
+   #end # loop
+   #end # ht2binding
+   #
+   #def Kibuvits_htoper.ht2binding(ob_binding,ht)
+   #Kibuvits_htoper.instance.ht2binding(ob_binding,ht)
+   #end # Kibuvits_htoper.ht2binding
+
+   #--------------------------------------------------------------------------
+
+   # Creates a new Hash instance that contains the same instances
+   # that the ht_orig has.
+   def ht_clone_with_shared_references(ht_orig)
+      ht_out=Hash.new
+      ht_orig.each_pair{|x_key,x_value| ht_out[x_key]=x_value}
+      return ht_out
+   end # ht_clone_with_shared_references
+
+   def Kibuvits_htoper.ht_clone_with_shared_references(ht_orig)
+      ht_out=Kibuvits_htoper.instance.ht_clone_with_shared_references(ht_orig)
+      return ht_out
+   end # Kibuvits_htoper.ht_clone_with_shared_references
+
+   #--------------------------------------------------------------------------
+
    public
    include Singleton
    # The Kibuvits_htoper.selftest analogue is

@@ -90,7 +90,7 @@ class Breakdancemake_bdmroutine_help < Breakdancemake_bdmroutine
       b_display_default_help=false
       if i_len==0
          s_msg=s_summary_for_identities(s_language)
-         puts s_msg
+         kibuvits_writeln s_msg
          exit
       else
          breakdancemake_bdmroutine_verify_number_of_parameters_t1(s_language,
@@ -120,7 +120,7 @@ class Breakdancemake_bdmroutine_help < Breakdancemake_bdmroutine
          ob_bdmroutine=ht_bdmroutines[s_bdmcomponent_name_candidate]
          s_msg=ob_bdmroutine.s_summary_for_identities(s_language)
       end # if
-      puts s_msg
+      kibuvits_writeln s_msg
    end # run_bdmroutine_attempt_to_serve
 
    public

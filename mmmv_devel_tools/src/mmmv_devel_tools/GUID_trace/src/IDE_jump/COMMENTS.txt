@@ -1,0 +1,56 @@
+==========================================================================
+=============================  IDE_jump  =================================
+==========================================================================
+
+The scenario that the the IDE_jump is meant to be used in is that
+different Integrated Development Environments have different
+feature sets and at times one wants to edit the very same
+source file with different IDE-s.
+
+The IDE_jump project is a set of IDE_plugins, extensions, that
+allow one to switch from one IDE to another so that the text cursor
+does not change its position during the switch.
+
+--------------------------------------------------------------------------
+                    Scenario Explained by an Example
+--------------------------------------------------------------------------
+1) One edits file nice.js, line 69, column 42 in NetBeans.
+
+2) After pushing a key-combination that has been assigned to a
+   IDE_jump NetBeans plugin, an Alt-TAB key-combination
+   analogue is executed and KomodoIDE is opened so that
+   the text cursor resides in file nice.js, line 69, column 42.
+
+3) In KomodoIDE one moves to file awsome.js, line 7, column 6 and
+   presses a key-kombination that is assigned to a KomodoIDE extension.
+   The Alt-TAB key-combination analogue is executed and the NetBeans
+   IDE is brought to front, with text cursor residing in
+   in file awsome.js, line7, column 6.
+
+4) etc.
+
+--------------------------------------------------------------------------
+                    Usage and Installation HOW-TO
+--------------------------------------------------------------------------
+There's a Ruby (1.8.x) program called IDE_jump_server, which mediates
+the jump commands that are sent to it from the plugins
+of different IDEs.
+
+The switching of the opened applications depends on a window manager
+and currently only Linux with KDE is supported. However, the
+IDE_jump_server is modular and new operating systems can be
+added without modifying the IDE_jump_server code.  The adding of new
+operating systems/window managers, is explained in
+./src/IDE_jump_server/COMMENTS.txt .
+
+Each of the currently supported IDEs has its own folder in the ./src
+folder. The installation of the IDE plugins is explained in the
+COMMENTS.txt that resides in the IDE's folder. It is not compulsory
+to use all of the supported IDEs, but if one adds support for a
+new IDE, one has to update ./src/IDE_jump_server/config.txt .
+
+--------------------------------------------------------------------------
+             Current State and Limitations of the IDE_jump
+--------------------------------------------------------------------------
+
+==========================================================================

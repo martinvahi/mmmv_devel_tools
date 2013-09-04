@@ -7,5 +7,7 @@ unset S_FP_DIR
 
 BREAKDANCEMAKE_HOME="$MMMV_DEVEL_TOOLS_HOME/src/mmmv_devel_tools/breakdancemake"
 
-ruby -Ku $BREAKDANCEMAKE_HOME/src/bonnet/breakdancemake.rb $1 $2 $3 $4 $5 $6 $7 $8 $9 
+#ruby -Ku $BREAKDANCEMAKE_HOME/src/bonnet/breakdancemake.rb $1 $2 $3 $4 $5 $6 $7 $8 $9 
+ruby -Ku $BREAKDANCEMAKE_HOME/src/bonnet/breakdancemake.rb "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" 
+#$BREAKDANCEMAKE_HOME/src/bonnet/breakdancemake.rb $*
 

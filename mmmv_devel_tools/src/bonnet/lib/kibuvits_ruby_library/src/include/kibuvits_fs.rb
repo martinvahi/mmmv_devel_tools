@@ -196,200 +196,202 @@ class Kibuvits_fs
       b_is_directory=nil;
       s_en=nil;
       s_ee=nil;
-      if File.exists?(s_file_path_candidate)
-         b_is_directory=File.directory?(s_file_path_candidate)
-         s_en="File "
-         s_ee="Fail "
-         if b_is_directory
-            s_en="Folder "
-            s_ee="Kataloog "
-         end # if
-      end # if
-      ht_cmds.each_pair do |s_cmd,b_value|
-         if b_value
-            if s_cmd=="not_deletable"
-               # It's possible to delete only files that exist.
-               # If a file or folder does not exist, then it is
-               # not deletable.
-               if File.exists?(s_file_path_candidate)
-                  if File.writable?(s_file_path_candidate)
-                     s_parent=Pathname.new(s_file_path_candidate).parent.to_s
-                     # The idea is that it is not possible to
-                     # to delete the root folder.
-                     if (s_parent!=s_file_path_candidate)
-                        if File.writable?(s_parent)
-                           msgc=Kibuvits_msgc.new
-                           msgc['English']=s_en+"with the path of\n\""+
-                           s_file_path_candidate+"\"\nis deletable,"
-                           msgc['Estonian']=s_ee+" rajaga \n\""+
-                           s_file_path_candidate+"\"\non kustutatav."
-                           verify_access_register_failure(
-                           ht_out, s_file_path_candidate, s_cmd, msgc)
-                           return
-                        end # if
-                     end # if
-                  end # if File.writable?
-               end # if File.exists?
-            end # if s_cmd
-         end # if b_value
-      end # loop
-
-      b_existence_forbidden=ht_cmds['does_not_exist']
-      if b_existence_forbidden
+      $kibuvits_lc_mx_streamaccess.synchronize do
          if File.exists?(s_file_path_candidate)
             b_is_directory=File.directory?(s_file_path_candidate)
-            msgc=Kibuvits_msgc.new
             s_en="File "
-            s_en="Directory " if b_is_directory
-            msgc['English']=s_en+"with a path of\n\""+s_file_path_candidate+
-            "\"\nis required to be missing, but it exists."
             s_ee="Fail "
-            s_ee="Kataloog " if b_is_directory
-            msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
-            "\" eksisteerib, kuid nõutud on tema puudumine."
-            verify_access_register_failure(ht_out,
-            s_file_path_candidate, 'does_not_exist', msgc)
+            if b_is_directory
+               s_en="Folder "
+               s_ee="Kataloog "
+            end # if
          end # if
-         return
-      end # if
-
-      # It's not possible to check for writability
-      # of files that do not exist, etc.
-      b_existence_required=ht_cmds['exists']
-      b_existence_required=b_existence_required||(ht_cmds['is_directory'])
-      b_existence_required=b_existence_required||(ht_cmds['is_file'])
-      b_existence_required=b_existence_required||(ht_cmds['readable'])
-      b_existence_required=b_existence_required||(ht_cmds['writable'])
-      b_existence_required=b_existence_required||(ht_cmds['deletable'])
-      b_existence_required=b_existence_required||(ht_cmds['executable'])
-      if b_existence_required
-         if !File.exists?(s_file_path_candidate)
-            msgc=Kibuvits_msgc.new
-            msgc['English']="File or folder with a path of\n\""+
-            s_file_path_candidate+"\"\ndoes not exist."
-            msgc['Estonian']="Faili ega kataloogi rajaga \""+
-            s_file_path_candidate+"\" ei eksisteeri."
-            verify_access_register_failure(ht_out,
-            s_file_path_candidate, 'exists', msgc)
-            return
-         end # if
-      end # if
-      if File.exists?(s_file_path_candidate)
          ht_cmds.each_pair do |s_cmd,b_value|
             if b_value
-               case s_cmd
-               when "is_directory"
-                  if !b_is_directory
-                     msgc=Kibuvits_msgc.new
-                     msgc['English']="\""+s_file_path_candidate+
-                     "\" is a file, but a foder is required."
-                     msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
-                     "\" on fail, kuid nõutud on kataloog."
-                     verify_access_register_failure(
-                     ht_out, s_file_path_candidate, s_cmd, msgc)
-                  end # if
-               when "is_file"
-                  if b_is_directory
-                     msgc=Kibuvits_msgc.new
-                     msgc['English']="\""+s_file_path_candidate+
-                     "\" is a folder, but a file is required."
-                     msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
-                     "\" on kataloog, kuid nõutud on fail."
-                     verify_access_register_failure(
-                     ht_out, s_file_path_candidate, s_cmd, msgc)
-                  end # if
-               when "readable"
-                  if !File.readable?(s_file_path_candidate)
-                     msgc=Kibuvits_msgc.new
-                     msgc['English']=s_en+"with the path of\n\""+
-                     s_file_path_candidate+"\"\nis not readable."
-                     msgc['Estonian']=s_ee+" rajaga \n\""+
-                     s_file_path_candidate+"\"\nei ole loetav."
-                     verify_access_register_failure(
-                     ht_out, s_file_path_candidate, s_cmd, msgc)
-                  end # if
-               when "not_readable"
-                  if File.readable?(s_file_path_candidate)
-                     msgc=Kibuvits_msgc.new
-                     msgc['English']=s_en+"with the path of\n\""+
-                     s_file_path_candidate+"\"\nis readable."
-                     msgc['Estonian']=s_ee+" rajaga \n\""+
-                     s_file_path_candidate+"\"\non loetav."
-                     verify_access_register_failure(
-                     ht_out, s_file_path_candidate, s_cmd, msgc)
-                  end # if
-               when "writable"
-                  if !File.writable?(s_file_path_candidate)
-                     msgc=Kibuvits_msgc.new
-                     msgc['English']=s_en+"with the path of\n\""+
-                     s_file_path_candidate+"\"\nis not writable."
-                     msgc['Estonian']=s_ee+" rajaga \n\""+
-                     s_file_path_candidate+"\"\nei ole kirjutatav."
-                     verify_access_register_failure(
-                     ht_out, s_file_path_candidate, s_cmd, msgc)
-                  end # if
-               when "not_writable"
-                  if File.writable?(s_file_path_candidate)
-                     msgc=Kibuvits_msgc.new
-                     msgc['English']=s_en+"with the path of\n\""+
-                     s_file_path_candidate+"\"\nis writable."
-                     msgc['Estonian']=s_ee+" rajaga \n\""+
-                     s_file_path_candidate+"\"\non kirjutatav."
-                     verify_access_register_failure(
-                     ht_out, s_file_path_candidate, s_cmd, msgc)
-                  end # if
-               when "deletable"
+               if s_cmd=="not_deletable"
                   # It's possible to delete only files that exist.
-                  if !File.writable?(s_file_path_candidate)
-                     msgc=Kibuvits_msgc.new
-                     msgc['English']=s_en+"with the path of\n\""+
-                     s_file_path_candidate+"\"\nis not deletable, because it is not writable."
-                     msgc['Estonian']=s_ee+" rajaga \n\""+
-                     s_file_path_candidate+"\"\nei ole kustutatav, sest see ei ole kirjutatav."
-                     verify_access_register_failure(
-                     ht_out, s_file_path_candidate, s_cmd, msgc)
-                  end # if
-                  s_parent=Pathname.new(s_file_path_candidate).parent.to_s
-                  if (s_parent!=s_file_path_candidate)
-                     # It could be that the s_file_path_candidate equals with "/".
-                     # The Pathname.new("/").parent.to_s=="/".
-                     # The if-statement, that contains this comment,
-                     # exists only to avoid a duplicate error message.
-                     if !File.writable?(s_parent)
+                  # If a file or folder does not exist, then it is
+                  # not deletable.
+                  if File.exists?(s_file_path_candidate)
+                     if File.writable?(s_file_path_candidate)
+                        s_parent=Pathname.new(s_file_path_candidate).parent.to_s
+                        # The idea is that it is not possible to
+                        # to delete the root folder.
+                        if (s_parent!=s_file_path_candidate)
+                           if File.writable?(s_parent)
+                              msgc=Kibuvits_msgc.new
+                              msgc['English']=s_en+"with the path of\n\""+
+                              s_file_path_candidate+"\"\nis deletable,"
+                              msgc['Estonian']=s_ee+" rajaga \n\""+
+                              s_file_path_candidate+"\"\non kustutatav."
+                              verify_access_register_failure(
+                              ht_out, s_file_path_candidate, s_cmd, msgc)
+                              return
+                           end # if
+                        end # if
+                     end # if File.writable?
+                  end # if File.exists?
+               end # if s_cmd
+            end # if b_value
+         end # loop
+
+         b_existence_forbidden=ht_cmds['does_not_exist']
+         if b_existence_forbidden
+            if File.exists?(s_file_path_candidate)
+               b_is_directory=File.directory?(s_file_path_candidate)
+               msgc=Kibuvits_msgc.new
+               s_en="File "
+               s_en="Directory " if b_is_directory
+               msgc['English']=s_en+"with a path of\n\""+s_file_path_candidate+
+               "\"\nis required to be missing, but it exists."
+               s_ee="Fail "
+               s_ee="Kataloog " if b_is_directory
+               msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
+               "\" eksisteerib, kuid nõutud on tema puudumine."
+               verify_access_register_failure(ht_out,
+               s_file_path_candidate, 'does_not_exist', msgc)
+            end # if
+            return
+         end # if
+
+         # It's not possible to check for writability
+         # of files that do not exist, etc.
+         b_existence_required=ht_cmds['exists']
+         b_existence_required=b_existence_required||(ht_cmds['is_directory'])
+         b_existence_required=b_existence_required||(ht_cmds['is_file'])
+         b_existence_required=b_existence_required||(ht_cmds['readable'])
+         b_existence_required=b_existence_required||(ht_cmds['writable'])
+         b_existence_required=b_existence_required||(ht_cmds['deletable'])
+         b_existence_required=b_existence_required||(ht_cmds['executable'])
+         if b_existence_required
+            if !File.exists?(s_file_path_candidate)
+               msgc=Kibuvits_msgc.new
+               msgc['English']="File or folder with a path of\n\""+
+               s_file_path_candidate+"\"\ndoes not exist."
+               msgc['Estonian']="Faili ega kataloogi rajaga \""+
+               s_file_path_candidate+"\" ei eksisteeri."
+               verify_access_register_failure(ht_out,
+               s_file_path_candidate, 'exists', msgc)
+               return
+            end # if
+         end # if
+         if File.exists?(s_file_path_candidate)
+            ht_cmds.each_pair do |s_cmd,b_value|
+               if b_value
+                  case s_cmd
+                  when "is_directory"
+                     if !b_is_directory
                         msgc=Kibuvits_msgc.new
-                        msgc['English']=s_en+"with the path of\n\""+
-                        s_file_path_candidate+"\"\nis not deletable, because its parent folder is not writable."
-                        msgc['Estonian']=s_ee+" rajaga \n\""+
-                        s_file_path_candidate+"\"\nei ole kustutatav, sest seda sisaldav kataloog ei ole kirjutatav."
+                        msgc['English']="\""+s_file_path_candidate+
+                        "\" is a file, but a foder is required."
+                        msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
+                        "\" on fail, kuid nõutud on kataloog."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
                      end # if
-                  end # if
-               when "executable"
-                  if !File.executable?(s_file_path_candidate)
-                     msgc=Kibuvits_msgc.new
-                     msgc['English']=s_en+"with the path of\n\""+
-                     s_file_path_candidate+"\"\nis not executable."
-                     msgc['Estonian']=s_ee+" rajaga \n\""+
-                     s_file_path_candidate+"\"\nei ole jookstav."
-                     verify_access_register_failure(
-                     ht_out, s_file_path_candidate, s_cmd, msgc)
-                  end # if
-               when "not_executable"
-                  if File.executable?(s_file_path_candidate)
-                     msgc=Kibuvits_msgc.new
-                     msgc['English']=s_en+"with the path of\n\""+
-                     s_file_path_candidate+"\"\nis executable."
-                     msgc['Estonian']=s_ee+" rajaga \n\""+
-                     s_file_path_candidate+"\"\non jookstav."
-                     verify_access_register_failure(
-                     ht_out, s_file_path_candidate, s_cmd, msgc)
-                  end # if
-               else
-               end # case
-            end # if b_value
-         end # loop
-      end # if File.exists?(s_file_path_candidate)
+                  when "is_file"
+                     if b_is_directory
+                        msgc=Kibuvits_msgc.new
+                        msgc['English']="\""+s_file_path_candidate+
+                        "\" is a folder, but a file is required."
+                        msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
+                        "\" on kataloog, kuid nõutud on fail."
+                        verify_access_register_failure(
+                        ht_out, s_file_path_candidate, s_cmd, msgc)
+                     end # if
+                  when "readable"
+                     if !File.readable?(s_file_path_candidate)
+                        msgc=Kibuvits_msgc.new
+                        msgc['English']=s_en+"with the path of\n\""+
+                        s_file_path_candidate+"\"\nis not readable."
+                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        s_file_path_candidate+"\"\nei ole loetav."
+                        verify_access_register_failure(
+                        ht_out, s_file_path_candidate, s_cmd, msgc)
+                     end # if
+                  when "not_readable"
+                     if File.readable?(s_file_path_candidate)
+                        msgc=Kibuvits_msgc.new
+                        msgc['English']=s_en+"with the path of\n\""+
+                        s_file_path_candidate+"\"\nis readable."
+                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        s_file_path_candidate+"\"\non loetav."
+                        verify_access_register_failure(
+                        ht_out, s_file_path_candidate, s_cmd, msgc)
+                     end # if
+                  when "writable"
+                     if !File.writable?(s_file_path_candidate)
+                        msgc=Kibuvits_msgc.new
+                        msgc['English']=s_en+"with the path of\n\""+
+                        s_file_path_candidate+"\"\nis not writable."
+                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        s_file_path_candidate+"\"\nei ole kirjutatav."
+                        verify_access_register_failure(
+                        ht_out, s_file_path_candidate, s_cmd, msgc)
+                     end # if
+                  when "not_writable"
+                     if File.writable?(s_file_path_candidate)
+                        msgc=Kibuvits_msgc.new
+                        msgc['English']=s_en+"with the path of\n\""+
+                        s_file_path_candidate+"\"\nis writable."
+                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        s_file_path_candidate+"\"\non kirjutatav."
+                        verify_access_register_failure(
+                        ht_out, s_file_path_candidate, s_cmd, msgc)
+                     end # if
+                  when "deletable"
+                     # It's possible to delete only files that exist.
+                     if !File.writable?(s_file_path_candidate)
+                        msgc=Kibuvits_msgc.new
+                        msgc['English']=s_en+"with the path of\n\""+
+                        s_file_path_candidate+"\"\nis not deletable, because it is not writable."
+                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        s_file_path_candidate+"\"\nei ole kustutatav, sest see ei ole kirjutatav."
+                        verify_access_register_failure(
+                        ht_out, s_file_path_candidate, s_cmd, msgc)
+                     end # if
+                     s_parent=Pathname.new(s_file_path_candidate).parent.to_s
+                     if (s_parent!=s_file_path_candidate)
+                        # It could be that the s_file_path_candidate equals with "/".
+                        # The Pathname.new("/").parent.to_s=="/".
+                        # The if-statement, that contains this comment,
+                        # exists only to avoid a duplicate error message.
+                        if !File.writable?(s_parent)
+                           msgc=Kibuvits_msgc.new
+                           msgc['English']=s_en+"with the path of\n\""+
+                           s_file_path_candidate+"\"\nis not deletable, because its parent folder is not writable."
+                           msgc['Estonian']=s_ee+" rajaga \n\""+
+                           s_file_path_candidate+"\"\nei ole kustutatav, sest seda sisaldav kataloog ei ole kirjutatav."
+                           verify_access_register_failure(
+                           ht_out, s_file_path_candidate, s_cmd, msgc)
+                        end # if
+                     end # if
+                  when "executable"
+                     if !File.executable?(s_file_path_candidate)
+                        msgc=Kibuvits_msgc.new
+                        msgc['English']=s_en+"with the path of\n\""+
+                        s_file_path_candidate+"\"\nis not executable."
+                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        s_file_path_candidate+"\"\nei ole jookstav."
+                        verify_access_register_failure(
+                        ht_out, s_file_path_candidate, s_cmd, msgc)
+                     end # if
+                  when "not_executable"
+                     if File.executable?(s_file_path_candidate)
+                        msgc=Kibuvits_msgc.new
+                        msgc['English']=s_en+"with the path of\n\""+
+                        s_file_path_candidate+"\"\nis executable."
+                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        s_file_path_candidate+"\"\non jookstav."
+                        verify_access_register_failure(
+                        ht_out, s_file_path_candidate, s_cmd, msgc)
+                     end # if
+                  else
+                  end # case
+               end # if b_value
+            end # loop
+         end # if File.exists?(s_file_path_candidate)
+      end # synchronize
    end # verify_access_verification_step
 
 
@@ -519,7 +521,7 @@ class Kibuvits_fs
       if b_throw
          kibuvits_throw(s_msg)
       else
-         puts s_msg
+         kibuvits_writeln s_msg
          exit
       end # if
    end # exit_if_any_of_the_filesystem_tests_failed
@@ -731,16 +733,18 @@ class Kibuvits_fs
       s_folder_name1=nil
       s_left=s_base_unix.reverse.gsub(/^[\/]/,$kibuvits_lc_emptystring).reverse
       rgx_slash=/\//
-      i_len.times do |i|
-         s_folder_name0=ar_folder_names[i]
-         array2folders_verify_folder_name_candidate_t1 s_folder_name0, rgx_slash
-         s_left=s_left+$kibuvits_lc_slash+s_folder_name0
-         s_folder_name1=s_left
-         Dir.mkdir(s_folder_name1) if !File.exists? s_folder_name1
-         ht_filesystemtest_failures=Kibuvits_fs.verify_access(
-         s_folder_name1,"is_directory,writable")
-         exit_if_any_of_the_filesystem_tests_failed(ht_filesystemtest_failures)
-      end # loop
+      $kibuvits_lc_mx_streamaccess.synchronize do
+         i_len.times do |i|
+            s_folder_name0=ar_folder_names[i]
+            array2folders_verify_folder_name_candidate_t1 s_folder_name0, rgx_slash
+            s_left=s_left+$kibuvits_lc_slash+s_folder_name0
+            s_folder_name1=s_left
+            Dir.mkdir(s_folder_name1) if !File.exists? s_folder_name1
+            ht_filesystemtest_failures=Kibuvits_fs.verify_access(
+            s_folder_name1,"is_directory,writable")
+            exit_if_any_of_the_filesystem_tests_failed(ht_filesystemtest_failures)
+         end # loop
+      end # synchronize
    end # array2folders_sequential
 
    def Kibuvits_fs.array2folders_sequential(s_path2folder,ar)
@@ -812,36 +816,38 @@ class Kibuvits_fs
          kibuvits_typecheck bn, [Array,String], ar_or_s_file_or_folder_path
       end # if
       ar_fp=Kibuvits_ix.normalize2array(ar_or_s_file_or_folder_path)
-      ar_fp.each do |s_fp|
-         if !File.exists? s_fp
-            kibuvits_throw("The file or folder \n"+s_fp+
-            "\ndoes not exist. GUID='502524a2-7dbe-471a-aa3a-516260e0acd7'\n")
-         end # if
-         if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
-            if File.directory? s_fp
-               ar=Dir.glob(s_fp+$kibuvits_lc_slashstar)
-               chmod_recursive_secure_7(ar)
+      $kibuvits_lc_mx_streamaccess.synchronize do
+         ar_fp.each do |s_fp|
+            if !File.exists? s_fp
+               kibuvits_throw("The file or folder \n"+s_fp+
+               "\ndoes not exist. GUID='15624f05-9a5f-4c9e-b730-714380307dd7'\n")
             end # if
-            return
-         end # if
-         # If the owner of the current process is not the
-         # owner of the file and the file had previously
-         # a permission of 0770, then "chmod 0700 filename"
-         # would lock the user out.
-         File.chmod(0777,s_fp) # access descrition must contain 4 digits, or a flaw is introduced
-         if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
-            if File.directory? s_fp
-               ar=Dir.glob(s_fp+$kibuvits_lc_slashstar)
-               chmod_recursive_secure_7(ar)
+            if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
+               if File.directory? s_fp
+                  ar=Dir.glob(s_fp+$kibuvits_lc_slashstar)
+                  chmod_recursive_secure_7(ar)
+               end # if
+               return
             end # if
-            return
-         end # if
-         s_1="The file "
-         s_1="The folder " if File.directory? s_fp
-         kibuvits_throw(s_1+",\n"+s_fp+
-         "\nexists, but its access rights could not be changed to 7 for \n"+
-         "the owner of the current process. GUID='d1fc312f-b40e-4c4e-a33a-516260e0acd7'")
-      end # loop
+            # If the owner of the current process is not the
+            # owner of the file and the file had previously
+            # a permission of 0770, then "chmod 0700 filename"
+            # would lock the user out.
+            File.chmod(0777,s_fp) # access descrition must contain 4 digits, or a flaw is introduced
+            if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
+               if File.directory? s_fp
+                  ar=Dir.glob(s_fp+$kibuvits_lc_slashstar)
+                  chmod_recursive_secure_7(ar)
+               end # if
+               return
+            end # if
+            s_1="The file "
+            s_1="The folder " if File.directory? s_fp
+            kibuvits_throw(s_1+",\n"+s_fp+
+            "\nexists, but its access rights could not be changed to 7 for \n"+
+            "the owner of the current process. GUID='6cf9404c-3638-4010-a230-714380307dd7'")
+         end # loop
+      end # synchronize
    end # chmod_recursive_secure_7
 
    def Kibuvits_fs.chmod_recursive_secure_7(ar_or_s_file_or_folder_path)
@@ -868,7 +874,7 @@ class Kibuvits_fs
             kibuvits_throw("There exists some sort of a flaw, because the "+s_1+"\n"+s_fp+
             "\ncould not be deleted despite the fact that recursive chmod-ding \n"+
             "takes, or at least should take, place before the recursive deletion.\n"+
-            "GUID='b2c8bb54-f014-44ac-b13a-516260e0acd7'\n")
+            "GUID='539972aa-a02f-4bc6-8520-714380307dd7'\n")
          end # if
       end # loop
    end # impl_rm_fr_part_1
@@ -902,22 +908,24 @@ class Kibuvits_fs
       ar_paths_in=Kibuvits_ix.normalize2array(ar_or_s_file_or_folder_path)
       ob_pth=nil
       s_parent_path=nil
-      ar_paths_in.each do |s_file_or_folder_path|
-         next if !File.exists? s_file_or_folder_path
-         ob_pth=Pathname.new(s_file_or_folder_path)
-         s_parent_path=ob_pth.dirname.to_s
-         # Here the (File.exists? s_parent_path)==true
-         # because every existing file or folder that
-         # is not the "/" defenately has an existing parent
-         # and the Pathname.new("/").to_s=="/"
-         if !File.writable? s_parent_path
-            kibuvits_throw("Folder \n"+s_parent_path+
-            "\nis not writable. GUID='453f40f6-50d2-48c1-a93a-516260e0acd7'\n")
-         end # if
-         s_fp=s_file_or_folder_path
-         chmod_recursive_secure_7(s_fp) # throws, if the chmod-ding fails
-         impl_rm_fr_part_1(s_file_or_folder_path)
-      end # loop
+      $kibuvits_lc_mx_streamaccess.synchronize do
+         ar_paths_in.each do |s_file_or_folder_path|
+            next if !File.exists? s_file_or_folder_path
+            ob_pth=Pathname.new(s_file_or_folder_path)
+            s_parent_path=ob_pth.dirname.to_s
+            # Here the (File.exists? s_parent_path)==true
+            # because every existing file or folder that
+            # is not the "/" defenately has an existing parent
+            # and the Pathname.new("/").to_s=="/"
+            if !File.writable? s_parent_path
+               kibuvits_throw("Folder \n"+s_parent_path+
+               "\nis not writable. GUID='2d940385-f628-424d-b520-714380307dd7'\n")
+            end # if
+            s_fp=s_file_or_folder_path
+            chmod_recursive_secure_7(s_fp) # throws, if the chmod-ding fails
+            impl_rm_fr_part_1(s_file_or_folder_path)
+         end # loop
+      end # synchronize
    end # rm_fr
 
    def Kibuvits_fs.rm_fr(ar_or_s_file_or_folder_path)
@@ -1027,7 +1035,7 @@ class Kibuvits_fs
             s_default_msg="\n\""+x_candidate.to_s+
             "\",\n is not considered to be suitable for a "+
             "file or folder base name. \n"+
-            "GUID='3f556f84-40c2-42fb-b33a-516260e0acd7'\n\n"
+            "GUID='ba8f9034-5bd5-4ee9-a220-714380307dd7'\n\n"
             #s_message_id="throw_1"
             #b_failure=false
             #msgcs.cre(s_default_msg,s_message_id,b_failure)
@@ -1045,7 +1053,7 @@ class Kibuvits_fs
          #    s_default_msg="\n\""+x_candidate.to_s+
          #    "\",\n is not considered to be suitable for a "+
          #    "file or folder base name. \n"+
-         #    "GUID='663c5651-e080-45d8-b32a-516260e0acd7'\n\n"
+         #    "GUID='dcc9f35b-b9c6-4a2a-a520-714380307dd7'\n\n"
          #s_message_id="throw_1"
          #b_failure=false
          #msgcs.cre(s_default_msg,s_message_id,b_failure)
@@ -1059,20 +1067,22 @@ class Kibuvits_fs
    def b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist(
       s_environment_variable_name,s_env_value,s_path,msgcs)
       b_missing=false
-      if !File.exists? s_path
-         s_default_msg="\nThe environment variable, "+
-         s_environment_variable_name+"==\""+s_env_value+
-         "\",\n has a wrong value, because a file or a folder "+
-         "with the path of \n"+s_path+"\n does not esist.\n"
-         s_message_id="4"
-         b_failure=false
-         msgcs.cre(s_default_msg,s_message_id,b_failure)
-         msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
-         s_environment_variable_name+"==\""+s_env_value+
-         "\"\n, omab vale väärtust, sest faili ega kataloogi rajaga\n"+
-         s_path+"\n ei eksisteeri.\n"
-         b_missing=true
-      end # if
+      $kibuvits_lc_mx_streamaccess.synchronize do
+         if !File.exists? s_path
+            s_default_msg="\nThe environment variable, "+
+            s_environment_variable_name+"==\""+s_env_value+
+            "\",\n has a wrong value, because a file or a folder "+
+            "with the path of \n"+s_path+"\n does not esist.\n"
+            s_message_id="4"
+            b_failure=false
+            msgcs.cre(s_default_msg,s_message_id,b_failure)
+            msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
+            s_environment_variable_name+"==\""+s_env_value+
+            "\"\n, omab vale väärtust, sest faili ega kataloogi rajaga\n"+
+            s_path+"\n ei eksisteeri.\n"
+            b_missing=true
+         end # if
+      end # synchronize
       return b_missing
    end # b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist
 
@@ -1156,71 +1166,73 @@ class Kibuvits_fs
       b_env_not_set_or_has_improper_path_t1_exc_verif1(ar_file_names,msgcs)
       b_env_not_set_or_has_improper_path_t1_exc_verif1(ar_folder_names,msgcs)
       s_env_value=x_env_value
-      if !File.exists? s_env_value
-         s_default_msg="\nThe file or folder that the environment variable, "+
-         s_environment_variable_name+", references does not exist.\n"
-         s_message_id="3"
-         b_failure=false
-         msgcs.cre(s_default_msg,s_message_id,b_failure)
-         msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+s_environment_variable_name+
-         ", poolt viidatud fail või kataloog ei eksisteeri.\n"
-         return true
-      end # if
-      rgx_multislash=/[\/]+/
-      s_folder_path_1=s_env_value.gsub(rgx_multislash,$kibuvits_lc_slash)
-      if s_folder_path_1!=$kibuvits_lc_slash
-         if File.file?(s_env_value)
-            ob_fp=Pathname.new(s_env_value).realpath.parent
-            s_folder_path_1=ob_fp.to_s
-         end # if
-      end # if
-      s_folder_path_1=(s_folder_path_1+"/").gsub(rgx_multislash,$kibuvits_lc_slash)
-      s_path=nil
-      b_0=nil
-      ar_file_names.each do |s_basename|
-         # TODO:  filter the s_path through Kibuvits_fs.s_normalize_path_t1
-         s_path=s_folder_path_1+s_basename
-         b_0=b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist(
-         s_environment_variable_name,s_env_value,s_path,msgcs)
-         return true if b_0
-         if !File.file? s_path
-            s_default_msg="\nThe environment variable, "+
-            s_environment_variable_name+"==\""+s_env_value+
-            "\",\n is suspected to have a wrong value, because "+
-            "a file with the path of \n"+s_path+
-            "\n does not esist, but a folder with the same path does exist.\n"
-            s_message_id="5"
+      $kibuvits_lc_mx_streamaccess.synchronize do
+         if !File.exists? s_env_value
+            s_default_msg="\nThe file or folder that the environment variable, "+
+            s_environment_variable_name+", references does not exist.\n"
+            s_message_id="3"
             b_failure=false
             msgcs.cre(s_default_msg,s_message_id,b_failure)
-            msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
-            s_environment_variable_name+"==\""+s_env_value+
-            "\"\n, korral kahtlustatakse vale väärtust, sest faili rajaga\n"+
-            s_path+"\n ei eksisteeri, kuid sama rajaga kataloog eksisteerib.\n"
+            msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+s_environment_variable_name+
+            ", poolt viidatud fail või kataloog ei eksisteeri.\n"
             return true
          end # if
-      end # loop
-      ar_folder_names.each do |s_basename|
-         s_path=s_folder_path_1+s_basename
-         # TODO:  filter the s_path through Kibuvits_fs.s_normalize_path_t1
-         b_0=b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist(
-         s_environment_variable_name,s_env_value,s_path,msgcs)
-         return true if b_0
-         if File.file? s_path
-            s_default_msg="\nThe environment variable, "+
-            s_environment_variable_name+"==\""+s_env_value+
-            "\",\n is suspected to have a wrong value, because "+
-            "a folder with the path of \n"+s_path+
-            "\n does not esist, but a file with the same path does exist.\n"
-            s_message_id="6"
-            b_failure=false
-            msgcs.cre(s_default_msg,s_message_id,b_failure)
-            msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
-            s_environment_variable_name+"==\""+s_env_value+
-            "\"\n, korral kahtlustatakse vale väärtust, sest kataloogi rajaga\n"+
-            s_path+"\n ei eksisteeri, kuid sama rajaga fail eksisteerib.\n"
-            return true
+         rgx_multislash=/[\/]+/
+         s_folder_path_1=s_env_value.gsub(rgx_multislash,$kibuvits_lc_slash)
+         if s_folder_path_1!=$kibuvits_lc_slash
+            if File.file?(s_env_value)
+               ob_fp=Pathname.new(s_env_value).realpath.parent
+               s_folder_path_1=ob_fp.to_s
+            end # if
          end # if
-      end # loop
+         s_folder_path_1=(s_folder_path_1+"/").gsub(rgx_multislash,$kibuvits_lc_slash)
+         s_path=nil
+         b_0=nil
+         ar_file_names.each do |s_basename|
+            # TODO:  filter the s_path through Kibuvits_fs.s_normalize_path_t1
+            s_path=s_folder_path_1+s_basename
+            b_0=b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist(
+            s_environment_variable_name,s_env_value,s_path,msgcs)
+            return true if b_0
+            if !File.file? s_path
+               s_default_msg="\nThe environment variable, "+
+               s_environment_variable_name+"==\""+s_env_value+
+               "\",\n is suspected to have a wrong value, because "+
+               "a file with the path of \n"+s_path+
+               "\n does not esist, but a folder with the same path does exist.\n"
+               s_message_id="5"
+               b_failure=false
+               msgcs.cre(s_default_msg,s_message_id,b_failure)
+               msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
+               s_environment_variable_name+"==\""+s_env_value+
+               "\"\n, korral kahtlustatakse vale väärtust, sest faili rajaga\n"+
+               s_path+"\n ei eksisteeri, kuid sama rajaga kataloog eksisteerib.\n"
+               return true
+            end # if
+         end # loop
+         ar_folder_names.each do |s_basename|
+            s_path=s_folder_path_1+s_basename
+            # TODO:  filter the s_path through Kibuvits_fs.s_normalize_path_t1
+            b_0=b_env_not_set_or_has_improper_path_t1_fileorfolderDOESNOTexist(
+            s_environment_variable_name,s_env_value,s_path,msgcs)
+            return true if b_0
+            if File.file? s_path
+               s_default_msg="\nThe environment variable, "+
+               s_environment_variable_name+"==\""+s_env_value+
+               "\",\n is suspected to have a wrong value, because "+
+               "a folder with the path of \n"+s_path+
+               "\n does not esist, but a file with the same path does exist.\n"
+               s_message_id="6"
+               b_failure=false
+               msgcs.cre(s_default_msg,s_message_id,b_failure)
+               msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
+               s_environment_variable_name+"==\""+s_env_value+
+               "\"\n, korral kahtlustatakse vale väärtust, sest kataloogi rajaga\n"+
+               s_path+"\n ei eksisteeri, kuid sama rajaga fail eksisteerib.\n"
+               return true
+            end # if
+         end # loop
+      end # synchronize
       return false
    end # b_env_not_set_or_has_improper_path_t1
 
@@ -1345,19 +1357,21 @@ class Kibuvits_fs
       ar_1=nil
       ar_2=nil
       ar_3=nil
-      ar_fp_folder.each do |s_fp_folder|
-         ar_1=ar_glob_locally_t1(s_fp_folder,ar_globstrings,
-         b_return_long_paths)
-         ar_out.concat(ar_1)
-         ar_2=Dir.glob(s_fp_folder+"/*")
-         ar_2.each do |s_fp|
-            if File.directory? s_fp
-               ar_3=ar_glob_recursively_t1(s_fp,
-               ar_globstrings,b_return_long_paths)
-               ar_out.concat(ar_3)
-            end # if
+      $kibuvits_lc_mx_streamaccess.synchronize do
+         ar_fp_folder.each do |s_fp_folder|
+            ar_1=ar_glob_locally_t1(s_fp_folder,ar_globstrings,
+            b_return_long_paths)
+            ar_out.concat(ar_1)
+            ar_2=Dir.glob(s_fp_folder+"/*")
+            ar_2.each do |s_fp|
+               if File.directory? s_fp
+                  ar_3=ar_glob_recursively_t1(s_fp,
+                  ar_globstrings,b_return_long_paths)
+                  ar_out.concat(ar_3)
+               end # if
+            end # loop
          end # loop
-      end # loop
+      end # synchronize
       return ar_out
    end # ar_glob_recursively_t1
 
@@ -1393,56 +1407,58 @@ class Kibuvits_fs
          end # if
       end # if
       b_out=false
-      if !defined? @s_b_files_that_exist_changed_after_last_check_t1_cache_fp
-         @s_b_files_that_exist_changed_after_last_check_t1_cache_fp=KIBUVITS_HOME+
-         "/src/include/bonnet/tmp"+
-         "/KRL_sys_Kibuvits_fs_b_files_that_exist_changed_after_last_check_t1_cache.txt"
-      end # if
-      ht_cache=nil
-      if File.exists? @s_b_files_that_exist_changed_after_last_check_t1_cache_fp
-         s_progfte=file2str(@s_b_files_that_exist_changed_after_last_check_t1_cache_fp)
-         ht_cache=Kibuvits_ProgFTE.to_ht(s_progfte)
-         if i_cache_max_size<ht_cache.keys.size
-            ht_cache.clear
+      $kibuvits_lc_mx_streamaccess.synchronize do
+         if !defined? @s_b_files_that_exist_changed_after_last_check_t1_cache_fp
+            @s_b_files_that_exist_changed_after_last_check_t1_cache_fp=KIBUVITS_HOME+
+            "/src/include/bonnet/tmp"+
+            "/KRL_sys_Kibuvits_fs_b_files_that_exist_changed_after_last_check_t1_cache.txt"
+         end # if
+         ht_cache=nil
+         if File.exists? @s_b_files_that_exist_changed_after_last_check_t1_cache_fp
+            s_progfte=file2str(@s_b_files_that_exist_changed_after_last_check_t1_cache_fp)
+            ht_cache=Kibuvits_ProgFTE.to_ht(s_progfte)
+            if i_cache_max_size<ht_cache.keys.size
+               ht_cache.clear
+               b_out=true
+            end # if
+         else
+            ht_cache=Hash.new
             b_out=true
          end # if
-      else
-         ht_cache=Hash.new
-         b_out=true
-      end # if
-      ar_fp=Kibuvits_ix.normalize2array(ar_or_s_fp_file_or_folder)
-      ar_fp_files=Array.new
-      ar_fp_files_and_folders=nil
-      b_return_long_paths=true
-      s_globstring="./*"
-      ar_fp.each do |s_fp|
-         next if !File.exists? s_fp
-         if File.directory? s_fp
-            ar_fp_files_and_folders=ar_glob_recursively_t1(s_fp,
-            s_globstring,b_return_long_paths)
-            ar_fp_files_and_folders.each do |s_fp_1|
-               if File.file? s_fp_1
-                  # The Pathname.new(blabla) is for path normalization.
-                  ar_fp_files<<Pathname.new(s_fp_1).realpath.to_s
-               end # if
-            end # loop
-         else
-            # The Pathname.new(blabla) is for path normalization.
-            ar_fp_files<<Pathname.new(s_fp).realpath.to_s
-         end # if
-      end # loop
-      ar_fp_files.uniq!
-      ar_fp_files.each do |s_fp|
-         s_mtime=File.mtime(s_fp).to_f.to_s # to_f for greater precision
-         if ht_cache.has_key? s_fp
-            b_out=true if ht_cache[s_fp]!=s_mtime
-         else
-            b_out=true
-         end # if
-         ht_cache[s_fp]=s_mtime
-      end # loop
-      s_progfte=Kibuvits_ProgFTE.from_ht(ht_cache)
-      str2file(s_progfte,@s_b_files_that_exist_changed_after_last_check_t1_cache_fp)
+         ar_fp=Kibuvits_ix.normalize2array(ar_or_s_fp_file_or_folder)
+         ar_fp_files=Array.new
+         ar_fp_files_and_folders=nil
+         b_return_long_paths=true
+         s_globstring="./*"
+         ar_fp.each do |s_fp|
+            next if !File.exists? s_fp
+            if File.directory? s_fp
+               ar_fp_files_and_folders=ar_glob_recursively_t1(s_fp,
+               s_globstring,b_return_long_paths)
+               ar_fp_files_and_folders.each do |s_fp_1|
+                  if File.file? s_fp_1
+                     # The Pathname.new(blabla) is for path normalization.
+                     ar_fp_files<<Pathname.new(s_fp_1).realpath.to_s
+                  end # if
+               end # loop
+            else
+               # The Pathname.new(blabla) is for path normalization.
+               ar_fp_files<<Pathname.new(s_fp).realpath.to_s
+            end # if
+         end # loop
+         ar_fp_files.uniq!
+         ar_fp_files.each do |s_fp|
+            s_mtime=File.mtime(s_fp).to_f.to_s # to_f for greater precision
+            if ht_cache.has_key? s_fp
+               b_out=true if ht_cache[s_fp]!=s_mtime
+            else
+               b_out=true
+            end # if
+            ht_cache[s_fp]=s_mtime
+         end # loop
+         s_progfte=Kibuvits_ProgFTE.from_ht(ht_cache)
+         str2file(s_progfte,@s_b_files_that_exist_changed_after_last_check_t1_cache_fp)
+      end # synchronize
       return b_out
    end # b_files_that_exist_changed_after_last_check_t1
 

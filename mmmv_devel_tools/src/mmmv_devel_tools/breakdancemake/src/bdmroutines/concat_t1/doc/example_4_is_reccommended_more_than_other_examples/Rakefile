@@ -40,15 +40,14 @@ if !defined? MMMV_DEVEL_TOOLS_HOME
    ob_pth_1=ob_pth_0.parent.parent.parent.parent.parent
    MMMV_DEVEL_TOOLS_HOME=ob_pth_1.parent.parent.parent.to_s
 end # if
-BREAKDANCEMAKE_HOME=MMMV_DEVEL_TOOLS_HOME+"/src/mmmv_devel_tools/breakdancemake"
-require BREAKDANCEMAKE_HOME+"/src/bonnet/breakdancemake_cl.rb"
+require MMMV_DEVEL_TOOLS_HOME+"/src/api/mmmv_devel_tools_public_interface.rb"
 
 #--------------------------------------------------------------------------
 
 task :run_demo do
    ar_paths_of_concatenable_files=["./demo_data/kitty_1.txt","./demo_data/kitty_2.txt"]
    s_concatenation_output_file_path="./demo_data/kitty_1_plus_kitty_2.js"
-   C_mmmv_devel_tools_global_singleton.run_breakdancemake_concat_t1(
+   C_mmmv_devel_tools.run_breakdancemake_concat_t1(
    s_concatenation_output_file_path,
    ar_paths_of_concatenable_files,
    "plain") #  or
@@ -60,12 +59,12 @@ task :default do
    ar_task_names=Array.new
    Rake.application.tasks.each {|x_task| ar_task_names<<x_task.to_s}
    ar_task_names.sort!
-   puts "\n\nAvailable Rake functions:\n\n"
+   kibuvits_writeln "\n\nAvailable Rake functions:\n\n"
    s_1="                "
    ar_task_names.each do |s_task_name|
-      puts s_1+s_task_name.to_s
+      kibuvits_writeln s_1+s_task_name.to_s
    end # loop
-   puts "\n\n"
+   kibuvits_writeln "\n\n"
 end
 
 #==========================================================================

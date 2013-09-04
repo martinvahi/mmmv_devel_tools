@@ -483,6 +483,6 @@ class Kibuvits_os_codelets
 end # class Kibuvits_os_codelets
 #==========================================================================
 # Sample code:
-#puts Kibuvits_os_codelets.instance.generate_tmp_file_name()
-#puts Kibuvits_os_codelets.instance.get_os_type
-#puts Kibuvits_os_codelets.instance.get_tmp_folder_path
+#kibuvits_writeln Kibuvits_os_codelets.instance.generate_tmp_file_name()
+#kibuvits_writeln Kibuvits_os_codelets.instance.get_os_type
+#kibuvits_writeln Kibuvits_os_codelets.instance.get_tmp_folder_path

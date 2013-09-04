@@ -13,7 +13,8 @@ class Mmmv_devel_tools_upguid_action_u< PMIPAction
    def run(event, context)
       return if !context.has_editor?
       if  Mmmv_devel_tools_pmip_lib_globals.s_fp_project_root==nil
-         Mmmv_devel_tools_pmip_lib_globals.s_fp_project_root=context.root().to_s
+         s_fp_project_root=context.root().to_s
+         Mmmv_devel_tools_pmip_lib_globals.s_fp_project_root=s_fp_project_root
       end # if
       s_fp=context.editor_filepath.to_s
       s_fp_upg=Pathname.new(

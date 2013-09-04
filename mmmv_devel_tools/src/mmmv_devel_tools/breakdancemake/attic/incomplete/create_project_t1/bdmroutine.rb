@@ -137,7 +137,7 @@ class Breakdancemake_bdmroutine_create_project_t1 < Breakdancemake_bdmroutine
       else # 0<ar.size
          s_list=kibuvits_s_concat_array_of_strings(ar_msg)+"\n\n"
       end # if
-      puts s_list
+      kibuvits_writeln s_list
    end # run_bdmroutine
 
 end # class Breakdancemake_bdmroutine_create_project_t1

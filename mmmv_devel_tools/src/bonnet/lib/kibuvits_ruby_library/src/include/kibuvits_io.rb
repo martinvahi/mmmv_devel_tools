@@ -48,38 +48,39 @@ end # if
 KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE=false if !defined? KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
 
 #==========================================================================
-def get_from_stdin
-   an_stdin=STDIN.reopen($stdin)
-   data=an_stdin.readlines(nil)
-   an_stdin.close
-   return data[0]
-end #get_from_stdin
 
-def write_to_stdout data
-   # It's like the puts, but without the linebreak
-   an_io=STDOUT.reopen($stdout)
-   an_io.write data
-   an_io.flush
-   an_io.close
-end # write_to_stdout
+# For string output, the kibuvits_writeln and kibuvits_write
+# are defined in the kibuvits_boot.rb
+# WARNING: it's not that well tested.
+def kibuvits_write_to_stdout data
+   $kibuvits_lc_mx_streamaccess.synchronize do
+      # It's like the kibuvits_writeln, but without the linebreak
+      an_io=STDOUT.reopen($stdout)
+      an_io.write data
+      an_io.flush
+      an_io.close
+   end # synchronize
+end # kibuvits_write_to_stdout
 
 #--------------------------------------------------------------------------
 def str2file(s_a_string, s_fp)
-   begin
-      if KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
-         if KIBUVITS_b_DEBUG
-            bn=binding()
-            kibuvits_typecheck bn, String, s_a_string
-            kibuvits_typecheck bn, String, s_fp
+   $kibuvits_lc_mx_streamaccess.synchronize do
+      begin
+         if KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
+            if KIBUVITS_b_DEBUG
+               bn=binding()
+               kibuvits_typecheck bn, String, s_a_string
+               kibuvits_typecheck bn, String, s_fp
+            end # if
          end # if
-      end # if
-      file=File.open(s_fp, "w")
-      file.write(s_a_string)
-      file.close
-   rescue Exception =>err
-      raise "No comments. GUID='37b04464-278d-4482-9b5a-13e021705dd7' \n"+
-      "s_a_string=="+s_a_string+"\n"+err.to_s+"\n\n"
-   end # rescure
+         file=File.open(s_fp, "w")
+         file.write(s_a_string)
+         file.close
+      rescue Exception =>err
+         raise "No comments. GUID='37b04464-278d-4482-9b5a-13e021705dd7' \n"+
+         "s_a_string=="+s_a_string+"\n"+err.to_s+"\n\n"
+      end # rescure
+   end # synchronize
 end # str2file
 
 #--------------------------------------------------------------------------
@@ -107,28 +108,29 @@ def kibuvits_hack_to_break_circular_dependency_between_io_and_str_kibuvits_s_con
 end # kibuvits_hack_to_break_circular_dependency_between_io_and_str_kibuvits_s_concat_array_of_strings
 
 def file2str(s_file_path)
-   if KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
-      if KIBUVITS_b_DEBUG
-         kibuvits_typecheck binding(), String, s_file_path
+   s_out=$kibuvits_lc_emptystring
+   $kibuvits_lc_mx_streamaccess.synchronize do
+      if KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
+         if KIBUVITS_b_DEBUG
+            kibuvits_typecheck binding(), String, s_file_path
+         end # if
       end # if
-   end # if
-   # The idea here is to make the file2str easily copyable to projects that
-   # do not use the Kibuvits Ruby Library.
-   s_fp=nil
-   s_fp=s_file_path
-   s_emptystring="" # to avoid repeated instantiation
-   s_out=s_emptystring
-   ar_lines=Array.new
-   begin
-      File.open(s_fp) do |file|
-         while line = file.gets
-            ar_lines<<s_emptystring+line
-         end # while
-      end # Open-file region.
-      s_out=kibuvits_hack_to_break_circular_dependency_between_io_and_str_kibuvits_s_concat_array_of_strings(ar_lines)
-   rescue Exception =>err
-      raise "\n"+err.to_s+"\n\ns_file_path=="+s_file_path+"\n\n"
-   end # rescure
+      # The idea here is to make the file2str easily copyable to projects that
+      # do not use the Kibuvits Ruby Library.
+      s_fp=nil
+      s_fp=s_file_path
+      ar_lines=Array.new
+      begin
+         File.open(s_fp) do |file|
+            while line = file.gets
+               ar_lines<<$kibuvits_lc_emptystring+line
+            end # while
+         end # Open-file region.
+         s_out=kibuvits_hack_to_break_circular_dependency_between_io_and_str_kibuvits_s_concat_array_of_strings(ar_lines)
+      rescue Exception =>err
+         raise "\n"+err.to_s+"\n\ns_file_path=="+s_file_path+"\n\n"
+      end # rescure
+   end # synchronize
    return s_out
 end # file2str
 
@@ -137,17 +139,22 @@ end # file2str
 # reading code, because there's just too many unanswered questions about
 # the console reading.
 def read_a_line_from_console
-   # The IO.gets() treats console arguments as if they would have
-   # been writeln as user input for a query. For some weird reason,
-   # the current solution works.
-   s_out=""+$stdin.gets
+   s_out=nil
+   $kibuvits_lc_mx_streamaccess.synchronize do
+      # The IO.gets() treats console arguments as if they would have
+      # been writeln as user input for a query. For some weird reason,
+      # the current solution works.
+      s_out=""+$stdin.gets
+   end # synchronize
    return s_out
 end # read_a_line_from_console
 
 def write_2_console a_string
-   # The "" is just for reducing the probability of
-   # mysterious memory sharing related quirk-effects.
-   $stdout.write ""+a_string.to_s
+   $kibuvits_lc_mx_streamaccess.synchronize do
+      # The "" is just for reducing the probability of
+      # mysterious memory sharing related quirk-effects.
+      $stdout.write ""+a_string.to_s
+   end # synchronize
 end # write_2_console
 
 def writeln_2_console a_string,

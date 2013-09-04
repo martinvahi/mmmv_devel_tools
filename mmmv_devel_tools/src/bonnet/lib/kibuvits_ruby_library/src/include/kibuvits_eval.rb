@@ -241,48 +241,10 @@ class Kibuvits_eval
       ht_stdstreams=Kibuvits_eval.instance.run s_script,s_language,msgcs
       return ht_stdstreams
    end # Kibuvits_eval.run
-   private
 
-   def Kibuvits_eval.test_interpreter_ruby
-      msgcs=Kibuvits_msgc_stack.new
-      bridge=Kibuvits_eval_bridge_Ruby.new
-      kibuvits_throw "test 1" if !bridge.installed
-      s_script='puts "hi".reverse'
-      ht_stdstreams=Kibuvits_eval.run(s_script,"Ruby",msgcs)
-      kibuvits_throw "test 2" if msgcs.b_failure
-      s_stdout=ht_stdstreams['s_stdout']
-      kibuvits_throw "test 3 s_stdout=="+s_stdout if !s_stdout.include? "ih"
-   end # Kibuvits_eval.test_interpreter_ruby
-
-   def Kibuvits_eval.test_interpreter_php5
-      msgcs=Kibuvits_msgc_stack.new
-      bridge=Kibuvits_eval_bridge_PHP5.new
-      return if !bridge.installed
-      s_script="$xx='Hi'.'There'; echo $xx;"
-      ht_stdstreams=Kibuvits_eval.run(s_script,"php5",msgcs)
-      kibuvits_throw "test 1" if msgcs.b_failure
-      s_stdout=ht_stdstreams['s_stdout']
-      kibuvits_throw "test 2 s_stdout=="+s_stdout  if !s_stdout.include? "HiThere"
-   end # Kibuvits_eval.test_interpreter_php5
-
-   def Kibuvits_eval.test_language_independent
-      msgcs=Kibuvits_msgc_stack.new
-      s_script="whatever"
-      ht_stdstreams=Kibuvits_eval.run(s_script,
-      "lang_that_doesn't_exist",msgcs)
-      kibuvits_throw "test 1,  msgcs.to_s=="+msgcs.to_s if !msgcs.b_failure
-      kibuvits_throw "test 2" if msgcs.last.s_message_id!="1"
-   end # Kibuvits_eval.test_language_independent
-
+   #-----------------------------------------------------------------------
    public
    include Singleton
-   def Kibuvits_eval.selftest
-      ar_msgs=Array.new
-      kibuvits_testeval binding(), "Kibuvits_eval.test_language_independent"
-      kibuvits_testeval binding(), "Kibuvits_eval.test_interpreter_php5"
-      kibuvits_testeval binding(), "Kibuvits_eval.test_interpreter_ruby"
-      return ar_msgs
-   end # Kibuvits_eval.selftest
 end # class Kibuvits_eval
 
 #==========================================================================

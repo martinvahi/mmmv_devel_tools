@@ -41,12 +41,9 @@
 require 'pathname'
 
 if !defined? KIBUVITS_HOME
-   x=ENV['KIBUVITS_HOME']
-   if (x!=nil and x!="")
-      KIBUVITS_HOME=x.to_s.freeze
-   else
-      KIBUVITS_HOME=Pathname.new(__FILE__).realpath.parent.parent.parent.to_s
-   end # if
+   ob_pth=Pathname.new(__FILE__).realpath.parent.parent.parent
+   KIBUVITS_HOME=ob_pth.to_s.freeze
+   ob_pth=nil;
 end # if
 
 KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE=true if !defined? KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
@@ -98,7 +95,7 @@ end # if
 # The Ruby gem infrastructure requires a version that consists
 # of only numbers and dots. For library forking related
 # version checks there is another constant: KIBUVITS_s_VERSION.
-KIBUVITS_s_NUMERICAL_VERSION="1.4.0" if !defined? KIBUVITS_s_NUMERICAL_VERSION
+KIBUVITS_s_NUMERICAL_VERSION="1.5.0" if !defined? KIBUVITS_s_NUMERICAL_VERSION
 
 # The reason, why the version does not consist of only
 # numbers and points is that every application is
@@ -123,8 +120,8 @@ KIBUVITS_s_VERSION="kibuvits_"+KIBUVITS_s_NUMERICAL_VERSION.to_s if !defined? KI
 # self-declare it.
 # KIBUVITS_TMP_FOLDER_PATH=ENV['HOME'].to_s+"/tmp"
 
-KIBUVITS_b_DEBUG=true if !defined? KIBUVITS_b_DEBUG
-#KIBUVITS_b_DEBUG=false if !defined? KIBUVITS_b_DEBUG
+#KIBUVITS_b_DEBUG=true if !defined? KIBUVITS_b_DEBUG
+KIBUVITS_b_DEBUG=false if !defined? KIBUVITS_b_DEBUG
 
 #--------------------------------------------------------------------------
 $kibuvits_lc_emptystring="".freeze
@@ -141,9 +138,10 @@ $kibuvits_lc_spacesemicolon=" ;".freeze
 
 $kibuvits_lc_lbrace="(".freeze
 $kibuvits_lc_rbrace=")".freeze
-
 $kibuvits_lc_lsqbrace="[".freeze
 $kibuvits_lc_rsqbrace="]".freeze
+$kibuvits_lc_lschevron="<".freeze
+$kibuvits_lc_rschevron=">".freeze
 
 $kibuvits_lc_questionmark="?".freeze
 $kibuvits_lc_star="*".freeze
@@ -181,6 +179,7 @@ $kibuvits_lc_boolean="boolean".freeze
 $kibuvits_lc_sb_true="t".freeze
 $kibuvits_lc_sb_false="f".freeze
 
+#--------------------------
 $kibuvits_lc_timestamp="timestamp".freeze
 $kibuvits_lc_year="year".freeze
 $kibuvits_lc_month="month".freeze
@@ -190,12 +189,21 @@ $kibuvits_lc_minute="minute".freeze
 $kibuvits_lc_second="second".freeze
 $kibuvits_lc_nanosecond="nanosecond".freeze
 
+$kibuvits_lc_mm_i_n_of_seconds="--i_n_of_seconds".freeze
+$kibuvits_lc_mm_i_n_of_minutes="--i_n_of_minutes".freeze
+$kibuvits_lc_mm_i_n_of_hours="--i_n_of_hours".freeze
+$kibuvits_lc_mm_i_n_of_days="--i_n_of_days".freeze
+$kibuvits_lc_mm_i_interval_in_seconds="--i_interval_in_seconds".freeze
+$kibuvits_lc_mm_s_bash_command="--s_bash_command".freeze
+#--------------------------
+
 $kibuvits_lc_longitude="longitude".freeze
 $kibuvits_lc_latitude="latitude".freeze
 $kibuvits_lc_name="name".freeze
 $kibuvits_lc_any="any".freeze
 $kibuvits_lc_outbound="outbound".freeze
 $kibuvits_lc_inbound="inbound".freeze
+$kibuvits_lc_default="default".freeze
 $kibuvits_lc_ob_vx_first_entry="ob_vx_first_entry".freeze
 $kibuvits_lc_i_vxix="i_vxix".freeze
 $kibuvits_lc_i_width="i_width".freeze
@@ -251,6 +259,7 @@ $kibuvits_lc_s_mode_exit="s_mode_exit".freeze
 $kibuvits_lc_s_mode_return_msg="s_mode_return_msg".freeze
 
 $kibuvits_lc_s_missing="missing".freeze
+$kibuvits_lc_s_b_dependencies_are_met="b_dependencies_are_met".freeze
 #--------------------------------------------------------------------------
 $kibuvits_lc_GUID_regex_core_t1="[^-\s]{8}[-][^-\s]{4}[-][^-\s]{4}[-][^-\s]{4}[-][^-\s]{12}".freeze
 s_0="[']"
@@ -261,6 +270,11 @@ s_0=nil
 #--------------------------------------------------------------------------
 $kibuvits_lc_emptyarray=Array.new.freeze
 
+# Comments reside at the comments section of the
+# http://ruby-doc.org/core-2.0/Mutex.html
+# The short answer: class Mutex instances are not re-entrant, but
+# class Monitor instances are re-entrant.
+$kibuvits_lc_mx_streamaccess=Monitor.new
 #--------------------------------------------------------------------------
 $kibuvits_s_language=$kibuvits_lc_uk # application level i18n setting.
 x=ENV["KIBUVITS_LANGUAGE"]
@@ -273,6 +287,28 @@ if !defined? KIBUVITS_s_CMD_RUBY
    kibuvits_tmpvar_s_rbpath=Pathname.new(kibuvits_tmpvar_s_rbpath).realpath.parent.to_s
    KIBUVITS_s_CMD_RUBY="cd "<<kibuvits_tmpvar_s_rbpath<<" ; ruby -Ku "
 end # if
+
+#--------------------------------------------------------------------------
+
+def kibuvits_write(x_in)
+   $kibuvits_lc_mx_streamaccess.synchronize do
+      # The "" is just for reducing the probability of
+      # mysterious memory sharing related quirk-effects.
+      #--------------
+      # The classical version
+      print $kibuvits_lc_emptystring+x_in.to_s
+      #--------------
+      # A more explicit version
+      #$stdout.write(sprintf("s", x_in))
+   end # synchronize
+end # kibuvits_write
+def kibuvits_writeln(x_in)
+   $kibuvits_lc_mx_streamaccess.synchronize do
+      # The "" is just for reducing the probability of
+      # mysterious memory sharing related quirk-effects.
+      puts $kibuvits_lc_emptystring+x_in.to_s
+   end # synchronize
+end # kibuvits_writeln
 
 #--------------------------------------------------------------------------
 
@@ -354,7 +390,8 @@ def kibuvits_throw(s_or_ob_exception,a_binding=nil)
    #-------------------------------------------------
    exc=nil
    if x_in.class==String
-      exc=Exception.new(x_in)
+      exc=Exception.new($kibuvits_lc_doublelinebreak+
+      x_in+$kibuvits_lc_doublelinebreak)
    else # x_in.class is derived from or equal to the Exception.
       exc=x_in
    end # if
@@ -1248,7 +1285,7 @@ def kibuvits_assert_is_smaller_than_or_equal_to(a_binding,
    # thorw before doing any calculations with the faulty
    # values and throw at some other, more distant, place.
    # That explains the existence of this, extra, typechecking loop.
-   s_suffix="\nGUID='5e8ee4b1-9691-48c2-8c15-a20331014dd7'"
+   s_suffix="\nGUID='e806864e-4c34-401e-84f4-536200917dd7'"
    if s_optional_error_message_suffix!=nil
       s_suffix=(s_suffix+$kibuvits_lc_linebreak)+s_optional_error_message_suffix
    end # if
@@ -1257,7 +1294,7 @@ def kibuvits_assert_is_smaller_than_or_equal_to(a_binding,
       kibuvits_typecheck(a_binding,ar_allowed_classes,x_value,s_suffix)
    end # loop
    #---------------------
-   s_suffix="\nGUID='13b129e3-28ee-4835-bc54-a20331014dd7'"
+   s_suffix="\nGUID='68ad7c45-6a38-4994-b2f4-536200917dd7'"
    if s_optional_error_message_suffix!=nil
       s_suffix=(s_suffix+$kibuvits_lc_linebreak)+s_optional_error_message_suffix
    end # if
@@ -1287,7 +1324,7 @@ def kibuvits_assert_is_smaller_than_or_equal_to(a_binding,
       s_varname_2="<an objec>" if s_varname_2.length==0
       msg="\n\n"+s_varname_1+" == "+x_upper_bound_0.to_s+
       " < " + s_varname_2 + " == "+x_elem.to_s+
-      "\nGUID='f558c709-008d-485c-b424-a20331014dd7'"
+      "\nGUID='4d456502-ecc1-4703-9ef4-536200917dd7'"
       if s_optional_error_message_suffix.class==String
          msg=msg+"\n"+s_optional_error_message_suffix
       end # if
@@ -1471,7 +1508,7 @@ end # kibuvits_call_by_ar_of_args
 # An example:
 #
 # ob_func=kibuvits_dec_lambda do |x|
-#     puts "Hello "+x.to_s+" !"
+#     kibuvits_writeln "Hello "+x.to_s+" !"
 #     end # block
 # ob_func.call("handsome")
 #
@@ -1501,14 +1538,61 @@ def kibuvits_s_hash(s_in,i_bitlen=512)
    return s_out
 end # kibuvits_s_hash
 
+
+#--------------------------------------------------------------------------
+
+# If the ob_or_ar is not of type Array, then it does not
+# apply any tests and exits without throwing any exceptions.
+#
+def kibuvits_assert_ar_elements_typecheck_if_is_array(a_binding,
+   expected_class_or_an_array_of_expected_classes,
+   ob,s_optional_error_message_suffix=nil)
+   #----------
+   if KIBUVITS_b_DEBUG
+      bn=binding()
+      kibuvits_typecheck bn, Binding, a_binding
+      kibuvits_typecheck bn, [Class,Array], expected_class_or_an_array_of_expected_classes
+      kibuvits_typecheck bn, [NilClass,String], s_optional_error_message_suffix
+   end # if
+   #----------
+   ar_exp_classes=nil
+   if expected_class_or_an_array_of_expected_classes.class==Array
+      ar_exp_classes=expected_class_or_an_array_of_expected_classes
+   else
+      ar_exp_classes=[expected_class_or_an_array_of_expected_classes]
+   end # if
+   if KIBUVITS_b_DEBUG
+      if ar_exp_classes.size==0
+         msg="ar_exp_classes.size==0\n"+
+         "GUID='00722818-7b81-449d-b2f4-536200917dd7'"
+         kibuvits_throw(msg)
+      end # if
+      bn_1=nil
+      ar_exp_classes.each do |x_class_candidate|
+         bn_1=binding()
+         kibuvits_typecheck bn_1, Class, x_class_candidate
+      end # loop
+   end # if
+   #----------
+   return if ob.class!=Array
+   ar_ob_elems=ob
+   #----------
+   cl=nil
+   ar_ob_elems.each do |x_elem|
+      cl=x_elem.class
+      kibuvits_assert_is_among_values(a_binding,ar_exp_classes,
+      cl,s_optional_error_message_suffix)
+   end # loop
+end # kibuvits_assert_ar_elements_typecheck_if_is_array
+
 #--------------------------------------------------------------------------
 
 #def kibuvits_s_file_permissions_t1(s_fp)
 #   if KIBUVITS_b_DEBUG
-#      s_suffix="\nGUID='1611e2d3-e03c-40d7-b044-a20331014dd7'"
+#      s_suffix="\nGUID='2ac69c23-7890-4010-81f4-536200917dd7'"
 #      bn=binding()
 #      kibuvits_typecheck(bn,String,s_fp,s_suffix)
-#      s_suffix="\nGUID='0192c31b-ff66-4354-b3a4-a20331014dd7'"
+#      s_suffix="\nGUID='17a494b2-22af-47fd-a3f4-536200917dd7'"
 #      kibuvits_assert_string_min_length(bn,s_fp,1,s_suffix)
 #   end # if
 #

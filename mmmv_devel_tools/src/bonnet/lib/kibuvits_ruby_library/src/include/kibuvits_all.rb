@@ -45,9 +45,9 @@ if defined? KIBUVITS_b_DEBUG
    # this code working even, if some non-boolean value is
    # accidentally assigned to the KIBUVITS_b_DEBUG in the kibuvits_boot.rb.
    # In a way it hides a potentsial flaw, but the flaw/bug will probably
-   # become visible at some other location and the solution here
-   # just increase the probability that the system
-   # is testable during debugging.
+   # become visible at some other location and the
+   # intentionally flaw-hiding solution here increases the probability that
+   # the system is testable during debugging.
    b_selfwriting=KIBUVITS_b_DEBUG if KIBUVITS_b_DEBUG.class==TrueClass
 end # if
 if b_selfwriting
@@ -63,7 +63,7 @@ if b_selfwriting
       pthn=nil
       s_prefix=kibuvits_home+"/src/include/"
       Dir.glob(s_prefix+"*.rb").each do |a_file_path|
-         s_list_for_gem=apply_to_genlist(s_mypath, a_file_path.to_s,s_list_for_gem)
+         s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
       end # loop
       Dir.glob(kibuvits_home+"/src/include/wrappers/*.rb").each do |a_file_path|
          s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
@@ -105,7 +105,6 @@ if b_selfwriting
    end # rescue
 else
    # SELFWRIGING_REGION_START
-    require KIBUVITS_HOME+"/src/include/kibuvits_all.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_arraycursor_t1.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_io.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_graph.rb"
@@ -122,18 +121,21 @@ else
     require KIBUVITS_HOME+"/src/include/kibuvits_file_intelligence.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_str_concat_array_of_strings.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_msgc.rb"
+    require KIBUVITS_HOME+"/src/include/kibuvits_keyboard.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_gstatement.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_IDstamp_registry_t1.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_ProgFTE.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_boot.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_comments_detector.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_dependencymetrics_t1.rb"
+    require KIBUVITS_HOME+"/src/include/kibuvits_rake.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_graph_oper_t1.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_cg.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_finite_sets.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_eval.rb"
+    require KIBUVITS_HOME+"/src/include/wrappers/kibuvits_data_transfer.rb"
     require KIBUVITS_HOME+"/src/include/wrappers/kibuvits_ImageMagick.rb"
     require KIBUVITS_HOME+"/src/include/incomplete/kibuvits_whiteboard.rb"
     require KIBUVITS_HOME+"/src/include/incomplete/kibuvits_MUD.rb"

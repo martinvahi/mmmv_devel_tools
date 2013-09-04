@@ -306,7 +306,7 @@ class Kibuvits_argv_parser
       x=ar_synonyms.uniq
       if msgcs!=nil
          if KIBUVITS_b_DEBUG
-            #puts "\nx=="+Kibuvits_str.array2xseparated_list(x)+
+            #kibuvits_writeln "\nx=="+Kibuvits_str.array2xseparated_list(x)+
             #"\nar_synonyms=="+
             #Kibuvits_str.array2xseparated_list(ar_synonyms)+"\n"+
             #"s_target=="+s_target+"\n"

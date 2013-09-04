@@ -573,7 +573,7 @@ class JumpGUID_core
       s_out="\n\n-------- testmode_1 output START -----------------------------\n"+
       s_grep_output+
       "\n-------- testmode_1 output END -------------------------------\n\n"
-      puts s_out
+      kibuvits_writeln s_out
    end # act_core_cmd_testmode_t1
 
    def act_core_cmd_ls(ar_argv)
@@ -586,15 +586,15 @@ class JumpGUID_core
          "JumpGUID db txtfile path ==\n"+"     "+@s_fp_db+"\n"+
          "\n-------- ls config output END -------------------------------\n\n"
       when "guidstack_file_path"
-         print @s_fp_errstack
+         kibuvits_write @s_fp_errstack
       when "si_cursor_position"
          i_cursor_position=@ht_db[@lc_s_i_cursor_position]
-         print i_cursor_position.to_s
+         kibuvits_write i_cursor_position.to_s
       else
          kibuvits_throw("\n\n"+s_assemble_format_desc_msg()+
          "GUID='4410055e-56b4-425c-aa47-902230614dd7'\n\n")
       end # case s_ls_param
-      puts s_out
+      kibuvits_writeln s_out
    end # act_core_cmd_ls
 
    #--------------------------------------------------------------------------
@@ -665,7 +665,7 @@ end # class JumpGUID_core
 if 0<ARGV.size
    ob_core=JumpGUID_core.new
    s_out=ob_core.s_run(ARGV)
-   print(s_out)
+   kibuvits_write(s_out)
 end # if
 
 #==========================================================================

@@ -3,31 +3,45 @@
 ===========================================================================
 
 Currently complete:
-    renessaator, UpGUID, 
+    renessaator, UpGUID, JumpGUID
 
 Currently functional but need improvement:
-    JumpGUID, DumpGUID, breakdancemake,
+    DumpGUID, breakdancemake
 
 Next things to complete:
 
-    1)  Vim integration for the renessaator and UpGUID.
-    3)  Eclipse IDE-driver for JumpGUID
-    3a) Study, if it is possible to create a script-based 
-        IDE-driver for the JetBrains WebStorm IDE.
+    *) Complete the JetBrains WebStorm PMIP based IDE-driver after
+       instructions have appeared to
+       http://code.google.com/p/pmip/issues/detail?id=13
+
+    *) Write a Komodo IDE based source code
+       bookmarks system, where bookmarks are based on
+       file name and regular expression. The architecture
+       would mimic that of the JumpGUID, i.e. it would have
+       a Ruby based backend and the Komodo IDE front-end
+       would be almost copy-pasted from JumpGUID, except that
+       in addition to the Ruby based back-end and Komodo IDE
+       JavaScript based plugin it would also have a PHP
+       based web application where the server side
+       communicates with the Ruby based back-end.
+
 
 Semi-bugs:
     renessaator has a console argument, "--language", while
     the breakdancemake uses an environment variable, KIBUVITS_LANGUAGE
-    One should refactor the renessaator to use only the 
-    environment variable, the KIBUVITS_LANGUAGE, and remove the 
+    One should refactor the renessaator to use only the
+    environment variable, the KIBUVITS_LANGUAGE, and remove the
     "--language" console argument.
 
 Low-priority but interesting:
-    The primary show-stopper for running the mmmv_devel_tools
-    on windows is the kibuvits_shell.rb. Secondary show-stopper
-    is some windows specific branching crap at the kibuvits_io.rb. 
-    Best chances for success on Windows 7 seems to be with the cygwin 
-    version that comes with the Git Windows installer.
+    *) The primary show-stopper for running the mmmv_devel_tools
+       on windows is the kibuvits_shell.rb. Secondary show-stopper
+       is some windows specific branching crap at the kibuvits_io.rb.
+       Best chances for success on Windows 7 seems to be with the cygwin
+       version that comes with the Git Windows installer.
+
+    *) ScriptEclipse(http://www.viplugin.com/scripteclipse.htm )
+       based Eclipse IDE-driver for JumpGUID
 
 
 ===========================================================================

@@ -1,0 +1,52 @@
+===========================================================================
+===========================  pseudocron  ==================================
+===========================================================================
+
+ WARNING: the pseudocron is in alpha status, it's a preliminary mock-up.
+
+pseudocron is a non-daemon based cron analogue that executes only
+the tasks, "jobs", that are packed with it.
+
+
+---------------------------------------------------------------------------
+                         Table of Contents
+---------------------------------------------------------------------------
+1. Introduction
+2. Dependencies
+3. TODO
+
+---------------------------------------------------------------------------
+                          1. Introduction
+---------------------------------------------------------------------------
+
+It's a primitive form of continuous integration that is used
+for regularly rebuilding a project. There is no single, firm,
+type or style of building task or architecture.
+
+Command-line syntax:
+
+        breakdancemake pseudocron <job name> <job parameters>
+
+
+---------------------------------------------------------------------------
+                           2. Dependencies
+---------------------------------------------------------------------------
+
+The pseudocron works only as a component of the breakdancemake, which 
+is a component of the mmmv_devel_tools.
+
+The rest of the dependencies are all job specific. 
+The job "run_bash_t1" does not require anything other
+than what the mmmv_devel_tools package generally requires.
+
+---------------------------------------------------------------------------
+                          3. TODO
+---------------------------------------------------------------------------
+
+The Ruby VM has some memory corruption flaw that is a 
+real show-stopper. The rest of the info about that 
+is in the bdmroutine main file.
+
+Find out, to which extent the pseudocron idea can be used in practice.
+
+===========================================================================

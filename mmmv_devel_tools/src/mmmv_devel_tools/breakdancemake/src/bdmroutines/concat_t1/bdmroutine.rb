@@ -47,7 +47,7 @@ require BREAKDANCEMAKE_HOME+"/src/bonnet/lib/breakdancemake_inclusions.rb"
 
 #==========================================================================
 if !defined? BREAKDANCEMAKE_ROUTINE_CONCAT_T1_UI_TEXTS_INCLUDED
-   require BREAKDANCEMAKE_HOME+"/src/bdmroutines/concat_t1/lib/bdmroutine_ui_texts.rb"
+   require Pathname.new(__FILE__).realpath.parent.to_s+"/lib/bdmroutine_ui_texts.rb"
 end # if
 
 #--------------------------------------------------------------------------
@@ -161,7 +161,7 @@ class Breakdancemake_bdmroutine_concat_t1 < Breakdancemake_bdmroutine
       ht_stdstreams=sh(s_bash)
       s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
       s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
-      puts s_stdout.to_s+s_stderr.to_s
+      kibuvits_writeln s_stdout.to_s+s_stderr.to_s
    end # run_postprocess_yui_compressor_t1
 
    def run_postprocess_google_closure_t1(
@@ -182,17 +182,26 @@ class Breakdancemake_bdmroutine_concat_t1 < Breakdancemake_bdmroutine
    public
 
    def run_bdmroutine(s_language,ar_parameters,b_started_from_console)
-      breakdancemake_bdmroutine_verify_number_of_parameters_t1(s_language,
-      ar_parameters,1,1)
+      #---start--of--the--old--block---
+      # breakdancemake_bdmroutine_verify_number_of_parameters_t1(s_language,
+      # ar_parameters,1,1)
+      # s_mode=breakdancemake_bdmroutine_s_determine_mode_t1(s_language,
+      # ar_parameters,@ht_modes_t1)
+      # @ob_breakdancemake.load_bdmservice_detector_classes_if_not_already_loaded()
+      # @ob_breakdancemake.assertxmsg_dependencies_are_met(
+      # s_language,@s_bdmcomponent_name)
+      # if !b_ready_for_use
+         # kibuvits_writeln s_status(s_language)
+         # exit
+      # end # if
+      #--end-of-old--and-start-of-new
+      i_min_n_of_bdmroutine_params=1 
+      i_max_n_of_bdmroutine_params=1
+      @ob_breakdancemake.bdmroutine_init_t1(s_language,ar_parameters,
+      i_min_n_of_bdmroutine_params,i_max_n_of_bdmroutine_params,self)
       s_mode=breakdancemake_bdmroutine_s_determine_mode_t1(s_language,
       ar_parameters,@ht_modes_t1)
-      @ob_breakdancemake.load_bdmservice_detector_classes_if_not_already_loaded()
-      @ob_breakdancemake.assertxmsg_dependencies_are_met(
-      s_language,@s_bdmcomponent_name)
-      if !b_ready_for_use
-         puts s_status(s_language)
-         exit
-      end # if
+      #--end-of-new------
       ht_bdmroutine_config=@ob_breakdancemake.x_get_configuration_t1(
       @s_bdmcomponent_name)
       s_concatenation_output_file_path=ht_bdmroutine_config["s_concatenation_output_file_path"]

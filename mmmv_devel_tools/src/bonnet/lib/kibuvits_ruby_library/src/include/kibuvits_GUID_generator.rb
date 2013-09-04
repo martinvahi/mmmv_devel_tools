@@ -41,6 +41,8 @@ http://en.wikipedia.org/wiki/Globally_Unique_Identifier
 has been taken as a specification to this code, but the spec
 has not been strictly followed.
 
+http://longterm.softf1.com/specifications/third_party/ietf/www_ietf_org_rfc4122_GUID_spec.txt
+
 =end
 #==========================================================================
 
@@ -199,8 +201,8 @@ class Kibuvits_wholenumberID_generator
 end # class Kibuvits_wholenumberID_generator
 #==========================================================================
 # Sample code:
-#puts Kibuvits_GUID_generator.generate_GUID
-#puts Kibuvits_wholenumberID_generator.generate.to_s
+#kibuvits_writeln Kibuvits_GUID_generator.generate_GUID
+#kibuvits_writeln Kibuvits_wholenumberID_generator.generate.to_s
 
 #==========================================================================
 

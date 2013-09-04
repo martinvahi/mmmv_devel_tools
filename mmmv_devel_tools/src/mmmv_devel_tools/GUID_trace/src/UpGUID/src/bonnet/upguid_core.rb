@@ -129,7 +129,6 @@ class GUID_trace_UpGUID_core
       str2file(s_source_new,s_file_path)
    end # do_it_on_a_file
 
-   #http://www.youtube.com/watch?v=OZCIKjYDf1g
    def do_it_to_the_stream
       s_source=get_from_stdin
       s_source_new = replace_guids(s_source)

@@ -73,7 +73,7 @@ class Breakbeatdance_update_deployment
          "\",\nbut the breakdancemake is usable only on UNIX-like systems and \n"+
          "depends on the bash shell.\n\n"
       end # case s_language
-      puts s_msg
+      kibuvits_writeln s_msg
       exit
    end # exit_if_operating_system_type_not_supported
 

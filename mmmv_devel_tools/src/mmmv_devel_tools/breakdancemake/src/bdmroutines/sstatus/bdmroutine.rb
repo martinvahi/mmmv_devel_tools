@@ -91,7 +91,7 @@ class Breakdancemake_bdmroutine_sstatus < Breakdancemake_bdmroutine
       b_display_default_status=false
       if i_len==0
          s_msg=s_summary_for_identities(s_language)
-         puts s_msg
+         kibuvits_writeln s_msg
          exit
       else
          breakdancemake_bdmroutine_verify_number_of_parameters_t1(s_language,
@@ -123,7 +123,7 @@ class Breakdancemake_bdmroutine_sstatus < Breakdancemake_bdmroutine
          ob_bdmservice_detector=ht_bdmservice_detectors[s_bdmcomponent_name_candidate]
          s_msg=ob_bdmservice_detector.s_status(s_language)
       end # if
-      puts s_msg
+      kibuvits_writeln s_msg
    end # run_bdmroutine_attempt_to_serve
 
    public

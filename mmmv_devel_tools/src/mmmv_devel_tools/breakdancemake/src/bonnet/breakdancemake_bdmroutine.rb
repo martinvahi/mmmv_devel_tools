@@ -51,7 +51,8 @@ class Breakdancemake_bdmroutine < Breakdancemake_bdmcomponent
    # This method overrides a method from the class Breakdancemake_bdmcomponent.
    # Further comments reside in the source of the Breakdancemake_bdmcomponent.
    def s_summary_for_identities(s_language)
-      kibuvits_throw("This method is expected to be over-ridden.")
+      kibuvits_throw("This method is expected to be over-ridden."+
+      "\nGUID=='a6509781-082a-4cdf-83cc-72b190615dd7'")
    end # s_summary_for_identities
 
    # It returns true, if the bdmroutine is not usable
@@ -109,7 +110,8 @@ class Breakdancemake_bdmroutine < Breakdancemake_bdmcomponent
    #
    def run_bdmroutine(s_language,ar_parameters,b_started_from_console,
       ht_or_ob_runtime_configuration=nil)
-      kibuvits_throw("This method is expected to be over-ridden.")
+      kibuvits_throw("This method is expected to be over-ridden."+
+      "\nGUID=='441a7f2a-d10a-4c66-85cc-72b190615dd7'")
    end # run_bdmroutine
 
    #--------------------------------------------------------------------------
@@ -179,7 +181,7 @@ class Breakdancemake_bdmroutine < Breakdancemake_bdmcomponent
                "\" had \na value of \""+s_par+"\", but only the following values are supported:\n"+
                s_list+" .\n\n"
             end # case s_language
-            puts s_msg
+            kibuvits_writeln s_msg
             exit
          else
             s_mode=ht_modes[s_par]
@@ -211,21 +213,21 @@ class Breakdancemake_bdmroutine < Breakdancemake_bdmcomponent
       msg=@ob_core_ui_texts.s_breakdancemake_cl_config_is_present_but_ht_tasks_is_missing_or_of_wrong_type_t1(
       s_language,@s_bdmcomponent_name)
       if msg !=$kibuvits_lc_emptystring
-         puts(msg);exit
+         kibuvits_writeln(msg);exit
       end # if
       ht_tasks=ob_config.instance_variable_get :@ht_tasks
       s_task_name=$breakdancemake_lc_default_task
       if !ht_tasks.has_key? s_task_name
          msg=@ob_core_ui_texts.s_breakdancemake_cl_config_present_but_task_description_is_missing_from_ht_tasks_t1(
          s_language,s_task_name,s_bdmcomponent_name)
-         puts(msg);exit
+         kibuvits_writeln(msg);exit
       end # if
       return s_task_name if ar_parameters.size==0
       s_task_name=ar_parameters[0]
       if !ht_tasks.has_key? s_task_name
          msg=@ob_core_ui_texts.s_breakdancemake_cl_config_present_but_task_description_is_missing_from_ht_tasks_t1(
          s_language,s_task_name,s_bdmcomponent_name)
-         puts(msg);exit
+         kibuvits_writeln(msg);exit
       end # if
       return s_task_name
    end # breakdancemake_bdmroutine_s_determine_task_t1
@@ -253,14 +255,20 @@ class Breakdancemake_bdmroutine < Breakdancemake_bdmcomponent
          kibuvits_typecheck bn, Fixnum,i_min
          kibuvits_typecheck bn, Fixnum,i_max
          kibuvits_typecheck bn, String,s_error_message_suffix
-         if 0<=i_max
+         if i_max!=(-1)
             if i_max<i_min
                kibuvits_throw("i_max=="+i_max.to_s+
-               " < i_min=="+i_min.to_s)
+               " < i_min=="+i_min.to_s+
+               "\nGUID=='34356914-a65a-4617-a2cc-72b190615dd7'")
             end # if
          end # if
          if i_max<(-1)
-            kibuvits_throw("i_max=="+i_max.to_s+" < (-1) ")
+            kibuvits_throw("i_max=="+i_max.to_s+" < (-1) "+
+            "\nGUID=='70e1d83a-5adf-45d6-92cc-72b190615dd7'")
+         end # if
+         if i_min<0
+            kibuvits_throw("i_min=="+i_min.to_s+" < 0 "+
+            "\nGUID=='12f14738-283d-40d6-b2bc-72b190615dd7'")
          end # if
       end # if
       i_par=ar_parameters.size
@@ -285,7 +293,7 @@ class Breakdancemake_bdmroutine < Breakdancemake_bdmcomponent
             s_error_message_suffix+
             "\n"
          end # case s_language
-         puts s_msg
+         kibuvits_writeln s_msg
          exit
       end # if
       if 0<=i_max
@@ -309,7 +317,7 @@ class Breakdancemake_bdmroutine < Breakdancemake_bdmcomponent
                s_error_message_suffix+
                "\n"
             end # case s_language
-            puts s_msg
+            kibuvits_writeln s_msg
             exit
          end # if
       end # if

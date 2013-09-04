@@ -55,6 +55,6 @@ KIBUVITS_HT_GLOBAL=Hash.new if !defined? KIBUVITS_HT_GLOBAL
 #==========================================================================
 # Samples:
 #------------------------------
-#puts Kibuvits_ID_generator.generate
-#puts Kibuvits_ID_generator.generate 'a_string'
+#kibuvits_writeln Kibuvits_ID_generator.generate
+#kibuvits_writeln Kibuvits_ID_generator.generate 'a_string'
 #------------------------------

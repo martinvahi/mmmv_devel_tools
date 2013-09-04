@@ -10,12 +10,13 @@ http://en.wikipedia.org/wiki/Globally_Unique_Identifier
                          Table of Contents
 ---------------------------------------------------------------------------
 1. Introduction
-2. Dependencies
-3. Setup
-4. Currently Published Components
-5. Components that Might be part of this Project in the Future
-6. License
-7. TODO
+2. Controversy
+3. Dependencies
+4. Setup
+5. Currently Published Components
+6. Components that Might be part of this Project in the Future
+7. License
+8. TODO
 
 ---------------------------------------------------------------------------
                           1. Introduction
@@ -54,11 +55,34 @@ supports exceptions and has a possibility to print/display at least one
 exception message per run. The GUID_trace allows to debug JavaScript
 libraries in somewhat web browser independent manner.
 
+
+
 ---------------------------------------------------------------------------
-                           2. Dependencies
+                           2. Controversy
 ---------------------------------------------------------------------------
 
-The GUID_trace has been writtenn in Ruby, version 2.0 or newer, and
+On 17 May 2013 I(martin.vahi@softf1.com) received 
+very helpful feedback from Juhan-Peep Ernits
+(https://www.etis.ee/portaal/isikuCV.aspx?PersonVID=38510&lang= ),
+who figured out that the GUID-s can be replaced by the line number
+and file path that the tools provide, except when the executable is
+without debugging information or compressed.
+
+As of May 2013 I agree with that observation, but I still prefer the 
+code-cluttering GUID-s approach, because the GUID-s based
+solution does not require any tool (web browser, interpreter,
+debugger, etc.) specific code that retrieves the line number
+and file path from the tool.  For example, if a web browser extension
+were created, the extension would have to be updated as the web browsers
+evolve. GUID-s based approach clutters up the code with extra strings,
+but it does not require that kind of maintenance.
+
+
+---------------------------------------------------------------------------
+                           3. Dependencies
+---------------------------------------------------------------------------
+
+The GUID_trace has been written in Ruby, version 2.0 or newer, and
 the GUID_trace depends on Bash, grep, various other Linux command line
 tools and the Kibuvits Ruby Library (hereafter: KRL).
 The KRL is Linux specific, but sub-parts of it might work with cygwin.
@@ -71,7 +95,7 @@ are no additional dependencies, but in the case of the Eclipse, the
 http://www.viplugin.com/scripteclipse/ is mandatory.
 
 ---------------------------------------------------------------------------
-                           3. Setup
+                           4. Setup
 ---------------------------------------------------------------------------
 
 The GUID_trace uses settings from the mmmv_devel_tools settings system,
@@ -80,7 +104,7 @@ which is described at
     ./../../../src/etc/COMMENTS.txt
 
 ---------------------------------------------------------------------------
-                   4. Currently Published Components
+                   5. Currently Published Components
 ---------------------------------------------------------------------------
 
 UpGUID       --- The UpGUID is useful in a situations, where
@@ -105,11 +129,11 @@ JumpGUID     --- Scripts that allow IDE-s to navigate the stack of GUIDs
 
                  JumpGUID IDE drivers are the scripts that the IDEs load.
 
-DumpGUID     --- Facilitates the gransfer of stderr string to the JumpGUID.
+DumpGUID     --- Facilitates the transfer of stderr string to the JumpGUID.
 
 
 ---------------------------------------------------------------------------
-      5. Components that Might be part of this Project in the Future
+      6. Components that Might be part of this Project in the Future
 ---------------------------------------------------------------------------
 
 IDE_jump --- One day one might open a file at a specific
@@ -117,14 +141,14 @@ IDE_jump --- One day one might open a file at a specific
              the same file at the same location by a keystroke.
 
 ---------------------------------------------------------------------------
-                          6. License
+                          7. License
 ---------------------------------------------------------------------------
 Most, if not all, of the GUID_trace is licensed under the BSD license.
 http://www.opensource.org/licenses/bsd-license.php
 
 
 ---------------------------------------------------------------------------
-                          7. TODO
+                          8. TODO
 ---------------------------------------------------------------------------
 
 Documentation, screencasts.

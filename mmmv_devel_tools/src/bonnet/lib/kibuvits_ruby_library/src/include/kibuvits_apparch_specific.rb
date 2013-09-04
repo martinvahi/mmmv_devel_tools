@@ -48,8 +48,9 @@ end # if
 
 require  KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
 require  KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
-require  KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
 require  KIBUVITS_HOME+"/src/include/kibuvits_ix.rb"
+require  KIBUVITS_HOME+"/src/include/kibuvits_file_intelligence.rb"
+require  KIBUVITS_HOME+"/src/include/kibuvits_comments_detector.rb"
 
 #==========================================================================
 
@@ -309,27 +310,27 @@ class Kibuvits_apparch_specific
       bn_1=nil
       ar_file_names=nil
       ar_folder_names=nil
-      b_x=nil
+      b_x=false
       ar_env_names.each do |s_env_name|
          bn_1=binding()
          kibuvits_assert_ok_to_be_a_varname_t1(bn_1,s_env_name)
          case s_env_name
          when "KIBUVITS_HOME"
-            ar_file_names=["include/kibuvits_boot.rb","include/kibuvits_all.rb"]
-            ar_folder_names=["include","bonnet","dev_tools/selftests"]
+            ar_file_names=["src/include/kibuvits_boot.rb","src/include/kibuvits_all.rb"]
+            ar_folder_names=["src/include","src/dev_tools/selftests"]
             b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
             s_env_name,msgcs,ar_file_names,ar_folder_names)
             return true if b_x
             next
          when "SIREL_HOME"
-            ar_file_names=["COMMENTS.txt","src/devel/src/sirel_core.php","src/devel/src/sirel.php"]
-            ar_folder_names=["src/devel/src/bonnet","src/devel/src/lib/spyc"]
+            ar_file_names=["COMMENTS.txt","src/src/sirel_core.php","src/src/sirel.php"]
+            ar_folder_names=["src/src/bonnet","src/src/lib/spyc"]
             b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
             s_env_name,msgcs,ar_file_names,ar_folder_names)
             return true if b_x
             next
          when "RAUDROHI_HOME"
-            s_0="src/release/third_party/gnu_org/freefont/2011/"+
+            s_0="src/release/third_party/fonts/gnu_org/freefont/2011/"+
             "with_raudrhoi_specific_modifications/"+
             "raudrohi_thirdpartyspecificversion_1_FreeMono.ttf"
             ar_file_names=["COMMENTS.txt","src/dev_tools/Rakefile","src/devel/raudrohi_base.js","src/devel/raudrohi_core.js",s_0]
@@ -339,8 +340,8 @@ class Kibuvits_apparch_specific
             return true if b_x
             next
          when "MMMV_DEVEL_TOOLS_HOME"
-            ar_file_names=["COMMENTS.txt","src/etc/mmmv_devel_tools_fallback_configuration.txt"]
-            ar_folder_names=["src/mmmv_devel_tools","src/bonnet"]
+            ar_file_names=["COMMENTS.txt","src/etc/mmmv_devel_tools_default_configuration.rb"]
+            ar_folder_names=["src/mmmv_devel_tools","src/bonnet","src/etc","src/api"]
             b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
             s_env_name,msgcs,ar_file_names,ar_folder_names)
             return true if b_x
@@ -360,6 +361,87 @@ class Kibuvits_apparch_specific
       s_or_ar_environment_variable_names,msgcs)
       return b_out
    end # Kibuvits_apparch_specific.b_softf1_com_envs_NOT_OK
+
+   #-----------------------------------------------------------------------
+
+   # Files will not be modified.
+   # The text that is read from comment string files
+   # is converted to a block of single-liner-comments.
+   #
+   # The single-liner comment start string is determined
+   # by the file extension of the s_fp_src.
+   #
+   # Returns a string.
+   def s_prefix_a_source_file_with_comment_texts_t1(
+      s_fp_src,s_fp_or_ar_fp_comment_strings,msgcs)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, String, s_fp_src
+         kibuvits_typecheck bn, [Array,String], s_fp_or_ar_fp_comment_strings
+         kibuvits_assert_ar_elements_typecheck_if_is_array(
+         bn,String,s_fp_or_ar_fp_comment_strings)
+      end # if
+      #--------
+      ar_fp=[s_fp_src]
+      if s_fp_or_ar_fp_comment_strings.class==Array
+         ar_fp=ar_fp+s_fp_or_ar_fp_comment_strings
+      else
+         ar_fp<<s_fp_or_ar_fp_comment_strings
+      end # if
+      ht_filesystemtest_failures=Kibuvits_fs.verify_access(
+      ar_fp,'is_file,readable')
+      s_output_message_language="English"
+      b_throw=true
+      Kibuvits_fs.exit_if_any_of_the_filesystem_tests_failed(
+      ht_filesystemtest_failures,s_output_message_language,b_throw)
+      #--------
+      ar_fp_comment_strings=Kibuvits_ix.normalize2array(
+      s_fp_or_ar_fp_comment_strings)
+      ar_s_comment_strings=Array.new
+      s_comment=nil
+      ar_fp_comment_strings.each do |s_fp|
+         s_comment=file2str(s_fp)
+         ar_s_comment_strings<<s_comment
+      end # loop
+      #--------
+      s_lang_name=Kibuvits_file_intelligence.file_language_by_file_extension(
+      s_fp_src,msgcs)
+      if msgcs.b_failure
+         kibuvits_throw("msgcs.to_s=="+msgcs.to_s+
+         " \nGUID='25d12a20-dffc-427c-8171-f1d160b17dd7'")
+      end # if
+      s_singleliner_prefix=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
+      s_lang_name,msgcs)+$kibuvits_lc_space
+      #--------
+      s_sl_prefix=s_singleliner_prefix+$kibuvits_lc_space
+      s_sl_prefix_lb_0=s_singleliner_prefix+$kibuvits_lc_linebreak
+      s_sl_prefix_lb_1=s_singleliner_prefix+"="*(75-s_singleliner_prefix.length)+$kibuvits_lc_linebreak
+      s_sl_prefix_lb_2=s_sl_prefix_lb_0+s_sl_prefix_lb_1+s_sl_prefix_lb_0
+      ar_s_comment_strings_1=Array.new
+      ar_lines=nil
+      ar_s_comment_strings.each do |s_comment|
+         ar_lines=Array.new
+         s_comment.each_line do |s_line|
+            ar_lines<<(s_sl_prefix+s_line)
+         end # loop
+         ar_lines<<s_sl_prefix_lb_2
+         ar_s_comment_strings_1<<kibuvits_s_concat_array_of_strings(ar_lines)
+      end # loop
+      #--------
+      # The content of the file with the
+      # path of the s_fp_src is not a comment string, but
+      # it's more efficient to reuse the ar_s_comment_strings_1 instance.
+      ar_s_comment_strings_1<<(file2str(s_fp_src))
+      s_out=kibuvits_s_concat_array_of_strings(ar_s_comment_strings_1)
+      return s_out
+   end # prefix_a_source_file_with_comment_text_t1
+
+   def Kibuvits_apparch_specific.s_prefix_a_source_file_with_comment_texts_t1(
+      s_fp_src,s_fp_or_ar_fp_comment_strings,msgcs)
+      s_out=Kibuvits_apparch_specific.instance.s_prefix_a_source_file_with_comment_texts_t1(
+      s_fp_src,s_fp_or_ar_fp_comment_strings,msgcs)
+      return s_out
+   end # Kibuvits_apparch_specific.s_prefix_a_source_file_with_comment_texts_t1
 
    #-----------------------------------------------------------------------
 
