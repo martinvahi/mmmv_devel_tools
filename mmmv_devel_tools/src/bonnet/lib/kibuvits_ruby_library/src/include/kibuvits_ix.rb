@@ -340,10 +340,7 @@ class Kibuvits_ix
 
    #-----------------------------------------------------------------------
 
-   public
    include Singleton
-   # The Kibuvits_dependencymetrics_t1.selftest analogue is
-   # in a separate selftest file.
 
 end # class Kibuvits_ix
 #==========================================================================

@@ -472,10 +472,9 @@ class Kibuvits_dependencymetrics_t1
       return fd_x,ht_dependencies
    end # Kibuvits_dependencymetrics_t1.fd_ht_get_availability
 
-   public
+   #-----------------------------------------------------------------------
+
    include Singleton
-   # The Kibuvits_dependencymetrics_t1.selftest analogue is
-   # in a separate selftest file.
 
 end # class Kibuvits_dependencymetrics_t1
 

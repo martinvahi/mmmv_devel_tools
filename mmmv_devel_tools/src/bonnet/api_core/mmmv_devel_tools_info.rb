@@ -27,7 +27,11 @@ class C_mmmv_devel_tools_info
    def s_doc(s_optional_GUID="")
       s_out="\n\nCommand line arguments: "+
       "\n"+
-      "\n        (get_config <ht_config key>)"+
+      "\n        (get_config <ht_config key>)\n"+
+      "\n"+
+      "For example:\n"+
+      "\n"+
+      "        get_config s_GUID_trace_errorstack_file_path\n"+
       "\n\n"
       if 0<s_optional_GUID.length
          s_out=s_out+

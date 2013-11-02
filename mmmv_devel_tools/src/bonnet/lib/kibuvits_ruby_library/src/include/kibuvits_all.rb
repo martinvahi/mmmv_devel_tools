@@ -44,7 +44,8 @@ if defined? KIBUVITS_b_DEBUG
    # The TrueClass is used in stead of the boolean "true" to keep
    # this code working even, if some non-boolean value is
    # accidentally assigned to the KIBUVITS_b_DEBUG in the kibuvits_boot.rb.
-   # In a way it hides a potentsial flaw, but the flaw/bug will probably
+   #
+   # That solution hides a flaw, but the flaw/bug will probably
    # become visible at some other location and the
    # intentionally flaw-hiding solution here increases the probability that
    # the system is testable during debugging.
@@ -71,7 +72,10 @@ if b_selfwriting
       Dir.glob(kibuvits_home+"/src/include/incomplete/*.rb").each do |a_file_path|
          s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
       end # loop
-      Dir.glob(kibuvits_home+"/src/include/deprecated/*.rb").each do |a_file_path|
+      Dir.glob(kibuvits_home+"/src/include/brutal_workarounds/*.rb").each do |a_file_path|
+         s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
+      end # loop
+      Dir.glob(kibuvits_home+"/src/include/security/*.rb").each do |a_file_path|
          s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
       end # loop
       Dir.glob(kibuvits_home+"/src/include/bonnet/*.rb").each do |a_file_path|
@@ -139,9 +143,8 @@ else
     require KIBUVITS_HOME+"/src/include/wrappers/kibuvits_ImageMagick.rb"
     require KIBUVITS_HOME+"/src/include/incomplete/kibuvits_whiteboard.rb"
     require KIBUVITS_HOME+"/src/include/incomplete/kibuvits_MUD.rb"
-    require KIBUVITS_HOME+"/src/include/incomplete/kibuvits_szr.rb"
-    require KIBUVITS_HOME+"/src/include/deprecated/kibuvits_iteratable_tree_t1.rb"
-    require KIBUVITS_HOME+"/src/include/deprecated/kibuvits_deprecated_str.rb"
+    require KIBUVITS_HOME+"/src/include/brutal_workarounds/kibuvits_str_configfileparser.rb"
+    require KIBUVITS_HOME+"/src/include/security/kibuvits_cryptcodec_txor_t1.rb"
     require KIBUVITS_HOME+"/src/include/bonnet/kibuvits_os_codelets.rb"
 
  # SELFWRIGING_REGION_END

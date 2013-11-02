@@ -78,8 +78,7 @@ class Kibuvits_keyboard
 
    #--------------------------------------------------------------------------
 
-   # ht_str2func keys are strings and values are ruby blocks
-   # that can be created by using the kibuvits_dec_lambda(...)
+   # ht_str2func keys are strings and values are Ruby lambda functions.
    #
    # Whenever a string that is a key of the ht_str2func is
    # entered during the running of the thread, the function that

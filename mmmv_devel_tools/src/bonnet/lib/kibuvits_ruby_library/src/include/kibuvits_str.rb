@@ -50,7 +50,6 @@ require  KIBUVITS_HOME+"/src/include/kibuvits_msgc.rb"
 require  KIBUVITS_HOME+"/src/include/kibuvits_ix.rb"
 require  KIBUVITS_HOME+"/src/include/kibuvits_str_concat_array_of_strings.rb"
 
-require "time"
 #==========================================================================
 
 class Kibuvits_str
@@ -369,8 +368,6 @@ class Kibuvits_str
 
    #-----------------------------------------------------------------------
 
-   public
-
    # It modifies the input array.
    def Kibuvits_str.sort_by_length(array_of_strings, longest_strings_first=true)
       if longest_strings_first
@@ -382,8 +379,6 @@ class Kibuvits_str
    end # Kibuvits_str.sort_by_length
 
    #-----------------------------------------------------------------------
-
-   public
 
    # ribboncut("YY","xxYYmmmmYY")->["xx","mmmm",""]
    # ribboncut("YY","YYxxYYmmmm")->["","xx","mmmm"]
@@ -594,6 +589,130 @@ class Kibuvits_str
    end # Kibuvits_str.s_batchreplace
 
    #-----------------------------------------------------------------------
+
+   # The core idea is that if stripes of multiple
+   # colors are painted side by side and a paint
+   # roller is rolled across the stripes, so that the
+   # path of the paint roller intersects the stripes, then the
+   # paint roller can be used for painting a repeating
+   # pattern of the stripes at some other place.
+   #
+   # If the s_or_rgx_needle is a string, then it is
+   # used as a searchstring, not as a regular expression constructor
+   # parameter.
+   #
+   # The substitution string can be supplied by a function
+   # that takes an iteration index, starting from 0, as a
+   # parameter. An example, how to crate a 3-stripe provider:
+   #
+   def s_paintrollerreplace(s_or_rgx_needle_id_est_stripe_placeholder,
+      s_or_ar_of_substitution_strings_or_a_function_ie_stripes, s_haystack)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [Regexp,String], s_or_rgx_needle_id_est_stripe_placeholder
+         kibuvits_typecheck bn, [Proc,Array,String], s_or_ar_of_substitution_strings_or_a_function_ie_stripes
+         kibuvits_typecheck bn, String, s_haystack
+      end # if
+      #-------
+      rgx_needle=s_or_rgx_needle_id_est_stripe_placeholder
+      cl=rgx_needle.class
+      if cl==String
+         rgx_needle=Regexp.new(s_or_rgx_needle_id_est_stripe_placeholder)
+         cl=Regexp
+      end # if
+      if cl!=Regexp
+         kibuvits_throw("rgx_needle.class=="+cl.to_s+
+         "\n GUID='f047365e-adf4-48f6-b38d-b33211f1add7'\n\n")
+      end # if
+      #-------
+      func_paintroller=s_or_ar_of_substitution_strings_or_a_function_ie_stripes
+      cl=func_paintroller.class
+      if cl==String
+         func_paintroller=[func_paintroller]
+         cl=Array
+      end # if
+      ar_stripes=nil
+      if cl==Array
+         ar_stripes=func_paintroller
+         func_paintroller=lambda do |i_n|
+            i_sz=ar_stripes.size
+            if KIBUVITS_b_DEBUG
+               if i_n<0
+                  kibuvits_throw("i_n == "+i_n.to_s+" < 0 "+
+                  "\n GUID='4d4a9940-a2c1-41b8-b48d-b33211f1add7'\n\n")
+               end # if
+               if i_sz<1
+                  kibuvits_throw("ar_stripes.size == "+i_sz.to_s+" < 1 "+
+                  "\n GUID='1d379b30-462f-4605-a18d-b33211f1add7'\n\n")
+               end # if
+            end # if
+            i_ix=i_n%i_sz
+            x_out=ar_stripes[i_ix]
+            if KIBUVITS_b_DEBUG
+               if x_out.class!=String # to avoid the string instantiation
+                  bn=binding()
+                  msg="i_n=="+i_n.to_s+" i_sz=="+i_sz.to_s+" i_ix=="+i_ix.to_s+
+                  "\n GUID='41ad1584-51d1-461a-a38d-b33211f1add7'\n\n"
+                  kibuvits_typecheck bn, String, x_out, msg
+               end # if
+            end # if
+            return x_out
+         end # func
+         cl=Proc
+      end # if
+      if KIBUVITS_b_DEBUG
+         if cl!=Proc
+            kibuvits_throw("func_paintroller.class=="+cl.to_s+
+            "\n GUID='94b3df0f-8815-43ac-837d-b33211f1add7'\n\n")
+         end # if
+         if !func_paintroller.lambda?
+            # There are 2 different types of Proc instances:
+            # plain Ruby blocks and the ones that are created with the
+            # lambda keyword.
+            kibuvits_throw("func_paintroller.lambda? != true"+
+            "\n GUID='4800a5e4-9d39-4f28-b47d-b33211f1add7'\n\n")
+         end # if
+      end # if
+      #-------
+      s_hay=s_haystack
+      ar_s=Array.new
+      md=nil
+      ar_pair_and_speedhack=Array.new(2,$kibuvits_lc_emptystring)
+      s_left=nil
+      s_right=nil
+      ix_paintroller=0
+      while true
+         md=s_hay.match(rgx_needle)
+         break if md==nil
+         # At this line the separator always exists in the s_hay.
+         ar_pair_and_speedhack=ar_bisect(s_hay,md[0],ar_pair_and_speedhack)
+         s_left=ar_pair_and_speedhack[0]
+         s_right=ar_pair_and_speedhack[1]
+         if s_left==$kibuvits_lc_emptystring
+            ar_s<<func_paintroller.call(ix_paintroller)
+            s_hay=s_right
+         else
+            ar_s<<s_left
+            ar_s<<func_paintroller.call(ix_paintroller)
+            s_hay=s_right
+            break if s_right==$kibuvits_lc_emptystring
+         end # if
+         ix_paintroller=ix_paintroller+1
+      end # loop
+      ar_s<<s_hay
+      s_out=kibuvits_s_concat_array_of_strings(ar_s)
+      return s_out
+   end # s_paintrollerreplace
+
+   def Kibuvits_str.s_paintrollerreplace(s_or_rgx_needle_id_est_stripe_placeholder,
+      s_or_ar_of_substitution_strings_or_a_function_ie_stripes, s_haystack)
+      s_out=Kibuvits_str.instance.s_paintrollerreplace(
+      s_or_rgx_needle_id_est_stripe_placeholder,
+      s_or_ar_of_substitution_strings_or_a_function_ie_stripes, s_haystack)
+      return s_out
+   end # Kibuvits_str.s_paintrollerreplace
+
+   #-----------------------------------------------------------------------
    public
 
    # A citation from http://en.wikipedia.org/wiki/Newline
@@ -647,7 +766,6 @@ class Kibuvits_str
    end # Kibuvits_str.get_array_of_linebreaks
 
    #-----------------------------------------------------------------------
-   public
 
    def normalise_linebreaks(s,substitution_string=$kibuvits_lc_linebreak)
       s_subst=substitution_string
@@ -665,14 +783,13 @@ class Kibuvits_str
    end # Kibuvits_str.normalise_linebreaks
 
    #-----------------------------------------------------------------------
-   public
 
    # It returns an array of 2 elements. If the separator is not
    # found, the array[0]==input_string and array[1]=="".
    #
    # The ar_output is for array instance reuse and is expected
    # to increase speed a tiny bit at "snatching".
-   def bisect(input_string,separator_string,ar_output=Array.new(2,""))
+   def ar_bisect(input_string,separator_string,ar_output=Array.new(2,$kibuvits_lc_emptystring))
       # If one updates this code, then one should also copy-paste
       # an updated version of this method to the the ProgFTE implemntation.
       # The idea behind such an arrangement is that the ProgFTE implementation
@@ -694,58 +811,59 @@ class Kibuvits_str
       i=input_string.index(separator_string)
       if(i==nil)
          ar[0]=input_string
-         ar[1]=""
+         ar[1]=$kibuvits_lc_emptystring
          return ar;
       end # if
       if i==0
-         ar[0]=""
+         ar[0]=$kibuvits_lc_emptystring
       else
          ar[0]=input_string[0..(i-1)]
       end # if
       i_input_stringlen=input_string.length
       if (i+i_separator_stringlen)==i_input_stringlen
-         ar[1]=""
+         ar[1]=$kibuvits_lc_emptystring
       else
          ar[1]=input_string[(i+i_separator_stringlen)..(-1)]
       end # if
       return ar
-   end # bisect
+   end # ar_bisect
 
-   def Kibuvits_str.bisect(input_string, separator_string,
+   def Kibuvits_str.ar_bisect(input_string, separator_string,
       ar_output=Array.new(2,""))
-      ar=Kibuvits_str.instance.bisect(input_string,separator_string,
+      ar=Kibuvits_str.instance.ar_bisect(input_string,separator_string,
       ar_output)
       return ar
-   end # Kibuvits_str.bisect
+   end # Kibuvits_str.ar_bisect
 
    #-----------------------------------------------------------------------
-   public
 
    # Returns an array of strings that contains only the snatched string pieces.
-   def snatch_n_times(haystack_string, separator_string,n)
+   def snatch_n_times_t1(s_haystack,s_separator,n)
       # If one updates this code, then one should also copy-paste
       # an updated version of this method to the the ProgFTE implemntation.
       # The idea behind such an arrangement is that the ProgFTE implementation
       # is not allowed to have any dependencies other than the library booting code.
       if @b_kibuvits_bootfile_run
          bn=binding()
-         kibuvits_typecheck bn, String, haystack_string
-         kibuvits_typecheck bn, String, separator_string
+         kibuvits_typecheck bn, String, s_haystack
+         kibuvits_typecheck bn, String, s_separator
          kibuvits_typecheck bn, Fixnum, n
       end # if
-      if(separator_string=="")
+      if(s_separator=="")
          exc=Exception.new("\nThe separator string had a "+
          "value of \"\", but empty strings are not "+
-         "allowed to be used as separator strings.");
+         "allowed to be used as separator strings.\n"+
+         "GUID='7dc79824-54a5-46fa-837d-b33211f1add7'\n\n")
          if @b_kibuvits_bootfile_run
             kibuvits_throw(exc)
          else
             raise(exc)
          end # if
       end # if
-      s_hay=haystack_string
+      s_hay=s_haystack
       if s_hay.length==0
-         exc=Exception.new("haystack_string.length==0")
+         exc=Exception.new("s_haystack.length==0 \n"+
+         "GUID='78097a23-9c84-44d9-937d-b33211f1add7'\n\n")
          if @b_kibuvits_bootfile_run
             kibuvits_throw(exc)
          else
@@ -755,26 +873,28 @@ class Kibuvits_str
       # It's a bit vague, whether '' is also present at the
       # very end and very start of the string or only between
       # characters. That's why there's a limitation, that the
-      # separator_string may not equal with the ''.
-      if separator_string.length==0
-         exc=Exception.new("separator_string.length==0")
+      # s_separator may not equal with the ''.
+      if s_separator.length==0
+         exc=Exception.new("s_separator.length==0\n"+
+         "GUID='1827df62-991c-4524-839c-b33211f1add7'\n\n")
          if @b_kibuvits_bootfile_run
             kibuvits_throw(exc)
          else
             raise(exc)
          end # if
       end # if
-      s_hay=""+haystack_string
+      s_hay=""+s_haystack
       ar=Array.new
       ar1=Array.new(2,"")
       n.times do |i|
-         ar1=bisect(s_hay,separator_string,ar1)
+         ar1=ar_bisect(s_hay,s_separator,ar1)
          ar<<ar1[0]
          s_hay=ar1[1]
          if (s_hay=='') and ((i+1)<n)
             exc=Exception.new("Expected number of separators is "+n.to_s+
-            ", but the haystack_string contained only "+(i+1).to_s+
-            "separator strings.")
+            ", but the s_haystack contained only "+(i+1).to_s+
+            "separator strings.\n"+
+            "GUID='0321fdca-b2aa-47c2-849c-b33211f1add7'\n\n")
             if @b_kibuvits_bootfile_run
                kibuvits_throw(exc)
             else
@@ -783,12 +903,105 @@ class Kibuvits_str
          end # if
       end # loop
       return ar;
-   end # snatch_n_times
+   end # snatch_n_times_t1
 
-   def Kibuvits_str.snatch_n_times(haystack_string, separator_string,n)
-      ar_out=Kibuvits_str.instance.snatch_n_times(haystack_string, separator_string,n)
+   def Kibuvits_str.snatch_n_times_t1(s_haystack, s_separator,n)
+      ar_out=Kibuvits_str.instance.snatch_n_times_t1(s_haystack, s_separator,n)
       return ar_out
-   end # Kibuvits_str.snatch_n_times
+   end # Kibuvits_str.snatch_n_times_t1
+
+   #-----------------------------------------------------------------------
+
+   # Header is in a form:
+   #  header_data_length_in_decimaldigits|header_data|therest_of_the_string
+   #
+   # Throws, if the header is not found.
+   # Returns a pair, (s_left, s_right), where
+   #
+   #  s_left == header_data
+   # s_right == therest_of_the_string
+   #
+   # The header_data and the therest_of_the_string
+   # can be empty strings.
+   #
+   # An example:
+   #
+   #     s_in=="11|abc abc abc|the rest of the text"
+   #
+   #     s_left,s_right=s_s_bisect_by_header_t1(s_in)
+   #
+   #      s_left=="abc abc abc"
+   #     s_right=="the rest of the text"
+   #
+   # The header based architecture is useful, when working with
+   # files that do not fit into available RAM.
+   def s_s_bisect_by_header_t1(s_in,msgcs)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, String, s_in
+         kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
+         if msgcs.b_failure
+            kibuvits_throw("\nmsgcs.b_failure == true "+
+            "\n GUID='8e9dcb1c-ed87-420c-a59c-b33211f1add7'\n\n")
+         end # if
+      end # if
+      s_left=$kibuvits_lc_emptystring
+      s_right=$kibuvits_lc_emptystring
+      rgx=/^[\d]+[|]/
+      md=s_in.match(rgx)
+      if md==nil
+         s_default_msg="Header data length is missing."
+         s_message_id="data_fault_t1"
+         b_failure=true
+         msgcs.cre(s_default_msg,s_message_id,b_failure,
+         "593c1c80-a630-4d76-838d-b33211f1add7")
+         return s_left,s_right
+      end # if
+      i_len_s_in=s_in.length # s_in=="10|heder_data|therestofblabla"
+      s_0=md[0] # "10|"
+      i_len_header_data=(s_0[0..(-2)]).to_i # "10".to_i
+      i_len_s_0=s_0.length
+      if (i_len_s_in-i_len_s_0-i_len_header_data-1)<0
+         # It's OK for the therestofblabla to be an empty string.
+         s_default_msg="\nFlawed header. i_len_header_data =="+
+         i_len_header_data.to_s+
+         "\ncontradicts with s_in.length == "+i_len_s_in.to_s
+         s_message_id="data_fault_t2"
+         b_failure=true
+         msgcs.cre(s_default_msg,s_message_id,b_failure,
+         "53a616d6-39f5-4b60-858d-b33211f1add7")
+         return s_left,s_right
+      end # if
+      # Due to the regular expression, rgx, 2<=i_len_s_0
+      s_1=s_in[i_len_s_0..(-1)] # "heder_data|therestofblabla"
+      # It's OK for the header_data to be an empty string.
+      ixs_low=0
+      ixs_high=i_len_header_data
+      s_left=Kibuvits_ix.sar(s_1,ixs_low,ixs_high)
+      # However, the header might not exist, if the
+      # s_1=="heder_data_therestofblabla"
+      if s_1[i_len_header_data..i_len_header_data]!=$kibuvits_lc_pillar
+         s_default_msg="\nFlawed header, i.e. the header is considered\n"+
+         "to be missing, because the header data block is \n"+
+         "not followed by a \"pillar character\" (\"|\"). \n"+
+         "\n GUID='20bb9ced-6a2c-4d33-b39c-b33211f1add7'\n\n"
+         s_message_id="data_fault_t3"
+         b_failure=true
+         msgcs.cre(s_default_msg,s_message_id,b_failure,
+         "dfa6d1ed-87b4-4104-a98d-b33211f1add7")
+         return s_left,s_right
+      end # if
+      # In Ruby "x"[1..(-1)]==""
+      #         "x"[2..(-1)]==nil
+      s_right=s_1[(i_len_header_data+1)..(-1)] # +1 due to the "|"
+      return s_left,s_right
+   end # s_s_bisect_by_header_t1
+
+   def Kibuvits_str.s_s_bisect_by_header_t1(s_in,msgcs)
+      s_left,s_right=Kibuvits_str.instance.s_s_bisect_by_header_t1(
+      s_in,msgcs)
+      return s_left,s_right
+   end # Kibuvits_str.s_s_bisect_by_header_t1
 
    #-----------------------------------------------------------------------
    public
@@ -819,7 +1032,7 @@ class Kibuvits_str
    # It mimics the PHP explode function, but it's not a one to one copy of it.
    # Practically, it converts the s_haystack to an array
    # and uses the s_needle as a separator at repetitive bisection.
-   def explode(s_haystack, s_needle)
+   def ar_explode(s_haystack, s_needle)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, String, s_haystack
@@ -837,14 +1050,14 @@ class Kibuvits_str
       ar_out=Array.new
       i_needlecount=Kibuvits_str.count_substrings(s_haystack, s_needle)
       s_hay=s_haystack+s_needle
-      ar_out=Kibuvits_str.snatch_n_times(s_hay,s_needle,(i_needlecount+1))
+      ar_out=Kibuvits_str.snatch_n_times_t1(s_hay,s_needle,(i_needlecount+1))
       return ar_out
-   end # explode
+   end # ar_explode
 
-   def Kibuvits_str.explode(s_haystack, s_needle)
-      ar_out=Kibuvits_str.instance.explode s_haystack, s_needle
+   def Kibuvits_str.ar_explode(s_haystack, s_needle)
+      ar_out=Kibuvits_str.instance.ar_explode s_haystack, s_needle
       return ar_out
-   end # Kibuvits_str.explode
+   end # Kibuvits_str.ar_explode
 
    #-----------------------------------------------------------------------
    public
@@ -855,7 +1068,7 @@ class Kibuvits_str
          kibuvits_typecheck bn, String, s_haystack
          kibuvits_typecheck bn, String, s_separator
       end # if
-      ar=explode(s_haystack,s_separator)
+      ar=ar_explode(s_haystack,s_separator)
       ht_out=Hash.new
       s=nil
       i=42
@@ -995,7 +1208,8 @@ class Kibuvits_str
       i_smax=a_string.length-1
       if Kibuvits_str.index_is_outside_of_the_string(a_string,i_ix)
          kibuvits_throw "index_of_the_character=="+i_ix.to_s+" is outside of "+
-         "string a_string==\""+a_string+"\"."
+         "string a_string==\""+a_string+"\".\n"+
+         "GUID='84020d56-06f8-4712-839c-b33211f1add7'\n\n"
       end # if
       s_char=a_string[i_ix..i_ix]
       i_count=0
@@ -1572,14 +1786,13 @@ class Kibuvits_str
    end # Kibuvits_str.s_get_substring_by_bounds
 
    #-----------------------------------------------------------------------
-
    include Singleton
-   # The Kibuvits_str.selftest analogue is
-   # in a separate selftest file.
 
 end # class Kibuvits_str
 
 #==========================================================================
 # Samples:
-# TODO: Start using the new msgc spec
-# kibuvits_writeln Kibuvits_str.selftest.to_s
+# TODO: fix the next example
+#s_haystack="ABBCDDD"
+#s_0=Kibuvits_str.s_get_substring_by_bounds(s_haystack,"A","CD")
+#kibuvits_writeln s_0

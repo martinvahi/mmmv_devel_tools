@@ -99,11 +99,11 @@ class Kibuvits_fs
       s_1=s_2.sub(/[,]$/,$kibuvits_lc_emptystring)
       if s_1.length==0
          kibuvits_throw "\nThe Kibuvits_fs.verify_access did not "+
-         "recieve a valid checks specification. s_checks_specification=="+
+         " a valid checks specification. s_checks_specification=="+
          s_checks_specification+" \n"
       end # if
 
-      ar=Kibuvits_str.explode s_1, $kibuvits_lc_comma
+      ar=Kibuvits_str.ar_explode s_1, $kibuvits_lc_comma
       ar_cmds=[]
       ar.each{|s| ar_cmds<<Kibuvits_str.trim(s)}
       ht_out=verify_access_create_flagset
@@ -283,7 +283,7 @@ class Kibuvits_fs
                      if !b_is_directory
                         msgc=Kibuvits_msgc.new
                         msgc['English']="\""+s_file_path_candidate+
-                        "\" is a file, but a foder is required."
+                        "\" is a file, but a folder is required."
                         msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
                         "\" on fail, kuid nõutud on kataloog."
                         verify_access_register_failure(
@@ -622,9 +622,9 @@ class Kibuvits_fs
       s_ostype=Kibuvits_os_codelets.get_os_type if s_ostype==nil
       case s_ostype
       when $kibuvits_lc_kibuvits_ostype_unixlike
-         ar=Kibuvits_str.explode(s_path,$kibuvits_lc_slash)
+         ar=Kibuvits_str.ar_explode(s_path,$kibuvits_lc_slash)
       when $kibuvits_lc_kibuvits_ostype_windows
-         ar=Kibuvits_str.explode(s_path,$kibuvits_lc_backslash)
+         ar=Kibuvits_str.ar_explode(s_path,$kibuvits_lc_backslash)
       else
          kibuvits_throw("Ostype \""+s_ostype+
          "\" is not yet supported by this method.")
@@ -807,7 +807,7 @@ class Kibuvits_fs
    # and the process access rights are that of the file owner's,
    # then it will not chmod the access rights to the 0700.
    # The rationale is that if a file or folder
-   # has been made acessible to everyone, then there's no
+   # has been made  to everyone, then there's no
    # point of denying access to it.
    #
    def chmod_recursive_secure_7(ar_or_s_file_or_folder_path)
@@ -820,7 +820,7 @@ class Kibuvits_fs
          ar_fp.each do |s_fp|
             if !File.exists? s_fp
                kibuvits_throw("The file or folder \n"+s_fp+
-               "\ndoes not exist. GUID='15624f05-9a5f-4c9e-b730-714380307dd7'\n")
+               "\ndoes not exist. GUID='3e15a6c4-63fd-404a-a7a5-636011119dd7'\n")
             end # if
             if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
                if File.directory? s_fp
@@ -833,7 +833,7 @@ class Kibuvits_fs
             # owner of the file and the file had previously
             # a permission of 0770, then "chmod 0700 filename"
             # would lock the user out.
-            File.chmod(0777,s_fp) # access descrition must contain 4 digits, or a flaw is introduced
+            File.chmod(0777,s_fp) # access  must contain 4 digits, or a flaw is introduced
             if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
                if File.directory? s_fp
                   ar=Dir.glob(s_fp+$kibuvits_lc_slashstar)
@@ -845,7 +845,7 @@ class Kibuvits_fs
             s_1="The folder " if File.directory? s_fp
             kibuvits_throw(s_1+",\n"+s_fp+
             "\nexists, but its access rights could not be changed to 7 for \n"+
-            "the owner of the current process. GUID='6cf9404c-3638-4010-a230-714380307dd7'")
+            "the owner of the current process. GUID='d5924319-7970-43bc-b3a5-636011119dd7'")
          end # loop
       end # synchronize
    end # chmod_recursive_secure_7
@@ -874,7 +874,7 @@ class Kibuvits_fs
             kibuvits_throw("There exists some sort of a flaw, because the "+s_1+"\n"+s_fp+
             "\ncould not be deleted despite the fact that recursive chmod-ding \n"+
             "takes, or at least should take, place before the recursive deletion.\n"+
-            "GUID='539972aa-a02f-4bc6-8520-714380307dd7'\n")
+            "GUID='8ce3c841-4eea-4a48-b1a5-636011119dd7'\n")
          end # if
       end # loop
    end # impl_rm_fr_part_1
@@ -892,7 +892,7 @@ class Kibuvits_fs
    # if its parent folder is not writable.
    #
    # It does not throw, if the root folder or file
-   # does not exist, regardless of wether the parent
+   # does not exist, regardless of  the parent
    # folder of the root folder or file exists or is writable.
    def rm_fr(ar_or_s_file_or_folder_path)
       if KIBUVITS_b_DEBUG
@@ -915,11 +915,11 @@ class Kibuvits_fs
             s_parent_path=ob_pth.dirname.to_s
             # Here the (File.exists? s_parent_path)==true
             # because every existing file or folder that
-            # is not the "/" defenately has an existing parent
+            # is not the "/"  has an existing parent
             # and the Pathname.new("/").to_s=="/"
             if !File.writable? s_parent_path
                kibuvits_throw("Folder \n"+s_parent_path+
-               "\nis not writable. GUID='2d940385-f628-424d-b520-714380307dd7'\n")
+               "\nis not writable. GUID='5da3e223-b1f2-40d8-8da5-636011119dd7'\n")
             end # if
             s_fp=s_file_or_folder_path
             chmod_recursive_secure_7(s_fp) # throws, if the chmod-ding fails
@@ -1035,7 +1035,7 @@ class Kibuvits_fs
             s_default_msg="\n\""+x_candidate.to_s+
             "\",\n is not considered to be suitable for a "+
             "file or folder base name. \n"+
-            "GUID='ba8f9034-5bd5-4ee9-a220-714380307dd7'\n\n"
+            "GUID='4cb48bb6-fb8e-46e0-b3a5-636011119dd7'\n\n"
             #s_message_id="throw_1"
             #b_failure=false
             #msgcs.cre(s_default_msg,s_message_id,b_failure)
@@ -1053,7 +1053,7 @@ class Kibuvits_fs
          #    s_default_msg="\n\""+x_candidate.to_s+
          #    "\",\n is not considered to be suitable for a "+
          #    "file or folder base name. \n"+
-         #    "GUID='dcc9f35b-b9c6-4a2a-a520-714380307dd7'\n\n"
+         #    "GUID='48a24239-544c-42d4-a595-636011119dd7'\n\n"
          #s_message_id="throw_1"
          #b_failure=false
          #msgcs.cre(s_default_msg,s_message_id,b_failure)
@@ -1089,7 +1089,7 @@ class Kibuvits_fs
 
    public
 
-   # The evironment variable that is referenced by the
+   # The  variable that is referenced by the
    # s_environment_variable_name is tested to have a value of a
    # full path to an existing folder or a file.
    #
@@ -1391,7 +1391,7 @@ class Kibuvits_fs
    # In the context of this method file deletion is NOT considered
    # as file modification operation.
    #
-   # Returns true, if the chache is emtied.
+   # Returns true, if the cache is omitted.
    # The cache is emptied if the cache max. size is reached.
    def b_files_that_exist_changed_after_last_check_t1(
       ar_or_s_fp_file_or_folder, i_cache_max_size)

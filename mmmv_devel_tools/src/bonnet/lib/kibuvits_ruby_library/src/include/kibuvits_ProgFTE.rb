@@ -116,7 +116,7 @@ class Kibuvits_ProgFTE_v0
    end # bisect
 
    # Returns an array of strings that contains only the snatched string pieces.
-   def snatch_n_times(haystack_string, separator_string,n)
+   def snatch_n_times_t1(haystack_string, separator_string,n)
       if KIBUVITS_RUBY_LIBRARY_IS_AVAILABLE
          bn=binding()
          kibuvits_typecheck bn, String, haystack_string
@@ -173,7 +173,7 @@ class Kibuvits_ProgFTE_v0
          end # if
       end # loop
       return ar;
-   end # snatch_n_times
+   end # snatch_n_times_t1
 
    public
    def ht_to_s(a_hashtable)
@@ -261,7 +261,7 @@ class Kibuvits_ProgFTE_v0
          Kibuvits_ProgFTE_v0.selftest_failure(tf,err_no) if s_subst==''
          err_no=4
          # ar1[1]=='', if n==0 and it's legal in here
-         ar=snatch_n_times(ar1[1],'|||',n*2) if 0<n
+         ar=snatch_n_times_t1(ar1[1],'|||',n*2) if 0<n
          err_no=5
          n.times do |x|
             key=ar[x*2].gsub(s_subst,'|')

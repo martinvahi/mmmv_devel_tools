@@ -203,8 +203,8 @@ class Kibuvits_ImageMagick
          s_location_marker_GUID="3b86ba51-4091-4bd4-827e-63c230114dd7"
          b_failure=true
          s_default_language=$kibuvits_lc_English
-         msgcs.cre(s_err_msg,s_message_id,b_failure,s_default_language,
-         s_location_marker_GUID)
+         msgcs.cre(s_err_msg,s_message_id,b_failure,
+         s_location_marker_GUID,s_default_language)
          return
       end # if
 
@@ -219,8 +219,8 @@ class Kibuvits_ImageMagick
          s_location_marker_GUID="87063146-f9d7-4a39-a37e-63c230114dd7"
          b_failure=true
          s_default_language=$kibuvits_lc_English
-         msgcs.cre(s_err_msg,s_message_id,b_failure,s_default_language,
-         s_location_marker_GUID)
+         msgcs.cre(s_err_msg,s_message_id,b_failure,
+         s_location_marker_GUID,s_default_language)
          return
       end # if
 
@@ -265,8 +265,8 @@ class Kibuvits_ImageMagick
             s_err_msg="\n\""+s_fp_in+"\"\nis a file, but it is not readable.\n"
             s_location_marker_GUID="32f56982-1b9b-4d85-a37e-63c230114dd7"
             b_failure=true
-            msgcs.cre(s_err_msg,s_message_id,b_failure,s_default_language,
-            s_location_marker_GUID)
+            msgcs.cre(s_err_msg,s_message_id,b_failure,
+            s_location_marker_GUID,s_default_language)
             return
          end # if
          s_fp_in_corrected=Pathname.new(s_fp_in).realpath.to_s
@@ -277,8 +277,8 @@ class Kibuvits_ImageMagick
             s_location_marker_GUID="4953a7b2-6e14-4b1d-8a7e-63c230114dd7"
             b_failure=true
             s_message_id="file_type"
-            msgcs.cre(s_err_msg,s_message_id,b_failure,s_default_language,
-            s_location_marker_GUID)
+            msgcs.cre(s_err_msg,s_message_id,b_failure,
+            s_location_marker_GUID,s_default_language)
             return
          end # if
 

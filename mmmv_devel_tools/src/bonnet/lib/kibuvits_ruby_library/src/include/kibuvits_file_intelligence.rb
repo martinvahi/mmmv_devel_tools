@@ -46,8 +46,6 @@ if !defined? KIBUVITS_HOME
    ob_pth_0=nil; ob_pth_1=nil; s_KIBUVITS_HOME_b_fs=nil
 end # if
 
-require  KIBUVITS_HOME+"/src/include/kibuvits_msgc.rb"
-require  KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
 require  KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
 
 #==========================================================================
@@ -67,7 +65,7 @@ class Kibuvits_file_intelligence
          kibuvits_typecheck bn, String, s_file_path
          kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
       end # if
-      ar_tokens=Kibuvits_str.bisect(s_file_path.reverse, '.')
+      ar_tokens=Kibuvits_str.ar_bisect(s_file_path.reverse, '.')
       s_file_extension=ar_tokens[0].reverse.downcase
       s_file_language="undetermined"
       case s_file_extension
@@ -115,33 +113,7 @@ class Kibuvits_file_intelligence
       return s_file_language
    end # Kibuvits_file_intelligence.file_language_by_file_extension
 
-   private
-   def Kibuvits_file_intelligence.test_file_language_by_file_extension
-      msgcs=Kibuvits_msgc_stack.new
-      if kibuvits_block_throws{Kibuvits_file_intelligence.file_language_by_file_extension("./x.rb",msgcs)}
-         kibuvits_throw "test 1"
-      end # if
-      if !kibuvits_block_throws{Kibuvits_file_intelligence.file_language_by_file_extension(42,msgcs)}
-         kibuvits_throw "test 2"
-      end # if
-      if !kibuvits_block_throws{Kibuvits_file_intelligence.file_language_by_file_extension("./x.rb",42)}
-         kibuvits_throw "test 3"
-      end # if
-      msgcs.clear
-      s=Kibuvits_file_intelligence.file_language_by_file_extension(
-      "./x.rb",msgcs)
-      kibuvits_throw "test 4" if msgcs.b_failure
-      kibuvits_throw "test 5" if s.downcase!="ruby".downcase
-   end # Kibuvits_file_intelligence.test_file_language_by_file_extension
-
-   public
    include Singleton
-   def Kibuvits_file_intelligence.selftest
-      ar_msgs=Array.new
-      bn=binding()
-      kibuvits_testeval bn, "Kibuvits_file_intelligence.test_file_language_by_file_extension"
-      return ar_msgs
-   end # Kibuvits_file_intelligence.selftest
 
 end # class Kibuvits_file_intelligence
 

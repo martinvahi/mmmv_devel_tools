@@ -323,7 +323,7 @@ class Kibuvits_apparch_specific
             return true if b_x
             next
          when "SIREL_HOME"
-            ar_file_names=["COMMENTS.txt","src/src/sirel_core.php","src/src/sirel.php"]
+            ar_file_names=["README.md","src/src/sirel_core.php","src/src/sirel.php"]
             ar_folder_names=["src/src/bonnet","src/src/lib/spyc"]
             b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
             s_env_name,msgcs,ar_file_names,ar_folder_names)
@@ -333,14 +333,14 @@ class Kibuvits_apparch_specific
             s_0="src/release/third_party/fonts/gnu_org/freefont/2011/"+
             "with_raudrhoi_specific_modifications/"+
             "raudrohi_thirdpartyspecificversion_1_FreeMono.ttf"
-            ar_file_names=["COMMENTS.txt","src/dev_tools/Rakefile","src/devel/raudrohi_base.js","src/devel/raudrohi_core.js",s_0]
+            ar_file_names=["README.md","src/dev_tools/Rakefile","src/devel/raudrohi_base.js","src/devel/raudrohi_core.js",s_0]
             ar_folder_names=["src/dev_tools/javascript_language_tests"]
             b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
             s_env_name,msgcs,ar_file_names,ar_folder_names)
             return true if b_x
             next
          when "MMMV_DEVEL_TOOLS_HOME"
-            ar_file_names=["COMMENTS.txt","src/etc/mmmv_devel_tools_default_configuration.rb"]
+            ar_file_names=["README.md","src/etc/mmmv_devel_tools_default_configuration.rb"]
             ar_folder_names=["src/mmmv_devel_tools","src/bonnet","src/etc","src/api"]
             b_x=Kibuvits_fs.b_env_not_set_or_has_improper_path_t1(
             s_env_name,msgcs,ar_file_names,ar_folder_names)
@@ -445,10 +445,7 @@ class Kibuvits_apparch_specific
 
    #-----------------------------------------------------------------------
 
-   public
    include Singleton
-   # The Kibuvits_apparch_specific.selftest analogue is
-   # in a separate selftest file.
 
 end # class Kibuvits_apparch_specific
 #=========================================================================

@@ -59,6 +59,7 @@ APPLICATION_STARTERRUBYFILE_PWD=Pathname.new($0).realpath.parent.to_s if not def
 
 require "monitor"
 require "singleton"
+require "time"
 require KIBUVITS_HOME+"/src/include/kibuvits_GUID_generator.rb"
 # The point behind the KIBUVITS_s_PROCESS_ID is that
 # different subprocesses might want to communicate
@@ -95,7 +96,7 @@ end # if
 # The Ruby gem infrastructure requires a version that consists
 # of only numbers and dots. For library forking related
 # version checks there is another constant: KIBUVITS_s_VERSION.
-KIBUVITS_s_NUMERICAL_VERSION="1.5.0" if !defined? KIBUVITS_s_NUMERICAL_VERSION
+KIBUVITS_s_NUMERICAL_VERSION="1.6.0" if !defined? KIBUVITS_s_NUMERICAL_VERSION
 
 # The reason, why the version does not consist of only
 # numbers and points is that every application is
@@ -133,6 +134,7 @@ $kibuvits_lc_dollarsign="$".freeze
 $kibuvits_lc_powersign="^".freeze
 $kibuvits_lc_dot=".".freeze
 $kibuvits_lc_comma=",".freeze
+$kibuvits_lc_colon=":".freeze
 $kibuvits_lc_semicolon=";".freeze
 $kibuvits_lc_spacesemicolon=" ;".freeze
 
@@ -158,6 +160,10 @@ $kibuvits_lc_underscore="_".freeze
 $kibuvits_lc_doublequote="\"".freeze
 $kibuvits_lc_singlequote="'".freeze
 $kibuvits_lc_equalssign="=".freeze
+
+$kibuvits_lc_ar="ar".freeze
+$kibuvits_lc_s_id="s_id".freeze
+$kibuvits_lc_i_m="i_m".freeze
 
 $kibuvits_lc_escapedspace="\\ ".freeze
 
@@ -287,7 +293,8 @@ if !defined? KIBUVITS_s_CMD_RUBY
    kibuvits_tmpvar_s_rbpath=Pathname.new(kibuvits_tmpvar_s_rbpath).realpath.parent.to_s
    KIBUVITS_s_CMD_RUBY="cd "<<kibuvits_tmpvar_s_rbpath<<" ; ruby -Ku "
 end # if
-
+#--------------------------------------------------------------------------
+$kibuvits_var_b_running_selftests=false
 #--------------------------------------------------------------------------
 
 def kibuvits_write(x_in)
@@ -368,24 +375,55 @@ def kibuvits_throw(s_or_ob_exception,a_binding=nil)
          s_msg=" s_or_ob_exception.to_s() could not be executed. \n"
       end # rescue
    end # if
+   b_raise=false
    if b_input_verification_failed
       s_msg=s_msg+" s_or_ob_exception.class=="+x_in.class.to_s+"\n"
+      b_raise=true
+   end # if
+   if !b_raise
+      if x_in.class!=String
+         if !(x_in.kind_of? Exception)
+            s_msg=" s_or_ob_exception.class=="+x_in.class.to_s+
+            ", but it is expected to be of class String or Exception or "+
+            "derived from the class Exception.\n"
+            b_raise=true
+         end # if
+      end # if
+   end # if
+   if !b_raise
+      if a_binding.class!=NilClass
+         if a_binding.class!=Binding
+            s_msg=" a_binding.class=="+a_binding.class.to_s+
+            ", but it is expected to be of class NilClass or Binding.\n"
+            b_raise=true
+         end # if
+      end # if
+   end # if
+   if b_raise
+      if KIBUVITS_b_DEBUG
+         if !$kibuvits_var_b_running_selftests
+            s_fp_mmmv_devel_tools_info=ENV["MMMV_DEVEL_TOOLS_HOME"]+
+            "/src/api/mmmv_devel_tools_info.bash"
+            if File.exists? s_fp_mmmv_devel_tools_info
+               s_0=` $MMMV_DEVEL_TOOLS_HOME/src/api/mmmv_devel_tools_info.bash \
+               get_config s_GUID_trace_errorstack_file_path `
+               s_1=s_0.gsub(/[\n\r]/,$kibuvits_lc_emptystring)
+               if File.exists? s_1
+                  # A bit flawed, because sometimes the file has
+                  # to be created, for example, after all caches
+                  # have been erased, but this if-branch here is
+                  # such a hack that one does not risk creating the file.
+                  # The next is a crippled, checkless copy-paste from
+                  # kibuvits_io.rb
+                  s_fp=s_1
+                  file=File.open(s_fp, "w")
+                  file.write(s_msg)
+                  file.close
+               end # if
+            end # if
+         end # if
+      end # if
       raise(Exception.new(s_msg))
-   end # if
-   if x_in.class!=String
-      if !(x_in.kind_of? Exception)
-         s_msg=" s_or_ob_exception.class=="+x_in.class.to_s+
-         ", but it is expected to be of class String or Exception or "+
-         "derived from the class Exception.\n"
-         raise(Exception.new(s_msg))
-      end # if
-   end # if
-   if a_binding.class!=NilClass
-      if a_binding.class!=Binding
-         s_msg=" a_binding.class=="+a_binding.class.to_s+
-         ", but it is expected to be of class NilClass or Binding.\n"
-         raise(Exception.new(s_msg))
-      end # if
    end # if
    #-------------------------------------------------
    exc=nil
@@ -1502,20 +1540,6 @@ def kibuvits_call_by_ar_of_args(ob,x_method_name_or_symbol,ar_method_arguments,&
    end # if
    return x_out
 end # kibuvits_call_by_ar_of_args
-
-#--------------------------------------------------------------------------
-
-# An example:
-#
-# ob_func=kibuvits_dec_lambda do |x|
-#     kibuvits_writeln "Hello "+x.to_s+" !"
-#     end # block
-# ob_func.call("handsome")
-#
-def kibuvits_dec_lambda(&block)
-   ob_block=block
-   return ob_block
-end # kibuvits_dec_lambda
 
 #--------------------------------------------------------------------------
 #

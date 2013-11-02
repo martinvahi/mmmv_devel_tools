@@ -1,0 +1,14 @@
+===========================================================================
+=======  Kibuvits Ruby Library (KRL) Implemented Brutal Workarounds  ======
+===========================================================================
+
+A brutal workaround in this context means an inelegant, laborious,
+solution to a problem that might be solved with much less labour,
+if some other technology were designed or implemented
+in a more thoughtful manner.
+
+The message of this COMMENTS.txt is that KRL client code authors should
+think "twice", before using any of the KRL implemented brutal workarounds.
+
+
+===========================================================================

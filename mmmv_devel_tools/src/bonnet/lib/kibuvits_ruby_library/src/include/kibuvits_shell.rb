@@ -202,10 +202,9 @@ class Kibuvits_shell
       return b_out
    end # Kibuvits_shell.b_available_on_path
 
-   public
+   #-----------------------------------------------------------------------
+
    include Singleton
-   # The Kibuvits_shell.selftest analogue is
-   # in a separate selftest file.
 
 end # class Kibuvits_shell
 

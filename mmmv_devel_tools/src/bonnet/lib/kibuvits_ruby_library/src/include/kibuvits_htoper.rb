@@ -251,12 +251,9 @@ class Kibuvits_htoper
       return ht_out
    end # Kibuvits_htoper.ht_clone_with_shared_references
 
-   #--------------------------------------------------------------------------
+   #-----------------------------------------------------------------------
 
-   public
    include Singleton
-   # The Kibuvits_htoper.selftest analogue is
-   # in a separate selftest file.
 
 end # class Kibuvits_htoper
 

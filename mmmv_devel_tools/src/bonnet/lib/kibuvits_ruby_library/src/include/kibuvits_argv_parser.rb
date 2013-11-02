@@ -85,7 +85,7 @@ class Kibuvits_argv_parser
          ar_s_arg_split[0]=nil
          ar_s_arg_split[1]=s_arg
       else
-         ar1=Kibuvits_str.bisect(s_arg,"=")
+         ar1=Kibuvits_str.ar_bisect(s_arg,"=")
          ar_s_arg_split[0]=ar1[0]
          ar_s_arg_split[1]=nil
          ar_s_arg_split[1]=ar1[1] if ar1[1]!=""
@@ -254,6 +254,12 @@ class Kibuvits_argv_parser
    # TODO: Add mode (-2), like the (-1), to this method and
    # the rest of the related meothds. The (-2) would represent the
    # "zero or more" option.
+   #
+   # TODO: If "--help" and "--abi" have the same meaning, then 
+   # the implementation should forbid them to be defined simultaniously.
+   # It should not be allowed to write "myapp -? --help --abi", not to 
+   # mention "myapp --file ./foo --sisendfail ./bar "
+   #
    def run ht_grammar, argv, msgcs
       if KIBUVITS_b_DEBUG
          bn=binding()

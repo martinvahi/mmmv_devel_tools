@@ -336,7 +336,7 @@ class Kibuvits_gstatement
       # ....X......X...X...X................................
       # "(A|B|C*)"               -> "(A|B|C*)"
       s_right=s_right.gsub(@@lc_space,@@lc_emptystring)
-      ar=Kibuvits_str.explode(s_right,@@lc_lbrace)
+      ar=Kibuvits_str.ar_explode(s_right,@@lc_lbrace)
       # ar[0]=="", because for sctring like "(blabla)" and
       # a separator like "(" the bisection takes place at the
       # first character. It's just according to the explode spec.
@@ -448,7 +448,7 @@ class Kibuvits_gstatement
    #
    def initialize_single_level2_component(s_level2_spec, i_level1_index)
       level2_spec_partial_verification s_level2_spec
-      ar=Kibuvits_str.explode(s_level2_spec,@@lc_pillar)
+      ar=Kibuvits_str.ar_explode(s_level2_spec,@@lc_pillar)
 
       ht_level2=@ar_level1[i_level1_index]
       ht_level2[@@lc_b_complete]=false
@@ -460,7 +460,7 @@ class Kibuvits_gstatement
    end # initialize_single_level2_component
 
    def parse_specification s_spec
-      ar=Kibuvits_str.bisect(s_spec,@@lc_ceqeq)
+      ar=Kibuvits_str.ar_bisect(s_spec,@@lc_ceqeq)
       s_left=Kibuvits_str.trim(ar[0])
       s_right=Kibuvits_str.trim(ar[1])
       @name=s_left
@@ -678,127 +678,9 @@ class Kibuvits_gstatement
       return s_out
    end # to_s
 
-   private
-   public
-
-   def Kibuvits_gstatement.test_1
-      msgcs=Kibuvits_msgc_stack.new
-      s_spec="A"
-      if kibuvits_block_throws{gst=Kibuvits_gstatement.new(s_spec,msgcs)}
-         kibuvits_throw "test 1"
-      end # if
-      msgcs.clear
-      if !kibuvits_block_throws{gst=Kibuvits_gstatement.new(42,msgcs)}
-         kibuvits_throw "test 2"
-      end # if
-      msgcs.clear
-      if !kibuvits_block_throws{gst=Kibuvits_gstatement.new(s_spec,42)}
-         kibuvits_throw "test 3"
-      end # if
-      msgcs.clear
-      s_spec="UUU:==A*|B"  # OK, subject to bracket autocompletion.
-      if kibuvits_block_throws{gst=Kibuvits_gstatement.new(s_spec,msgcs)}
-         kibuvits_throw "test 4"
-      end # if
-      msgcs.clear
-      s_spec="UUU:==(A*|B) | C" # | outside braces
-      if !kibuvits_block_throws{gst=Kibuvits_gstatement.new(s_spec,msgcs)}
-         kibuvits_throw "test 5"
-      end # if
-      msgcs.clear
-      s_spec="UUU:==((A*|B) C)" # the nesting of braces
-      if !kibuvits_block_throws{gst=Kibuvits_gstatement.new(s_spec,msgcs)}
-         kibuvits_throw "test 6"
-      end # if
-      msgcs.clear
-      s_spec="UUU:==(A)? " # ? outside braces
-      if !kibuvits_block_throws{gst=Kibuvits_gstatement.new(s_spec,msgcs)}
-         kibuvits_throw "test 7"
-      end # if
-      msgcs.clear
-      s_spec="UUU:==(A)* " # * outside braces
-      if !kibuvits_block_throws{gst=Kibuvits_gstatement.new(s_spec,msgcs)}
-         kibuvits_throw "test 8"
-      end # if
-      msgcs.clear
-      s_spec="UUU:==(A)+ " # + outside braces
-      if !kibuvits_block_throws{gst=Kibuvits_gstatement.new(s_spec,msgcs)}
-         kibuvits_throw "test 9"
-      end # if
-   end # Kibuvits_gstatement.test_1
-
-   def Kibuvits_gstatement.test_get_array_of_level1_components
-      msgcs=Kibuvits_msgc_stack.new
-      s_spec="A"
-      gst=Kibuvits_gstatement.new(s_spec,msgcs)
-      s_right="A (B+ |C)E F(G)"
-      ar=gst.send(:get_array_of_level1_components,s_right)
-      kibuvits_throw "test 1" if ar.length!=5
-      kibuvits_throw "test 2" if ar[0]!="A"
-      kibuvits_throw "test 3" if ar[1]!="B+|C"
-      kibuvits_throw "test 4" if ar[2]!="E"
-      kibuvits_throw "test 5" if ar[3]!="F"
-      kibuvits_throw "test 6" if ar[4]!="G"
-   end # Kibuvits_gstatement.test_get_array_of_level1_components
-
-   def Kibuvits_gstatement.test_complete_and_insertable
-      msgcs=Kibuvits_msgc_stack.new
-      s_spec="A:==BB CC?"
-      gst=Kibuvits_gstatement.new(s_spec,msgcs)
-      kibuvits_throw "test 1" if gst.complete?
-      gst_bb=Kibuvits_gstatement.new("BB",msgcs)
-      gst_cc=Kibuvits_gstatement.new("CC",msgcs)
-      gst_dd=Kibuvits_gstatement.new("DD",msgcs)
-      kibuvits_throw "test 2" if !gst.insertable? gst_bb
-      kibuvits_throw "test 3" if !gst.insertable? gst_cc
-      kibuvits_throw "test 4" if gst.insertable? gst_dd
-      gst.insert gst_bb
-      kibuvits_throw "test 5" if gst.insertable? gst_bb
-      kibuvits_throw "test 6" if !gst.insertable? gst_cc
-      kibuvits_throw "test 7" if !gst.complete?
-      gst.insert gst_cc
-      kibuvits_throw "test 8" if gst.insertable? gst_cc
-      kibuvits_throw "test 9" if !gst.complete?
-   end # Kibuvits_gstatement.test_complete_and_insertable
-
-   def Kibuvits_gstatement.test_to_s
-      # TODO: There's some sort of a bug at the spec part, where
-      # the "A:==(BB? CC DD)" gets translated to "(BB?CC)(DD)"
-      # So level2 spec's are already faulty at initialization.
-      msgcs=Kibuvits_msgc_stack.new
-      s_spec="A:==(BB)(CC?)(DD)"
-      gst_a=Kibuvits_gstatement.new(s_spec,msgcs)
-
-      gst_bb=Kibuvits_gstatement.new("BB",msgcs)
-      gst_bb.s_suffix="(BB_suffix)"
-      gst_cc=Kibuvits_gstatement.new("CC",msgcs)
-      gst_cc.s_prefix="(CC_prefix)"
-      gst_dd=Kibuvits_gstatement.new("DD",msgcs)
-      gst_dd.s_prefix="(DD_prefix)"
-      s_spec="EE:==A BB"
-      gst_ee=Kibuvits_gstatement.new(s_spec,msgcs)
-
-      gst_a.insert(gst_bb)
-      gst_a.insert(gst_dd)
-      gst_a.insert(gst_cc)
-      s_expected="(BB_suffix)(CC_prefix)(DD_prefix)"
-      s=gst_a.to_s
-      kibuvits_throw "test 1" if s!=s_expected
-   end # Kibuvits_gstatement.test_to_s
-
-   public
-   def Kibuvits_gstatement.selftest
-      ar_msgs=Array.new
-      bn=binding()
-      kibuvits_testeval bn, "Kibuvits_gstatement.test_1"
-      kibuvits_testeval bn, "Kibuvits_gstatement.test_get_array_of_level1_components"
-      kibuvits_testeval bn, "Kibuvits_gstatement.test_complete_and_insertable"
-      kibuvits_testeval bn, "Kibuvits_gstatement.test_to_s"
-      return ar_msgs
-   end # Kibuvits_gstatement.selftest
 end # class Kibuvits_gstatement
+
 #=========================================================================
-#Kibuvits_gstatement.test_1
 #msgcs=Kibuvits_msgc_stack.new
 #s_spec="UU:==A (B+ |C)E F(G)"
 #gst=Kibuvits_gstatement.new(s_spec,msgcs)

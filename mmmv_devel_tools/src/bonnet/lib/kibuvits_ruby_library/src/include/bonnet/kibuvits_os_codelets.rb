@@ -380,7 +380,7 @@ class Kibuvits_os_codelets
       s_p=s_p[1..(-1)]
       s_clbsl=":\\"
       return s_p if s_p.include? s_clbsl
-      ar=Kibuvits_str.bisect(s_p, s_backslash)
+      ar=Kibuvits_str.ar_bisect(s_p, s_backslash)
       s_p=ar[0]+s_clbsl+ar[1]
       return s_p
    end #convert_file_path_2_windows_format

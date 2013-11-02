@@ -154,42 +154,6 @@ class Kibuvits_cg
       return s_out
    end # Kibuvits_cg.fill_form
 
-   private
-
-   def Kibuvits_cg.test_fill_form
-      if kibuvits_block_throws{Kibuvits_cg.fill_form([],"")}
-         kibuvits_throw "test 1"
-      end # if
-      if !kibuvits_block_throws{Kibuvits_cg.fill_form(42,"")}
-         kibuvits_throw "test 2"
-      end # if
-      if !kibuvits_block_throws{Kibuvits_cg.fill_form([],42)}
-         kibuvits_throw "test 3"
-      end # if
-      s_form="A[CODEGENERATION_BLANK_0]BB\n"+
-      "CC[CODEGENERATION_BLANK_1]DD"
-      s_expected="AxxBB\nCCyyDD"
-      s=Kibuvits_cg.fill_form(["xx","yy"],s_form)
-      kibuvits_throw "test 4" if s!=s_expected
-
-      # The next test has more blank needle-strings than
-      # in the global cache, so that a needle-string generation
-      # branch is entered.
-      s_form="A[CODEGENERATION_BLANK_0]BB\n"+
-      "CC[CODEGENERATION_BLANK_1]DD\n"+
-      "CC[CODEGENERATION_BLANK_2]DD\n"+
-      "CC[CODEGENERATION_BLANK_3]DD\n"+
-      "CC[CODEGENERATION_BLANK_4]DD\n"
-      s_expected="Ax0BB\nCCx1DD\nCCx2DD\nCCx3DD\nCCx4DD\n"
-      s=Kibuvits_cg.fill_form(["x0","x1","x2","x3","x4"],s_form)
-      kibuvits_throw "test 5" if s!=s_expected
-
-      s_form="A[CODEGENERATION_BLANK_GUID_0]BB\n"+
-      "CC[CODEGENERATION_BLANK_GUID_1]DD\n"+
-      "CC[CODEGENERATION_BLANK_GUID_1]DD"
-      s=Kibuvits_cg.fill_form("",s_form) # To see, that it doesn't throw.
-      #kibuvits_writeln "\n\n{"+s+"}\n\n"
-   end # Kibuvits_cg.test_fill_form
 
    public
 
@@ -243,15 +207,6 @@ class Kibuvits_cg
       return s_out
    end # Kibuvits_cg.assemble_list_by_forms
 
-   private
-   def Kibuvits_cg.test_assemble_list_by_forms
-      s_list_form="A<[CODEGENERATION_BLANK_0]>B"
-      s_elem_form="([CODEGENERATION_BLANK_0])"
-      s_expected="A<(a)(c)(d)>B"
-      s=Kibuvits_cg.assemble_list_by_forms(s_list_form,s_elem_form,
-      ["a","c","d"])
-      kibuvits_throw "test 1" if s!=s_expected
-   end # Kibuvits_cg.test_assemble_list_by_forms
 
    public
    def get_standard_warning_msg(s_singleliner_comment_start,
@@ -278,18 +233,8 @@ class Kibuvits_cg
       return s_out
    end # Kibuvits_cg.get_standard_warning_msg
 
-   public
    include Singleton
-   def Kibuvits_cg.selftest
-      ar_msgs=Array.new
-      bn=binding()
-      kibuvits_testeval bn, "Kibuvits_cg.test_fill_form"
-      kibuvits_testeval bn, "Kibuvits_cg.test_assemble_list_by_forms"
-      return ar_msgs
-   end # Kibuvits_cg.selftest
 end # class Kibuvits_cg
 
 #=========================================================================
-
 #s=Kibuvits_cg.fill_form([],"")
-#Kibuvits_cg.test_fill_form

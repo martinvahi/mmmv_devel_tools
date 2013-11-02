@@ -49,7 +49,7 @@ if !defined? RENESSAATOR_RB_INCLUDED
 
    require KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
    require KIBUVITS_HOME+"/src/include/kibuvits_argv_parser.rb"
-   require KIBUVITS_HOME+"/src/include/deprecated/kibuvits_deprecated_str.rb"
+   require KIBUVITS_HOME+"/src/include/brutal_workarounds/kibuvits_str_configfileparser.rb"
    require KIBUVITS_HOME+"/src/include/kibuvits_comments_detector.rb"
    require KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
    require KIBUVITS_HOME+"/src/include/kibuvits_eval.rb"
@@ -135,9 +135,9 @@ class Renessaator_core
       if ht_s_gensource_regions.length<1
          s_comment_start_tag=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
          s_file_language,msgcs)
-         s_block_frame=s_block_frame+"\n"+
-         s_comment_start_tag+@lc_space+@lc_tl_s_block_gen_start+"\n"+
-         s_comment_start_tag+@lc_space+@lc_tl_s_block_gen_end+"\n"+
+         s_block_frame=s_block_frame+$kibuvits_lc_linebreak+
+         s_comment_start_tag+@lc_space+@lc_tl_s_block_gen_start+$kibuvits_lc_linebreak+
+         s_comment_start_tag+@lc_space+@lc_tl_s_block_gen_end+$kibuvits_lc_linebreak+
          s_comment_start_tag+@lc_space
          s_block_frame,ht_s_gensource_regions=Kibuvits_str.pick_by_instance(
          @lc_tl_s_block_gen_start,@lc_tl_s_block_gen_end,
@@ -191,7 +191,7 @@ class Renessaator_core
       msgcs=ht_opmem[@lc_msgcs]
       ht_block=ht_opmem[@lc_ht_block]
       s_block_frame=ht_block[@lc_s_block_frame]
-      ht_params=Kibuvits_deprecated_str.configstylestr_2_ht(s_block_frame,msgcs)
+      ht_params=Kibuvits_str_configfileparser.configstylestr_2_ht(s_block_frame,msgcs)
       if !ht_params.has_key? @lc_tl_s_block_src_lang
          msgcs.cre "Renessaator block parameter \""+
          @lc_tl_s_block_src_lang+"\" is missing.",6.to_s
@@ -223,7 +223,7 @@ class Renessaator_core
       ar_commentstrings=Kibuvits_comments_detector.extract_commentstrings(
       ar_comments,true)
       return if msgcs.b_failure
-      s_commentless_fame=""
+      s_commentless_fame=$kibuvits_lc_emptystring
       ar_commentstrings.each{|s|s_commentless_fame=s_commentless_fame+s}
       ht_block[@lc_s_block_frame]=s_commentless_fame
       s_block_2_ht_block_extract_src ht_opmem
@@ -327,29 +327,28 @@ class Renessaator_core
       ht_block=ht_opmem[@lc_ht_block]
       s_commentless_frame=ht_block[@lc_s_block_frame]
       s_stderr=ht_block[@lc_block_s_stderr]
-      s_linebreak="\n"
       # There's a comment tag at the same line, where the GUID is.
       # Hence the comment tag is skipped at first.
-      s_gen=@lc_tl_s_block_gen_start+s_linebreak
+      s_gen=@lc_tl_s_block_gen_start+$kibuvits_lc_linebreak
       if s_stderr!=nil
          s_gen=s_gen+s_oneliner_comment_start_tag+@lc_space+
-         @lc_tl_s_block_stderr_start+s_linebreak
+         @lc_tl_s_block_stderr_start+$kibuvits_lc_linebreak
          # The line-breaks of the stderr are probably OS specific.
          s_gen=s_gen+Kibuvits_str.surround_lines(
          s_oneliner_comment_start_tag+@lc_space,s_stderr,"",false)
-         s_gen=s_gen+s_linebreak+s_oneliner_comment_start_tag+
-         @lc_space+@lc_tl_s_block_stderr_end+s_linebreak
+         s_gen=s_gen+$kibuvits_lc_linebreak+s_oneliner_comment_start_tag+
+         @lc_space+@lc_tl_s_block_stderr_end+$kibuvits_lc_linebreak
       end # if
-      s_gen=s_gen+ht_block[@lc_block_ht_gen]['s_gen']+s_linebreak
+      s_gen=s_gen+ht_block[@lc_block_ht_gen]['s_gen']+$kibuvits_lc_linebreak
       s_gen=s_gen+s_oneliner_comment_start_tag+
       @lc_space+@lc_tl_s_block_gen_end
       s_gen_guid=ht_block[@lc_block_ht_gen]['GUID']
-      s_src=@lc_tl_s_block_src_start+s_linebreak
+      s_src=@lc_tl_s_block_src_start+$kibuvits_lc_linebreak
       s_src_without_file_commenttag=ht_block[@lc_block_ht_src]['s_src']
       s_src=s_src+Kibuvits_str.surround_lines(
       s_oneliner_comment_start_tag+@lc_space,
       s_src_without_file_commenttag,"",true)
-      s_src=s_src+s_linebreak+s_oneliner_comment_start_tag+
+      s_src=s_src+$kibuvits_lc_linebreak+s_oneliner_comment_start_tag+
       @lc_space+@lc_tl_s_block_src_end
       s_src_guid=ht_block[@lc_block_ht_src]['GUID']
       s_frame_with_filecommenttags=Kibuvits_str.surround_lines(
@@ -363,7 +362,7 @@ class Renessaator_core
       # There is a file comment tag prior to the whole block GUID.
       # So, in order to avoid duplicating it, the first comment tag
       # of the block is skipped.
-      s_block=@lc_tl_s_block_start+s_linebreak+
+      s_block=@lc_tl_s_block_start+$kibuvits_lc_linebreak+
       s_block+@lc_tl_s_block_end
       ht_block[@lc_s_block]=s_block
    end # ht_block_2_s_block
@@ -375,12 +374,14 @@ class Renessaator_core
    # This method is thread-safe, despite being in a singleton.
    def run(s_file_content,s_file_language,s_working_directory,
       id_of_the_single_block_to_be_processed=nil, msgcs=Kibuvits_msgc_stack.new)
-      bn=binding()
-      kibuvits_typecheck bn, String, s_file_content
-      kibuvits_typecheck bn, String, s_file_language
-      kibuvits_typecheck bn, String, s_working_directory
-      kibuvits_typecheck bn, [String,NilClass], id_of_the_single_block_to_be_processed
-      kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, String, s_file_content
+         kibuvits_typecheck bn, String, s_file_language
+         kibuvits_typecheck bn, String, s_working_directory
+         kibuvits_typecheck bn, [String,NilClass], id_of_the_single_block_to_be_processed
+         kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
+      end # if
       ht_opmem=create_ht_opmem(id_of_the_single_block_to_be_processed,
       msgcs, s_file_language,s_working_directory)
       s_frame,ht_s_blocks=Kibuvits_str.pick_by_instance(
@@ -413,9 +414,11 @@ class Renessaator_core
    end # Renessaator_core.run
 
    def get_bloc_template s_file_language,msgcs
-      bn=binding()
-      kibuvits_typecheck bn, String, s_file_language
-      kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, String, s_file_language
+         kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
+      end # if
       s_start_tag=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
       s_file_language,msgcs)
       s_lns=s_start_tag+@lc_space
@@ -424,12 +427,12 @@ class Renessaator_core
       # the use of vimscript based editing. The GUIDs are used
       # for preventing ID collisions.
       s_id="block_"+Kibuvits_GUID_generator.generate_GUID+"_city"
-      s_out=s_out+s_lns+@lc_tl_s_block_start+"\n"
-      s_out=s_out+s_lns+@lc_tl_s_block_id+"="+s_id+"\n"
+      s_out=s_out+s_lns+@lc_tl_s_block_start+$kibuvits_lc_linebreak
+      s_out=s_out+s_lns+@lc_tl_s_block_id+"="+s_id+$kibuvits_lc_linebreak
       s_out=s_out+s_lns+@lc_tl_s_block_src_lang+"=Ruby\n"
-      s_out=s_out+s_lns+@lc_tl_s_block_src_start+"\n"
-      s_out=s_out+s_lns+"\n"
-      s_out=s_out+s_lns+@lc_tl_s_block_src_end+"\n"
+      s_out=s_out+s_lns+@lc_tl_s_block_src_start+$kibuvits_lc_linebreak
+      s_out=s_out+s_lns+$kibuvits_lc_linebreak
+      s_out=s_out+s_lns+@lc_tl_s_block_src_end+$kibuvits_lc_linebreak
       # The generated text region is added during generation
       # step anyway. It's left out of here only to avoid the
       # cluttering of the initial view.
@@ -765,14 +768,14 @@ class Renessaator_console_UI
          run_renessaator ht_args, msgcs
          if msgcs.b_failure
             b_failure=false
-            s_out=""
+            s_out=$kibuvits_lc_emptystring
             b_throw_on_input_verification_failures=false
             b_rescue_applied=false
             begin
                if ht_args['--throw_on_input_verification_failures']!=nil
                   b_throw_on_input_verification_failures=true
                end # if
-               s_out=""+msgcs.to_s[ht_args['--language'][0]]
+               s_out=$kibuvits_lc_emptystring+msgcs.to_s[ht_args['--language'][0]]
             rescue
                b_failure=true
                # TODO: The next line should be outcommented,
@@ -784,7 +787,7 @@ class Renessaator_console_UI
             if b_failure
                b_failure=false
                begin
-                  s_out=""+msgcs.to_s
+                  s_out=$kibuvits_lc_emptystring+msgcs.to_s
                rescue
                   b_failure=true
                end # try-catch
@@ -799,7 +802,7 @@ class Renessaator_console_UI
                # IDE plugins can extract the input verification
                # message from the whole throw message.
                s_ceremony="RENESSAATOR_INPUT_VERIFICATION_FAILURE_MESSAGE_"
-               s_out2="\n"+s_ceremony+"START \n"+s_out+
+               s_out2=$kibuvits_lc_linebreak+s_ceremony+"START \n"+s_out+
                @lc_space+s_ceremony+"END\n"
                kibuvits_throw s_out2
             else
