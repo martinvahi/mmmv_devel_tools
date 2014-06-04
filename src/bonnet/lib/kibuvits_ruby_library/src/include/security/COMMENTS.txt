@@ -18,4 +18,7 @@ and shoot, imprison, anyone. Cryptography is a tool for
 somewhat forcing the Hitler's goons to conduct their atrocities
 at places/conditions that have been chosen by the "simple citizens".
 
+Further information can be found from:
+http://bitrary.softf1.com/index.php?title=Software_Development_:_Security
+
 ===========================================================================

@@ -82,6 +82,15 @@ class Kibuvits_cryptcodec_txor_t1
       return i_out
    end # txor_decrypt
 
+   def ob_gen_instance_of_class_random
+      ob_t=Time.now
+      i_usec=ob_t.usec
+      i_0=(ob_t.to_i.to_s<<i_usec.to_s).to_i
+      i_00=(Random.new_seed.to_s<<i_0.to_s).to_i
+      ob_random=Random.new(i_00)
+      return ob_random
+   end # ob_gen_instance_of_class_random
+
    public
 
    def ht_generate_key_t1(i_key_length,i_max_number_of_bytes_per_character=6)
@@ -100,25 +109,36 @@ class Kibuvits_cryptcodec_txor_t1
       i_data_max=i_number_of_values-1
       ht_key[@s_lc_i_data_max]=i_data_max
 
+      ob_random=ob_gen_instance_of_class_random()
       # The m is a term from the TXOR specification.
       # http://longterm.softf1.com/specifications/txor/
-      i_m=i_number_of_values*(10**@i_n_of_datasalt_digits)
+      i_m=i_number_of_values*(10**@i_n_of_datasalt_digits)+
+      ob_random.rand(10**4) 
 
       ht_key[$kibuvits_lc_i_m]=i_m
       i_data_max
       ar=Array.new
       ob_random=nil
       i_rand_c1=(`ps -A`).length
+      i_rand_c2=(`whoami`).length
       func=lambda do |i_max|
          ob_t=Time.now
          i_usec=ob_t.usec
-         i_0=(ob_t.to_i.to_s<<i_usec.to_s).to_i
-         i_00=(Random.new_seed.to_s<<i_0.to_s).to_i
-         ob_random=Random.new(i_00)
+         ob_random=ob_gen_instance_of_class_random()
+         i_shift_byproduct=0
+         (ob_random.rand(200)+i_rand_c2+((i_usec.to_s)[0..0].to_i)).times do
+            # The purpose of this loop is to choose a
+            # pseudorandom start position of the
+            # pseudorandom number generator. The
+            i_shift_byproduct=(i_shift_byproduct+ob_random.rand(i_max))%i_max
+            # is to make sure that this loop is not
+            # optimized out, eliminated.
+         end # if
+         i_shift_byproduct=(i_shift_byproduct.to_s)[0..0].to_i
          i_1=(i_rand_c1+i_usec)*ob_random.rand(3)
          i_0=0
          3.times{i_0=i_0+ob_random.rand(i_max)}
-         i_out=((i_0/3).floor.to_i+i_1)%i_max
+         i_out=((i_0/3).floor.to_i+i_1+i_shift_byproduct)%i_max
          return i_out
       end # func
       i_key_length.times{ar<<func.call(i_m)}
@@ -239,9 +259,29 @@ class Kibuvits_cryptcodec_txor_t1
 
    private
 
-   def s_datasalt_t1(ob_random,i_n_of_datasalt_digits)
+   def s_datasalt_t1(ob_random,i_n_of_datasalt_digits,i_cleartext)
       s_out=""
-      i_n_of_datasalt_digits.times{s_out<<ob_random.rand(9).to_s}
+      if i_cleartext!=0
+         i_n_of_datasalt_digits.times{s_out<<ob_random.rand(9).to_s}
+         return s_out
+      end # if
+      # <data><datasalt>
+      # if data=="0" then the most significant digit of the
+      # datasalt must not be 0, because otherwise
+      #
+      #     (00<the_rest_of_the_datasalt>).to_i
+      #
+      # will not have the specified amount of datasalt digits.
+      #
+      # Example of the failure:
+      #
+      #     data="0"   i_n_of_datasalt_digits=3 s_datasalt="042"
+      #
+      #     ("0"+"042").to_i="0042".to_i=42
+      #
+      i_n=i_n_of_datasalt_digits-1
+      s_out<<(ob_random.rand(8)+1).to_s
+      i_n.times{s_out<<ob_random.rand(9).to_s}
       return s_out
    end # s_datasalt_t1
 
@@ -254,7 +294,11 @@ class Kibuvits_cryptcodec_txor_t1
    # explains the return value.
    def ar_encrypt_wearlevelling_t1_core(s_cleartext,ht_key,
       ar_concat_all_string_in_here_to_get_ciphertext=Array.new)
-      ob_random=Random.new
+      ob_random=ob_gen_instance_of_class_random()
+      #---------
+      # TODO: crate one's own pseudorandom number
+      # generator class. Write randomness assessment tests.
+      #---------
       ar_s=ar_concat_all_string_in_here_to_get_ciphertext
       ar_unicode=s_cleartext.codepoints
       i_ar_unicode_len=ar_unicode.size
@@ -304,7 +348,7 @@ class Kibuvits_cryptcodec_txor_t1
          # are the same.
          ix=ob_random.rand(i_ar_key_ix_max) # TODO: implement wearlevelling modes
          i_key=ar_key[ix]
-         s_lambda_0=(i_cleartext.to_s<<s_datasalt_t1(ob_random,i_n_of_datasalt_digits))
+         s_lambda_0=(i_cleartext.to_s<<s_datasalt_t1(ob_random,i_n_of_datasalt_digits,i_cleartext))
          i_ciphertext=txor_encrypt(s_lambda_0.to_i,i_key,i_m)
          s_lambda_0=i_ciphertext.to_s(16) # primitive data compression
          s_ciphertext=ix.to_s+$kibuvits_lc_colon+s_lambda_0
@@ -430,7 +474,7 @@ class Kibuvits_cryptcodec_txor_t1
          i_key=ar_key[ix]
          i_cleartext_1=txor_decrypt(i_ciphertext,i_key,i_m)
          s_lambda_0=i_cleartext_1.to_s[0..(-1-i_n_of_datasalt_digits)]
-         i_cleartext=s_lambda_0.to_i
+         i_cleartext=s_lambda_0.to_i  # "".to_i==0
          return i_cleartext
       end # func
       i_qt_ix=0 #quartet index

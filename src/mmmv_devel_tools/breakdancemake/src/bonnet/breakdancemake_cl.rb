@@ -1158,13 +1158,13 @@ class Breakdancemake
       if !ht_bdmrec.has_key? @s_lc_runcount
          ht_bdmrec[@s_lc_runcount]=1
       else
-         Kibuvits_htoper.plus(ht_bdmrec,@s_lc_runcount,1,bn)
+         Kibuvits_htoper_t1.plus(ht_bdmrec,@s_lc_runcount,1,bn)
       end # if
       ob_bdmroutine.send(:run_bdmroutine,
       s_language,ar_parameters,b_started_from_console)
       # Decrementation is needed in stead of
       # raw zero assignment, because there could be cycles.
-      Kibuvits_htoper.plus(ht_bdmrec,@s_lc_runcount,(-1),bn)
+      Kibuvits_htoper_t1.plus(ht_bdmrec,@s_lc_runcount,(-1),bn)
    end # run_bdmroutine_impl
 
    #--------------------------------------------------------------------------

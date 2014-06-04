@@ -622,7 +622,7 @@ class Kibuvits_str
       end # if
       if cl!=Regexp
          kibuvits_throw("rgx_needle.class=="+cl.to_s+
-         "\n GUID='f047365e-adf4-48f6-b38d-b33211f1add7'\n\n")
+         "\n GUID='93c60899-cca2-4cfe-8e3f-53c250802ed7'\n\n")
       end # if
       #-------
       func_paintroller=s_or_ar_of_substitution_strings_or_a_function_ie_stripes
@@ -639,11 +639,11 @@ class Kibuvits_str
             if KIBUVITS_b_DEBUG
                if i_n<0
                   kibuvits_throw("i_n == "+i_n.to_s+" < 0 "+
-                  "\n GUID='4d4a9940-a2c1-41b8-b48d-b33211f1add7'\n\n")
+                  "\n GUID='23ee0044-ae65-4501-9f4f-53c250802ed7'\n\n")
                end # if
                if i_sz<1
                   kibuvits_throw("ar_stripes.size == "+i_sz.to_s+" < 1 "+
-                  "\n GUID='1d379b30-462f-4605-a18d-b33211f1add7'\n\n")
+                  "\n GUID='85624412-84bc-4645-9b5e-53c250802ed7'\n\n")
                end # if
             end # if
             i_ix=i_n%i_sz
@@ -652,7 +652,7 @@ class Kibuvits_str
                if x_out.class!=String # to avoid the string instantiation
                   bn=binding()
                   msg="i_n=="+i_n.to_s+" i_sz=="+i_sz.to_s+" i_ix=="+i_ix.to_s+
-                  "\n GUID='41ad1584-51d1-461a-a38d-b33211f1add7'\n\n"
+                  "\n GUID='1227b2f3-d114-4fad-a15e-53c250802ed7'\n\n"
                   kibuvits_typecheck bn, String, x_out, msg
                end # if
             end # if
@@ -663,14 +663,14 @@ class Kibuvits_str
       if KIBUVITS_b_DEBUG
          if cl!=Proc
             kibuvits_throw("func_paintroller.class=="+cl.to_s+
-            "\n GUID='94b3df0f-8815-43ac-837d-b33211f1add7'\n\n")
+            "\n GUID='29ebac44-7188-49d3-913e-53c250802ed7'\n\n")
          end # if
          if !func_paintroller.lambda?
             # There are 2 different types of Proc instances:
             # plain Ruby blocks and the ones that are created with the
             # lambda keyword.
             kibuvits_throw("func_paintroller.lambda? != true"+
-            "\n GUID='4800a5e4-9d39-4f28-b47d-b33211f1add7'\n\n")
+            "\n GUID='724c0041-bc98-4fe9-873e-53c250802ed7'\n\n")
          end # if
       end # if
       #-------
@@ -853,7 +853,7 @@ class Kibuvits_str
          exc=Exception.new("\nThe separator string had a "+
          "value of \"\", but empty strings are not "+
          "allowed to be used as separator strings.\n"+
-         "GUID='7dc79824-54a5-46fa-837d-b33211f1add7'\n\n")
+         "GUID='744fd9e2-59e4-48d0-aa2d-53c250802ed7'\n\n")
          if @b_kibuvits_bootfile_run
             kibuvits_throw(exc)
          else
@@ -863,7 +863,7 @@ class Kibuvits_str
       s_hay=s_haystack
       if s_hay.length==0
          exc=Exception.new("s_haystack.length==0 \n"+
-         "GUID='78097a23-9c84-44d9-937d-b33211f1add7'\n\n")
+         "GUID='32bc97f1-2df3-4ae8-b41d-53c250802ed7'\n\n")
          if @b_kibuvits_bootfile_run
             kibuvits_throw(exc)
          else
@@ -876,7 +876,7 @@ class Kibuvits_str
       # s_separator may not equal with the ''.
       if s_separator.length==0
          exc=Exception.new("s_separator.length==0\n"+
-         "GUID='1827df62-991c-4524-839c-b33211f1add7'\n\n")
+         "GUID='a5200aba-8e49-4277-93cd-53c250802ed7'\n\n")
          if @b_kibuvits_bootfile_run
             kibuvits_throw(exc)
          else
@@ -894,7 +894,7 @@ class Kibuvits_str
             exc=Exception.new("Expected number of separators is "+n.to_s+
             ", but the s_haystack contained only "+(i+1).to_s+
             "separator strings.\n"+
-            "GUID='0321fdca-b2aa-47c2-849c-b33211f1add7'\n\n")
+            "GUID='4344be01-5e5e-48b9-b53d-53c250802ed7'\n\n")
             if @b_kibuvits_bootfile_run
                kibuvits_throw(exc)
             else
@@ -942,7 +942,7 @@ class Kibuvits_str
          kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
          if msgcs.b_failure
             kibuvits_throw("\nmsgcs.b_failure == true "+
-            "\n GUID='8e9dcb1c-ed87-420c-a59c-b33211f1add7'\n\n")
+            "\n GUID='e278d6d2-761c-467b-a63d-53c250802ed7'\n\n")
          end # if
       end # if
       s_left=$kibuvits_lc_emptystring
@@ -954,7 +954,7 @@ class Kibuvits_str
          s_message_id="data_fault_t1"
          b_failure=true
          msgcs.cre(s_default_msg,s_message_id,b_failure,
-         "593c1c80-a630-4d76-838d-b33211f1add7")
+         "57514135-59a9-424b-886f-53c250802ed7")
          return s_left,s_right
       end # if
       i_len_s_in=s_in.length # s_in=="10|heder_data|therestofblabla"
@@ -969,7 +969,7 @@ class Kibuvits_str
          s_message_id="data_fault_t2"
          b_failure=true
          msgcs.cre(s_default_msg,s_message_id,b_failure,
-         "53a616d6-39f5-4b60-858d-b33211f1add7")
+         "45303c32-ae55-4e11-904f-53c250802ed7")
          return s_left,s_right
       end # if
       # Due to the regular expression, rgx, 2<=i_len_s_0
@@ -984,11 +984,11 @@ class Kibuvits_str
          s_default_msg="\nFlawed header, i.e. the header is considered\n"+
          "to be missing, because the header data block is \n"+
          "not followed by a \"pillar character\" (\"|\"). \n"+
-         "\n GUID='20bb9ced-6a2c-4d33-b39c-b33211f1add7'\n\n"
+         "\n GUID='45c53033-1083-4f58-822c-53c250802ed7'\n\n"
          s_message_id="data_fault_t3"
          b_failure=true
          msgcs.cre(s_default_msg,s_message_id,b_failure,
-         "dfa6d1ed-87b4-4104-a98d-b33211f1add7")
+         "74ba72f8-72c6-41ba-864e-53c250802ed7")
          return s_left,s_right
       end # if
       # In Ruby "x"[1..(-1)]==""
@@ -1209,7 +1209,7 @@ class Kibuvits_str
       if Kibuvits_str.index_is_outside_of_the_string(a_string,i_ix)
          kibuvits_throw "index_of_the_character=="+i_ix.to_s+" is outside of "+
          "string a_string==\""+a_string+"\".\n"+
-         "GUID='84020d56-06f8-4712-839c-b33211f1add7'\n\n"
+         "GUID='1495c5fa-9666-4226-9f4c-53c250802ed7'\n\n"
       end # if
       s_char=a_string[i_ix..i_ix]
       i_count=0
@@ -1279,24 +1279,25 @@ class Kibuvits_str
       end # if
       i_sh_len=s_haystack.length
       i_sn_len=s_needle.length
-      return s_haystack if (i_sh_len<i_sn_len)||(i_sn_len==0)
+      s_hay=s_haystack+$kibuvits_lc_emptystring # to return a different instance
+      return s_hay if (i_sh_len<i_sn_len)||(i_sn_len==0)
       if i_sh_len==i_sn_len
-         if s_haystack==s_needle
-            return ""
+         if s_hay==s_needle
+            return $kibuvits_lc_emptystring
          else
             # For speed only. There's no point of re-comparing.
-            return s_haystack
+            return s_hay
          end # if
       end # if
-      if s_haystack[(i_sh_len-i_sn_len)..(-1)]==s_needle
-         return s_haystack[0..(i_sh_len-i_sn_len-1)]
+      if s_hay[(i_sh_len-i_sn_len)..(-1)]==s_needle
+         return s_hay[0..(i_sh_len-i_sn_len-1)]
       end # if
-      return s_haystack
+      return s_hay
    end # clip_tail_by_str
 
    def Kibuvits_str.clip_tail_by_str(s_haystack,s_needle)
-      s_haystack=Kibuvits_str.instance.clip_tail_by_str s_haystack, s_needle
-      return s_haystack
+      s_hay=Kibuvits_str.instance.clip_tail_by_str(s_haystack,s_needle)
+      return s_hay
    end # Kibuvits_str.clip_tail_by_str
 
    #-----------------------------------------------------------------------
@@ -1406,6 +1407,90 @@ class Kibuvits_str
       s=Kibuvits_str.instance.ht2str(ht,s_pair_prefix,s_separator)
       return s
    end # Kibuvits_str.ht2str
+
+   #-----------------------------------------------------------------------
+
+   # If the ar_speedoptimization_prefixes_as_regexps.class==Array
+   # and
+   # ar_speedoptimization_prefixes_as_regexps.size==0
+   # and
+   # ar_or_s_prefix!="" and ar_or_s_prefix.size!=0
+   # then the ar_speedoptimization_prefixes_as_regexps
+   # is filled with regular expression objects that
+   # have been generated from the ar_or_s_prefix.
+   #
+   # If the ar_speedoptimization_prefixes_as_regexps.class==Array
+   # and
+   # 0 < ar_speedoptimization_prefixes_as_regexps.size
+   # then
+   # the content of the ar_or_s_prefix is ignored.
+   #
+   # Empty string is considered to be the prefix of all
+   # strings, including an empty string.
+   #
+   # The elements of the ar_speedoptimization_prefixes_as_regexps
+   # must not be created or edited outside of this function.
+   def b_has_prefix(ar_or_s_prefix, s_haystack,
+      ar_speedoptimization_prefixes_as_regexps=[])
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [String,Array], ar_or_s_prefix
+         kibuvits_typecheck bn, String, s_haystack
+         kibuvits_typecheck bn, Array, ar_speedoptimization_prefixes_as_regexps
+
+         if ar_or_s_prefix.class==Array
+            kibuvits_typecheck_ar_content(bn,String,
+            ar_or_s_prefix,
+            "\nGUID='65e00e33-8780-4856-9f3c-53c250802ed7'\n\n")
+         end # if
+         kibuvits_typecheck_ar_content(bn,Regexp,
+         ar_speedoptimization_prefixes_as_regexps,
+         "\nGUID='80435954-3327-4b43-a3ac-53c250802ed7'\n\n")
+      end # if
+      ar_rgx=ar_speedoptimization_prefixes_as_regexps
+      if ar_rgx.size==0
+         rgx=nil
+         ar_prefixes=Kibuvits_ix.normalize2array(ar_or_s_prefix).uniq
+         ar_prefixes.each do |s_prefix|
+            if s_prefix==$kibuvits_lc_emptystring
+               # There is no point of studying the
+               # other prefixes, if the empty string
+               # is considered to be a prefix of all strings.
+               ar_rgx=[/^/]
+               break
+            end # if
+            rgx=Regexp.new($kibuvits_lc_powersign+s_prefix)
+            ar_rgx<<rgx
+         end # loop
+      end # if
+      b_out=false
+      if ar_rgx.size==1
+         if ar_rgx[0].to_s==/^/.to_s
+            # An empty string is considered to be a prefix of all strings.
+            b_out=true
+            return b_out
+         end # if
+      end # if
+      s_0=nil
+      i_len_s_haystack=s_haystack.length
+      return b_out if i_len_s_haystack==0 # speed hack
+      ar_rgx.each do |rgx|
+         s_0=s_haystack.sub(rgx,$kibuvits_lc_emptystring)
+         if s_0.length!=i_len_s_haystack
+            b_out=true
+            break
+         end # if
+      end # loop
+      return b_out
+   end # b_has_prefix
+
+
+   def Kibuvits_str.b_has_prefix(ar_or_s_prefix, s_haystack,
+      ar_speedoptimization_prefixes_as_regexps=[])
+      b_out=Kibuvits_str.instance.b_has_prefix(ar_or_s_prefix, s_haystack,
+      ar_speedoptimization_prefixes_as_regexps)
+      return b_out
+   end # Kibuvits_str.b_has_prefix
 
    #-----------------------------------------------------------------------
    public
@@ -1542,7 +1627,7 @@ class Kibuvits_str
    # {"note_in_msgcs","throw","print_and_exit","exit"}
    def verify_s_is_within_domain(s_to_test,s_or_ar_of_domain_elements,
       msgcs,s_action_on_verification_failure="note_in_msgcs",
-      s_language_to_use_for_printing="English")
+      s_language_to_use_for_printing=$kibuvits_lc_English)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, String, s_to_test
@@ -1581,7 +1666,7 @@ class Kibuvits_str
       s_msg_ee="s_to_test==\""+s_to_test+"\", kuid ta peaks omama \n"+
       "ühte järgnevaist väärtustest: "+s_domain+" ."
       msgcs.cre(s_msg_en,1.to_s)
-      msgcs.last["Estonian"]=s_msg_ee
+      msgcs.last[$kibuvits_lc_Estonian]=s_msg_ee
       case s_action_on_verification_failure
       when "throw"
          kibuvits_throw msgcs.to_s(s_language_to_use_for_printing)
@@ -1599,7 +1684,7 @@ class Kibuvits_str
 
    def Kibuvits_str.verify_s_is_within_domain(s_to_test,s_or_ar_of_domain_elements,
       msgcs,s_action_on_verification_failure="note_in_msgcs",
-      s_language_to_use_for_printing="English")
+      s_language_to_use_for_printing=$kibuvits_lc_English)
       Kibuvits_str.instance.verify_s_is_within_domain(
       s_to_test,s_or_ar_of_domain_elements, msgcs,
       s_action_on_verification_failure,s_language_to_use_for_printing)
@@ -1746,7 +1831,7 @@ class Kibuvits_str
          s_msg_ee="Algust markeeriv sõne, s_start==\""+
          s_start+"\", on uuritavast tekstist puudu."
          msgcs.cre(s_msg_en,s_message_id,true)
-         msgcs.last["Estonian"]=s_msg_ee
+         msgcs.last[$kibuvits_lc_Estonian]=s_msg_ee
          return s_out;
       end # if
       i_end=s_haystack.index(s_end)
@@ -1757,7 +1842,7 @@ class Kibuvits_str
          s_msg_ee="Lõppu markeeriv sõne, s_end==\""+
          s_end+"\", on uuritavast tekstist puudu."
          msgcs.cre(s_msg_en,s_message_id,true)
-         msgcs.last["Estonian"]=s_msg_ee
+         msgcs.last[$kibuvits_lc_Estonian]=s_msg_ee
          return s_out;
       end # if
       if i_end<=i_start
@@ -1770,7 +1855,7 @@ class Kibuvits_str
          "\", asus madalamal indeksil, i_end=="+i_end.to_s+
          ", kui algust markeeriv sõne, i_start=="+s_start.to_s+"."
          msgcs.cre(s_msg_en,s_message_id,true)
-         msgcs.last["Estonian"]=s_msg_ee
+         msgcs.last[$kibuvits_lc_Estonian]=s_msg_ee
          return s_out;
       end # if
       s_out=s_haystack[(i_start+s_start.length)..(i_end-1)]
@@ -1786,6 +1871,37 @@ class Kibuvits_str
    end # Kibuvits_str.s_get_substring_by_bounds
 
    #-----------------------------------------------------------------------
+
+   # Precedes the i_in.to_s with zeros ("0") so that the
+   # i_minimum_amount_of_digits<=s_out.length .
+   def s_to_s_with_assured_amount_of_digits_t1(i_minimum_amount_of_digits,
+      i_positive_whole_number)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, Fixnum, i_minimum_amount_of_digits
+         kibuvits_typecheck bn, [Fixnum,Bignum], i_positive_whole_number
+         kibuvits_assert_is_smaller_than_or_equal_to(bn,
+         1, i_minimum_amount_of_digits,
+         "GUID='2ee205d4-d6ac-40aa-a01c-53c250802ed7'")
+         kibuvits_assert_is_smaller_than_or_equal_to(bn,
+         0, i_positive_whole_number,
+         "GUID='24a57be2-4d77-44c9-a24b-53c250802ed7'")
+      end # if
+      s_0=i_positive_whole_number.to_s
+      i_0=i_minimum_amount_of_digits-s_0.length
+      s_0=("0"*i_0)+s_0 if 0<i_0
+      return s_0
+   end # s_to_s_with_assured_amount_of_digits_t1
+
+   def Kibuvits_str.s_to_s_with_assured_amount_of_digits_t1(
+      i_minimum_amount_of_digits, i_positive_whole_number)
+      s_out=Kibuvits_str.instance.s_to_s_with_assured_amount_of_digits_t1(
+      i_minimum_amount_of_digits, i_positive_whole_number)
+      return s_out
+   end # Kibuvits_str.s_to_s_with_assured_amount_of_digits_t1
+
+   #-----------------------------------------------------------------------
+
    include Singleton
 
 end # class Kibuvits_str

@@ -75,7 +75,7 @@ class Kibuvits_selftests_executer
       fl_p=folder_path
       kibuvits_typecheck binding(), String, folder_path
       kibuvits_typecheck binding(), String, s_regex
-      kibuvits_throw "3f677492-ae0b-4caa-bfcb-f2f120119dd7" if !File.directory?(fl_p)
+      kibuvits_throw "13782451-8304-4eb5-9449-b3d1d0914ed7" if !File.directory?(fl_p)
       pfn=Pathname.new(fl_p)
       fl_p=pfn.absolute_path if !pfn.absolute?
       ar_file_or_folder_paths=Array.new
@@ -108,7 +108,7 @@ class Kibuvits_selftests_executer
             end # if
          end # loop
       else
-         kibuvits_throw "3e129adf-6164-41ff-94cb-f2f120119dd7"
+         kibuvits_throw "6fdbf71d-4dce-43fc-8149-b3d1d0914ed7"
       end # case
       return ar_file_or_folder_paths
    end # get_file_paths
@@ -141,7 +141,7 @@ class Kibuvits_selftests_executer
       ar_class_declaration_file_paths.each do |file_path|
          kibuvits_typecheck binding(), String, file_path
          pfn=Pathname.new(file_path)
-         kibuvits_throw "18642012-e882-4d35-a3cb-f2f120119dd7" if !pfn.absolute?
+         kibuvits_throw "7a2b5451-4f45-4d5f-9449-b3d1d0914ed7" if !pfn.absolute?
          require file_path
       end # loop
       s_class_name=""
@@ -185,7 +185,7 @@ def kibuvits_selftestrunnerscript_write_2_mmmv_devel_tools_error_stack_if_possib
       begin
          s_fp_info=s_fp_mmmv_devel_tools+"/src/api/mmmv_devel_tools_info.bash"
          s_cmd=s_fp_info+" get_config s_GUID_trace_errorstack_file_path "
-         ht_stdstreams=sh(s_cmd)
+         ht_stdstreams=kibuvits_sh(s_cmd)
          s_stdout=ht_stdstreams["s_stdout"]
          s_fp_guidtrace_errorstack=s_stdout.gsub(/[\n]/,"")
          if File.exists? s_fp_guidtrace_errorstack
@@ -194,14 +194,14 @@ def kibuvits_selftestrunnerscript_write_2_mmmv_devel_tools_error_stack_if_possib
             s_out=s_msg+"\n\nFile \n"+s_fp_guidtrace_errorstack+
             "\ndoes not exist. For reliability reasons the KRL selftests \n"+
             "tool will not create it itself.\n"+
-            "GUID='db97ce55-6e50-4ece-84cb-f2f120119dd7'\n\n"
+            "GUID='c2bb8519-be43-4d35-9449-b3d1d0914ed7'\n\n"
          end # if
       rescue Exception => e
          s_out=s_msg+
          "\n\nMMMV_DEVEL_TOOLS_HOME==\n"+s_fp_mmmv_devel_tools+
          "\n, but the GUID_trace exception message stack could not be used.\n"+
          "e.to_s==\n"+e.to_s+
-         "\n\n GUID='38e52301-ecf9-4a5a-93cb-f2f120119dd7'"
+         "\n\n GUID='480c4250-b094-4b52-8149-b3d1d0914ed7'"
       end # rescue
    end # if
    return s_out
@@ -233,7 +233,6 @@ def kibuvits_selftestrunnerscript_run_class_selftest(s_class_name,selftester)
    ar.each do |a_class|
       if a_class.to_s==s_class_name
          ar_msgs=a_class.selftest
-         ar_msgs=a_class.selftest
          kibuvits_selftestrunnerscript_display_selftests_failure_messages(
          ar_msgs,s_class_name)
          b_exec=true
@@ -262,7 +261,7 @@ begin
    if ARGV.length==0
       Dir.chdir(APPLICATION_STARTERRUBYFILE_PWD)
       ar_msgs=selftester.execute_all_Kibuvits_selftests
-      kibuvits_selftestrunnerscript_display_selftests_failure_messages ar_msgs
+      kibuvits_selftestrunnerscript_display_selftests_failure_messages(ar_msgs)
    else
       argv0=ARGV[0]
       case argv0
@@ -281,7 +280,7 @@ begin
       when "-?"
          kibuvits_selftestrunnerscript_display_console_args
       else
-         if !kibuvits_selftestrunnerscript_run_class_selftest argv0,selftester
+         if !kibuvits_selftestrunnerscript_run_class_selftest(argv0,selftester)
             puts"\nClass "+argv0+" is either not found or it does "+
             "not have \na static method named selftest.\n"
             kibuvits_selftestrunnerscript_display_console_args

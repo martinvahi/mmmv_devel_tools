@@ -56,7 +56,7 @@ if (s_full_path_to_jumpguid_core_bash_cript.length == 0) {
     s_0 = null;
     if (s_MMMV_DEVEL_TOOLS_HOME.length < 2) {
         cmd = "echo $MMMV_DEVEL_TOOLS_HOME";
-        s_0 = guidtrace.sh(cmd);
+        s_0 = guidtrace.kibuvits_sh(cmd);
     } else {
         s_0 = s_MMMV_DEVEL_TOOLS_HOME;
     } // else
@@ -91,12 +91,12 @@ if (s_full_path_to_jumpguid_core_bash_cript.length == 0) {
 cmd = s_full_path_to_jumpguid_core_bash_cript +
       " get_file_path " + s_stack_navigation_command;
 //alert(cmd);
-s_0 = guidtrace.sh(cmd);
+s_0 = guidtrace.kibuvits_sh(cmd);
 s_fp = guidtrace.trim(s_0);
 
 cmd = s_full_path_to_jumpguid_core_bash_cript +
       " get_line_number no_cursor_movement ";
-s_0 = guidtrace.sh(cmd);
+s_0 = guidtrace.kibuvits_sh(cmd);
 si_line_number = guidtrace.trim(s_0);
 //alert(si_line_number);
 

@@ -60,7 +60,7 @@ class Breakdancemake_bdmservice_detector_bzip2< Breakdancemake_bdmservice_detect
    def b_assess_bdmcomponent_availability(ht_cycle_detection_opmem,fd_threshold)
       b_on_the_path=Kibuvits_shell.b_available_on_path("bzip2")
       return false if !b_on_the_path
-      ht_stdstreams=sh("bzip2 --version")
+      ht_stdstreams=kibuvits_sh("bzip2 --version")
       s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
       rgx=/by Julian Seward/
       b_ready_for_use=false

@@ -67,13 +67,15 @@ class Kibuvits_IDstamp_registry_t1
 
    #-----------------------------------------------------------------------
 
-   def initialize(s_default_ID_prefix=$kibuvits_lc_emptystring,
+   # The s_default_ID_prefix must adhere to the rules of variable names.
+   def initialize(s_default_ID_prefix="x",
       b_nil_from_wilderness_differs_from_registry_entries=false)
+      bn=binding()
       if KIBUVITS_b_DEBUG
-         bn=binding()
          kibuvits_typecheck bn, String, s_default_ID_prefix
          kibuvits_typecheck bn, [TrueClass,FalseClass], b_nil_from_wilderness_differs_from_registry_entries
       end # if
+      kibuvits_assert_ok_to_be_a_varname_t1(bn,s_default_ID_prefix)
       @s_default_ID_prefix=($kibuvits_lc_emptystring+s_default_ID_prefix).freeze
       @b_nil_from_wilderness_differs_from_registry_entries=b_nil_from_wilderness_differs_from_registry_entries
       @ht_registry=Hash.new

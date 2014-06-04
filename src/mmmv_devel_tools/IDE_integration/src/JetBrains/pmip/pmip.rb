@@ -22,7 +22,7 @@ class Mmmv_devel_tools_pmip_lib_globals
    #-----------------------------------------------------
 
    # Derivated form the PMIP Command class.
-   def sh(s_cmd, b_hide_window = false)
+   def mmmv_devel_tools_upguid_sh(s_cmd, b_hide_window = false)
       path="/tmp"
       s_out="";
       if OS.windows?
@@ -34,12 +34,12 @@ class Mmmv_devel_tools_pmip_lib_globals
          s_out=eval(s_cmd_0)
       end # else
       return s_out
-   end # sh
+   end # mmmv_devel_tools_upguid_sh
 
-   def Mmmv_devel_tools_pmip_lib_globals.sh(s_cmd, b_hide_window = false)
-      s_out=Mmmv_devel_tools_pmip_lib_globals.instance.sh(s_cmd, b_hide_window)
+   def Mmmv_devel_tools_pmip_lib_globals.mmmv_devel_tools_upguid_sh(s_cmd, b_hide_window = false)
+      s_out=Mmmv_devel_tools_pmip_lib_globals.instance.mmmv_devel_tools_upguid_sh(s_cmd, b_hide_window)
       return s_out
-   end # Mmmv_devel_tools_pmip_lib_globals.sh
+   end # Mmmv_devel_tools_pmip_lib_globals.mmmv_devel_tools_upguid_sh
 
    #-----------------------------------------------------
 
@@ -50,7 +50,7 @@ class Mmmv_devel_tools_pmip_lib_globals
 
       s_0=@mmmv_devel_tools_home_+"/src/mmmv_devel_tools"
 
-      @s_fp_bash_=self.sh("which bash").gsub(/[\s]/,"").freeze
+      @s_fp_bash_=self.mmmv_devel_tools_upguid_sh("which bash").gsub(/[\s]/,"").freeze
       @s_fp_renessaator_bash_=s_0+"/renessaator/src/renessaator".freeze
       @s_fp_breakdancemake_bash_=s_0+"/breakdancemake/src/breakdancemake".freeze
       @s_fp_upguid_bash_=s_0+"/GUID_trace/src/UpGUID/src/upguid".freeze

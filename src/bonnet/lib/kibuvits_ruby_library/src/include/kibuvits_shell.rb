@@ -56,59 +56,38 @@ end # if
 #==========================================================================
 
 # It's a sub-function of the function sh
-def sh_unix(s_shell_script)
+def kibuvits_sh_unix(s_shell_script)
    if KIBUVITS_b_DEBUG
       kibuvits_typecheck binding(), String, s_shell_script
    end # if
-   s_fp_script=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
+   s_fp_script_0=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
    s_fp_stdout=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
    s_fp_stderr=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
-   cmd="bash "+s_fp_script+" 1>"+s_fp_stdout+" 2>"+s_fp_stderr+" ;"
-   str2file(s_shell_script,s_fp_script)
+   #------------
+   b_throw_if_not_found=true
+   s_fp_bash=Kibuvits_shell.s_exc_system_specific_path_by_caching_t1(
+   "bash", b_throw_if_not_found)
+   #------------
+   str2file(s_shell_script,s_fp_script_0)
    str2file($kibuvits_lc_emptystring,s_fp_stdout)
    str2file($kibuvits_lc_emptystring,s_fp_stderr)
-   ht_stdstreams=Kibuvits_io.creat_empty_ht_stdstreams
+   cmd=s_fp_bash+$kibuvits_lc_space+s_fp_script_0+" 1>"+s_fp_stdout+" 2>"+s_fp_stderr+" ;"
+   ht_stdstreams=Kibuvits_io.create_empty_ht_stdstreams
    begin
-      b_success=system(cmd)
-   rescue Exception=>e
-      File.delete(s_fp_script)
-      File.delete(s_fp_stdout)
-      File.delete(s_fp_stderr)
-      kibuvits_throw e.message.to_s
-   end # try-catch
-   s_stdout=Kibuvits_str.normalise_linebreaks(
-   file2str(s_fp_stdout),$kibuvits_lc_linebreak)
-   s_stderr=Kibuvits_str.normalise_linebreaks(
-   file2str(s_fp_stderr),$kibuvits_lc_linebreak)
-   File.delete(s_fp_script)
-   File.delete(s_fp_stdout)
-   File.delete(s_fp_stderr)
-   ht_stdstreams[$kibuvits_lc_s_stdout]=s_stdout
-   ht_stdstreams[$kibuvits_lc_s_stderr]=s_stderr
-   return ht_stdstreams
-end # sh_unix
+      # Kernel.system return values:
+      #     true  on success, e.g. program returns 0 as execution status
+      #     false on successfully started program that
+      #              returns nonzero execution status
+      #     nil   on command that could not be executed
+      x_success=system(cmd)
 
-# It's a sub-function of the function sh
-def sh_windows(s_shell_script)
-   if KIBUVITS_b_DEBUG
-      kibuvits_typecheck binding(), String, s_shell_script
-   end # if
-   s_fp_script0=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
-   s_fp_script=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
-   s_fp_stdout=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
-   s_fp_stderr=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
-   cmd="export PATH=\"/bin:/usr/bin:/sbin:/cygdrive/c/Windows:$PATH\"; "+
-   "bash "+s_fp_script+" 1>"+s_fp_stdout+" 2>"+s_fp_stderr+" ;"
-   str2file(cmd,s_fp_script0)
-   str2file(s_shell_script,s_fp_script)
-   str2file($kibuvits_lc_emptystring,s_fp_stdout)
-   str2file($kibuvits_lc_emptystring,s_fp_stderr)
-   ht_stdstreams=Kibuvits_io.creat_empty_ht_stdstreams
-   begin
-      b_success=system("c:/cygwin/bin/bash "+s_fp_script0)
+      # An alternative version that needs improvement:
+      #
+      #     x_success=nil
+      #     IO.popen(cmd) {x_success=true }
+      #
    rescue Exception=>e
-      File.delete(s_fp_script0)
-      File.delete(s_fp_script)
+      File.delete(s_fp_script_0)
       File.delete(s_fp_stdout)
       File.delete(s_fp_stderr)
       kibuvits_throw e.message.to_s
@@ -117,16 +96,17 @@ def sh_windows(s_shell_script)
    file2str(s_fp_stdout),$kibuvits_lc_linebreak)
    s_stderr=Kibuvits_str.normalise_linebreaks(
    file2str(s_fp_stderr),$kibuvits_lc_linebreak)
-   File.delete(s_fp_script0)
-   File.delete(s_fp_script)
-   File.delete(s_fp_stdout)
-   File.delete(s_fp_stderr)
+   File.delete(s_fp_script_0) if File.exists? s_fp_script_0
+   File.delete(s_fp_stdout) if File.exists? s_fp_stdout
+   File.delete(s_fp_stderr) if File.exists? s_fp_stderr
    ht_stdstreams[$kibuvits_lc_s_stdout]=s_stdout
    ht_stdstreams[$kibuvits_lc_s_stderr]=s_stderr
    return ht_stdstreams
-end # sh_windows
+end # kibuvits_sh_unix
+
 
 $kibuvits_lc_mx_sh=Mutex.new
+
 
 # Writes a script to a file and executes it in Bash. Returns a hashtable with
 # keys "s_stdout" and "s_stderr". The values that are pointed by the keys
@@ -135,7 +115,7 @@ $kibuvits_lc_mx_sh=Mutex.new
 # The line breaks within the s_stdout, s_stderr have been normalized
 # to the "\n". In case of Windows the 2 header lines and the footer line
 # have been removed from the s_stdout.
-def sh(s_shell_script)
+def kibuvits_sh(s_shell_script)
    if KIBUVITS_b_DEBUG
       kibuvits_typecheck binding(), String, s_shell_script
    end # if
@@ -144,22 +124,21 @@ def sh(s_shell_script)
    $kibuvits_lc_mx_sh.synchronize do
       case s_ostype
       when "kibuvits_ostype_unixlike"
-         ht_stdstreams=sh_unix(s_shell_script)
-      when "kibuvits_ostype_windows"
-         ht_stdstreams=sh_windows(s_shell_script)
+         ht_stdstreams=kibuvits_sh_unix(s_shell_script)
       else
-         # One case, where it happens: "kibuvits_ostype_java"
+         # Some of the cases, where it happens:
+         # "kibuvits_ostype_java", "kibuvits_ostype_windows"
          kibuvits_throw("Operating system with the "+
          "Kibuvits Ruby Library operating system type \""+
          s_ostype+"\" is not supported by this function.")
       end # case
    end # synchronize
    return ht_stdstreams
-end # sh
+end # kibuvits_sh
 
 #--------------------------------------------------------------------------
 
-# The same as the sh(...), except that it
+# The same as the kibuvits_sh(...), except that it
 # prints the output streams, if there's any output.
 def kibuvits_sh_writeln2console_t1(s_shell_script)
    ht_stdstreams=sh(s_shell_script)
@@ -175,32 +154,150 @@ end # kibuvits_sh_writeln2console_t1
 #--------------------------------------------------------------------------
 
 class Kibuvits_shell
+
    def initialize
       @s_lc_which="which ".freeze
       @s_lc_1="[/]".freeze
    end # initialize
 
-   # Returns boolean true, if the script or binary named
-   # valueof(s_executable_name) is available on the path.
-   def b_available_on_path(s_executable_name)
+   #-----------------------------------------------------------------------
+
+   private
+
+   # Returns an empty string, if not found.
+   # It's also used in
+   #
+   #     b_available_on_path(...)
+   #
+   def s_exc_system_specific_path_by_caching_t1_look_from_system(s_program_name)
+      s_fp="/usr/bin/env"
+      if !File.exist? s_fp
+         kibuvits_throw("The file "+ s_fp+" does not exist."+
+         "\nGUID='dd842751-6e74-4d17-a346-d2a050c13ed7'")
+      end # if
+      s_fp_stdout=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
+      s_fp_stderr=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
+      cmd="which "+s_program_name+" 1>"+s_fp_stdout+" 2>"+s_fp_stderr+" ;"
+      x_success=nil
+      begin
+         # Kernel.system(...) return values:
+         #     true  on success, e.g. program returns 0 as execution status
+         #     false on successfully started program that
+         #              returns nonzero execution status
+         #     nil   on command that could not be executed
+         x_success=system(cmd)
+      rescue Exception=>e
+         File.delete(s_fp_stdout)
+         File.delete(s_fp_stderr)
+         kibuvits_throw e.message.to_s
+      end # try-catch
+      s_stdout=$kibuvits_lc_emptystring
+      if x_success==true
+         s_stdout=file2str(s_fp_stdout).gsub(/[\n\r]/,$kibuvits_lc_emptystring)
+      end # if
+      File.delete(s_fp_stdout) if File.exist? s_fp_stdout
+      File.delete(s_fp_stderr) if File.exist? s_fp_stderr
+      return s_stdout
+   end # s_exc_system_specific_path_by_caching_t1_look_from_system
+
+   public
+
+   # A pooling wrapper to the /usr/bin/env
+   #
+   # If the s_program_name is found on PATH,
+   # returns the full path of the s_program_name
+   #
+   # If the s_program_name is NOT found on PATH,
+   # returns an empty string or throws an exception.
+   def s_exc_system_specific_path_by_caching_t1(s_program_name,b_throw_if_not_found=true)
       if KIBUVITS_b_DEBUG
          bn=binding()
-         kibuvits_typecheck bn, String, s_executable_name
+         i_min_length=2 # May be it should be 1?
+         # The i_min_length can be changed to 1, after problems emerge.
+         kibuvits_assert_string_min_length(bn,s_program_name,i_min_length,
+         "GUID='a24863a2-f123-4440-9f26-d2a050c13ed7'")
+         kibuvits_typecheck bn, [TrueClass,FalseClass], b_throw_if_not_found
+      end # if
+      if !defined? @ht_s_exc_system_specific_path_by_caching_t1_cache
+         @ht_s_exc_system_specific_path_by_caching_t1_cache=Hash.new
+      end # if
+      #---------------
+      # s_fp is a string in stead of nil to match the
+      # s_exc_system_specific_path_by_caching_t1_look_from_system output format.
+      s_fp=$kibuvits_lc_emptystring
+      if @ht_s_exc_system_specific_path_by_caching_t1_cache.has_key? s_program_name
+         s_fp=@ht_s_exc_system_specific_path_by_caching_t1_cache[s_program_name]
+      else
+         s_fp=s_exc_system_specific_path_by_caching_t1_look_from_system(s_program_name)
+         if 0<s_fp.length
+            @ht_s_exc_system_specific_path_by_caching_t1_cache[s_program_name]=s_fp.freeze
+         end # if
+      end # if
+      #---------------
+      if s_fp.length==0
+         if b_throw_if_not_found
+            kibuvits_throw("Program \""+ s_program_name+
+            "\" could not be found on the PATH."+
+            "\nGUID='550272ca-5695-4592-b036-d2a050c13ed7'")
+         end # if
+      end # if
+      return s_fp
+   end # s_exc_system_specific_path_by_caching_t1
+
+
+   def Kibuvits_shell.s_exc_system_specific_path_by_caching_t1(
+      s_program_name,b_throw_if_not_found=true)
+      s_out=Kibuvits_shell.instance.s_exc_system_specific_path_by_caching_t1(
+      s_program_name,b_throw_if_not_found)
+      return s_out
+   end # Kibuvits_shell.s_exc_system_specific_path_by_caching_t1
+
+   #-----------------------------------------------------------------------
+
+   # Returns boolean true, if the script or binary named
+   # valueof(s_executable_name) is available on the path.
+   #
+   # The semantics of it is that it always studies
+   # the PATH and does not cache the results.
+   def b_available_on_path(s_program_name) # like "which", "grep", "vim", etc.
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, String, s_program_name
       end # if
       b_out=false
-      ht=sh(@s_lc_which+s_executable_name)
-      s_from_console=ht[$kibuvits_lc_s_stdout].to_s
-      rgx=Regexp.new(@s_lc_1+s_executable_name+$kibuvits_lc_dollarsign)
-      if (rgx.match(s_from_console))!=nil
-         b_out=true
-      end # if
+      s_fp=s_exc_system_specific_path_by_caching_t1_look_from_system(s_program_name)
+      b_out=true if 0<s_fp.length
       return b_out
    end # b_available_on_path
 
-   def Kibuvits_shell.b_available_on_path(s_executable_name)
-      b_out=Kibuvits_shell.instance.b_available_on_path(s_executable_name)
+   def Kibuvits_shell.b_available_on_path(s_program_name)
+      b_out=Kibuvits_shell.instance.b_available_on_path(s_program_name)
       return b_out
    end # Kibuvits_shell.b_available_on_path
+
+   #-----------------------------------------------------------------------
+
+   def throw_if_stderr_has_content_t1(ht_stdstreams,
+      s_optional_error_message_suffix=nil)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, Hash, ht_stdstreams
+         kibuvits_typecheck bn, [NilClass,String], s_optional_error_message_suffix
+      end # if
+      s_err=ht_stdstreams[$kibuvits_lc_s_stderr]
+      return if s_err.length==0
+      s_msg=s_err+$kibuvits_lc_linebreak
+      if s_optional_error_message_suffix!=nil
+         s_msg=s_msg+s_optional_error_message_suffix+$kibuvits_lc_linebreak
+      end # if
+      kibuvits_throw(s_msg)
+   end # throw_if_stderr_has_content_t1
+
+   def Kibuvits_shell.throw_if_stderr_has_content_t1(ht_stdstreams,
+      s_optional_error_message_suffix=nil)
+      Kibuvits_shell.instance.throw_if_stderr_has_content_t1(
+      ht_stdstreams,s_optional_error_message_suffix)
+   end # Kibuvits_shell.throw_if_stderr_has_content_t1
 
    #-----------------------------------------------------------------------
 
@@ -209,3 +306,4 @@ class Kibuvits_shell
 end # class Kibuvits_shell
 
 #==========================================================================
+# puts kibuvits_sh("whoami")["s_stdout"]

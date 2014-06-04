@@ -60,12 +60,40 @@ class Kibuvits_io_selftests
 
    def Kibuvits_io_selftests.test_s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected
       #-----------------------------
+      s_x=nil
       begin
          s_x=Kibuvits_io.s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected
       rescue Exception => e
          kibuvits_throw("test 1a, e=="+e.to_s+
-         "\nGUID='20413f74-623f-4787-bc4f-a2d00010bdd7'")
+         "\nGUID='650c2173-8a03-4272-b733-b08130713ed7'")
       end # rescue
+      s_0=s_x.gsub(/[\d]/,$kibuvits_lc_emptystring)
+      if s_0.length==3
+         kibuvits_throw("test 2a, s_0=="+s_0) if s_0!="..." # 198.4.69.42
+         # According to the definition of the KRL API,
+         # the local loop-back that is returned by the
+         #
+         #     Kibuvits_io.s_localhost_IP_address
+         #
+         # must be of the same type (IPv4,IPv6) as
+         # the IP-address that is returned by the
+         #
+         #     Kibuvits_io.s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected
+         #
+         s_1=Kibuvits_io.s_localhost_IP_address
+         kibuvits_throw("test 2b, s_1=="+s_1) if s_1!="127.0.0.1"
+         md=s_x.match(/([\d]?){3}[.]([\d]?){3}[.]([\d]?){3}[.]([\d]?){3}/)
+         kibuvits_throw("test 2c, s_x=="+s_x) if md==nil
+         kibuvits_throw("test 2d, md[0]=="+md[0]) if md[0]!=s_x
+      else
+         if s_x==$kibuvits_lc_s_localhost
+            kibuvits_throw("test 3a, s_x == \"localhost\", \n"+
+            "but it must be an IP-address.\n"+
+            "GUID='a470ace4-9dff-436e-aa33-b08130713ed7'\n\n")
+         end # if
+         s_1=Kibuvits_io.s_localhost_IP_address
+         kibuvits_throw("test 3b, s_1=="+s_1) if s_1!="::1"
+      end # if
       #-----------------------------
    end # Kibuvits_io_selftests.test_s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected
 

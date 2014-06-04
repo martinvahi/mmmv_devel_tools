@@ -73,7 +73,7 @@ class Breakdancemake_bdmservice_detector_maven< Breakdancemake_bdmservice_detect
    def b_assess_bdmcomponent_availability(ht_cycle_detection_opmem,fd_threshold)
       b_on_the_path=Kibuvits_shell.b_available_on_path("mvn")
       return false if !b_on_the_path
-      ht_stdstreams=sh("mvn --version")
+      ht_stdstreams=kibuvits_sh("mvn --version")
       s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
       rgx=/^Apache Maven 3/
       b_ready_for_use=false

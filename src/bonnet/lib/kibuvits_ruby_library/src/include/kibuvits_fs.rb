@@ -220,9 +220,9 @@ class Kibuvits_fs
                         if (s_parent!=s_file_path_candidate)
                            if File.writable?(s_parent)
                               msgc=Kibuvits_msgc.new
-                              msgc['English']=s_en+"with the path of\n\""+
+                              msgc[$kibuvits_lc_English]=s_en+"with the path of\n\""+
                               s_file_path_candidate+"\"\nis deletable,"
-                              msgc['Estonian']=s_ee+" rajaga \n\""+
+                              msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \n\""+
                               s_file_path_candidate+"\"\non kustutatav."
                               verify_access_register_failure(
                               ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -242,11 +242,11 @@ class Kibuvits_fs
                msgc=Kibuvits_msgc.new
                s_en="File "
                s_en="Directory " if b_is_directory
-               msgc['English']=s_en+"with a path of\n\""+s_file_path_candidate+
+               msgc[$kibuvits_lc_English]=s_en+"with a path of\n\""+s_file_path_candidate+
                "\"\nis required to be missing, but it exists."
                s_ee="Fail "
                s_ee="Kataloog " if b_is_directory
-               msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
+               msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \""+s_file_path_candidate+
                "\" eksisteerib, kuid nõutud on tema puudumine."
                verify_access_register_failure(ht_out,
                s_file_path_candidate, 'does_not_exist', msgc)
@@ -266,9 +266,9 @@ class Kibuvits_fs
          if b_existence_required
             if !File.exists?(s_file_path_candidate)
                msgc=Kibuvits_msgc.new
-               msgc['English']="File or folder with a path of\n\""+
+               msgc[$kibuvits_lc_English]="File or folder with a path of\n\""+
                s_file_path_candidate+"\"\ndoes not exist."
-               msgc['Estonian']="Faili ega kataloogi rajaga \""+
+               msgc[$kibuvits_lc_Estonian]="Faili ega kataloogi rajaga \""+
                s_file_path_candidate+"\" ei eksisteeri."
                verify_access_register_failure(ht_out,
                s_file_path_candidate, 'exists', msgc)
@@ -282,9 +282,9 @@ class Kibuvits_fs
                   when "is_directory"
                      if !b_is_directory
                         msgc=Kibuvits_msgc.new
-                        msgc['English']="\""+s_file_path_candidate+
+                        msgc[$kibuvits_lc_English]="\""+s_file_path_candidate+
                         "\" is a file, but a folder is required."
-                        msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
+                        msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \""+s_file_path_candidate+
                         "\" on fail, kuid nõutud on kataloog."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -292,9 +292,9 @@ class Kibuvits_fs
                   when "is_file"
                      if b_is_directory
                         msgc=Kibuvits_msgc.new
-                        msgc['English']="\""+s_file_path_candidate+
+                        msgc[$kibuvits_lc_English]="\""+s_file_path_candidate+
                         "\" is a folder, but a file is required."
-                        msgc['Estonian']=s_ee+" rajaga \""+s_file_path_candidate+
+                        msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \""+s_file_path_candidate+
                         "\" on kataloog, kuid nõutud on fail."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -302,9 +302,9 @@ class Kibuvits_fs
                   when "readable"
                      if !File.readable?(s_file_path_candidate)
                         msgc=Kibuvits_msgc.new
-                        msgc['English']=s_en+"with the path of\n\""+
+                        msgc[$kibuvits_lc_English]=s_en+"with the path of\n\""+
                         s_file_path_candidate+"\"\nis not readable."
-                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \n\""+
                         s_file_path_candidate+"\"\nei ole loetav."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -312,9 +312,9 @@ class Kibuvits_fs
                   when "not_readable"
                      if File.readable?(s_file_path_candidate)
                         msgc=Kibuvits_msgc.new
-                        msgc['English']=s_en+"with the path of\n\""+
+                        msgc[$kibuvits_lc_English]=s_en+"with the path of\n\""+
                         s_file_path_candidate+"\"\nis readable."
-                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \n\""+
                         s_file_path_candidate+"\"\non loetav."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -322,9 +322,9 @@ class Kibuvits_fs
                   when "writable"
                      if !File.writable?(s_file_path_candidate)
                         msgc=Kibuvits_msgc.new
-                        msgc['English']=s_en+"with the path of\n\""+
+                        msgc[$kibuvits_lc_English]=s_en+"with the path of\n\""+
                         s_file_path_candidate+"\"\nis not writable."
-                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \n\""+
                         s_file_path_candidate+"\"\nei ole kirjutatav."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -332,9 +332,9 @@ class Kibuvits_fs
                   when "not_writable"
                      if File.writable?(s_file_path_candidate)
                         msgc=Kibuvits_msgc.new
-                        msgc['English']=s_en+"with the path of\n\""+
+                        msgc[$kibuvits_lc_English]=s_en+"with the path of\n\""+
                         s_file_path_candidate+"\"\nis writable."
-                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \n\""+
                         s_file_path_candidate+"\"\non kirjutatav."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -343,9 +343,9 @@ class Kibuvits_fs
                      # It's possible to delete only files that exist.
                      if !File.writable?(s_file_path_candidate)
                         msgc=Kibuvits_msgc.new
-                        msgc['English']=s_en+"with the path of\n\""+
+                        msgc[$kibuvits_lc_English]=s_en+"with the path of\n\""+
                         s_file_path_candidate+"\"\nis not deletable, because it is not writable."
-                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \n\""+
                         s_file_path_candidate+"\"\nei ole kustutatav, sest see ei ole kirjutatav."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -358,9 +358,9 @@ class Kibuvits_fs
                         # exists only to avoid a duplicate error message.
                         if !File.writable?(s_parent)
                            msgc=Kibuvits_msgc.new
-                           msgc['English']=s_en+"with the path of\n\""+
+                           msgc[$kibuvits_lc_English]=s_en+"with the path of\n\""+
                            s_file_path_candidate+"\"\nis not deletable, because its parent folder is not writable."
-                           msgc['Estonian']=s_ee+" rajaga \n\""+
+                           msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \n\""+
                            s_file_path_candidate+"\"\nei ole kustutatav, sest seda sisaldav kataloog ei ole kirjutatav."
                            verify_access_register_failure(
                            ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -369,9 +369,9 @@ class Kibuvits_fs
                   when "executable"
                      if !File.executable?(s_file_path_candidate)
                         msgc=Kibuvits_msgc.new
-                        msgc['English']=s_en+"with the path of\n\""+
+                        msgc[$kibuvits_lc_English]=s_en+"with the path of\n\""+
                         s_file_path_candidate+"\"\nis not executable."
-                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \n\""+
                         s_file_path_candidate+"\"\nei ole jookstav."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -379,9 +379,9 @@ class Kibuvits_fs
                   when "not_executable"
                      if File.executable?(s_file_path_candidate)
                         msgc=Kibuvits_msgc.new
-                        msgc['English']=s_en+"with the path of\n\""+
+                        msgc[$kibuvits_lc_English]=s_en+"with the path of\n\""+
                         s_file_path_candidate+"\"\nis executable."
-                        msgc['Estonian']=s_ee+" rajaga \n\""+
+                        msgc[$kibuvits_lc_Estonian]=s_ee+" rajaga \n\""+
                         s_file_path_candidate+"\"\non jookstav."
                         verify_access_register_failure(
                         ht_out, s_file_path_candidate, s_cmd, msgc)
@@ -415,7 +415,19 @@ class Kibuvits_fs
    # of "does_not_exist,not_readable" is considered to be conflicting, even
    # though it is not conflicting in the real world sense.
    #
-   # The Kibuvits_fs.verify_access returns a hashtable.
+   # The Kibuvits_fs.verify_access returns a hashtable. Schematic explanation
+   # of the returnable hashtable:
+   #
+   # ht_filesystemtest_failures
+   #   |
+   #   +-1--n--    key: file path candidate
+   #             value: ar
+   #                    |
+   #                    *--ht
+   #                        |
+   #                        +-key('command')-- <the Kibuvits_fs.verify_access check command>
+   #                        +-key('msgc')-- <An instance of the Kibuvits_msgc with b_failure==true>
+   #
    #
    # The keys of the hashtable are the file path
    # candidates, in which case at least one of the check commands
@@ -426,11 +438,12 @@ class Kibuvits_fs
    #
    # If all verifications passed, the hashtable length==0.
    def verify_access(arry_of_file_paths_or_a_file_path_string,
-      s_checks_specification)
+      s_checks_specification,msgcs=Kibuvits_msgc_stack.new)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, [Array,String], arry_of_file_paths_or_a_file_path_string
          kibuvits_typecheck bn, String, s_checks_specification
+         kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
       end # if
       ar_path_candidates=arry_of_file_paths_or_a_file_path_string
       if ar_path_candidates.class==String
@@ -443,19 +456,27 @@ class Kibuvits_fs
             kibuvits_throw("String paths can not be empty strings.")if x==0
          end # loop
       end # if
-      ht_cmds=verify_access_spec2ht s_checks_specification
+      ht_cmds=verify_access_spec2ht(s_checks_specification)
       ht_filesystemtest_failures=Hash.new
       ar_path_candidates.each do |s_file_path_candidate|
          verify_access_verification_step(s_file_path_candidate,
          ht_cmds, ht_filesystemtest_failures)
       end # loop
+      #-----------------
+      msgc=nil
+      ht_filesystemtest_failures.each_pair do |s_fp_candidate, ar_one_ht_per_failed_command|
+         ar_one_ht_per_failed_command.each do |ht_failed_command|
+            msgc=ht_failed_command["msgc"]
+            msgcs << msgc
+         end # loop
+      end # loop
       return ht_filesystemtest_failures
    end # verify_access
 
    def Kibuvits_fs.verify_access(arry_of_file_paths_or_a_file_path_string,
-      s_checks_specification)
+      s_checks_specification,msgcs=Kibuvits_msgc_stack.new)
       ht_filesystemtest_failures=Kibuvits_fs.instance.verify_access(
-      arry_of_file_paths_or_a_file_path_string,s_checks_specification)
+      arry_of_file_paths_or_a_file_path_string,s_checks_specification,msgcs)
       return ht_filesystemtest_failures
    end # Kibuvits_fs.verify_access
 
@@ -464,7 +485,7 @@ class Kibuvits_fs
    # The format of the ht_failures matches with the output of the
    # Kibuvits_fs.test_verify_access.
    def access_verification_results_to_string(ht_failures,
-      s_language="English")
+      s_language=$kibuvits_lc_English)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, Hash, ht_failures
@@ -473,7 +494,7 @@ class Kibuvits_fs
       s_out=""
       if ht_failures.length==0
          case s_language
-         when "Estonian"
+         when $kibuvits_lc_Estonian
             s_out="\nFailisüsteemiga seonduvad testid läbiti edukalt.\n"
          else
             s_out="\nFilesystem related verifications passed.\n"
@@ -481,7 +502,7 @@ class Kibuvits_fs
          return s_out
       end # if
       case s_language
-      when "Estonian"
+      when $kibuvits_lc_Estonian
          s_out="\nVähemalt osad failisüsteemiga seonduvatest "+
          "testidest põrusid.\n"
       else
@@ -496,7 +517,7 @@ class Kibuvits_fs
    end # access_verification_results_to_string
 
    def Kibuvits_fs.access_verification_results_to_string(ht_failures,
-      s_language="English")
+      s_language=$kibuvits_lc_English)
       s_out=Kibuvits_fs.instance.access_verification_results_to_string(
       ht_failures, s_language)
       return s_out
@@ -505,7 +526,8 @@ class Kibuvits_fs
    #-----------------------------------------------------------------------
 
    def exit_if_any_of_the_filesystem_tests_failed(ht_filesystemtest_failures,
-      s_output_message_language="English",b_throw=false,s_optional_error_message_suffix=nil)
+      s_output_message_language=$kibuvits_lc_English,
+      b_throw=false,s_optional_error_message_suffix=nil)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, Hash, ht_filesystemtest_failures
@@ -527,7 +549,7 @@ class Kibuvits_fs
    end # exit_if_any_of_the_filesystem_tests_failed
 
    def Kibuvits_fs.exit_if_any_of_the_filesystem_tests_failed(
-      ht_filesystemtest_failures,s_output_message_language="English",
+      ht_filesystemtest_failures,s_output_message_language=$kibuvits_lc_English,
       b_throw=false,s_optional_error_message_suffix=nil)
       Kibuvits_fs.instance.exit_if_any_of_the_filesystem_tests_failed(
       ht_filesystemtest_failures, s_output_message_language,b_throw,
@@ -766,7 +788,7 @@ class Kibuvits_fs
             ht_filesystemtest_failures=Kibuvits_fs.verify_access(
             s_file_path,"is_file,readable")
             exit_if_any_of_the_filesystem_tests_failed(ht_filesystemtest_failures,
-            s_output_message_language="English",b_throw=false)
+            s_output_message_language=$kibuvits_lc_English,b_throw=false)
          end # loop
       end # if
       ar_s=Array.new
@@ -820,7 +842,7 @@ class Kibuvits_fs
          ar_fp.each do |s_fp|
             if !File.exists? s_fp
                kibuvits_throw("The file or folder \n"+s_fp+
-               "\ndoes not exist. GUID='3e15a6c4-63fd-404a-a7a5-636011119dd7'\n")
+               "\ndoes not exist. GUID='4c111a23-01b2-4797-9376-008041d04ed7'\n")
             end # if
             if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
                if File.directory? s_fp
@@ -845,7 +867,7 @@ class Kibuvits_fs
             s_1="The folder " if File.directory? s_fp
             kibuvits_throw(s_1+",\n"+s_fp+
             "\nexists, but its access rights could not be changed to 7 for \n"+
-            "the owner of the current process. GUID='d5924319-7970-43bc-b3a5-636011119dd7'")
+            "the owner of the current process. GUID='b42fc218-4181-4831-8466-008041d04ed7'")
          end # loop
       end # synchronize
    end # chmod_recursive_secure_7
@@ -874,7 +896,7 @@ class Kibuvits_fs
             kibuvits_throw("There exists some sort of a flaw, because the "+s_1+"\n"+s_fp+
             "\ncould not be deleted despite the fact that recursive chmod-ding \n"+
             "takes, or at least should take, place before the recursive deletion.\n"+
-            "GUID='8ce3c841-4eea-4a48-b1a5-636011119dd7'\n")
+            "GUID='f3ea5b4e-2515-45b7-8366-008041d04ed7'\n")
          end # if
       end # loop
    end # impl_rm_fr_part_1
@@ -919,7 +941,7 @@ class Kibuvits_fs
             # and the Pathname.new("/").to_s=="/"
             if !File.writable? s_parent_path
                kibuvits_throw("Folder \n"+s_parent_path+
-               "\nis not writable. GUID='5da3e223-b1f2-40d8-8da5-636011119dd7'\n")
+               "\nis not writable. GUID='834ea358-273a-4f41-a566-008041d04ed7'\n")
             end # if
             s_fp=s_file_or_folder_path
             chmod_recursive_secure_7(s_fp) # throws, if the chmod-ding fails
@@ -950,7 +972,7 @@ class Kibuvits_fs
          msgcs.cre(s_default_msg,s_message_id,b_failure)
          s_default_msg="\ns_path_candidate==\""+s_path_candidate+
          "\", kuid failirajad ei saa sisaldada reavahetusi.\n"
-         msgcs.last["Estonian"]=s_default_msg
+         msgcs.last[$kibuvits_lc_Estonian]=s_default_msg
          return true
       end # if
       s_1=s_path_candidate.gsub(/^[\t\s]/,$kibuvits_lc_emptystring)
@@ -963,7 +985,7 @@ class Kibuvits_fs
          msgcs.cre(s_default_msg,s_message_id,b_failure)
          s_default_msg="\ns_path_candidate==\""+s_path_candidate+
          "\", kuid failirajad ei saa alata tühikute ning tabulatsioonimärkidega.\n"
-         msgcs.last["Estonian"]=s_default_msg
+         msgcs.last[$kibuvits_lc_Estonian]=s_default_msg
          return true
       end # if
       s_1=s_path_candidate.gsub(/[\t\s]$/,$kibuvits_lc_emptystring)
@@ -976,7 +998,7 @@ class Kibuvits_fs
          msgcs.cre(s_default_msg,s_message_id,b_failure)
          s_default_msg="\ns_path_candidate==\""+s_path_candidate+
          "\", kuid failirajad ei saa lõppeda tühikute ning tabulatsioonimärkidega.\n"
-         msgcs.last["Estonian"]=s_default_msg
+         msgcs.last[$kibuvits_lc_Estonian]=s_default_msg
          return true
       end # if
       # In Linux "//hi////there///" is equivalent to "/hi/there/ and hence legal.
@@ -993,7 +1015,7 @@ class Kibuvits_fs
          s_default_msg="\ns_path_candidate==\""+s_path_candidate+
          "\", kuid failirajad ei või sisaldada kolme järjestikust punkti .\n"+
          "failiraja alguses või vahetult pärast kaldkriipsu.\n"
-         msgcs.last["Estonian"]=s_default_msg
+         msgcs.last[$kibuvits_lc_Estonian]=s_default_msg
          return true
       end # if
       return false
@@ -1035,11 +1057,11 @@ class Kibuvits_fs
             s_default_msg="\n\""+x_candidate.to_s+
             "\",\n is not considered to be suitable for a "+
             "file or folder base name. \n"+
-            "GUID='4cb48bb6-fb8e-46e0-b3a5-636011119dd7'\n\n"
+            "GUID='35371926-cb19-4308-9566-008041d04ed7'\n\n"
             #s_message_id="throw_1"
             #b_failure=false
             #msgcs.cre(s_default_msg,s_message_id,b_failure)
-            #msgcs.last["Estonian"]="\n"+x_candidate.to_s+
+            #msgcs.last[$kibuvits_lc_Estonian]="\n"+x_candidate.to_s+
             #", omab väärtust, mis ei sobi faili nimeks.\n"
             kibuvits_throw(s_default_msg)
          end # if
@@ -1053,11 +1075,11 @@ class Kibuvits_fs
          #    s_default_msg="\n\""+x_candidate.to_s+
          #    "\",\n is not considered to be suitable for a "+
          #    "file or folder base name. \n"+
-         #    "GUID='48a24239-544c-42d4-a595-636011119dd7'\n\n"
+         #    "GUID='333028bc-bd16-4532-8366-008041d04ed7'\n\n"
          #s_message_id="throw_1"
          #b_failure=false
          #msgcs.cre(s_default_msg,s_message_id,b_failure)
-         #msgcs.last["Estonian"]="\n"+x_candidate.to_s+
+         #msgcs.last[$kibuvits_lc_Estonian]="\n"+x_candidate.to_s+
          #", omab väärtust, mis ei sobi faili nimeks.\n"
          #    kibuvits_throw(s_default_msg)
          #    end # if
@@ -1076,7 +1098,7 @@ class Kibuvits_fs
             s_message_id="4"
             b_failure=false
             msgcs.cre(s_default_msg,s_message_id,b_failure)
-            msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
+            msgcs.last[$kibuvits_lc_Estonian]="\nKeskkonnamuutuja, "+
             s_environment_variable_name+"==\""+s_env_value+
             "\"\n, omab vale väärtust, sest faili ega kataloogi rajaga\n"+
             s_path+"\n ei eksisteeri.\n"
@@ -1148,7 +1170,7 @@ class Kibuvits_fs
          s_message_id="1"
          b_failure=false
          msgcs.cre(s_default_msg,s_message_id,b_failure)
-         msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+s_environment_variable_name+
+         msgcs.last[$kibuvits_lc_Estonian]="\nKeskkonnamuutuja, "+s_environment_variable_name+
          ", ei eksisteeri või talle on omistatud väärtuseks tühi sõne.\n"
          return true
       end # if
@@ -1159,7 +1181,7 @@ class Kibuvits_fs
          s_message_id="2"
          b_failure=false
          msgcs.cre(s_default_msg,s_message_id,b_failure)
-         msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+s_environment_variable_name+
+         msgcs.last[$kibuvits_lc_Estonian]="\nKeskkonnamuutuja, "+s_environment_variable_name+
          ", omab väärtust, mis ei sobi faili rajaks.\n"
          return true
       end # if
@@ -1173,7 +1195,7 @@ class Kibuvits_fs
             s_message_id="3"
             b_failure=false
             msgcs.cre(s_default_msg,s_message_id,b_failure)
-            msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+s_environment_variable_name+
+            msgcs.last[$kibuvits_lc_Estonian]="\nKeskkonnamuutuja, "+s_environment_variable_name+
             ", poolt viidatud fail või kataloog ei eksisteeri.\n"
             return true
          end # if
@@ -1203,7 +1225,7 @@ class Kibuvits_fs
                s_message_id="5"
                b_failure=false
                msgcs.cre(s_default_msg,s_message_id,b_failure)
-               msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
+               msgcs.last[$kibuvits_lc_Estonian]="\nKeskkonnamuutuja, "+
                s_environment_variable_name+"==\""+s_env_value+
                "\"\n, korral kahtlustatakse vale väärtust, sest faili rajaga\n"+
                s_path+"\n ei eksisteeri, kuid sama rajaga kataloog eksisteerib.\n"
@@ -1225,7 +1247,7 @@ class Kibuvits_fs
                s_message_id="6"
                b_failure=false
                msgcs.cre(s_default_msg,s_message_id,b_failure)
-               msgcs.last["Estonian"]="\nKeskkonnamuutuja, "+
+               msgcs.last[$kibuvits_lc_Estonian]="\nKeskkonnamuutuja, "+
                s_environment_variable_name+"==\""+s_env_value+
                "\"\n, korral kahtlustatakse vale väärtust, sest kataloogi rajaga\n"+
                s_path+"\n ei eksisteeri, kuid sama rajaga fail eksisteerib.\n"
@@ -1246,12 +1268,18 @@ class Kibuvits_fs
    end # Kibuvits_fs.b_env_not_set_or_has_improper_path_t1
 
    #----------------------------------------------------------------------
+
    private
+
    def exc_ar_glob_x_verifications_t1(bn,
-      ar_or_s_fp_directory,ar_or_s_glob_string,b_return_long_paths)
+      ar_or_s_fp_directory,ar_or_s_glob_string,b_return_long_paths,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+      b_return_globbing_results)
       kibuvits_typecheck bn, [String,Array], ar_or_s_fp_directory
       kibuvits_typecheck bn, [String,Array], ar_or_s_glob_string
       kibuvits_typecheck bn, [TrueClass,FalseClass], b_return_long_paths
+      kibuvits_typecheck bn, [String,Array,Proc], ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
+      kibuvits_typecheck bn, [TrueClass,FalseClass], b_return_globbing_results
 
       if ar_or_s_fp_directory.class==Array
          ar_or_s_fp_directory.each do |s_fp_folder|
@@ -1268,51 +1296,230 @@ class Kibuvits_fs
       else
          kibuvits_assert_string_min_length(bn,ar_or_s_glob_string,1)
       end # if
+
+      cl_0=ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function.class
+      if cl_0==Array
+         ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function.each do |s_fp_folder|
+            kibuvits_assert_string_min_length(bn,s_fp_folder,1)
+         end # loop
+      else
+         if cl_0==String
+            kibuvits_assert_string_min_length(bn,
+            ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,1)
+         else
+            if cl_0==Proc
+               func_0=ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
+               ar_params=func_0.parameters
+               i_ar_params_len=ar_params.size
+               if i_ar_params_len!=1
+                  kibuvits_throw("The "+
+                  "ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function \n"+
+                  "is of class "+cl_0.to_s+
+                  "and the number of its parameters == "+i_ar_params_len.to_s+", but \n"+
+                  "it is required to have exactly 1 parameter that is "+
+                  "of type String and depicts a full path of a file or a folder.\n"+
+                  "GUID='e39daa4f-1596-41b1-9456-008041d04ed7'\n")
+               end # if
+               ar_paramdesc=ar_params[0]
+               if ar_paramdesc[0]!=:req
+                  kibuvits_throw("The first parameter of the function that "+
+                  "is referenced by the \n"+
+                  "ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function \n"+
+                  "is expected to be parameter that does not have a default value.\n"+
+                  "GUID='5796cbe3-133c-46df-b656-008041d04ed7'\n")
+               end # if
+            else
+               kibuvits_throw("The code of this function is faulty. \n"+
+               "The previous typechecks "+
+               "should have thrown before the control flow reaches this line.\n"+
+               "ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function.class == "+
+               cl_0.to_s+$kibuvits_lc_linebreak+
+               "GUID='c5b25947-8d26-48d8-9456-008041d04ed7'\n")
+            end # if
+         end # if
+      end # if
    end # exc_ar_glob_x_verifications_t1
 
    public
 
    # Folder paths have to be full paths.
-   # Throws, if the folder does not exist or could not be found.
+   # Throws, if the folder does not exist or is not readable.
    #
    # It temporarily changes the working directory to the s_fp_directory.
-   def ar_glob_locally_t1(ar_or_s_fp_directory,ar_or_s_glob_string,
-      b_return_long_paths=true)
+   #
+   # If the
+   #
+   #     ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
+   #
+   # is a function, e.g. of class Proc, then it must accept exactly one
+   # parameter that is a full path of a file or a folder.
+   # The function must return false, except if the file or folder
+   # is expected to be excluded from the output of the
+   # ar_glob_locally_t1. In pseudocode:
+   #
+   #     b_ignore_file_or_folder=func_return_true_if_ignored.call(s_fp)
+   #
+   # The "b_ignore_file_or_folder" must be either of class TrueType or
+   # class FalseType.
+   #
+   # The path that is fed to the "func_return_true_if_ignored" might
+   # point to a nonexistent file or folder. It's up to the
+   # implementor of the "func_return_true_if_ignored" to decide,
+   # whether it modifies or deletes an existing file or folder
+   # or creates a new instance of a nonexistent file or folder.
+   #
+   # The "func_return_true_if_ignored" might receive the
+   # same file or folder path more than once during a
+   # single call to the ar_glob_locally_t1.
+   #
+   # Paths that point to a nonexistent file or folder right
+   # after a call to the "func_return_true_if_ignored"
+   # are omitted from the output of the ar_glob_locally_t1.
+   #
+   # The
+   #
+   #     b_return_globbing_results
+   #
+   # makes it possible to iterate over the elements that are
+   # selected by the ar_or_s_glob_string without allocating
+   # memory for returning a list of the file/folder paths. If the
+   # "func_return_true_if_ignored" returns "false" on a folder,
+   # then that folder is not descended into. The
+   # "func_return_true_if_ignored" might be used for carrying out
+   # application specific operations with the paths that the
+   # "func_return_true_if_ignored" got called with.
+   def ar_glob_locally_t1(ar_or_s_fp_directory,
+      ar_or_s_glob_string,b_return_long_paths=true,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function=[],
+      b_return_globbing_results=true)
+      #-----------------
       if KIBUVITS_b_DEBUG
          bn=binding()
          exc_ar_glob_x_verifications_t1(bn,ar_or_s_fp_directory,
-         ar_or_s_glob_string,b_return_long_paths)
+         ar_or_s_glob_string,b_return_long_paths,
+         ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+         b_return_globbing_results)
+         #--------------------
+         ar_globstrings=Kibuvits_ix.normalize2array(ar_or_s_glob_string)
+         rgx_0=/^ +/
+         rgx_1=/^[\/][*]?/
+         rgx_2=/^[\s\t\n\r]+/
+         s_0=nil
+         s_1=nil
+         i_len_0=nil
+         i_len_1=nil
+         ar_globstrings.each do |s_globstring|
+            s_0=s_globstring.gsub(rgx_0,$kibuvits_lc_emptystring)
+            i_len_0=s_0.length
+            if s_globstring.gsub(rgx_2,$kibuvits_lc_emptystring).length==0
+               kibuvits_throw("There's a flaw.\n"+
+               "s_globstring consists of only spaces or tabs or linebreaks.\n"+
+               "GUID='217e1ea2-6cd9-4f01-b256-008041d04ed7'\n")
+            end # if
+            s_1=s_0.gsub(rgx_1,$kibuvits_lc_emptystring)
+            i_len_1=s_1.length
+            if i_len_1!=i_len_0
+               kibuvits_throw("There's a flaw.\n"+
+               " s_globstring==\""+s_globstring+"\", but if it \n"+
+               "is fed to the Dir.glob(...), then it globs the root folder. \n"+
+               "GUID='a31c9830-c329-4f48-a256-008041d04ed7'\n")
+            end # if
+         end # loop
       end # if
+      #----------------
       ar_fp_folder=Kibuvits_ix.normalize2array(ar_or_s_fp_directory)
+      #----------------
+      b_ignore_by_func=false
+      b_ignore_by_func=true if ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function.class==Proc
+      func_b_ignore=nil
+      ar_fp_ignorables=nil
+      if b_ignore_by_func
+         func_b_ignore=ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
+      else
+         ar_fp_ignorables=Kibuvits_ix.normalize2array(
+         ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function)
+      end # if
+      #----------------
       ar_globstrings=Kibuvits_ix.normalize2array(ar_or_s_glob_string)
-
+      #----------------
       ht_test_failures=verify_access(ar_fp_folder,"readable,is_directory")
-      s_output_message_language="English"
+      s_output_message_language=$kibuvits_lc_English
       b_throw=true
       exit_if_any_of_the_filesystem_tests_failed(ht_test_failures,
       s_output_message_language,b_throw)
-
+      #----------------
       ar_out=Array.new
       s_fp_wd_orig=Dir.getwd
       begin
          ar_1=nil
-         ar_2=nil
-         ar_2=Array.new if b_return_long_paths
-         s_0=nil
-         s_1=nil
+         ar_2=Array.new
+         s_fp_0=$kibuvits_lc_emptystring
+         s_fp_1=$kibuvits_lc_emptystring
          rgx_1=/[\/]+/ # can't cache due to threading
+         b_ignore_file_or_folder=nil
+         ar_speedhack_1=[]
          ar_fp_folder.each do |s_fp_folder|
-            s_0=s_fp_folder+$kibuvits_lc_slash if b_return_long_paths
+            if b_ignore_by_func
+               # This call to the func_b_ignore(...) migth delete the
+               # s_fp_folder or change its content regardless of
+               # whether the s_fp_folder points to a file or a folder.
+               b_ignore_file_or_folder=func_b_ignore.call(s_fp_folder)
+               next if !File.exist? s_fp_folder
+            else
+               b_ignore_file_or_folder=Kibuvits_str.b_has_prefix(
+               ar_fp_ignorables, s_fp_folder, ar_speedhack_1)
+            end # if
+            next if b_ignore_file_or_folder
+            #-------
+            s_fp_0=s_fp_folder+$kibuvits_lc_slash if b_return_long_paths
             Dir.chdir(s_fp_folder)
+            # A glob string can be "/*", which might
+            # be interpreted as the root folder.
             ar_globstrings.each do |s_globstring|
                ar_1=Dir.glob(s_globstring)
+               # Separate loops are used to
+               # place some if-clauses outside of a loop.
                if b_return_long_paths
-                  ar_1.each do |s_fname|
-                     s_1=(s_0+s_fname).gsub(rgx_1,$kibuvits_lc_slash)
-                     ar_2<<s_1
-                  end # loop
-               else
-                  ar_2=ar_1
+                  if b_ignore_by_func
+                     ar_1.each do |s_fname|
+                        s_fp_1=(s_fp_0+s_fname).gsub(rgx_1,$kibuvits_lc_slash)
+                        # This call to the func_b_ignore(...) migth delete the
+                        # s_fname or change its content regardless of
+                        # whether the s_fname points to a file or a folder.
+                        b_ignore_file_or_folder=func_b_ignore.call(s_fp_1)
+                        next if !File.exist? s_fname
+                        next if b_ignore_file_or_folder
+                        ar_2<<s_fp_1 if b_return_globbing_results
+                     end # loop
+                  else # ignore by array
+                     ar_1.each do |s_fname|
+                        s_fp_1=(s_fp_0+s_fname).gsub(rgx_1,$kibuvits_lc_slash)
+                        b_ignore_file_or_folder=Kibuvits_str.b_has_prefix(
+                        ar_fp_ignorables, s_fp_1, ar_speedhack_1)
+                        next if b_ignore_file_or_folder
+                        ar_2<<s_fp_1 if b_return_globbing_results
+                     end # loop
+                  end # if
+               else # relative paths
+                  if b_ignore_by_func
+                     ar_1.each do |s_fname|
+                        s_fp_1=(s_fp_0+s_fname).gsub(rgx_1,$kibuvits_lc_slash)
+                        # This call to the func_b_ignore(...) migth delete the
+                        # s_fname or change its content regardless of
+                        # whether the s_fname points to a file or a folder.
+                        b_ignore_file_or_folder=func_b_ignore.call(s_fp_1)
+                        next if !File.exist? s_fname
+                        next if b_ignore_file_or_folder
+                        ar_2<<s_fname if b_return_globbing_results
+                     end # loop
+                  else # ignore by array
+                     ar_1.each do |s_fname|
+                        b_ignore_file_or_folder=Kibuvits_str.b_has_prefix(
+                        ar_fp_ignorables, s_fname, ar_speedhack_1)
+                        next if b_ignore_file_or_folder
+                        ar_2<<s_fname if b_return_globbing_results
+                     end # loop
+                  end # if
                end # if
                ar_out.concat(ar_2)
                ar_2.clear
@@ -1331,43 +1538,107 @@ class Kibuvits_fs
       return ar_out
    end # ar_glob_locally_t1
 
+
    def Kibuvits_fs.ar_glob_locally_t1(ar_or_s_fp_directory,
-      ar_or_s_glob_string, b_return_long_paths=true)
-      ar_out=Kibuvits_fs.instance.ar_glob_locally_t1(
-      ar_or_s_fp_directory,ar_or_s_glob_string,b_return_long_paths)
+      ar_or_s_glob_string,b_return_long_paths=true,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function=[],
+      b_return_globbing_results=true)
+      ar_out=Kibuvits_fs.instance.ar_glob_locally_t1(ar_or_s_fp_directory,
+      ar_or_s_glob_string,b_return_long_paths,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+      b_return_globbing_results)
       return ar_out
    end # Kibuvits_fs.ar_glob_locally_t1
 
    #----------------------------------------------------------------------
+
    # Folder paths have to be full paths.
    # Throws, if the folder does not exist or could not be found.
    #
    # It temporarily changes the working directory to the s_fp_directory.
-   def ar_glob_recursively_t1(ar_or_s_fp_directory,ar_or_s_glob_string,
-      b_return_long_paths=true)
+   #
+   # The use of the
+   #
+   #     b_return_globbing_results and the
+   #     ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
+   #
+   # are documented next to the
+   #
+   #     ar_glob_locally_t1(...)
+   #
+   def ar_glob_recursively_t1(ar_or_s_fp_directory,
+      ar_or_s_glob_string,b_return_long_paths=true,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function=[],
+      b_return_globbing_results=true)
       if KIBUVITS_b_DEBUG
          bn=binding()
          exc_ar_glob_x_verifications_t1(bn,ar_or_s_fp_directory,
-         ar_or_s_glob_string,b_return_long_paths)
+         ar_or_s_glob_string,b_return_long_paths,
+         ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+         b_return_globbing_results)
       end # if
       ar_fp_folder=Kibuvits_ix.normalize2array(ar_or_s_fp_directory)
       ar_globstrings=Kibuvits_ix.normalize2array(ar_or_s_glob_string)
 
       ar_out=Array.new
-      ar_1=nil
-      ar_2=nil
-      ar_3=nil
+      ar_fp_1=nil
+      ar_fp_2=nil
+      ar_fp_3=nil
+      #--------------------
+      func_b_ignore=nil
+      ar_fp_ignorables=nil
+      b_ignore_by_func=false
+      if ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function.class==Proc
+         b_ignore_by_func=true
+         func_b_ignore=ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
+      else
+         ar_fp_ignorables=ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
+      end # if
+      #--------------------
+      ar_speedhack_1=[]
+      s_lc_globstring_all="*"
       $kibuvits_lc_mx_streamaccess.synchronize do
+         b_ignore_file_or_folder=nil
          ar_fp_folder.each do |s_fp_folder|
-            ar_1=ar_glob_locally_t1(s_fp_folder,ar_globstrings,
-            b_return_long_paths)
-            ar_out.concat(ar_1)
-            ar_2=Dir.glob(s_fp_folder+"/*")
-            ar_2.each do |s_fp|
+            if b_ignore_by_func
+               # This call to the func_b_ignore(...) migth delete the
+               # s_fp_folder or change its content regardless of
+               # whether the s_fp_folder points to a file or a folder.
+               b_ignore_file_or_folder=func_b_ignore.call(s_fp_folder)
+               next if !File.exist? s_fp_folder
+            else
+               b_ignore_file_or_folder=Kibuvits_str.b_has_prefix(
+               ar_fp_ignorables, s_fp_folder, ar_speedhack_1)
+            end # if
+            next if b_ignore_file_or_folder
+            ar_fp_1=ar_glob_locally_t1(s_fp_folder,ar_globstrings,b_return_long_paths,
+            ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+            b_return_globbing_results)
+            # The next if-clause does not effect the ar_out
+            # content, but may be it's a little bit faster than
+            # a whole function call. It also saves time, when reading.
+            ar_out.concat(ar_fp_1) if b_return_globbing_results
+            #-----
+            # The func_b_ignore within the previous call to the
+            # ar_glob_locally_t1 might have deleted the s_fp_folder.
+            # That is allowed by the spec.
+            next if !File.exist? s_fp_folder
+            # In addition to the effect of the b_return_globbing_results,
+            # a reason, why the ar_fp_1 might not be good enough for
+            # recursive globbing is that the ar_globstrings might
+            # exclude all folders from the ar_fp_1. Same thing with the
+            # ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
+            ar_fp_2=ar_glob_locally_t1(s_fp_folder,s_lc_globstring_all,true)
+            ar_fp_2.each do |s_fp|
                if File.directory? s_fp
-                  ar_3=ar_glob_recursively_t1(s_fp,
-                  ar_globstrings,b_return_long_paths)
-                  ar_out.concat(ar_3)
+                  ar_fp_3=ar_glob_recursively_t1(s_fp,
+                  ar_globstrings,b_return_long_paths,
+                  ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+                  b_return_globbing_results)
+                  # The next if-clause does not effect the ar_out
+                  # content, but may be it's a little bit faster than
+                  # a whole function call. It also saves time, when reading.
+                  ar_out.concat(ar_fp_3) if b_return_globbing_results
                end # if
             end # loop
          end # loop
@@ -1376,11 +1647,66 @@ class Kibuvits_fs
    end # ar_glob_recursively_t1
 
    def Kibuvits_fs.ar_glob_recursively_t1(ar_or_s_fp_directory,
-      ar_or_s_glob_string, b_return_long_paths=true)
-      ar_out=Kibuvits_fs.instance.ar_glob_recursively_t1(
-      ar_or_s_fp_directory,ar_or_s_glob_string,b_return_long_paths)
+      ar_or_s_glob_string,b_return_long_paths=true,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function=[],
+      b_return_globbing_results=true)
+      ar_out=Kibuvits_fs.instance.ar_glob_recursively_t1(ar_or_s_fp_directory,
+      ar_or_s_glob_string,b_return_long_paths,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+      b_return_globbing_results)
       return ar_out
    end # Kibuvits_fs.ar_glob_recursively_t1
+
+   #----------------------------------------------------------------------
+
+   # Returns a hasthable, where
+   # keys are absolute paths of the symbolic links and
+   # values are full paths of files that the symbolic links reference.
+   #
+   # This method does not introduce any changes to disk,
+   # but relative paths of the targets of the symbolic links are
+   # stored to the output hashtable as full paths.
+   def ht_find_nonbroken_symlinks_recursively_t1(ar_or_s_fp_directory)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [Array,String],ar_or_s_fp_directory
+      end # if
+      ht_test_failures=Kibuvits_fs.verify_access(
+      ar_or_s_fp_directory,"readable,is_directory")
+      s_output_message_language=$kibuvits_lc_English
+      b_throw=true
+      exit_if_any_of_the_filesystem_tests_failed(ht_test_failures,
+      s_output_message_language,b_throw)
+      #--------------------
+      ht_out=Hash.new
+      func_exclude=lambda do |s_fp|
+         if FileTest.symlink? s_fp
+            # Broken symlinks have a nonexistent target.
+            if File.exist? s_fp
+               ht_out[s_fp]=File.realpath(s_fp)
+            end # if
+         end # if
+         # Folders that are descended into must not
+         # be marked as ignorable.
+         b_ignore=false
+         return b_ignore
+      end # func_exclude
+      ar_or_s_glob_string=$kibuvits_lc_star
+      b_return_long_paths=true
+      ar_fp_symlinks=nil
+      b_return_globbing_results=false
+      ar_glob_recursively_t1(ar_or_s_fp_directory,
+      ar_or_s_glob_string,b_return_long_paths,
+      func_exclude,b_return_globbing_results)
+      return ht_out
+   end # ht_find_nonbroken_symlinks_recursively_t1
+
+
+   def Kibuvits_fs.ht_find_nonbroken_symlinks_recursively_t1(ar_or_s_fp_directory)
+      ht_out=Kibuvits_fs.instance.ht_find_nonbroken_symlinks_recursively_t1(
+      ar_or_s_fp_directory)
+      return ht_out
+   end # Kibuvits_fs.ht_find_nonbroken_symlinks_recursively_t1
 
    #----------------------------------------------------------------------
 
@@ -1394,18 +1720,30 @@ class Kibuvits_fs
    # Returns true, if the cache is omitted.
    # The cache is emptied if the cache max. size is reached.
    def b_files_that_exist_changed_after_last_check_t1(
-      ar_or_s_fp_file_or_folder, i_cache_max_size)
+      ar_or_s_fp_file_or_folder, i_cache_max_size,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files=[])
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, [Array,String],ar_or_s_fp_file_or_folder
          kibuvits_typecheck bn, [Fixnum,Bignum],i_cache_max_size
+         kibuvits_typecheck bn, [String,Array], ar_or_s_path_prefixes_of_ignorable_folders_and_files
          if ar_or_s_fp_file_or_folder.class==Array
             ar_or_s_fp_file_or_folder.each do |s_fp_candidate|
                bn_1=binding()
                kibuvits_assert_string_min_length(bn_1,s_fp_candidate,2)
             end # loop
          end # if
+         if ar_or_s_path_prefixes_of_ignorable_folders_and_files.class==Array
+            ar_or_s_path_prefixes_of_ignorable_folders_and_files.each do |s_fp_folder|
+               kibuvits_assert_string_min_length(bn,s_fp_folder,1)
+            end # loop
+         else
+            kibuvits_assert_string_min_length(bn,
+            ar_or_s_path_prefixes_of_ignorable_folders_and_files,1)
+         end # if
       end # if
+      ar_fp_ignorables=Kibuvits_ix.normalize2array(
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files)
       b_out=false
       $kibuvits_lc_mx_streamaccess.synchronize do
          if !defined? @s_b_files_that_exist_changed_after_last_check_t1_cache_fp
@@ -1429,12 +1767,20 @@ class Kibuvits_fs
          ar_fp_files=Array.new
          ar_fp_files_and_folders=nil
          b_return_long_paths=true
-         s_globstring="./*"
+         ar_globstrings=["*"]
+         b_ignore_file_or_folder=nil
+         ar_speedhack_1=[]
          ar_fp.each do |s_fp|
+            b_ignore_file_or_folder=Kibuvits_str.b_has_prefix(
+            ar_fp_ignorables,s_fp,ar_speedhack_1)
+            next if b_ignore_file_or_folder
+            # Ignorance check has to be before existence check
+            # to avoid accessing files and folders on network
+            # drives or otherwise slow or costly devices.
             next if !File.exists? s_fp
             if File.directory? s_fp
                ar_fp_files_and_folders=ar_glob_recursively_t1(s_fp,
-               s_globstring,b_return_long_paths)
+               ar_globstrings,b_return_long_paths,ar_fp_ignorables)
                ar_fp_files_and_folders.each do |s_fp_1|
                   if File.file? s_fp_1
                      # The Pathname.new(blabla) is for path normalization.
@@ -1463,9 +1809,11 @@ class Kibuvits_fs
    end # b_files_that_exist_changed_after_last_check_t1
 
    def Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(
-      ar_or_s_fp_file_or_directory,i_cache_max_size)
+      ar_or_s_fp_file_or_folder, i_cache_max_size,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files=[])
       b_out=Kibuvits_fs.instance.b_files_that_exist_changed_after_last_check_t1(
-      ar_or_s_fp_file_or_directory,i_cache_max_size)
+      ar_or_s_fp_file_or_folder, i_cache_max_size,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files)
       return b_out
    end # Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1
 

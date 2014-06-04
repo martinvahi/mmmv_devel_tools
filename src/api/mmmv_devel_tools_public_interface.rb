@@ -60,6 +60,7 @@ class C_mmmv_devel_tools
       i_observable_files_cache_max_size)
    end # C_mmmv_devel_tools.run_renessaator_t1
 
+   # s_compress_mode inSet {"yui_compressor_t1","plain"}
    def C_mmmv_devel_tools.run_breakdancemake_concat_t1(
       s_output_file_path,ar_or_s_input_file_paths,s_compress_mode)
       C_mmmv_devel_tools_public_api_core.run_breakdancemake_concat_t1(

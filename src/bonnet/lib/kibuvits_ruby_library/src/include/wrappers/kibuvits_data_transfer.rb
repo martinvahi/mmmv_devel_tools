@@ -66,7 +66,7 @@ class Kibuvits_data_transfer
          kibuvits_throw("\nFile or folder \n"+s_fp_origin+
          "\ndoes not exist. GUID='fc2ecf31-c527-4edf-b4b1-3040b0307dd7'\n")
       end # if
-      s_output_message_language="English"
+      s_output_message_language=$kibuvits_lc_English
       b_throw=true;
       #----------
       s_spec="writable,is_directory"
@@ -95,7 +95,7 @@ class Kibuvits_data_transfer
       #----------
       cmd="nice -n2 rsync -avz --delete "+s_orig+
       ($kibuvits_lc_space+s_fp_dest +" ;")
-      ht_stdstreams=sh(cmd)
+      ht_stdstreams=kibuvits_sh(cmd)
       s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
       s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
       if 10<s_stdout.length

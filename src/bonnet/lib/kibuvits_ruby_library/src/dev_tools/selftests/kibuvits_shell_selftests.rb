@@ -79,13 +79,92 @@ class Kibuvits_shell_selftests
       raise "test 3 b_x=="+b_x.to_s+" s_x==\""+s_x+"\"" if b_x!=false
    end # Kibuvits_shell_selftests.test_b_available_on_path
 
+   #-----------------------------------------------------------------------
+
+   def Kibuvits_shell_selftests.test_s_exc_system_specific_path_by_caching_t1
+      b_throw_if_not_found=true
+      s_program_name="ls"
+      s_x=nil
+      #------------
+      b_thr=kibuvits_block_throws do
+         s_x=Kibuvits_shell.s_exc_system_specific_path_by_caching_t1(
+         s_program_name,b_throw_if_not_found)
+      end # block
+      raise "test 1a " if b_thr
+      b_throw_if_not_found=false
+      b_thr=kibuvits_block_throws do
+         s_x=Kibuvits_shell.s_exc_system_specific_path_by_caching_t1(
+         s_program_name,b_throw_if_not_found)
+      end # block
+      raise "test 1b " if b_thr
+      s_x=Kibuvits_shell.s_exc_system_specific_path_by_caching_t1(
+      s_program_name,b_throw_if_not_found)
+      s_0=s_x
+      raise "test 1c s_x=="+s_x.to_s if s_x.length==0
+      b_throw_if_not_found=true
+      s_x=Kibuvits_shell.s_exc_system_specific_path_by_caching_t1(
+      s_program_name,b_throw_if_not_found)
+      s_1=s_x
+      raise "test 1d s_x=="+s_x.to_s if s_x.length==0
+      raise "test 1e s_0=="+s_0+"  s_1=="+s_1 if s_0!=s_1
+      #------------
+      b_throw_if_not_found=true
+      s_program_name="thIs_can_noT_PPpPPPPppppoOsSibly_exIsT_42343kJdfs0234jdddfsss11"
+      b_thr=kibuvits_block_throws do
+         s_x=Kibuvits_shell.s_exc_system_specific_path_by_caching_t1(
+         s_program_name,b_throw_if_not_found)
+      end # block
+      raise "test 2a " if !b_thr
+      b_throw_if_not_found=false
+      b_thr=kibuvits_block_throws do
+         s_x=Kibuvits_shell.s_exc_system_specific_path_by_caching_t1(
+         s_program_name,b_throw_if_not_found)
+      end # block
+      raise "test 2b " if b_thr
+      raise "test 2c s_x=="+s_x.to_s if s_x!=$kibuvits_lc_emptystring
+   end # Kibuvits_shell_selftests.test_s_exc_system_specific_path_by_caching_t1
 
    #-----------------------------------------------------------------------
+
+   def Kibuvits_shell_selftests.test_throw_if_stderr_has_content_t1
+      s_x=nil
+      b_thrown=false
+      s_cmd="W_this_command_CaNnnnoTpossssiBlyExisT_ljdljfF2"
+      while Kibuvits_shell.b_available_on_path(s_cmd)
+         s_cmd<<"X"
+      end # loop
+      #------------
+      b_thrown=false
+      ht_stdstreams=kibuvits_sh("ls")
+      begin
+         Kibuvits_shell.throw_if_stderr_has_content_t1(ht_stdstreams)
+      rescue Exception => e
+         b_thrown=true
+         s_x=e.to_s
+      end # rescue
+      raise "test 1 s_x=="+s_x if b_thrown
+      #------------
+      b_thrown=false
+      ht_stdstreams=kibuvits_sh(s_cmd)
+      begin
+         Kibuvits_shell.throw_if_stderr_has_content_t1(ht_stdstreams)
+      rescue Exception => e
+         b_thrown=true
+         s_x=e.to_s
+      end # rescue
+      raise "test 2 s_cmd=="+s_cmd if !b_thrown
+      #------------
+   end # Kibuvits_shell_selftests.test_throw_if_stderr_has_content_t1
+
+   #-----------------------------------------------------------------------
+
    public
    def Kibuvits_shell_selftests.selftest
       ar_msgs=Array.new
       bn=binding()
       kibuvits_testeval bn, "Kibuvits_shell_selftests.test_b_available_on_path"
+      kibuvits_testeval bn, "Kibuvits_shell_selftests.test_s_exc_system_specific_path_by_caching_t1"
+      kibuvits_testeval bn, "Kibuvits_shell_selftests.test_throw_if_stderr_has_content_t1"
       return ar_msgs
    end # Kibuvits_shell_selftests.selftest
 

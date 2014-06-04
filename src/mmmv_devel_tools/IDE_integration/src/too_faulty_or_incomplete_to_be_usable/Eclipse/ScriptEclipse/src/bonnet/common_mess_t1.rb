@@ -294,7 +294,8 @@ class T_mmmv_devel_tools_IDE_integration_common_mess_t1
       begin
          cmd="/bin/bash "+s_fp_script+" 1> "+s_fp_stdout+" 2> "+s_fp_stderr+" "
          # It can probably be made to work on Windows, if the system(cmd)
-         # is replaced with the KRL's sh(cmd), but the sh(cmd) has many
+         # is replaced with the KRL's mmmv_devel_tools_upguid_sh(cmd),
+         # but the mmmv_devel_tools_upguid_sh(cmd) has many
          # dependencies and given that the sh related part in the KRL is
          # a bit experimental, one just does not want to copy/paste them in
          # here yet.

@@ -79,7 +79,7 @@ def str2file(s_a_string, s_fp)
          file.write(s_a_string)
          file.close
       rescue Exception =>err
-         raise "No comments. GUID='3f0fbe38-b99b-4938-9426-32928010bdd7' \n"+
+         raise "No comments. GUID='4d4b83d3-356b-49ca-a128-40f130713ed7' \n"+
          "s_a_string=="+s_a_string+"\n"+err.to_s+"\n\n"
       end #
    end # synchronize
@@ -138,7 +138,7 @@ def file2str(s_file_path)
       rescue Exception =>err
          raise(Exception.new("\n"+err.to_s+"\n\ns_file_path=="+
          s_file_path+
-         "\n GUID='3618193f-60bf-45b1-a316-32928010bdd7'\n\n"))
+         "\n GUID='63afbc52-9fe7-43b5-b528-40f130713ed7'\n\n"))
       end #
    end # synchronize
    return s_out
@@ -163,7 +163,7 @@ def kibuvits_ar_i_2_file_t1(ar_i,s_file_path)
       rescue Exception =>err
          raise(Exception.new("\n"+err.to_s+"\n\ns_file_path=="+
          s_file_path+
-         "\n GUID='c04da03c-2021-47a7-a116-32928010bdd7'\n\n"))
+         "\n GUID='b5987046-2b40-4a15-8328-40f130713ed7'\n\n"))
       end #
    end # synchronize
 end # kibuvits_ar_i_2_file_t1
@@ -185,7 +185,7 @@ def kibuvits_file_2_ar_i_t1(s_file_path)
       rescue Exception =>err
          raise(Exception.new("\n"+err.to_s+"\n\ns_file_path=="+
          s_file_path+
-         "\n GUID='f3d66b4a-110b-4ec0-a516-32928010bdd7'\n\n"))
+         "\n GUID='436c2d68-2509-4390-9228-40f130713ed7'\n\n"))
       end #
    end # synchronize
    return ar_out
@@ -206,11 +206,11 @@ def kibuvits_s_armour_t1(ar_i)
          kibuvits_typecheck bn1, Fixnum, x_i
          if x_i<0
             kibuvits_throw("x_i == "+x_i.to_s+" < 0 "+
-            "\n GUID='9485c7b6-ecfc-4329-a516-32928010bdd7'\n\n")
+            "\n GUID='3b4c61dc-a421-477d-a428-40f130713ed7'\n\n")
          end # if
          if 255<x_i
             kibuvits_throw(" 255 < x_i == "+x_i.to_s+
-            "\n GUID='938ebb36-13a6-4c0e-b316-32928010bdd7'\n\n")
+            "\n GUID='7277113b-7eed-4bb7-9218-40f130713ed7'\n\n")
          end # if
       end # loop
    end # if
@@ -270,11 +270,11 @@ def kibuvits_ar_i_dearmour_t1(s_armoured)
          i_x=ar_unicode[ix]-i_zero
          if i_x<0
             kibuvits_throw("i_x == "+i_x.to_s+" < 0 "+
-            "\n GUID='3f69ac21-61e7-4437-b416-32928010bdd7'\n\n")
+            "\n GUID='c167073b-45cf-43d6-9218-40f130713ed7'\n\n")
          end # if
          if 255<i_x
             kibuvits_throw(" 255 < i_x == "+i_x.to_s+
-            "\n GUID='6eb0e622-797c-4031-9316-32928010bdd7'\n\n")
+            "\n GUID='850f3e21-baca-404f-9518-40f130713ed7'\n\n")
          end # if
          ar_out<<i_x
       end # loop
@@ -356,17 +356,17 @@ class Kibuvits_io
 
    #-----------------------------------------------------------------------
 
-   def creat_empty_ht_stdstreams
+   def create_empty_ht_stdstreams
       ht_stdstreams=Hash.new
-      ht_stdstreams['s_stdout']=""
-      ht_stdstreams['s_stderr']=""
-      return 	ht_stdstreams
-   end # creat_empty_ht_stdstreams
-
-   def Kibuvits_io.creat_empty_ht_stdstreams
-      ht_stdstreams=Kibuvits_io.instance.creat_empty_ht_stdstreams
+      ht_stdstreams[$kibuvits_lc_s_stdout]=$kibuvits_lc_emptystring
+      ht_stdstreams[$kibuvits_lc_s_stderr]=$kibuvits_lc_emptystring
       return ht_stdstreams
-   end # Kibuvits_io.creat_empty_ht_stdstreams
+   end # create_empty_ht_stdstreams
+
+   def Kibuvits_io.create_empty_ht_stdstreams
+      ht_stdstreams=Kibuvits_io.instance.create_empty_ht_stdstreams
+      return ht_stdstreams
+   end # Kibuvits_io.create_empty_ht_stdstreams
 
    #-----------------------------------------------------------------------
 
@@ -435,7 +435,7 @@ class Kibuvits_io
                ar_data[0]=ob_addrinfo.ip_address
             else
                kibuvits_throw("ob_addrinfo.to_s=="+ob_addrinfo.to_s+
-               "\n GUID='e720502b-8ac5-425e-8216-32928010bdd7'\n\n")
+               "\n GUID='b851144d-9e65-4a36-b318-40f130713ed7'\n\n")
             end # if
          end # if
       end # loop
@@ -447,13 +447,41 @@ class Kibuvits_io
          end # if
       end # loop
       kibuvits_throw("ar_addrinfo.to_s=="+ar_addrinfo.to_s+
-      "\n GUID='7edc5273-cad9-45b7-a516-32928010bdd7'\n\n")
+      "\n GUID='de50b235-2572-4148-9118-40f130713ed7'\n\n")
    end # s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected
 
    def Kibuvits_io.s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected
       s_out=Kibuvits_io.instance.s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected
       return s_out
    end # Kibuvits_io.s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected
+
+
+   # Returns "127.0.0.1" or "::1", depending on the
+   # value of the s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected()
+   def s_localhost_IP_address
+      if !defined? @s_localhost_IP_address_cache
+         s_ip_address=s_one_of_the_public_IP_addresses_or_a_loopback_if_unconnected
+         s_0=nil
+         if (s_ip_address.gsub(/[\d]/,$kibuvits_lc_emptystring)).length==3
+            s_0="127.0.0.1"
+         else
+            if s_ip_address==$kibuvits_lc_s_localhost
+               kibuvits_throw("s_ip_addresss == \"localhost\", \n"+
+               "but it should be an IP-address.\n"+
+               "GUID='359bdf2e-0425-49a5-a118-40f130713ed7'\n\n")
+            end # if
+            s_0="::1" # IPv6 version of the loop-back interface
+         end # if
+         @s_localhost_IP_address_cache=s_0.freeze
+      end # if
+      s_out=@s_localhost_IP_address_cache
+      return s_out
+   end # s_localhost_IP_address
+
+   def Kibuvits_io.s_localhost_IP_address
+      s_out=Kibuvits_io.instance.s_localhost_IP_address
+      return s_out
+   end # Kibuvits_io.s_localhost_IP_address
 
    #-----------------------------------------------------------------------
 

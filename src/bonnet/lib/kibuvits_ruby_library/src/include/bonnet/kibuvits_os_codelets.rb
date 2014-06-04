@@ -234,7 +234,7 @@ class Kibuvits_os_codelets
          s_default_msg="s_file_path_subject_to_analyze.length==0"
          i_message_code=1
          b_failure=true
-         s_default_language="English"
+         s_default_language=$kibuvits_lc_English
          msgc=Kibuvits_msgc.new(s_default_msg,i_message_code,b_failure,s_default_language)
          msgcs << msgc
          return
@@ -246,9 +246,9 @@ class Kibuvits_os_codelets
          s_file_path_subject_to_analyze
          i_message_code=2
          b_failure=true
-         s_default_language="English"
+         s_default_language=$Ekibuvits_lc_English
          msgc=Kibuvits_msgc.new(s_default_msg,i_message_code,b_failure,s_default_language)
-         msgc["Estonian"]="Faili või kataloogi rada sisaldab nii Unix'i kui "+
+         msgc[$kibuvits_lc_Estonian]="Faili või kataloogi rada sisaldab nii Unix'i kui "+
          "Windowsi raja spetsiifilisi eraldusmärke."
          msgcs << msgc
          return
@@ -263,9 +263,9 @@ class Kibuvits_os_codelets
          s_file_path_subject_to_analyze
          i_message_code=3
          b_failure=true
-         s_default_language="English"
+         s_default_language=$kibuvits_lc_English
          msgc=Kibuvits_msgc.new(s_default_msg,i_message_code,b_failure,s_default_language)
-         msgc["Estonian"]="Faili või kataloogi rada sisaldab kas "+
+         msgc[$kibuvits_lc_Estonian]="Faili või kataloogi rada sisaldab kas "+
          "kolme järjestikust punkti või küsimärki. Selle meetodi praeguse "+
          "spetsifikatsiooni järgi loetakse seda sorti faili/kataloogi rajad vigaseks."
          msgcs << msgc
@@ -415,36 +415,40 @@ class Kibuvits_os_codelets
    #-----------------------------------------------------------------------
    public
 
-   def generate_tmp_file_name s_file_name_prefix="tmp_file_"
+   def generate_tmp_file_name(s_file_name_prefix="tmp_file_",
+      s_file_name_suffix="e.txt") # 'e' is a [^\d]
       s=s_file_name_prefix+(Time.new.to_s).gsub!(/[\s;.\\\/:+]/,"_")
       # 2147483647==2^(32-1)-1, i.e. 0 included
       s=s+'r'+Kernel.rand(2147483647).to_s
       s=s+'r'+Kernel.rand(2147483647).to_s
-      s=s+'r'+Kernel.rand(2147483647).to_s+'e.txt' # 'e' is a [^\d]
+      s=s+'r'+Kernel.rand(2147483647).to_s+s_file_name_suffix
       return s
    end # generate_tmp_file_name
 
    def Kibuvits_os_codelets.generate_tmp_file_name(
-      s_file_name_prefix="tmp_file_")
+      s_file_name_prefix="tmp_file_",
+      s_file_name_suffix="e.txt") # 'e' is a [^\d]
       s_out=Kibuvits_os_codelets.instance.generate_tmp_file_name(
-      s_file_name_prefix)
+      s_file_name_prefix,s_file_name_suffix)
       return s_out
    end # Kibuvits_os_codelets.generate_tmp_file_name
 
    #-----------------------------------------------------------------------
    def generate_tmp_file_absolute_path(s_file_name_prefix="tmp_file_",
-      msgcs=nil)
+      msgcs=nil, s_file_name_suffix="e.txt") # 'e' is a [^\d]
       # TODO: refactor the msgcs part here
       #interpret_msgcs_var(msgcs,b_msgcs_received)
-      s_fp0=get_tmp_folder_path+"/"+generate_tmp_file_name(s_file_name_prefix)
+      s_fp0=get_tmp_folder_path+"/"+generate_tmp_file_name(
+      s_file_name_prefix,s_file_name_suffix)
       #interpret_msgcs_var(msgcs,b_msgcs_received)
       return s_fp0
    end # generate_tmp_file_absolute_path
 
    def Kibuvits_os_codelets.generate_tmp_file_absolute_path(
-      s_file_name_prefix="tmp_file_")
+      s_file_name_prefix="tmp_file_",
+      s_file_name_suffix="e.txt") # 'e' is a [^\d]
       s_out=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path(
-      s_file_name_prefix)
+      s_file_name_prefix,nil,s_file_name_suffix)
       return s_out
    end # Kibuvits_os_codelets.generate_tmp_file_absolute_path
 

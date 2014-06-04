@@ -92,7 +92,47 @@ sym_XXX=:a_nice_method_name
    the names of projects like Scheme 84, Scheme 48, and the
    "Ultimate Answer to the Ultimate Question of Life,
    The Universe, and Everything".
+
+   Functions with a name prefix of "exc_" 
+   throw on inconsistent data or unsuitable state.
 =end
 
+def exc_function_example(s_fp)
+   if !File.exist? s_fp
+      kibuvits_throw("Functions that have a prefix of 'exc_'"+
+      "in their name, throw on errors.")
+   end # if
+   s=file2str(s_fp)
+   kibuvits_writeln(s)
+end # exc_function_example
+
+=begin
+   Functions with a name prefix of "exm_" 
+   throw on inconsistent data or unsuitable state only,
+   if the Kibuvits_msgc_stack instance has not been provided.
+   If the Kibuvits_msgc_stack instance has been provided,
+   then the function writes the error to the 
+   Kibuvits_msgc_stack instance and returns.
+=end
+
+def exm_function_example(s_fp,msgcs=nil)
+   if !File.exist? s_fp
+      s_msg="File with the path of \n"+s_fp+"\ndoes not exist."
+      if msgcs.class==Kibuvits_msgc_stack
+         msgcs.cre("\n\nA text in the msgcs: \n"+s_msg+"\n\n")
+         return
+      else
+         kibuvits_throw(s_msg)
+      end # if
+   end # if
+   s=file2str(s_fp)
+   kibuvits_writeln(s)
+end # exm_function_example
+
+s_fp="/tmp/this_file_does_not_exist_444.txt"
+#exm_function_example(s_fp)
+msgcs=Kibuvits_msgc_stack.new
+exm_function_example(s_fp,msgcs)
+#kibuvits_writeln(msgcs.to_s) if msgcs.b_failure
 
 #==========================================================================

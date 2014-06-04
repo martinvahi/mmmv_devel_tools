@@ -54,8 +54,8 @@ Forking the KRL is not just encouraged, but it is a necessity by design.
 ##                        2. Dependencies
 
 
-The Kibuvits Ruby Library (KRL) is UNIX specific. Ruby version 
-has to be 2.0.0p247 or newer.
+The Kibuvits Ruby Library (KRL) is UNIX specific. Ruby version
+has to be 2.1.0p0 or newer.
 
 Majority of the KRL can be run without installing any extra
 gems or special packages, but some components of the KRL, for example,
@@ -89,21 +89,27 @@ private methods and code in the
     ./src/include/incomplete
     ./src/include/bonnet
 
-The 
+The
 
     ./src/dev_tools/deprecated_code_museum
 
 is not part of the current implementation. It's a place, where
 "museum artifacts" are held.
 
-It is strongly encouraged to study a few lessons from
-the ./doc/examples, before trying to use the KRL.
+It is strongly encouraged to study a some lessons from
+the ./doc/examples, before trying to use the KRL. For example,
+certain method name prefixes indicate the
+behavior and return types of the methods.
+The naming conventions are described in
+
+    ./doc/examples/lesson_01_naming_conventions.rb
+
 
 The ./doc/examples/COMMENTS.txt has further details about
 the example code and its prerequisites.
 
-Sometimes some out-commented demo/test code resides at
-the end of a KRL Ruby file. It's possible to play with it by cd-ing
+In case of some KRL Ruby files, some out-commented demo/test code
+might reside at the end of the file. It's possible to play with it by cd-ing
 into the folder, where the Ruby file resides, uncommenting
 the demo/devel code and executing the file. An example:
 
@@ -127,8 +133,7 @@ functions start with a string "kibuvits_".
 KRL versions are not guaranteed to be backwards compatible.
 KRL has not been designed to allow more than one version of it
 to be used in a single Ruby application. Every project that
-depends on the KRL must fork the KRL by including a copy of
-the KRL in its sources.
+depends on the KRL must include a copy of the KRL in its sources.
 
 For automatic version checks the KRL defines a Ruby constant named
 
@@ -144,7 +149,7 @@ The KRL defines a Ruby constant named
     KIBUVITS_HOME
 
 which holds a full path to the folder that contains the README.md
-that You are currently reading. It's OK to define the KIBUVITS_HOME
+that You are currently reading. It is OK to define the KIBUVITS_HOME
 in a KRL client project.
 
 The whole KRL can be included by
@@ -182,12 +187,12 @@ and in the other:
 
 
 The reason, why KRL is and probably will stay UNIX specific
-is that rewriting Bash and other, reliable, classical,
+is that rewriting Bash, diff, grep and other, reliable, classical,
 UNIX command-line tools at an era, where most of the new commercial
 software is web based and most of the web servers run UNIX-like operating
 systems, is not that rewarding. Phones run Linux, routers
 run Linux, most mature open source operating systems are POSIX compliant
-and as of 2013 the Microsoft has never been a trustworthy
+and as of 2014 the Microsoft has never been a trustworthy
 business partner for multitude-and-freedom-of-choice lovers.
 
 The KRL will probably never be distributed as a gem, because
@@ -210,7 +215,7 @@ The design ideology partly rests on the following ideas:
    dropping historical components, without breaking
    backwards compatibility.
 
-Forking provides a private space. As of 2013
+Forking provides a private space. As of 2014
 I(martin.vahi@softf1.com) believe that in the case of
 team efforts, the project must be divided to code regions,
 where the code maintainer has the ultimate authority. This

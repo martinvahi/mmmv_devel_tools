@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/usr/bin/env bash
 
 export S_FP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 MMMV_DEVEL_TOOLS_HOME="`cd $S_FP_DIR/../../../../../../../; pwd`"

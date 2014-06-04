@@ -77,7 +77,7 @@ class Breakdancemake_bdmroutine_pseudocron < Breakdancemake_bdmroutine
       @ht_grammar_run_bash_t1[$kibuvits_lc_mm_i_n_of_days]=1
       @ht_grammar_run_bash_t1[$kibuvits_lc_mm_i_interval_in_seconds]=1
 
-      @ht_grammar_build_from_templates_t1=Kibuvits_htoper.ht_clone_with_shared_references(
+      @ht_grammar_build_from_templates_t1=Kibuvits_htoper_t1.ht_clone_with_shared_references(
       @ht_grammar_run_bash_t1)
       @ht_grammar_run_bash_t1[$kibuvits_lc_mm_s_bash_command]=1
       @s_lc_s_fp_project_home="--s_fp_project_home".freeze
@@ -251,7 +251,7 @@ class Breakdancemake_bdmroutine_pseudocron < Breakdancemake_bdmroutine
    def run_bash_t1(s_language,ar_modespecific_params)
       ht_vars=argv2var(s_language,ar_modespecific_params,@ht_grammar_run_bash_t1)
       # The dumb copying is due to the ruby-lang.org flaw #8438, which
-      # makes it impossible to use the Kibuvits_htoper.ht2binding(...).
+      # makes it impossible to use the Kibuvits_htoper_t1.ht2binding(...).
       i_n_of_seconds=ht_vars[$kibuvits_lc_mm_i_n_of_seconds]
       i_n_of_minutes=ht_vars[$kibuvits_lc_mm_i_n_of_minutes]
       i_n_of_hours=ht_vars[$kibuvits_lc_mm_i_n_of_hours]

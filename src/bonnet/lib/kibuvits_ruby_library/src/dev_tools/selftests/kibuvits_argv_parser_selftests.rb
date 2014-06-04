@@ -295,7 +295,7 @@ class Kibuvits_argv_parser_selftests
       KIBUVITS_s_CMD_RUBY+" "+s_fp_script+" -a a1 a2\\ a3 -b b1  -c "
       ht=nil
       begin
-         ht=sh cmd
+         ht=kibuvits_sh(cmd)
       rescue Exception => e
       end # rescue
       File.delete s_fp_script # before throwing anything

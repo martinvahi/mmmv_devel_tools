@@ -140,7 +140,7 @@ end # update_version
 
 task :build do
    build_JavaScript()
-   sh("sync;")
+   kibuvits_sh("sync;")
    update_version()
 end # build
 

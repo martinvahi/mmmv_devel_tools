@@ -916,6 +916,7 @@ class Kibuvits_boot_selftests
       ar_1.concat(["(w","x)","(",")","(fff)","(\nfff","fff\n)"])
       ar_1.concat(["{w","x}","{","}","{fff}","{\nfff","fff\n}"])
       ar_1.concat([",x",":x","x;","$ff","$"])
+      ar_1.concat(["4","42x"])
       ar_1.each do |s_x|
          b_x=kibuvits_b_not_suitable_for_a_varname_t1(s_x)
          raise("test 2 s_x=="+s_x.to_s) if !b_x
@@ -1112,6 +1113,26 @@ class Kibuvits_boot_selftests
          s_0=e.to_s
       end # rescue
       raise "test 2b s_0=="+s_0 if b_thrown
+      #--------------------
+      b_thrown=false
+      begin
+         bn=binding()
+         kibuvits_typecheck_ar_content(bn,String,[],"testmsg")
+      rescue Exception => e
+         b_thrown=true
+         s_0=e.to_s
+      end # rescue
+      raise "test 3a s_0=="+s_0 if b_thrown
+      #--------------------
+      b_thrown=false
+      begin
+         bn=binding()
+         kibuvits_typecheck_ar_content(bn,[String,Fixnum],[],"testmsg")
+      rescue Exception => e
+         b_thrown=true
+         s_0=e.to_s
+      end # rescue
+      raise "test 3b s_0=="+s_0 if b_thrown
    end # test_kibuvits_typecheck_ar_content
 
    #-----------------------------------------------------------------------
@@ -1576,6 +1597,88 @@ class Kibuvits_boot_selftests
 
    #-----------------------------------------------------------------------
 
+   Kibuvits_boot_selftests_test_kibuvits_b_class_defined_this_class_does_not_exist=42
+
+   def Kibuvits_boot_selftests.test_kibuvits_b_class_defined
+      if kibuvits_b_class_defined? :Kibuvits_boot_selftests_test_kibuvits_b_class_defined_this_class_does_not_exist
+         # A defined symbol that points to a constant that is not a class.
+         kibuvits_throw "test 1a"
+      end # if
+      if kibuvits_b_class_defined? "Kibuvits_boot_selftests_test_kibuvits_b_class_defined_this_class_does_not_exist"
+         kibuvits_throw "test 1b"
+      end # if
+      kibuvits_throw "test 2" if !kibuvits_b_class_defined? "String"
+      kibuvits_throw "test 3" if !kibuvits_b_class_defined? :Fixnum
+      kibuvits_throw "test 4" if !kibuvits_b_class_defined? Rational
+      #----------------------
+      cl_x=kibuvits_exc_class_name_2_cl("String")
+      kibuvits_throw "test 5" if cl_x!=String
+      cl_x=kibuvits_exc_class_name_2_cl(Fixnum)
+      kibuvits_throw "test 6" if cl_x!=Fixnum
+      cl_x=kibuvits_exc_class_name_2_cl(:Kibuvits_boot_selftests)
+      kibuvits_throw "test 7" if cl_x!=Kibuvits_boot_selftests
+   end # Kibuvits_boot_selftests.test_kibuvits_b_cl_cass_defined
+
+   #-----------------------------------------------------------------------
+
+   def Kibuvits_boot_selftests.test_kibuvits_assert_does_not_contain_common_special_characters_t1
+      begin
+         bn=binding()
+         kibuvits_assert_does_not_contain_common_special_characters_t1(bn,"abcd")
+      rescue Exception => e
+         raise "test 1a e.to_s=="+e.to_s
+      end # rescue
+      #----------------------
+      begin
+         bn=binding()
+         kibuvits_assert_does_not_contain_common_special_characters_t1(bn,"")
+      rescue Exception => e
+         raise "test 1b e.to_s=="+e.to_s
+      end # rescue
+      #----------------------
+      begin
+         bn=binding()
+         kibuvits_assert_does_not_contain_common_special_characters_t1(bn,"1234567890ABC")
+      rescue Exception => e
+         raise "test 1c e.to_s=="+e.to_s
+      end # rescue
+      #----------------------
+      s_special_chars="|,.:;<>(){}^$\s\r\n+-*/\\+-~%'\""
+      ar=s_special_chars.scan(/./)
+      ar.each do |s_char|
+         #-------------
+         b_thrown=false
+         begin
+            bn=binding()
+            kibuvits_assert_does_not_contain_common_special_characters_t1(bn,s_char)
+         rescue Exception => e
+            b_thrown=true
+         end # rescue
+         raise "test 2a s_char==\""+s_char+"\"" if !b_thrown
+         #-------------
+         b_thrown=false
+         begin
+            bn=binding()
+            kibuvits_assert_does_not_contain_common_special_characters_t1(bn,"well"+s_char)
+         rescue Exception => e
+            b_thrown=true
+         end # rescue
+         raise "test 2b s_char==\""+s_char+"\"" if !b_thrown
+         #-------------
+         b_thrown=false
+         begin
+            bn=binding()
+            kibuvits_assert_does_not_contain_common_special_characters_t1(bn,s_char+"BCD")
+         rescue Exception => e
+            b_thrown=true
+         end # rescue
+         raise "test 2c s_char==\""+s_char+"\"" if !b_thrown
+      end # loop
+      #----------------------
+   end # Kibuvits_boot_selftests.test_kibuvits_assert_does_not_contain_common_special_characters_t1
+
+   #-----------------------------------------------------------------------
+
    public
    def Kibuvits_boot_selftests.selftest
       ar_msgs=Array.new
@@ -1602,6 +1705,8 @@ class Kibuvits_boot_selftests
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_b_not_a_whole_number_t1_test_1"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_b_not_a_whole_number_t1_test_2"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_assert_ar_elements_typecheck_if_is_array"
+      kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_b_class_defined"
+      kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_assert_does_not_contain_common_special_characters_t1"
       return ar_msgs
    end # Kibuvits_boot_selftests.selftest
 

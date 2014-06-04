@@ -94,14 +94,14 @@ class Kibuvits_eval_bridge
       begin
          s_fp=create_scriptfile s_script
          cmd=create_console_command s_fp
-         ht_stdstreams=sh cmd
+         ht_stdstreams=kibuvits_sh(cmd)
       rescue Exception => e
          msgcs.cre "Something went wrong within the "+
          "Kibuvits to "+@s_bridge_name+" bridge. The error message: "+
          e.message.to_s,3.to_s
          msgcs.last['Estonian']="Midagi läks Kibuvits teegi "+
          @s_bridge_name+" sillal valesti. Veateade: "+e.message.to_s
-         ht_stdstreams=Kibuvits_io.creat_empty_ht_stdstreams
+         ht_stdstreams=Kibuvits_io.create_empty_ht_stdstreams
       end # try-catch
       File.delete(s_fp) if File.exists? s_fp
       return ht_stdstreams
@@ -144,7 +144,7 @@ class Kibuvits_eval_bridge_PHP5 < Kibuvits_eval_bridge
 
    def installed
       cmd="php5 -version "
-      ht_stdstreams=sh cmd
+      ht_stdstreams=kibuvits_sh(cmd)
       s_stdout=ht_stdstreams['s_stdout']
       b_installed=false
       b_installed=true if s_stdout.include? "Zend"
@@ -220,7 +220,7 @@ class Kibuvits_eval
          msgcs.last['Estonian']="Keel \""+s_language+"\" ei ole "+
          "veel teegi poolt operatsioonisüsteemil "+
          "nimega \""+s_ostype+"\" toetatud."
-         ht_stdstreams=Kibuvits_io.creat_empty_ht_stdstreams
+         ht_stdstreams=Kibuvits_io.create_empty_ht_stdstreams
          return ht_stdstreams
       end # if
       return ht_stdstreams if msgcs.b_failure
@@ -230,7 +230,7 @@ class Kibuvits_eval
          msgcs.last['Estonian']="Keel \""+s_language+"\" on "+
          "küll teegi poolt toetatud, kuid seda ei ole veel "+
          "installeeritud."
-         ht_stdstreams=Kibuvits_io.creat_empty_ht_stdstreams
+         ht_stdstreams=Kibuvits_io.create_empty_ht_stdstreams
          return ht_stdstreams
       end # if
       ht_stdstreams=@ht_bridges[s_lang].run s_script,msgcs

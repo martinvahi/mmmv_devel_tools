@@ -87,7 +87,7 @@ class Kibuvits_ImageMagick
       if KIBUVITS_b_DEBUG
          kibuvits_typecheck bn, String, s_image_file_full_path
          kibuvits_typecheck bn, Hash, ht_out
-         ht_stdstreams=sh("which identify ")
+         ht_stdstreams=kibuvits_sh("which identify ")
          s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
          if s_stdout.length==0
             kibuvits_throw("\nThe ImageMagick command line tool, \"identify\", "+
@@ -113,7 +113,7 @@ class Kibuvits_ImageMagick
       ht_out[$kibuvits_lc_s_fp]=s_fp
 
       s_fp_cmd=Kibuvits_str.s_escape_for_bash_t1(s_fp)
-      ht_stdstreams=sh("identify "+s_fp_cmd)
+      ht_stdstreams=kibuvits_sh("identify "+s_fp_cmd)
       s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
       s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
 
@@ -183,7 +183,7 @@ class Kibuvits_ImageMagick
          kibuvits_typecheck bn, String, s_input_folder_full_path
          kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
 
-         ht_stdstreams=sh("which convert ")
+         ht_stdstreams=kibuvits_sh("which convert ")
          s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
          if s_stdout.length==0
             kibuvits_throw("\nThe ImageMagick command line tool, \"convert\", "+
@@ -306,7 +306,7 @@ class Kibuvits_ImageMagick
          if !File.exists? s_fp_out_parent
             s_fp_out_parent_cmdv=Kibuvits_str.s_escape_for_bash_t1(s_fp_out_parent)
             cmd="mkdir -p "+s_fp_out_parent_cmdv+$kibuvits_lc_spacesemicolon
-            ht_stdstreams=sh(cmd)
+            ht_stdstreams=kibuvits_sh(cmd)
             s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
             if 0<s_stderr.length
                kibuvits_throw("\ns_stderr=="+s_stderr+
@@ -323,7 +323,7 @@ class Kibuvits_ImageMagick
             cmd="cp -f "+s_fp_in_corrected_cmdv+
             $kibuvits_lc_space+s_fp_out_cmdv+$kibuvits_lc_spacesemicolon
          end # if
-         ht_stdstreams=sh(cmd)
+         ht_stdstreams=kibuvits_sh(cmd)
          s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
          if 0<s_stderr.length
             kibuvits_throw("\ns_stderr=="+s_stderr+

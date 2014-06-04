@@ -45,9 +45,9 @@ class C_mmmv_devel_tools_public_api_core
          bn=binding()
          kibuvits_typecheck bn, [Array,String], ar_or_s_file_paths
          kibuvits_typecheck bn, [Array,String], ar_or_s_fp_additional_folders_and_files_to_watch_for_changes
-         kibuvits_typecheck bn, [Fixnum,Bignum], i_observable_files_cache_max_size
+         kibuvits_typecheck bn, [Fixnum], i_observable_files_cache_max_size
          if ar_or_s_file_paths.class==String
-            kibuvits_assert_string_min_length(bn,ar_or_s_file_paths,2)
+            kibuvits_assert_string_min_length(bn,ar_or_s_file_paths,1)
          else  # ar_or_s_file_paths.class==Array
             kibuvits_typecheck_ar_content(bn,String,ar_or_s_file_paths)
             # Lazy-hack: one just hopes that
@@ -55,7 +55,7 @@ class C_mmmv_devel_tools_public_api_core
          end # if
          ar_short=ar_or_s_fp_additional_folders_and_files_to_watch_for_changes
          if ar_short.class==String
-            kibuvits_assert_string_min_length(bn,ar_short,2)
+            kibuvits_assert_string_min_length(bn,ar_short,1)
          else  # ar_short.class==Array
             kibuvits_typecheck_ar_content(bn,String,ar_short)
          end # if

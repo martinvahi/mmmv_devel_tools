@@ -20,7 +20,7 @@ if !defined? MMMV_DEVEL_TOOLS_HOME
 end # if
 
 if !defined? MMMV_DEVEL_TOOLS_VERSION
-   MMMV_DEVEL_TOOLS_VERSION="2.2.0"
+   MMMV_DEVEL_TOOLS_VERSION="2.3.0"
 end # if
 
 if !defined? KIBUVITS_HOME
@@ -56,7 +56,7 @@ if !defined? KIBUVITS_s_NUMERICAL_VERSION
    kibuvits_writeln msg
    exit
 end # if
-s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.6.0"
+s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.7.0"
 if KIBUVITS_s_NUMERICAL_VERSION!=s_expected_KIBUVITS_s_NUMERICAL_VERSION
    msg="\nThis version of the mmmv_devel_tools expects the Ruby constant, \n"+
    "KIBUVITS_s_NUMERICAL_VERSION, to have the value of \""+s_expected_KIBUVITS_s_NUMERICAL_VERSION+"\", \n"+
@@ -79,6 +79,7 @@ class C_mmmv_devel_tools_global_singleton
          return if @b_KRL_io_str_ix_loaded
       end # if
       require KIBUVITS_HOME+"/src/include/kibuvits_io.rb"
+      require KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
       require KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
       require KIBUVITS_HOME+"/src/include/kibuvits_ProgFTE.rb"
       @b_KRL_io_str_ix_loaded=true

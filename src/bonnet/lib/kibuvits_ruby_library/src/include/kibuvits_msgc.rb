@@ -92,7 +92,7 @@ class Kibuvits_msgc
          kibuvits_typecheck bn, [TrueClass, FalseClass], b_failure
          kibuvits_typecheck bn, String, s_default_language
          kibuvits_assert_string_min_length(bn,s_default_language,2,
-         "\nGUID='5e7024e3-f4d6-45f2-954a-a030d0e1add7'")
+         "\nGUID='1af9a013-15ae-4026-83cb-417370104ed7'")
       end # if
       @s_instance_id="msgc_"+Kibuvits_wholenumberID_generator.generate.to_s+"_"+
       Kibuvits_GUID_generator.generate_GUID
@@ -102,10 +102,9 @@ class Kibuvits_msgc
       s_default_msg).freeze
       @s_message_id=s_message_id.freeze
       @b_failure=b_failure
-      @s_data=$kibuvits_lc_emptystring
       @mx=Mutex.new
       @ob_instantiation_time=Time.now
-      @ob_data=nil
+      @x_data=nil
 
       @s_location_marker_GUID=s_location_marker_GUID.freeze
       if @s_location_marker_GUID!=$kibuvits_lc_emptystring
@@ -114,7 +113,7 @@ class Kibuvits_msgc
          if md_candidate==nil
             kibuvits_throw("\nThe s_location_marker_GUID(=="+
             s_location_marker_GUID+")\nis not a GUID."+
-            "\nCurrent exception location GUID=='d892221f-2440-4b68-844a-a030d0e1add7'\n\n");
+            "\nCurrent exception location GUID=='31e64012-09bd-4d01-94cb-417370104ed7'\n\n");
          end # if
       end # if
    end #initialize
@@ -179,8 +178,7 @@ class Kibuvits_msgc
       x_out=Kibuvits_msgc.new(@ht_msgs[@s_default_language],
       @s_message_id, @b_failure, @s_default_language)
       @ht_msgs.each_pair {|s_language,s_msg| x_out[s_language]=s_msg}
-      x_out.instance_variable_set(:@s_data,@s_data)
-      x_out.instance_variable_set(:@ob_data,@ob_data)
+      x_out.instance_variable_set(:@x_data,@x_data)
       return x_out
    end # clone
 
@@ -202,30 +200,20 @@ class Kibuvits_msgc
 
    #-----------------------------------------------------------------------
 
-   def s_data
-      s_out=$kibuvits_lc_emptystring+@s_data
-      return s_out
-   end # s_data
-
-
-   def s_data= s_whatever_string
-      if KIBUVITS_b_DEBUG
-         bn=binding()
-         kibuvits_typecheck bn, String, s_whatever_string
+   def x_data
+      x_out=nil
+      if @x_data.class==String
+         x_out=$kibuvits_lc_emptystring+@x_data
+      else
+         x_out=@x_data
       end # if
-      @s_data=$kibuvits_lc_emptystring+s_whatever_string
-      return nil
-   end # s_data
+      return x_out
+   end # x_data
 
 
-   def ob_data
-      return @ob_data
-   end # ob_data
-
-
-   def ob_data= ob_data
-      @ob_data=ob_data
-   end # ob_data=
+   def x_data=(x_data)
+      @x_data=x_data
+   end # x_data=
 
    #-----------------------------------------------------------------------
 
@@ -240,7 +228,19 @@ class Kibuvits_msgc
             ht["sb_failure"]="f"
          end # if
          ht["s_instance_id"]=@s_instance_id
-         ht["s_data"]=@s_data
+         #-------------
+         ht["x_data"]=$kibuvits_lc_emptystring
+         ht["x_data_class"]=nil.class.to_s
+         x_data_class=@x_data.class
+         if x_data_class==String
+            ht["x_data"]=@x_data
+         else
+            if @x_data.respond_to? "s_serialize"
+               ht["x_data"]=@x_data.s_serialize
+            end # if
+         end # if
+         ht["x_data_class"]=x_data_class.to_s if ht["x_data"]!=nil
+         #-------------
          ht["s_default_language"]=@s_default_language
          s_ht_msgs_progfte=Kibuvits_ProgFTE.from_ht(@ht_msgs)
       end # synchronize
@@ -289,7 +289,41 @@ class Kibuvits_msgc
       b_failure=true if ht["sb_failure"]=="t"
       msgc.instance_variable_set(:@b_failure,b_failure)
       msgc.instance_variable_set(:@s_instance_id,ht["s_instance_id"])
-      msgc.instance_variable_set(:@s_data,ht["s_data"])
+      #-------------
+      x_data=nil
+      x_data_class=ht["x_data_class"]
+      if x_data_class!=(nil.class.to_s)
+         s_x_data_serialized=ht["x_data"]
+         if kibuvits_b_class_defined? x_data_class
+            if x_data_class=="String"
+               x_data=s_x_data_serialized
+            else
+               cl=kibuvits_exc_class_name_2_cl(x_data_class)
+               if cl.respond_to? "ob_deserialize"
+                  x_data=cl.ob_deserialize
+               else
+                  if KIBUVITS_b_DEBUG
+                     kibuvits_throw("Deserialization of an "+
+                     "instance of the "+self.class.to_s+" failed, because the class "+
+                     x_data_class +" is defined, but it does not have a method named "+
+                     "ob_deserialize.\n"+
+                     "GUID='423cb8b3-5fb1-4003-becb-417370104ed7'\n\n")
+                  end # if
+               end # if
+            end # if
+         else
+            if KIBUVITS_b_DEBUG
+               kibuvits_throw("During the deserialization of an "+
+               "instance of the "+self.class.to_s+" the serialized version lists "+
+               x_data_class +" as the class of the field \"x_data\", but "+
+               "the current application instance does not have a class with that "+
+               "name defined.\n"+
+               "GUID='81178260-62d0-4b4c-b3bb-417370104ed7'\n\n")
+            end # if
+         end # if
+      end # if
+      msgc.instance_variable_set(:@x_data,x_data)
+      #-------------
       msgc.instance_variable_set(:@s_default_language,ht["s_default_language"])
       ht_msgs=Kibuvits_ProgFTE.to_ht(ht["s_ht_msgs_progfte"])
       msgc.instance_variable_set(:@ht_msgs,ht_msgs)
@@ -421,11 +455,15 @@ class Kibuvits_msgc_stack
    end # insert_originedited_msgc_or_msgcs
 
    public
-   def << msgc_or_msgcs
+   def <<(msgc_or_msgcs)
       bn=binding()
       kibuvits_typecheck bn, [Kibuvits_msgc,Kibuvits_msgc_stack], msgc_or_msgcs
       insert_originedited_msgc_or_msgcs(msgc_or_msgcs)
    end # <<
+
+   def push(msgc_or_msgcs)
+      self << msgc_or_msgcs
+   end # push(msgc_or_msgcs)
 
 
    # Adds a Kibuvits_msgc instance to the stack. Arguments match with
@@ -433,7 +471,7 @@ class Kibuvits_msgc_stack
    def cre(s_default_msg=$kibuvits_lc_emptystring,
       s_message_id="message code not set",
       b_failure=true,s_location_marker_GUID=$kibuvits_lc_emptystring,
-      s_default_language="English")
+      s_default_language=$kibuvits_lc_English)
       msgc=Kibuvits_msgc.new(s_default_msg,s_message_id,b_failure,
       s_default_language,s_location_marker_GUID)
       self<<msgc
@@ -572,7 +610,7 @@ class Kibuvits_msgc_stack
 
    #-----------------------------------------------------------------------
 
-   def to_s s_language=nil
+   def to_s(s_language=nil)
       kibuvits_typecheck binding(), [NilClass,String], s_language
       s_0=$kibuvits_lc_emptystring
       s_1=nil
@@ -605,17 +643,17 @@ class Kibuvits_msgc_stack
             s_1=s_1+(s_lc_spaces+s_line)
          end # if
       end # loop
-      if @ob_data!=nil
+      if @x_data!=nil
          # TODO: implement a serializationmodem mechanism for
-         # the @ob_data so that it also has a to_s method.
-         s_1=s_1+"\n\n"+@ob_data.to_s
+         # the @x_data so that it also has a to_s method.
+         s_1=s_1+"\n\n"+@x_data.to_s
       end # if
       return s_1
    end # to_s
 
    #-----------------------------------------------------------------------
 
-   def [] i_index
+   def [](i_index)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, Fixnum, i_index

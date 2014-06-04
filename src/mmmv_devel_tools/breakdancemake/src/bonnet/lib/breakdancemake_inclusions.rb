@@ -74,7 +74,7 @@ if !defined? BREAKDANCEMAKE_INCLUSIONS_INCLUDED
    require  KIBUVITS_HOME+"/src/include/kibuvits_ProgFTE.rb"
    require  KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
    require  KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
-   require  KIBUVITS_HOME+"/src/include/kibuvits_htoper.rb"
+   require  KIBUVITS_HOME+"/src/include/kibuvits_htoper_t1.rb"
    require  KIBUVITS_HOME+"/src/include/kibuvits_i18n_msgs_t1.rb"
    require  KIBUVITS_HOME+"/src/include/kibuvits_dependencymetrics_t1.rb"
    require  KIBUVITS_HOME+"/src/include/kibuvits_apparch_specific.rb"

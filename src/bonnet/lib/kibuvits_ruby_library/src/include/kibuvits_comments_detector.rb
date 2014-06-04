@@ -107,6 +107,13 @@ class Kibuvits_comments_detector
       ar_reduce=[ht_reduce_1,ht_reduce_2] # TODO: read the code and verify that it works as expected
       @ht_multiliner["reduce"]=ar_reduce # The REDUCE Computer Algebra System
 
+
+      ht_htaccess=Hash.new
+      ht_htaccess[@lc_start_tag]="===HACK===ThE_htaccess_does_noT_hAvE_muLtIliNe_comMenTs_START==="
+      ht_htaccess[@lc_end_tag]="===HACK===ThE_htaccess_does_noT_hAvE_muLtIliNe_comMenTs_END==="
+      ar_htaccess=[ht_htaccess]
+      @ht_multiliner["htaccess"]=ar_htaccess
+
       ht_testlanguage_for_selftests_1=Hash.new
       ht_testlanguage_for_selftests_1[@lc_start_tag]="\"y"
       ht_testlanguage_for_selftests_1[@lc_end_tag]="\"z"
@@ -153,6 +160,7 @@ class Kibuvits_comments_detector
       @ht_singleliner["javascript"]=ar_cpp_liner
       @ht_singleliner["java"]=ar_cpp_liner
       @ht_singleliner["reduce"]=ar_reduce_liner # The REDUCE Computer Algebra System
+      @ht_singleliner["htaccess"]=ar_bash_liner
 
       ht_testlanguage_for_selftests_1=Hash.new
       ht_testlanguage_for_selftests_1[@lc_start_tag]="\"\""
@@ -203,6 +211,7 @@ class Kibuvits_comments_detector
       # to make it work properly.
       @ht_stringmarks["reduce"]=ar_cpp
 
+      @ht_stringmarks["htaccess"]=ar_php
 
       ht_testlanguage_for_selftests_1=Hash.new
       ht_testlanguage_for_selftests_1[@lc_start_tag]="'"

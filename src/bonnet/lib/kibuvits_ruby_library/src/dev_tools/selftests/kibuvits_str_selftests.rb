@@ -1175,6 +1175,141 @@ class Kibuvits_str_selftests
 
    #-----------------------------------------------------------------------
 
+   def Kibuvits_str_selftests.test_b_has_prefix
+      #-----------
+      ar_or_s_prefix=""
+      s_haystack=""
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 1 " if !b_x
+      #-----------
+      ar_or_s_prefix="42x"
+      s_haystack=""
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 3 " if b_x
+      #-----------
+      ar_or_s_prefix=""
+      s_haystack="43x"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 4 " if !b_x
+      #-----------
+      ar_or_s_prefix=" "
+      s_haystack=""
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 5 " if b_x
+      #-----------
+      ar_or_s_prefix=""
+      s_haystack=" "
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 6 " if !b_x
+      #-----------
+      ar_or_s_prefix="a"
+      s_haystack="baaaa"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 7 " if b_x
+      #-----------
+      ar_or_s_prefix="baaaa"
+      s_haystack="a"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 8 " if b_x
+      #-----------
+      ar_or_s_prefix="baaaa"
+      s_haystack="ba"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 9 " if b_x
+      #-----------
+      ar_or_s_prefix="ba"
+      s_haystack="baaaa"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 10 " if !b_x
+      #-----------
+      ar_or_s_prefix="abcd"
+      s_haystack="xy"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 11 " if b_x
+      #-----------
+      ar_or_s_prefix="xy"
+      s_haystack="abcd"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 12 " if b_x
+      #-----------
+      ar_or_s_prefix=[""]
+      s_haystack=""
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 13 " if !b_x
+      #-----------
+      ar_or_s_prefix=["ab","a","abc"]
+      s_haystack="abcde"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 14 " if !b_x
+      #-----------
+      ar_or_s_prefix=["xy","ab","www"]
+      s_haystack="abcde"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 15 " if !b_x
+      #-----------
+      ar_or_s_prefix=["xy","UFO","www"]
+      s_haystack="abcde"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 16 " if b_x
+      #-----------
+      ar_or_s_prefix=["e"]
+      s_haystack="abcde"
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack)
+      kibuvits_throw "test 17 " if b_x
+      #-----------
+      ar_or_s_prefix=["xy","cd","e"]
+      s_haystack="abcde"
+      ar_speedhack=[]
+      b_x=Kibuvits_str.b_has_prefix(ar_or_s_prefix,s_haystack,ar_speedhack)
+      kibuvits_throw "test 18 " if b_x
+      kibuvits_throw "test 19 " if ar_speedhack.class!=Array
+      kibuvits_throw "test 20 " if ar_speedhack.size!=3
+      kibuvits_throw "test 21 " if ar_speedhack[0].to_s==ar_speedhack[2].to_s
+      #-----------
+   end # Kibuvits_str_selftests.test_b_has_prefix
+
+   #-----------------------------------------------------------------------
+
+   def Kibuvits_str_selftests.test_s_to_s_with_assured_amount_of_digits_t1
+      i_in=42
+      i_len_min=4
+      i_len_expected=4;
+      s_x=Kibuvits_str.s_to_s_with_assured_amount_of_digits_t1(i_len_min, i_in)
+      kibuvits_throw "test 1a s_x=="+s_x if s_x.length!=i_len_expected
+      kibuvits_throw "test 1b s_x=="+s_x if s_x!="0042"
+      #-----------
+      i_in=42
+      i_len_min=1
+      i_len_expected=2;
+      s_x=Kibuvits_str.s_to_s_with_assured_amount_of_digits_t1(i_len_min, i_in)
+      kibuvits_throw "test 2a s_x=="+s_x if s_x.length!=i_len_expected
+      kibuvits_throw "test 2b s_x=="+s_x if s_x!="42"
+      #-----------
+      i_in=42
+      i_len_min=3
+      i_len_expected=3;
+      s_x=Kibuvits_str.s_to_s_with_assured_amount_of_digits_t1(i_len_min, i_in)
+      kibuvits_throw "test 3a s_x=="+s_x if s_x.length!=i_len_expected
+      kibuvits_throw "test 3b s_x=="+s_x if s_x!="042"
+      #-----------
+      i_in=9
+      i_len_min=1
+      i_len_expected=1;
+      s_x=Kibuvits_str.s_to_s_with_assured_amount_of_digits_t1(i_len_min, i_in)
+      kibuvits_throw "test 4a s_x=="+s_x if s_x.length!=i_len_expected
+      kibuvits_throw "test 4b s_x=="+s_x if s_x!="9"
+      #-----------
+      i_in=9
+      i_len_min=43
+      i_len_expected=43;
+      s_x=Kibuvits_str.s_to_s_with_assured_amount_of_digits_t1(i_len_min, i_in)
+      kibuvits_throw "test 5a s_x=="+s_x if s_x.length!=i_len_expected
+      kibuvits_throw "test 5b s_x=="+s_x if s_x!=(("0"*42)+"9")
+      #-----------
+   end # Kibuvits_str_selftests.test_s_to_s_with_assured_amount_of_digits_t1
+
+   #-----------------------------------------------------------------------
+
    public
    include Singleton
    def Kibuvits_str_selftests.selftest
@@ -1216,6 +1351,8 @@ class Kibuvits_str_selftests
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_s_escape_spaces_t1"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_s_paintrollerreplace"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_s_s_bisect_by_header_t1"
+      kibuvits_testeval bn, "Kibuvits_str_selftests.test_b_has_prefix"
+      kibuvits_testeval bn, "Kibuvits_str_selftests.test_s_to_s_with_assured_amount_of_digits_t1"
       return ar_msgs
    end # Kibuvits_str_selftests.selftest
 

@@ -49,7 +49,7 @@ if !defined? RENESSAATOR_RB_INCLUDED
 
    require KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
    require KIBUVITS_HOME+"/src/include/kibuvits_argv_parser.rb"
-   require KIBUVITS_HOME+"/src/include/brutal_workarounds/kibuvits_str_configfileparser.rb"
+   require KIBUVITS_HOME+"/src/include/brutal_workarounds/kibuvits_configfileparser_t1.rb"
    require KIBUVITS_HOME+"/src/include/kibuvits_comments_detector.rb"
    require KIBUVITS_HOME+"/src/include/kibuvits_fs.rb"
    require KIBUVITS_HOME+"/src/include/kibuvits_eval.rb"
@@ -191,7 +191,7 @@ class Renessaator_core
       msgcs=ht_opmem[@lc_msgcs]
       ht_block=ht_opmem[@lc_ht_block]
       s_block_frame=ht_block[@lc_s_block_frame]
-      ht_params=Kibuvits_str_configfileparser.configstylestr_2_ht(s_block_frame,msgcs)
+      ht_params=Kibuvits_configfileparser_t1.ht_parse_configstring(s_block_frame,msgcs)
       if !ht_params.has_key? @lc_tl_s_block_src_lang
          msgcs.cre "Renessaator block parameter \""+
          @lc_tl_s_block_src_lang+"\" is missing.",6.to_s

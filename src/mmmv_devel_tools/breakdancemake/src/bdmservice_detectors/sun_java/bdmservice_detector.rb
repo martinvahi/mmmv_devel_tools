@@ -60,7 +60,7 @@ class Breakdancemake_bdmservice_detector_sun_java< Breakdancemake_bdmservice_det
    def b_assess_bdmcomponent_availability(ht_cycle_detection_opmem,fd_threshold)
       b_on_the_path=Kibuvits_shell.b_available_on_path("java")
       return false if !b_on_the_path
-      ht_stdstreams=sh("java -version")
+      ht_stdstreams=kibuvits_sh("java -version")
       s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
       rgx=/^Java HotSpot[(]TM[)]/
       b_1=(rgx.match(s_stderr)!=nil)

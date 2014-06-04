@@ -46,7 +46,7 @@ if !defined? KIBUVITS_HOME
    ob_pth_0=nil; ob_pth_1=nil; s_KIBUVITS_HOME_b_fs=nil
 end # if
 
-require  KIBUVITS_HOME+"/src/include/kibuvits_htoper.rb"
+require  KIBUVITS_HOME+"/src/include/kibuvits_htoper_t1.rb"
 require  KIBUVITS_HOME+"/src/include/kibuvits_graph.rb"
 require  KIBUVITS_HOME+"/src/include/kibuvits_IDstamp_registry_t1.rb"
 require  KIBUVITS_HOME+"/src/include/kibuvits_arraycursor_t1.rb"

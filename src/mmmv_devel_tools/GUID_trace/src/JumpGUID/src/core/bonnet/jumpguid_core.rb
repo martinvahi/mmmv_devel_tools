@@ -171,22 +171,32 @@ class JumpGUID_core
    #-----------------------------------------------------------------------
 
    def ar_assemble_list_of_source_files
-      ar_0=@ht_mmmv_devel_tools_config["ar_GUID_trace_project_source_folder_paths"]+
-      @ht_mmmv_devel_tools_config["ar_GUID_trace_project_dependencies_source_folder_paths"]
-      ar_folders=Array.new
+      ar_fp_candidate_files_and_folders=@ht_mmmv_devel_tools_config["ar_GUID_trace_folders_and_files_that_will_be_searched_for_GUIDs"]
+      ar_ignorables=@ht_mmmv_devel_tools_config["ar_GUID_trace_path_prefixes_of_ignorable_folders_and_files"]
+
+      ar_searchable_folders=Array.new
       ar_files=Array.new
-      ar_0.each do |x_fp_file_or_folder|
-         next if !File.exists? x_fp_file_or_folder
-         if File.directory? x_fp_file_or_folder
-            ar_folders << x_fp_file_or_folder
+      b_ignore=false
+      ar_speedhack=[]
+      ar_fp_candidate_files_and_folders.each do |s_fp_file_or_folder|
+         b_ignore=Kibuvits_str.b_has_prefix(ar_ignorables,
+         s_fp_file_or_folder,ar_speedhack)
+         next if b_ignore
+         # The existence check is after the
+         # ignorance check to avoid accessing hard-disks or network
+         # drives that might be slow, have a considerable delay.
+         next if !File.exists? s_fp_file_or_folder
+         if File.directory? s_fp_file_or_folder
+            ar_searchable_folders<<s_fp_file_or_folder
          else
-            ar_files << x_fp_file_or_folder
+            ar_files<<s_fp_file_or_folder
          end # if
       end # loop
       ar_fn_globs=@ht_mmmv_devel_tools_config["ar_GUID_trace_file_name_glob_patterns_according_to_Ruby_stdlib_class_Dir_method_glob"]
       b_return_long_paths=true
-      ar_out=Kibuvits_fs.ar_glob_recursively_t1(ar_folders,
-      ar_fn_globs, b_return_long_paths)
+      ar_out=Kibuvits_fs.ar_glob_recursively_t1(ar_searchable_folders,
+      ar_fn_globs, b_return_long_paths,ar_ignorables)
+      #ar_out.each{|x| puts("elevant1 ar_out[x]=="+x.to_s)}
       ar_out.concat(ar_files)
       return ar_out
    end # ar_assemble_list_of_source_files
@@ -206,17 +216,32 @@ class JumpGUID_core
       else
          ar_fp=Kibuvits_ix.normalize2array(ar_or_s_fp)
       end # if
+      #-------------------------------------
+      # Bash shell has limits on the
+      # single command line length and
+      # the number of command line arguments that
+      # can be provided to a console program.
+      # http://stackoverflow.com/questions/4185017/maximum-number-of-bash-arguments-max-num-cp-arguments
+      #
+      # Projects can contain miljons of files
+      # and if all of them are provided with a
+      # full file path, then the command line
+      # string will also have a substantial length.
+      s_cmd_prefix="grep -F -H -n "+s_searchstring+$kibuvits_lc_space
+      s_lc_0=" ;".freeze
       ar_s=Array.new
-      ar_s<<("grep -F -H -n "+s_searchstring+$kibuvits_lc_space)
+      cmd=nil
+      s_0=nil
       ar_fp.each do |s_fp|
-         ar_s<<(s_fp+$kibuvits_lc_space)
+         cmd=s_cmd_prefix+(s_fp+s_lc_0)
+         ht_stdstreams=kibuvits_sh(cmd)
+         s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
+         #s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
+         s_0=(s_stdout+$kibuvits_lc_linebreak).sub(/[\n]+$/,$kibuvits_lc_linebreak)
+         ar_s<<s_0 if s_0!=$kibuvits_lc_linebreak
       end # loop
-      ar_s<<(" ;")
-      cmd=kibuvits_s_concat_array_of_strings(ar_s)
-      ht_stdstreams=sh(cmd)
-      s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
-      s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
-      return s_stdout
+      s_out=kibuvits_s_concat_array_of_strings(ar_s)
+      return s_out
    end # s_get_grep_output
 
    #-----------------------------------------------------------------------
@@ -307,8 +332,8 @@ class JumpGUID_core
       s_errstack=file2str(@s_fp_errstack)
       ar_GUIDS=s_errstack.scan(rgx_0)
       lc_s_GUIDsHash="s_GUIDsHash".freeze
-      s_GUIDsHash_new=kibuvits_s_concat_array_of_strings(ar_GUIDS)
       s_GUIDsHash_old=ht_stack[lc_s_GUIDsHash]
+      s_GUIDsHash_new=kibuvits_s_concat_array_of_strings(ar_GUIDS)
       if s_GUIDsHash_new!=s_GUIDsHash_old
          ht_stack.clear
          ht_stack[lc_s_GUIDsHash]=s_GUIDsHash_new

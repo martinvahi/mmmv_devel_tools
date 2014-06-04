@@ -45,7 +45,7 @@ if !defined? KIBUVITS_HOME
    ob_pth_0=nil; ob_pth_1=nil; s_KIBUVITS_HOME_b_fs=nil
 end # if
 
-require  KIBUVITS_HOME+"/src/include/kibuvits_cg.rb"
+require  KIBUVITS_HOME+"/src/include/code_generation/kibuvits_cg.rb"
 
 #==========================================================================
 

@@ -90,7 +90,7 @@ class Kibuvits_apparch_specific
       Kibuvits_GUID_generator.generate_GUID+".txt"
 
       # The next line works also on binary files, which is important.
-      sh "cp "+s_template_file_path+" "+s_tmp_file_path
+      kibuvits_sh("cp "+s_template_file_path+" "+s_tmp_file_path)
       b_exception_in_block=false
       s_xs_msg=""
       begin
@@ -180,10 +180,10 @@ class Kibuvits_apparch_specific
    # msgcs.last has the following values:
    #
    #     if msgcs.last.s_message_id=="Kibuvits_apparch_specific_wrong_filesystem_access_or_wrong_element_type"
-   #        msgcs.last.ob_data=<Output of the Kibuvits_fs.verify_access.>
+   #        msgcs.last.x_data=<Output of the Kibuvits_fs.verify_access.>
    #     end # if
    #     if msgcs.last.s_message_id=="Kibuvits_apparch_specific_malformed_paths"
-   #        msgcs.last.ob_data=<An Array that contains at least one .>
+   #        msgcs.last.x_data=<An Array that contains at least one .>
    #     end # if
    #
    # This function is inspired by the fact that CSS and JavaScript
@@ -233,7 +233,7 @@ class Kibuvits_apparch_specific
          "has wrong filesystem access rigths or is a folder.",
          s_message_id="Kibuvits_apparch_specific_wrong_filesystem_access_or_wrong_element_type",
          b_failure=true)
-         msgcs.last.ob_data=ht_fschecks
+         msgcs.last.x_data=ht_fschecks
          return
       end # if
       ar_rewritables.each do |s_fp|
@@ -245,7 +245,7 @@ class Kibuvits_apparch_specific
          "has wrong filesystem access rigths or is a folder.",
          s_message_id="Kibuvits_apparch_specific_wrong_filesystem_access_or_wrong_element_type",
          b_failure=true)
-         msgcs.last.ob_data=ht_fschecks
+         msgcs.last.x_data=ht_fschecks
          return
       end # if
       ht_old_path_2_new_path=Hash.new
@@ -258,7 +258,7 @@ class Kibuvits_apparch_specific
             msgcs.cre(s_default_msg="At least one of the renamable file candidates "+
             "has a name that does not meet the specification of this function.",
             s_message_id="Kibuvits_apparch_specific_malformed_paths", b_failure=true)
-            msgcs.last.ob_data=[s_old_path]
+            msgcs.last.x_data=[s_old_path]
             return
          end # if
          ht_old_path_2_new_path[s_old_path]=x_new_path_candidate
@@ -330,7 +330,7 @@ class Kibuvits_apparch_specific
             return true if b_x
             next
          when "RAUDROHI_HOME"
-            s_0="src/release/third_party/fonts/gnu_org/freefont/2011/"+
+            s_0="src/deployables/third_party/fonts/gnu_org/freefont/2011/"+
             "with_raudrhoi_specific_modifications/"+
             "raudrohi_thirdpartyspecificversion_1_FreeMono.ttf"
             ar_file_names=["README.md","src/dev_tools/Rakefile","src/devel/raudrohi_base.js","src/devel/raudrohi_core.js",s_0]
@@ -390,7 +390,7 @@ class Kibuvits_apparch_specific
       end # if
       ht_filesystemtest_failures=Kibuvits_fs.verify_access(
       ar_fp,'is_file,readable')
-      s_output_message_language="English"
+      s_output_message_language=$kibuvits_lc_English
       b_throw=true
       Kibuvits_fs.exit_if_any_of_the_filesystem_tests_failed(
       ht_filesystemtest_failures,s_output_message_language,b_throw)

@@ -36,13 +36,13 @@ class Mmmv_devel_tools_jumpguid_t1_action_base< PMIPAction
       #--------------
       s_cmd=@s_fp_bash+" "+@s_fp_jumpguid_core+" get_file_path  "+@s_movement_cmd+" ;"
       s_cmd=s_cmd.gsub(/[\n]/,"")
-      s_fp_src=Mmmv_devel_tools_pmip_lib_globals.sh(s_cmd).gsub(
+      s_fp_src=Mmmv_devel_tools_pmip_lib_globals.mmmv_devel_tools_upguid_sh(s_cmd).gsub(
       /[\s]/,"")
       #puts s_fp_src
       #--------------
       s_cmd=@s_fp_bash+" "+@s_fp_jumpguid_core+" get_line_number "+@s_movement_cmd+" ;"
       s_cmd=s_cmd.gsub(/[\n]/,"")
-      si_src_line_number=Mmmv_devel_tools_pmip_lib_globals.sh(s_cmd).gsub(
+      si_src_line_number=Mmmv_devel_tools_pmip_lib_globals.mmmv_devel_tools_upguid_sh(s_cmd).gsub(
       /[\s]/,"")
       #puts si_src_line_number
       #si_src_line_number=41

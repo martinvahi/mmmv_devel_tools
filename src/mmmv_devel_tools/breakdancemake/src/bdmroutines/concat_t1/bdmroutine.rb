@@ -158,10 +158,12 @@ class Breakdancemake_bdmroutine_concat_t1 < Breakdancemake_bdmroutine
       s_jarfile_name+" --nomunge --preserve-semi --type js "+
       s_tmp_file_path+" -o "+s_concatenation_output_file_path+
       " ; rm -f "+s_tmp_file_path+" ;"
-      ht_stdstreams=sh(s_bash)
+      ht_stdstreams=kibuvits_sh(s_bash)
       s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
       s_stderr=ht_stdstreams[$kibuvits_lc_s_stderr]
-      kibuvits_writeln s_stdout.to_s+s_stderr.to_s
+      if (0<s_stdout.length)||(0<s_stderr.length)
+         kibuvits_writeln(s_stdout+s_stderr)
+      end # if
    end # run_postprocess_yui_compressor_t1
 
    def run_postprocess_google_closure_t1(
@@ -191,11 +193,11 @@ class Breakdancemake_bdmroutine_concat_t1 < Breakdancemake_bdmroutine
       # @ob_breakdancemake.assertxmsg_dependencies_are_met(
       # s_language,@s_bdmcomponent_name)
       # if !b_ready_for_use
-         # kibuvits_writeln s_status(s_language)
-         # exit
+      # kibuvits_writeln s_status(s_language)
+      # exit
       # end # if
       #--end-of-old--and-start-of-new
-      i_min_n_of_bdmroutine_params=1 
+      i_min_n_of_bdmroutine_params=1
       i_max_n_of_bdmroutine_params=1
       @ob_breakdancemake.bdmroutine_init_t1(s_language,ar_parameters,
       i_min_n_of_bdmroutine_params,i_max_n_of_bdmroutine_params,self)

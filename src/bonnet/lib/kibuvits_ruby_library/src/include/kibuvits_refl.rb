@@ -86,7 +86,7 @@ class Kibuvits_refl
          s_list_of_valid_values=Kibuvits_str.array2xseparated_list(ar)
          msgcs.cre "Method type \""+s_method_type+"\" is not supported. "+
          "Supported values are: "+s_list_of_valid_values+".",1.to_s
-         msgcs.last["Estonian"]="Meetodi tüüp \""+s_method_type+
+         msgcs.last[$kibuvits_lc_Estonian]="Meetodi tüüp \""+s_method_type+
          "\" ei ole toetatud. Toetatud väätused on: "+
          s_list_of_valid_values+"."
       end # case

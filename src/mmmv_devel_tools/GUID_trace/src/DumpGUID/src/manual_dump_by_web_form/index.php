@@ -86,7 +86,6 @@
 			fwrite($fp,$s1);
 			fclose($fp);
 		} // if
-		flush();
 		?>
 		<br/><br/>
 	</body>

@@ -60,7 +60,7 @@ class Breakdancemake_bdmservice_detector_php5< Breakdancemake_bdmservice_detecto
    def b_assess_bdmcomponent_availability(ht_cycle_detection_opmem,fd_threshold)
       b_on_the_path=Kibuvits_shell.b_available_on_path("php5")
       return false if !b_on_the_path
-      ht_stdstreams=sh("php5 -v")
+      ht_stdstreams=kibuvits_sh("php5 -v")
       s_stdout=ht_stdstreams[$kibuvits_lc_s_stdout]
       rgx=/^PHP 5/
       b_ready_for_use=false

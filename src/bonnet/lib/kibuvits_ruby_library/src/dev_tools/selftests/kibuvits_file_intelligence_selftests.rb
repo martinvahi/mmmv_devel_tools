@@ -45,6 +45,7 @@ if !defined? KIBUVITS_HOME
    ob_pth_0=nil; ob_pth_1=nil; s_KIBUVITS_HOME_b_fs=nil
 end # if
 
+require "fileutils"
 require  KIBUVITS_HOME+"/src/include/kibuvits_file_intelligence.rb"
 
 #==========================================================================
@@ -80,11 +81,99 @@ class Kibuvits_file_intelligence_selftests
 
    #-----------------------------------------------------------------------
 
+   def Kibuvits_file_intelligence_selftests.test_exm_s_create_backup_copy_t1
+      msgcs=Kibuvits_msgc_stack.new
+      s_name_prefix="tmp_folder_for_KRL_selftests_"
+      s_fp_tests_folder=Kibuvits_os_codelets.get_tmp_folder_path+$kibuvits_lc_slash+
+      Kibuvits_os_codelets.generate_tmp_file_name(s_name_prefix)
+      #---------------------
+      func_erase_tmp_dir=lambda do |s_guid|
+         # A bit of safety. An antimeasure to "./././././" and "./../../"
+         s_fp=s_fp_tests_folder.gsub(/[.]+/,".").gsub(/([.][\/])+/,"./")
+         if 20<s_fp.length
+            ht_stdstreams=kibuvits_sh("rm -fr "+s_fp)
+            Kibuvits_shell.throw_if_stderr_has_content_t1(ht_stdstreams,
+            "GUID='d21620d4-bad9-417a-a53f-60a280106ed7'\n")
+         else
+            raise Exception.new("Selftests are flawed.\n"+"GUID=="+s_guid)
+         end # if
+      end # func_erase_tmp_dir
+      #---------------------
+      s_working_directory_orig=FileUtils.getwd.to_s
+      FileUtils.chdir("/tmp")
+      begin
+         Dir.mkdir(s_fp_tests_folder)
+         s_fp_orig_file=s_fp_tests_folder+"/file_1.txt"
+         s_txt_0="Hi\nthere!"
+         str2file(s_txt_0,s_fp_orig_file)
+         s_fp_dest_folder=s_fp_tests_folder+"/destination_for_backups"
+         Dir.mkdir(s_fp_dest_folder)
+         s_fp_x=nil
+         begin
+            s_fp_x=Kibuvits_file_intelligence.exm_s_create_backup_copy_t1(
+            s_fp_orig_file,s_fp_dest_folder)
+            s_fp_x_whatever=Kibuvits_file_intelligence.exm_s_create_backup_copy_t1(
+            s_fp_orig_file,s_fp_dest_folder)
+            s_fp_x_whatever=Kibuvits_file_intelligence.exm_s_create_backup_copy_t1(
+            s_fp_orig_file)
+         rescue Exception => e
+            kibuvits_throw "test 1a e.to_s=="+e.to_s
+         end # rescue
+         s_fp_expected=s_fp_dest_folder+"/file_1_old_v0.txt"
+         kibuvits_throw "test 1b s_fp_x=="+s_fp_x if s_fp_x!=s_fp_expected
+         s_txt_x=file2str(s_fp_x)
+         kibuvits_throw "test 1c s_txt_x=="+s_txt_x if s_txt_x!=s_txt_0
+         #--------------
+         # Trickery to back up recursively the s_fp_dest_folder
+         s_fp_trickery_orig=s_fp_dest_folder
+         s_fp_x_0=nil
+         begin
+            s_fp_x=Kibuvits_file_intelligence.exm_s_create_backup_copy_t1(
+            s_fp_trickery_orig,".")
+            s_fp_x_0=Kibuvits_file_intelligence.exm_s_create_backup_copy_t1(
+            s_fp_trickery_orig,".")
+         rescue Exception => e
+            kibuvits_throw "test 2a e.to_s=="+e.to_s
+         end # rescue
+         if s_fp_x_0==s_fp_x # current version must re-copy folders
+            kibuvits_throw("test 2b \n"+
+            "GUID='12cee018-7700-473f-a33f-60a280106ed7'\n"+
+            "  s_fp_x == "+s_fp_x+
+            "\ns_fp_x_0 == "+s_fp_x_0)
+         end # if
+         #--------------
+         s_fp_x_0=nil
+         begin
+            s_fp_x=Kibuvits_file_intelligence.exm_s_create_backup_copy_t1(
+            s_fp_orig_file,".")
+            s_fp_x_0=Kibuvits_file_intelligence.exm_s_create_backup_copy_t1(
+            s_fp_orig_file,".")
+         rescue Exception => e
+            kibuvits_throw "test 3a e.to_s=="+e.to_s
+         end # rescue
+         if s_fp_x_0!=s_fp_x # Back-up files must not duplicate themselves.
+            kibuvits_throw("test 3b \n"+
+            "GUID='129c54c4-62a0-4719-943f-60a280106ed7'\n"+
+            "  s_fp_x == "+s_fp_x+
+            "\ns_fp_x_0 == "+s_fp_x_0)
+         end # if
+      rescue Exception => e
+         func_erase_tmp_dir.call("a3b6c7ee-30ba-404f-a33f-60a280106ed7")
+         kibuvits_throw e.to_s
+      end # rescue
+      func_erase_tmp_dir.call("347cee04-ce15-4593-b43f-60a280106ed7")
+      FileUtils.chdir(s_working_directory_orig)
+   end # Kibuvits_file_intelligence_selftests.test_exm_s_create_backup_copy_t1
+
+   #def Kibuvits_file_intelligence.exm_s_create_backup_copy_t1(
+   #-----------------------------------------------------------------------
+
    public
    def Kibuvits_file_intelligence_selftests.selftest
       ar_msgs=Array.new
       bn=binding()
       kibuvits_testeval bn, "Kibuvits_file_intelligence_selftests.test_file_language_by_file_extension"
+      kibuvits_testeval bn, "Kibuvits_file_intelligence_selftests.test_exm_s_create_backup_copy_t1"
       return ar_msgs
    end # Kibuvits_file_intelligence_selftests.selftest
 

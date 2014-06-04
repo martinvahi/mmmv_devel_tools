@@ -7,7 +7,7 @@ class Mmmv_devel_tools_renessaator_action_u< PMIPAction
    def initialize
       super()
       @ob_action_sync=nil
-      @s_fp_bash=Mmmv_devel_tools_pmip_lib_globals.sh("which bash").gsub(/[\s]/,"")
+      @s_fp_bash=Mmmv_devel_tools_pmip_lib_globals.mmmv_devel_tools_upguid_sh("which bash").gsub(/[\s]/,"")
    end # initialize
 
    def run(event, context)
@@ -22,8 +22,8 @@ class Mmmv_devel_tools_renessaator_action_u< PMIPAction
       s_cmd=@s_fp_bash+" "+Mmmv_devel_tools_pmip_lib_globals.s_fp_renessaator_bash+
       " -f "+s_fp+" ;"
       s_cmd=s_cmd.gsub(/[\n]/,"")
-      s_new=Mmmv_devel_tools_pmip_lib_globals.sh(s_cmd)
-      #s_new=Mmmv_devel_tools_pmip_lib_globals.sh("whoami")
+      s_new=Mmmv_devel_tools_pmip_lib_globals.mmmv_devel_tools_upguid_sh(s_cmd)
+      #s_new=Mmmv_devel_tools_pmip_lib_globals.mmmv_devel_tools_upguid_sh("whoami")
       #------------
       ob_editor=context.current_editor
       i_line=ob_editor.line_number

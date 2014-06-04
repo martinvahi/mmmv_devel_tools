@@ -165,6 +165,10 @@ class Kibuvits_msgc_selftests
       kibuvits_throw "test 20" if msgcs[0].s_instance_id!=msgcs.last.s_instance_id
       msgcs.cre "Greeting2", "code43"
       kibuvits_throw "test 21" if msgcs.b_failure!=true
+      #-------------
+      if kibuvits_block_throws{ msgcs.push(msgcs2)}
+         kibuvits_throw "test 22"
+      end # if
    end # Kibuvits_msgc_selftests.test_msgcs_set_1
 
 

@@ -78,6 +78,9 @@ if b_selfwriting
       Dir.glob(kibuvits_home+"/src/include/security/*.rb").each do |a_file_path|
          s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
       end # loop
+      Dir.glob(kibuvits_home+"/src/include/code_generation/*.rb").each do |a_file_path|
+         s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
+      end # loop
       Dir.glob(kibuvits_home+"/src/include/bonnet/*.rb").each do |a_file_path|
          s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
       end # loop
@@ -109,10 +112,10 @@ if b_selfwriting
    end # rescue
 else
    # SELFWRIGING_REGION_START
+    require KIBUVITS_HOME+"/src/include/kibuvits_htoper_t1.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_arraycursor_t1.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_io.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_graph.rb"
-    require KIBUVITS_HOME+"/src/include/kibuvits_htoper.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_coords.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_i18n_msgs_t1.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_ix.rb"
@@ -135,7 +138,6 @@ else
     require KIBUVITS_HOME+"/src/include/kibuvits_rake.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_graph_oper_t1.rb"
-    require KIBUVITS_HOME+"/src/include/kibuvits_cg.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_shell.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_finite_sets.rb"
     require KIBUVITS_HOME+"/src/include/kibuvits_eval.rb"
@@ -143,8 +145,13 @@ else
     require KIBUVITS_HOME+"/src/include/wrappers/kibuvits_ImageMagick.rb"
     require KIBUVITS_HOME+"/src/include/incomplete/kibuvits_whiteboard.rb"
     require KIBUVITS_HOME+"/src/include/incomplete/kibuvits_MUD.rb"
-    require KIBUVITS_HOME+"/src/include/brutal_workarounds/kibuvits_str_configfileparser.rb"
+    require KIBUVITS_HOME+"/src/include/brutal_workarounds/kibuvits_configfileparser_t1.rb"
     require KIBUVITS_HOME+"/src/include/security/kibuvits_cryptcodec_txor_t1.rb"
+    require KIBUVITS_HOME+"/src/include/security/kibuvits_security_core.rb"
+    require KIBUVITS_HOME+"/src/include/security/kibuvits_hash_plaice_t1.rb"
+    require KIBUVITS_HOME+"/src/include/code_generation/kibuvits_cg_php_t1.rb"
+    require KIBUVITS_HOME+"/src/include/code_generation/kibuvits_cg_html_t1.rb"
+    require KIBUVITS_HOME+"/src/include/code_generation/kibuvits_cg.rb"
     require KIBUVITS_HOME+"/src/include/bonnet/kibuvits_os_codelets.rb"
 
  # SELFWRIGING_REGION_END

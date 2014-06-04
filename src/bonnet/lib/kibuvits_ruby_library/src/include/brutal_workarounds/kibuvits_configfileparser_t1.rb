@@ -14,17 +14,17 @@ require  KIBUVITS_HOME+"/src/include/kibuvits_str.rb"
 
 #--------------------------------------------------------------------------
 
-class Kibuvits_str_configfileparser
+class Kibuvits_configfileparser_t1
    #-----------------------------------------------------------------------
    private
 
-   def configstylestr_2_ht_collect_var(ht_opmem)
+   def ht_parse_configstring_collect_var(ht_opmem)
       ht_out=ht_opmem['ht_out']
       ht_out[ht_opmem['s_varname']]=ht_opmem['s_varvalue']
       ht_opmem['s_varvalue']=""
-   end # configstylestr_2_ht_collect_var
+   end # ht_parse_configstring_collect_var
 
-   def configstylestr_2_ht_azl_heredoc(ht_opmem)
+   def ht_parse_configstring_azl_heredoc(ht_opmem)
       s_line=ht_opmem['s_line']
       s_entag=ht_opmem['s_heredoc_endtag']
       if s_line.index(s_entag)==nil
@@ -33,16 +33,16 @@ class Kibuvits_str_configfileparser
          return
       end # if
       s_varvalue=ht_opmem['s_varvalue']
-      # The next line gets rid of the very last linebreak in the s_varvalue.
+      # The next line gets rid of the very last line break in the s_varvalue.
       s_varvalue=Kibuvits_ix.sar(s_varvalue,0,(s_varvalue.length-1))
       ht_opmem['s_varvalue']=s_varvalue
-      configstylestr_2_ht_collect_var ht_opmem
+      ht_parse_configstring_collect_var ht_opmem
       ht_opmem['b_in_heredoc']=false
-   end # configstylestr_2_ht_azl_heredoc
+   end # ht_parse_configstring_azl_heredoc
 
-   # Answer of false means only, that the line is defenately not a
+   # Answer of false means only, that the line is definitely not a
    # proper comment line.
-   def configstylestr_2_ht_azl_nonheredoc_line_is_a_comment_line(s_line)
+   def ht_parse_configstring_azl_nonheredoc_line_is_a_comment_line(s_line)
       b_out=true
       i_n_equals_signs=Kibuvits_str.count_substrings(s_line,$kibuvits_lc_equalssign)
       return b_out if i_n_equals_signs==0
@@ -50,20 +50,20 @@ class Kibuvits_str_configfileparser
       return b_out if i_n_commented_equals_signs==i_n_equals_signs
       b_out=false
       return b_out
-   end # configstylestr_2_ht_azl_nonheredoc_line_is_a_comment_line
+   end # ht_parse_configstring_azl_nonheredoc_line_is_a_comment_line
 
-   def configstylestr_2_ht_azl_nonheredoc(ht_opmem)
+   def ht_parse_configstring_azl_nonheredoc(ht_opmem)
       s_line=ht_opmem['s_line']
       if KIBUVITS_b_DEBUG
          if s_line.index($kibuvits_lc_linebreak)!=nil
-            kibuvits_throw "s_line contains a linebreak, s_line=="+s_line
+            kibuvits_throw "s_line contains a line break, s_line=="+s_line
          end # if
       end # if
       # The \= is used in comments and it can appear in the
       # value part of the non-heredoc assignment line.
       # The = can also appear in the
       # value part of the non-heredoc assignment line.
-      if configstylestr_2_ht_azl_nonheredoc_line_is_a_comment_line(s_line)
+      if ht_parse_configstring_azl_nonheredoc_line_is_a_comment_line(s_line)
          return
       end # if
       msgcs=ht_opmem['msgcs']
@@ -150,7 +150,7 @@ class Kibuvits_str_configfileparser
       rgx_1=/HEREDOC/
       if s_right.index(rgx_1)==nil
          ht_opmem['s_varvalue']=s_right
-         configstylestr_2_ht_collect_var ht_opmem
+         ht_parse_configstring_collect_var ht_opmem
          return
       end # if
       # The s_right got trimmed earlier in this function.
@@ -188,7 +188,7 @@ class Kibuvits_str_configfileparser
       if s_right_noralized.index(rgx_3)!=nil
          ht_opmem['b_in_heredoc']=false
          ht_opmem['s_varvalue']=s_right
-         configstylestr_2_ht_collect_var ht_opmem
+         ht_parse_configstring_collect_var ht_opmem
          return
       end # if
 
@@ -213,9 +213,9 @@ class Kibuvits_str_configfileparser
       msgcs.last['Estonian']="Tsitaatsõne lõputunnus ei või "+
       "sisaldada tühikuid ning tabulatsioonimärke. "+
       "s_line==\""+s_line+"\"."
-   end # configstylestr_2_ht_azl_nonheredoc
+   end # ht_parse_configstring_azl_nonheredoc
 
-   def configstylestr_2_ht_create_ht_opmem(msgcs)
+   def ht_parse_configstring_create_ht_opmem(msgcs)
       ht_opmem=Hash.new
       ht_opmem['s_line']=""
       ht_opmem['b_in_heredoc']=false
@@ -227,7 +227,7 @@ class Kibuvits_str_configfileparser
       ht_opmem['ht_out']=Hash.new
       ht_opmem['msgcs']=msgcs
       return ht_opmem
-   end # configstylestr_2_ht_create_ht_opmem
+   end # ht_parse_configstring_create_ht_opmem
 
 
    public
@@ -239,7 +239,7 @@ class Kibuvits_str_configfileparser
    #
    # Configurations string format example:
    #
-   #-the-start-of-the-configstylestr_2_ht-usage-example-DO-NOT-CHANGE-THIS-LINE
+   #-the-start-of-the-ht_parse_configstring-usage-example-DO-NOT-CHANGE-THIS-LINE
    # i_error_code=500
    # s_formal_explanation=HEREDOC
    #          Internal Error. The server encountered an unexpected condition
@@ -296,10 +296,10 @@ class Kibuvits_str_configfileparser
    # then it is not interpreted as a key-word and is part of a comment.
    #
    # Actually this very same string string fragment is part of the
-   # selftests. The configstylestr_2_ht selftest code extracts it
-   # from the KRL ruby file, where the configstylestr_2_ht is defined.
+   # selftests. The ht_parse_configstring selftest code extracts it
+   # from the KRL ruby file, where the ht_parse_configstring is defined.
    #
-   #-the-end---of-the-configstylestr_2_ht-usage-example-DO-NOT-CHANGE-THIS-LINE
+   #-the-end---of-the-ht_parse_configstring-usage-example-DO-NOT-CHANGE-THIS-LINE
    #
    # The motive behind such a comment-sign-free configurations file
    # format is that usually parameter explanation comments have
@@ -310,7 +310,13 @@ class Kibuvits_str_configfileparser
    # because the YAML files are truly human friendly, if compared to
    # the JSON and the dinosaur of structured text formats, the XML.
    #
-   def configstylestr_2_ht(s_a_config_file_style_string,
+   # The recommended file extension of text files that are
+   # in the format of the Kibuvits_configfileparser_t1 is "txt_krlconfig_t1".
+   # An example:
+   #
+   #     my_preferences.txt_krlconfig_t1
+   #
+   def ht_parse_configstring(s_a_config_file_style_string,
       msgcs=Kibuvits_msgc_stack.new)
       if KIBUVITS_b_DEBUG
          bn=binding()
@@ -318,15 +324,15 @@ class Kibuvits_str_configfileparser
          kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
       end # if
       s_in=Kibuvits_str.normalise_linebreaks(s_a_config_file_style_string)
-      ht_opmem=configstylestr_2_ht_create_ht_opmem msgcs
+      ht_opmem=ht_parse_configstring_create_ht_opmem(msgcs)
       s_in.each_line do |s_line_with_optional_linebreak_character|
          s_line=Kibuvits_str.clip_tail_by_str(
          s_line_with_optional_linebreak_character,$kibuvits_lc_linebreak)
          ht_opmem['s_line']=s_line
          if ht_opmem['b_in_heredoc']
-            configstylestr_2_ht_azl_heredoc ht_opmem
+            ht_parse_configstring_azl_heredoc(ht_opmem)
          else
-            configstylestr_2_ht_azl_nonheredoc ht_opmem
+            ht_parse_configstring_azl_nonheredoc(ht_opmem)
          end # if
          break if msgcs.b_failure
       end # loop
@@ -343,17 +349,16 @@ class Kibuvits_str_configfileparser
          return ht_out
       end # if
       return ht_out
-   end # configstylestr_2_ht
+   end # ht_parse_configstring
 
-   def Kibuvits_str_configfileparser.configstylestr_2_ht(s_a_config_file_style_string,
+   def Kibuvits_configfileparser_t1.ht_parse_configstring(s_a_config_file_style_string,
       msgcs=Kibuvits_msgc_stack.new)
-      ht_out=Kibuvits_str_configfileparser.instance.configstylestr_2_ht(
+      ht_out=Kibuvits_configfileparser_t1.instance.ht_parse_configstring(
       s_a_config_file_style_string,msgcs)
       return ht_out
-   end # Kibuvits_str_configfileparser.configstylestr_2_ht
+   end # Kibuvits_configfileparser_t1.ht_parse_configstring
 
    #-----------------------------------------------------------------------
    include Singleton
 
-end # class Kibuvits_str_configfileparser
-
+end # class Kibuvits_configfileparser_t1
