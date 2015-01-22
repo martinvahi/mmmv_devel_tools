@@ -374,8 +374,8 @@ class Kibuvits_apparch_specific
    # Returns a string.
    def s_prefix_a_source_file_with_comment_texts_t1(
       s_fp_src,s_fp_or_ar_fp_comment_strings,msgcs)
+      bn=binding()
       if KIBUVITS_b_DEBUG
-         bn=binding()
          kibuvits_typecheck bn, String, s_fp_src
          kibuvits_typecheck bn, [Array,String], s_fp_or_ar_fp_comment_strings
          kibuvits_assert_ar_elements_typecheck_if_is_array(
@@ -406,12 +406,13 @@ class Kibuvits_apparch_specific
       #--------
       s_lang_name=Kibuvits_file_intelligence.file_language_by_file_extension(
       s_fp_src,msgcs)
-      if msgcs.b_failure
-         kibuvits_throw("msgcs.to_s=="+msgcs.to_s+
-         " \nGUID='25d12a20-dffc-427c-8171-f1d160b17dd7'")
-      end # if
-      s_singleliner_prefix=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
-      s_lang_name,msgcs)+$kibuvits_lc_space
+      msgcs.assert_lack_of_failures("GUID='75c502af-0c10-4d38-b178-724371601fd7'")
+      ar_s_singleliner_prefixes=Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags(
+      s_lang_name,msgcs)
+      msgcs.assert_lack_of_failures("GUID='59afa411-510a-4b7f-a578-724371601fd7'")
+      kibuvits_assert_array_min_length(bn,ar_s_singleliner_prefixes,1,
+      "GUID='282be703-c3aa-4c84-a478-724371601fd7'")
+      s_singleliner_prefix=ar_s_singleliner_prefixes[0]+$kibuvits_lc_space
       #--------
       s_sl_prefix=s_singleliner_prefix+$kibuvits_lc_space
       s_sl_prefix_lb_0=s_singleliner_prefix+$kibuvits_lc_linebreak

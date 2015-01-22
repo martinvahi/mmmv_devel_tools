@@ -636,13 +636,26 @@ class Kibuvits_fs_selftests
    public
 
    def Kibuvits_fs_selftests.test_ar_glob_recursively_t1
-      s_fp_surfingfolder=Kibuvits_os_codelets.generate_tmp_file_absolute_path("surfingfolder_")
-      cmd="mkdir "+s_fp_surfingfolder+
-      " ; cp -f -R "+KIBUVITS_HOME+"/src/* "+s_fp_surfingfolder+"/ ;"
+      # The s_fp_surfingfolder might be in
+      # KIBUVITS_HOME+"/src/include/bonnet/tmp
+      ar_fp_folders=Array.new
+      s_fp_surfingfolder=Kibuvits_os_codelets.generate_tmp_file_absolute_path(
+      "surfingfolder_","_tmp")
+      s_fp_folder_1=s_fp_surfingfolder+"/ff1"
+      ar_fp_folders<<s_fp_folder_1
+      s_fp_folder_2=s_fp_surfingfolder+"/ff2"
+      ar_fp_folders<<s_fp_folder_2
+      s_fp_folder_2_1=s_fp_surfingfolder+"/ff2/ff1"
+      ar_fp_folders<<s_fp_folder_2_1
+      s_fp_folder_2_2=s_fp_surfingfolder+"/ff2/ff2"
+      ar_fp_folders<<s_fp_folder_2_2
+      cmd=""
+      ar_fp_folders.each{|s_fp| cmd<<("mkdir -p "+s_fp+" ;")}
       func_rm_surfingfolder=lambda do
          if File.exist? s_fp_surfingfolder
             if s_fp_surfingfolder.match(/^[\/]tmp[\/]/)==nil
-               kibuvits_throw "test 0b s_fp_surfingfolder=="+s_fp_surfingfolder
+               kibuvits_throw("test 0a s_fp_surfingfolder=="+s_fp_surfingfolder+
+               "\n GUID='ed880931-11fb-4849-b4c8-53437110ced7'\n\n")
             else
                cmd="rm -f -R "+s_fp_surfingfolder
                ht_stdstreams=kibuvits_sh(cmd)
@@ -651,118 +664,61 @@ class Kibuvits_fs_selftests
             end # if
          end # if
       end # func_rm_surfingfolder
+      s_fp_orig=Dir.getwd
+      rgx_filter_0=/.+/
       begin
-         ht_stdstreams=kibuvits_sh(cmd)
-         Kibuvits_shell.throw_if_stderr_has_content_t1(ht_stdstreams,"test 0a")
          #---------------
-         s_fp=s_fp_surfingfolder+"/dev_tools/tests_of_rubylang"
+         # The creation of temporary files and folders.
+         ht_stdstreams=kibuvits_sh(cmd)
+         Kibuvits_shell.throw_if_stderr_has_content_t1(ht_stdstreams,"test 0c")
+         #----
+         ar_fp_files=Array.new
+         s_fp_file_2_1_f1=s_fp_folder_2_1+"/file1.txt"
+         ar_fp_files<<s_fp_file_2_1_f1
+         s_fp_file_1_f1=s_fp_folder_1+"/file1.txt"
+         ar_fp_files<<s_fp_file_1_f1
+         s_fp_file_1_f2=s_fp_folder_1+"/file2.txt"
+         ar_fp_files<<s_fp_file_1_f2
+         ar_fp_files.each{|s_fp| str2file("Test file.\nx="+rand(400).to_s,s_fp)}
+         #-----------------------------
          s_fp_wd_1=Dir.getwd
-         s_globstring_0="*.rb"
-         Dir.chdir(s_fp)
-         ar_x1=Dir.glob(s_globstring_0)
-         Dir.chdir(s_fp_wd_1)
-         b_return_long_paths=false
-         ar_x2=Kibuvits_fs.ar_glob_recursively_t1(s_fp,"*.rb",b_return_long_paths)
-         s_fp_wd_2=Dir.getwd
-         kibuvits_throw "test 1a" if ar_x1.size!=ar_x2.size
-         kibuvits_throw "test 1b" if ar_x1.size==0
-         ht_x=Hash.new
-         ar_x2.each {|x| ht_x[x]=x; }
-         kibuvits_throw "test 1c ar_x1[0]=="+ar_x1[0] if !ht_x.has_key?ar_x1[0]
-         kibuvits_throw "test 1d s_fp_wd_2=="+s_fp_wd_2.to_s if s_fp_wd_1!=s_fp_wd_2 # to check that it has returned
-         ar_x1.clear; ar_x2.clear; ht_x.clear
-
-         s_fp=s_fp_surfingfolder+"/include"
-         s_globstring="*.rb"
-         ar_x1=Dir.glob(s_fp+"/"+s_globstring)
-         ar_x2=Kibuvits_fs.ar_glob_recursively_t1(s_fp,s_globstring,b_return_long_paths)
-         i_len_1=ar_x1.size
-         i_len_2=ar_x2.size
-         kibuvits_throw "test 2a" if i_len_2<i_len_1
-         #puts Kibuvits_fs.ar_glob_recursively_t1("/home/ts2/tmp","*.txt").to_s
-         #--------------------
-         s_fp=s_fp_surfingfolder+"/include"
-         ar_or_s_glob_string="*"
          b_return_long_paths=true
-         ar_exclude_dirs=[]
-
-         ar_x_1=Kibuvits_fs.ar_glob_recursively_t1(s_fp,ar_or_s_glob_string,
-         b_return_long_paths,ar_exclude_dirs)
-
-         ar_x_2=Kibuvits_fs.ar_glob_recursively_t1(s_fp+"/bonnet",ar_or_s_glob_string,
-         b_return_long_paths,ar_exclude_dirs)
-         #--------------------
-         ar_exclude_dirs<<(s_fp+"/bonnet")
-         ar_exclude_dirs<<(s_fp+"/uhuu")
-         ar_x_3=Kibuvits_fs.ar_glob_recursively_t1(s_fp,ar_or_s_glob_string,
-         b_return_long_paths,ar_exclude_dirs)
-
-         i_len_1=ar_x_1.size
-         i_len_2=ar_x_2.size
-         i_len_3=ar_x_3.size
-
-         # The "bonnet" and its content and  will not be listed in ar_x_3.
-         # The "-1" is for the "bonnet" in the "include" folder.
-         # The "i_len_2" is for the content of the "bonnet".
-         i_len_3_expected=i_len_1-i_len_2-1
-
-         msg="i_len_1=="+i_len_1.to_s+"  i_len_2=="+i_len_2.to_s+"  i_len_3=="+i_len_3.to_s
-         kibuvits_throw "test 5a "+msg if i_len_3!=i_len_3_expected
-         #--------------------
-         func_b_exclude=lambda do |s_fp|
-            md=s_fp.match(/([\/]bonnet$)|([\/]uhuu$)/)
-            b_exclude=(md!=nil)
-            return b_exclude
-         end # func_b_exclude
-         ar_x_3=Kibuvits_fs.ar_glob_recursively_t1(s_fp,ar_or_s_glob_string,
-         b_return_long_paths,func_b_exclude)
-
-         i_len_1=ar_x_1.size
-         i_len_2=ar_x_2.size
-         i_len_3=ar_x_3.size
-
-         # The "bonnet" and its content and  will not be listed in ar_x_3.
-         # The "-1" is for the "bonnet" in the "include" folder.
-         # The "i_len_2" is for the content of the "bonnet".
-         i_len_3_expected=i_len_1-i_len_2-1
-
-         msg="i_len_1=="+i_len_1.to_s+"  i_len_2=="+i_len_2.to_s+"  i_len_3=="+i_len_3.to_s
-         kibuvits_throw "test 5b "+msg if i_len_3!=i_len_3_expected
-         #--------------------
-         # The erasable file must be somewhere within the s_fp_surfingfolder,
-         # because otherwise it will not be within globbing output.
-         s_fp_erasable=s_fp_surfingfolder+$kibuvits_lc_slash+
-         Kibuvits_os_codelets.generate_tmp_file_name("erasable_")
-         s_0="This is a test file, created by "+__method__.to_s+
-         "\nOrigin GUID='35fab967-b66c-4c19-9430-803141d04ed7'"
-         begin
-            str2file(s_0,s_fp_erasable)
-            kibuvits_throw "test 6a " if !File.exist? s_fp_erasable
-            func_b_exclude_2=lambda do |s_fp|
-               b_exclude=false
-               if s_fp==s_fp_erasable
-                  File.delete(s_fp)
-                  b_exclude=true
-               end # if
-               return b_exclude
-            end # func_b_exclude
-            ar_or_s_glob_string="*"
-            ar_x_4=Kibuvits_fs.ar_glob_recursively_t1(s_fp_surfingfolder,ar_or_s_glob_string,
-            b_return_long_paths,func_b_exclude)
-            kibuvits_throw "test 6b " if !File.exist? s_fp_erasable
-            ar_x_4=Kibuvits_fs.ar_glob_recursively_t1(s_fp_surfingfolder,ar_or_s_glob_string,
-            b_return_long_paths,func_b_exclude_2)
-            kibuvits_throw "test 6c s_fp_erasable=="+s_fp_erasable if File.exist? s_fp_erasable
-            kibuvits_throw "test 6d " if !File.exist? ar_exclude_dirs[0]
-         rescue Exception => e
-            File.delete(s_fp_erasable) if File.exist? s_fp_erasable
-            raise e
-         end # rescue
-         File.delete(s_fp_erasable) if File.exist? s_fp_erasable
+         ar_x_all=Kibuvits_fs.ar_glob_recursively_t1(s_fp_surfingfolder,"*",
+         rgx_filter_0,b_return_long_paths)
+         i_ar_x_all_len=ar_x_all.size
+         kibuvits_throw "test 1a ar_x_all.size == "+i_ar_x_all_len if i_ar_x_all_len!=7
+         rgx_txt=/.+txt$/
+         func_b_include=lambda do |x_key,x_value|
+            b_out=false
+            b_out=true if x_value.match(rgx_txt)!=nil
+            return b_out
+         end # func_b_include
+         ar_x_txt=Kibuvits_ix.x_filter_t1(ar_x_all,func_b_include)
+         i_ar_x_txt_len=ar_x_txt.size
+         kibuvits_throw "test 1b ar_x_txt.size == "+i_ar_x_txt_len if i_ar_x_txt_len!=3
+         #---------------
+         s_fp_wd_1=Dir.getwd
+         b_return_long_paths=true
+         ar_x1=Kibuvits_fs.ar_glob_recursively_t1(s_fp_surfingfolder,"ff*",
+         rgx_filter_0,b_return_long_paths)
+         s_fp_wd_2=Dir.getwd
+         kibuvits_throw "test 2a" if ar_x1.size!=ar_fp_folders.size
+         kibuvits_throw "test 2b s_fp_wd_2=="+s_fp_wd_2.to_s if s_fp_wd_1!=s_fp_wd_2 # to check that it has returned
+         ar_x1.clear;
+         b_return_long_paths=false
+         ar_x1=Kibuvits_fs.ar_glob_recursively_t1(s_fp_surfingfolder,"ff*",
+         rgx_filter_0,b_return_long_paths)
+         s_fp_wd_2=Dir.getwd
+         kibuvits_throw "test 2c" if ar_x1.size!=ar_fp_folders.size
+         kibuvits_throw "test 2d s_fp_wd_2=="+s_fp_wd_2.to_s if s_fp_wd_1!=s_fp_wd_2 # to check that it has returned
+         ar_x1.clear;
+         #---------------
       rescue Exception => e
+         Dir.chdir(s_fp_orig)
          func_rm_surfingfolder.call
          raise e
       end # rescue
+      Dir.chdir(s_fp_orig)
       func_rm_surfingfolder.call
    end # Kibuvits_fs_selftests.test_ar_glob_recursively_t1
 
@@ -792,7 +748,7 @@ class Kibuvits_fs_selftests
          #---------------
          Dir.chdir(s_fp_surfingfolder)
          s_fp_0=s_fp_surfingfolder+"/orig.txt"
-         s_0="Welcome!\nOrigin GUID='129d2214-7908-4e9d-a850-803141d04ed7'"
+         s_0="Welcome!\nOrigin GUID='01432827-6cd6-4321-b4c8-53437110ced7'"
          str2file(s_0,s_fp_0)
          cmd="ln -s ./orig.txt ./lllinK_1.txt ;"+
          "ln -s ./orig.txt ./lllinK_2.txt ;"+
@@ -839,7 +795,7 @@ class Kibuvits_fs_selftests
       if !File.exists? s_fp_file_1
          kibuvits_throw("test 1a, s_fp_file_1=="+s_fp_file_1.to_s+
          "\ne=="+e.to_s+
-         "\nGUID='1f295d79-3cc6-4277-8a73-803141d04ed7'")
+         "\nGUID='c136f539-4538-4d96-a5c8-53437110ced7'")
       end # if
       #-----------------------------
       begin
@@ -848,7 +804,7 @@ class Kibuvits_fs_selftests
          i_cache_max_size)
       rescue Exception => e
          kibuvits_throw("test 1b, e=="+e.to_s+
-         "\nGUID='0f73667c-b4fd-410a-9f03-803141d04ed7'")
+         "\nGUID='02e96014-70b6-4867-94c8-53437110ced7'")
       end # rescue
       #-----------------------------
       # There's some bug in Ruby API-s, why it is not possible to use a solution like
@@ -861,55 +817,55 @@ class Kibuvits_fs_selftests
       if !File.exists? s_fp_cache
          kibuvits_throw("test 1c, s_fp_cache=="+s_fp_cache.to_s+
          "\ne=="+e.to_s+
-         "\nGUID='ba9c383b-30a2-491d-93ea-803141d04ed7'")
+         "\nGUID='6a886027-a988-44bd-a1c8-53437110ced7'")
       end # if
       File.delete(s_fp_cache)
       #-----------------------------
       if !Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(s_fp_f1,i_cache_max_size)
          # Check 1 that creates the cache file
          kibuvits_throw("test 2a "+
-         "\nGUID='7729f26a-83d5-4329-baf3-803141d04ed7'")
+         "\nGUID='c1feb017-5520-4bea-b3c8-53437110ced7'")
       end # if
       if Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(s_fp_f1,i_cache_max_size)
          # Check 2 that reads the cache file
          kibuvits_throw("test 2b "+
-         "\nGUID='24f8fc37-afec-43c2-bf01-803141d04ed7'")
+         "\nGUID='219f7e94-eb03-4095-b5c8-53437110ced7'")
       end # if
+      sleep(2) # Seconds. File timestamps have 1s resolution.
       str2file(s_file_content,s_fp_file_1)
-      sleep((1.0/1000)*4) # 4ms to allow the file modification timestamp to take effect
       if !Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(s_fp_f1,i_cache_max_size)
          kibuvits_throw("test 2c "+
-         "\nGUID='af4e04e0-14d9-4194-b572-803141d04ed7'")
+         "\nGUID='1b0d1413-a144-4b24-a2b8-53437110ced7'")
       end # if
       if Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(s_fp_f1,i_cache_max_size)
          kibuvits_throw("test 2d "+
-         "\nGUID='1515627d-e308-4183-98f2-803141d04ed7'")
+         "\nGUID='232a8136-bc58-4192-82b8-53437110ced7'")
       end # if
       if Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(s_fp_f1,i_cache_max_size)
          kibuvits_throw("test 2e "+
-         "\nGUID='24b94cd1-bee7-413d-95e3-803141d04ed7'")
+         "\nGUID='45cd3fbc-585d-434c-85b8-53437110ced7'")
       end # if
       #------------
       if Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(s_fp_f1_1,i_cache_max_size)
          kibuvits_throw("test 3a "+
          "\ns_fp_file_1="+s_fp_f1_1+
-         "\nGUID='833c7ec5-1250-4a4a-8bc5-803141d04ed7'")
+         "\nGUID='446fe3b1-0c65-416d-81b8-53437110ced7'")
       end # if
       # argument change from folder 2 file, from s_fp_f1_1 to s_fp_file_1
       if Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(s_fp_file_1,i_cache_max_size)
          kibuvits_throw("test 3b "+
          "\ns_fp_file_1="+s_fp_file_1+
-         "\nGUID='724f675e-1c42-4191-80f4-803141d04ed7'")
+         "\nGUID='956075f1-ba07-4b03-a5b8-53437110ced7'")
       end # if
       if Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(s_fp_file_1,i_cache_max_size)
          kibuvits_throw("test 3c "+
          "\ns_fp_file_1="+s_fp_file_1+
-         "\nGUID='b2753949-2ae6-4239-b105-803141d04ed7'")
+         "\nGUID='22b3e124-27b2-4d2d-92b8-53437110ced7'")
       end # if
       if Kibuvits_fs.b_files_that_exist_changed_after_last_check_t1(s_fp_file_1,i_cache_max_size)
          kibuvits_throw("test 3d "+
          "\ns_fp_file_1="+s_fp_file_1+
-         "\nGUID='7528065e-c14b-44b7-9532-803141d04ed7'")
+         "\nGUID='7f95072b-9398-48cf-91b8-53437110ced7'")
       end # if
       #---------cleanup---start---------
       if File.exists? s_fp_f1
@@ -917,22 +873,22 @@ class Kibuvits_fs_selftests
             kibuvits_sh("rm -fr "+s_fp_f1)
          else
             kibuvits_throw("test cleanup_1a \n s_fp_f1 =="+s_fp_f1.to_s+
-            "\nGUID='d5eb29c0-4856-45e8-b472-803141d04ed7'")
+            "\nGUID='e0dffe5c-53cd-4663-b3b8-53437110ced7'")
          end # if
       else
          kibuvits_throw("test cleanup_1b \n s_fp_f1 =="+s_fp_f1.to_s+
-         "\nGUID='f2a0f118-7c24-4205-8db4-803141d04ed7'")
+         "\nGUID='a724c021-d686-4902-b4a8-53437110ced7'")
       end # if
       #--------
       if File.exists? s_fp_cache
          File.delete(s_fp_cache)
          if File.exists? s_fp_cache
             kibuvits_throw("test cleanup_1b \n s_fp_cache =="+s_fp_cache.to_s+
-            "\nGUID='1931c0fe-304e-4a4e-bbcf-803141d04ed7'")
+            "\nGUID='ee620f13-d094-4fc6-81a8-53437110ced7'")
          end # if
       else
          kibuvits_throw("test cleanup_1b \n s_fp_cache =="+s_fp_cache.to_s+
-         "\nGUID='47a99fdf-9809-449a-9984-803141d04ed7'")
+         "\nGUID='7ee9f336-52a6-417a-afa8-53437110ced7'")
       end # if
    end # Kibuvits_fs_selftests.test_b_files_that_exist_changed_after_last_check_t1
 

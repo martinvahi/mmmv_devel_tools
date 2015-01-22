@@ -104,6 +104,12 @@ class Kibuvits_ImageMagick_selftests
    public
    def Kibuvits_ImageMagick_selftests.selftest
       ar_msgs=Array.new
+      #--------
+      if !KIBUVITS_b_DEBUG
+         b_available_on_path=Kibuvits_shell.b_available_on_path("convert")
+         return ar_msgs if !b_available_on_path
+      end # if
+      #--------
       bn=binding()
       kibuvits_testeval bn, "Kibuvits_ImageMagick_selftests.test_1"
       return ar_msgs

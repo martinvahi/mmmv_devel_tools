@@ -538,7 +538,8 @@ class Kibuvits_fs
       ht_filesystemtest_failures, s_output_message_language)
       s_msg=s_msg+$kibuvits_lc_linebreak
       if s_optional_error_message_suffix!=nil
-         s_msg=s_msg+s_optional_error_message_suffix+$kibuvits_lc_linebreak
+         s_msg=s_msg+$kibuvits_lc_linebreak+
+         s_optional_error_message_suffix+$kibuvits_lc_linebreak
       end # if
       if b_throw
          kibuvits_throw(s_msg)
@@ -619,7 +620,7 @@ class Kibuvits_fs
          # type classification, like document formats, compression
          # formats, image formats, software sources, binaries, etc.
       end # if
-      s_out="undetermined"
+      s_out=$kibuvits_lc_undetermined
       if ht_relations.has_key? s_file_extension.downcase
          s_out=ht_relations[s_file_extension]
       end # if
@@ -842,7 +843,7 @@ class Kibuvits_fs
          ar_fp.each do |s_fp|
             if !File.exists? s_fp
                kibuvits_throw("The file or folder \n"+s_fp+
-               "\ndoes not exist. GUID='4c111a23-01b2-4797-9376-008041d04ed7'\n")
+               "\ndoes not exist. GUID='c25ab87a-2c19-4749-912a-c16050e1ced7'\n")
             end # if
             if (File.writable? s_fp)&&(File.readable? s_fp)&&(File.executable? s_fp)
                if File.directory? s_fp
@@ -867,7 +868,7 @@ class Kibuvits_fs
             s_1="The folder " if File.directory? s_fp
             kibuvits_throw(s_1+",\n"+s_fp+
             "\nexists, but its access rights could not be changed to 7 for \n"+
-            "the owner of the current process. GUID='b42fc218-4181-4831-8466-008041d04ed7'")
+            "the owner of the current process. GUID='53012470-9f01-441f-842a-c16050e1ced7'")
          end # loop
       end # synchronize
    end # chmod_recursive_secure_7
@@ -896,7 +897,7 @@ class Kibuvits_fs
             kibuvits_throw("There exists some sort of a flaw, because the "+s_1+"\n"+s_fp+
             "\ncould not be deleted despite the fact that recursive chmod-ding \n"+
             "takes, or at least should take, place before the recursive deletion.\n"+
-            "GUID='f3ea5b4e-2515-45b7-8366-008041d04ed7'\n")
+            "GUID='a7f0092f-d094-46f6-b42a-c16050e1ced7'\n")
          end # if
       end # loop
    end # impl_rm_fr_part_1
@@ -941,7 +942,7 @@ class Kibuvits_fs
             # and the Pathname.new("/").to_s=="/"
             if !File.writable? s_parent_path
                kibuvits_throw("Folder \n"+s_parent_path+
-               "\nis not writable. GUID='834ea358-273a-4f41-a566-008041d04ed7'\n")
+               "\nis not writable. GUID='3b5b848f-96bc-46f6-b42a-c16050e1ced7'\n")
             end # if
             s_fp=s_file_or_folder_path
             chmod_recursive_secure_7(s_fp) # throws, if the chmod-ding fails
@@ -1057,7 +1058,7 @@ class Kibuvits_fs
             s_default_msg="\n\""+x_candidate.to_s+
             "\",\n is not considered to be suitable for a "+
             "file or folder base name. \n"+
-            "GUID='35371926-cb19-4308-9566-008041d04ed7'\n\n"
+            "GUID='10d4fe3f-f776-4a4d-a12a-c16050e1ced7'\n\n"
             #s_message_id="throw_1"
             #b_failure=false
             #msgcs.cre(s_default_msg,s_message_id,b_failure)
@@ -1075,7 +1076,7 @@ class Kibuvits_fs
          #    s_default_msg="\n\""+x_candidate.to_s+
          #    "\",\n is not considered to be suitable for a "+
          #    "file or folder base name. \n"+
-         #    "GUID='333028bc-bd16-4532-8366-008041d04ed7'\n\n"
+         #    "GUID='5dc73a94-a48f-458d-9d1a-c16050e1ced7'\n\n"
          #s_message_id="throw_1"
          #b_failure=false
          #msgcs.cre(s_default_msg,s_message_id,b_failure)
@@ -1318,7 +1319,7 @@ class Kibuvits_fs
                   "and the number of its parameters == "+i_ar_params_len.to_s+", but \n"+
                   "it is required to have exactly 1 parameter that is "+
                   "of type String and depicts a full path of a file or a folder.\n"+
-                  "GUID='e39daa4f-1596-41b1-9456-008041d04ed7'\n")
+                  "GUID='31159617-ae50-47ee-821a-c16050e1ced7'\n")
                end # if
                ar_paramdesc=ar_params[0]
                if ar_paramdesc[0]!=:req
@@ -1326,7 +1327,7 @@ class Kibuvits_fs
                   "is referenced by the \n"+
                   "ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function \n"+
                   "is expected to be parameter that does not have a default value.\n"+
-                  "GUID='5796cbe3-133c-46df-b656-008041d04ed7'\n")
+                  "GUID='a2b83425-1586-44f3-841a-c16050e1ced7'\n")
                end # if
             else
                kibuvits_throw("The code of this function is faulty. \n"+
@@ -1334,7 +1335,7 @@ class Kibuvits_fs
                "should have thrown before the control flow reaches this line.\n"+
                "ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function.class == "+
                cl_0.to_s+$kibuvits_lc_linebreak+
-               "GUID='c5b25947-8d26-48d8-9456-008041d04ed7'\n")
+               "GUID='dc220e3c-ebad-4a4c-821a-c16050e1ced7'\n")
             end # if
          end # if
       end # if
@@ -1364,10 +1365,9 @@ class Kibuvits_fs
    #
    # The path that is fed to the "func_return_true_if_ignored" might
    # point to a nonexistent file or folder. It's up to the
-   # implementor of the "func_return_true_if_ignored" to decide,
+   # implementer of the "func_return_true_if_ignored" to decide,
    # whether it modifies or deletes an existing file or folder
    # or creates a new instance of a nonexistent file or folder.
-   #
    # The "func_return_true_if_ignored" might receive the
    # same file or folder path more than once during a
    # single call to the ar_glob_locally_t1.
@@ -1375,6 +1375,15 @@ class Kibuvits_fs
    # Paths that point to a nonexistent file or folder right
    # after a call to the "func_return_true_if_ignored"
    # are omitted from the output of the ar_glob_locally_t1.
+   # Root folders, the the content of the ar_or_s_fp_directory,
+   # are not added to the output regardless of the
+   # value of the "func_return_true_if_ignored".
+   #
+   # If the "func_return_true_if_ignored" returns "false" on a folder,
+   # then that folder is not descended into. The
+   # "func_return_true_if_ignored" might be used for carrying out
+   # application specific operations with the paths that the
+   # "func_return_true_if_ignored" got called with.
    #
    # The
    #
@@ -1382,12 +1391,7 @@ class Kibuvits_fs
    #
    # makes it possible to iterate over the elements that are
    # selected by the ar_or_s_glob_string without allocating
-   # memory for returning a list of the file/folder paths. If the
-   # "func_return_true_if_ignored" returns "false" on a folder,
-   # then that folder is not descended into. The
-   # "func_return_true_if_ignored" might be used for carrying out
-   # application specific operations with the paths that the
-   # "func_return_true_if_ignored" got called with.
+   # memory for returning a list of the file/folder paths.
    def ar_glob_locally_t1(ar_or_s_fp_directory,
       ar_or_s_glob_string,b_return_long_paths=true,
       ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function=[],
@@ -1413,8 +1417,8 @@ class Kibuvits_fs
             i_len_0=s_0.length
             if s_globstring.gsub(rgx_2,$kibuvits_lc_emptystring).length==0
                kibuvits_throw("There's a flaw.\n"+
-               "s_globstring consists of only spaces or tabs or linebreaks.\n"+
-               "GUID='217e1ea2-6cd9-4f01-b256-008041d04ed7'\n")
+               "s_globstring consists of only spaces or tabs or line breaks.\n"+
+               "GUID='4498bb17-8d19-4793-951a-c16050e1ced7'\n")
             end # if
             s_1=s_0.gsub(rgx_1,$kibuvits_lc_emptystring)
             i_len_1=s_1.length
@@ -1422,25 +1426,24 @@ class Kibuvits_fs
                kibuvits_throw("There's a flaw.\n"+
                " s_globstring==\""+s_globstring+"\", but if it \n"+
                "is fed to the Dir.glob(...), then it globs the root folder. \n"+
-               "GUID='a31c9830-c329-4f48-a256-008041d04ed7'\n")
+               "GUID='11119157-a4a1-43cd-a20a-c16050e1ced7'\n")
             end # if
          end # loop
       end # if
       #----------------
       ar_fp_folder=Kibuvits_ix.normalize2array(ar_or_s_fp_directory)
+      ar_globstrings=Kibuvits_ix.normalize2array(ar_or_s_glob_string)
       #----------------
-      b_ignore_by_func=false
-      b_ignore_by_func=true if ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function.class==Proc
       func_b_ignore=nil
       ar_fp_ignorables=nil
+      b_ignore_by_func=false
+      b_ignore_by_func=true if ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function.class==Proc
       if b_ignore_by_func
          func_b_ignore=ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
       else
          ar_fp_ignorables=Kibuvits_ix.normalize2array(
          ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function)
       end # if
-      #----------------
-      ar_globstrings=Kibuvits_ix.normalize2array(ar_or_s_glob_string)
       #----------------
       ht_test_failures=verify_access(ar_fp_folder,"readable,is_directory")
       s_output_message_language=$kibuvits_lc_English
@@ -1455,12 +1458,12 @@ class Kibuvits_fs
          ar_2=Array.new
          s_fp_0=$kibuvits_lc_emptystring
          s_fp_1=$kibuvits_lc_emptystring
-         rgx_1=/[\/]+/ # can't cache due to threading
+         rgx_slashplus=/[\/]+/ # can't cache due to threading
          b_ignore_file_or_folder=nil
          ar_speedhack_1=[]
          ar_fp_folder.each do |s_fp_folder|
             if b_ignore_by_func
-               # This call to the func_b_ignore(...) migth delete the
+               # This call to the func_b_ignore(...) might delete the
                # s_fp_folder or change its content regardless of
                # whether the s_fp_folder points to a file or a folder.
                b_ignore_file_or_folder=func_b_ignore.call(s_fp_folder)
@@ -1471,8 +1474,9 @@ class Kibuvits_fs
             end # if
             next if b_ignore_file_or_folder
             #-------
-            s_fp_0=s_fp_folder+$kibuvits_lc_slash if b_return_long_paths
-            Dir.chdir(s_fp_folder)
+            s_fp_0=s_fp_folder+$kibuvits_lc_slash
+            Dir.chdir(s_fp_wd_orig) # should there be some mess with relative paths
+            Dir.chdir(s_fp_folder)  # at this line
             # A glob string can be "/*", which might
             # be interpreted as the root folder.
             ar_globstrings.each do |s_globstring|
@@ -1482,8 +1486,8 @@ class Kibuvits_fs
                if b_return_long_paths
                   if b_ignore_by_func
                      ar_1.each do |s_fname|
-                        s_fp_1=(s_fp_0+s_fname).gsub(rgx_1,$kibuvits_lc_slash)
-                        # This call to the func_b_ignore(...) migth delete the
+                        s_fp_1=(s_fp_0+s_fname).gsub(rgx_slashplus,$kibuvits_lc_slash)
+                        # This call to the func_b_ignore(...) might delete the
                         # s_fname or change its content regardless of
                         # whether the s_fname points to a file or a folder.
                         b_ignore_file_or_folder=func_b_ignore.call(s_fp_1)
@@ -1493,7 +1497,7 @@ class Kibuvits_fs
                      end # loop
                   else # ignore by array
                      ar_1.each do |s_fname|
-                        s_fp_1=(s_fp_0+s_fname).gsub(rgx_1,$kibuvits_lc_slash)
+                        s_fp_1=(s_fp_0+s_fname).gsub(rgx_slashplus,$kibuvits_lc_slash)
                         b_ignore_file_or_folder=Kibuvits_str.b_has_prefix(
                         ar_fp_ignorables, s_fp_1, ar_speedhack_1)
                         next if b_ignore_file_or_folder
@@ -1503,8 +1507,8 @@ class Kibuvits_fs
                else # relative paths
                   if b_ignore_by_func
                      ar_1.each do |s_fname|
-                        s_fp_1=(s_fp_0+s_fname).gsub(rgx_1,$kibuvits_lc_slash)
-                        # This call to the func_b_ignore(...) migth delete the
+                        s_fp_1=(s_fp_0+s_fname).gsub(rgx_slashplus,$kibuvits_lc_slash)
+                        # This call to the func_b_ignore(...) might delete the
                         # s_fname or change its content regardless of
                         # whether the s_fname points to a file or a folder.
                         b_ignore_file_or_folder=func_b_ignore.call(s_fp_1)
@@ -1524,8 +1528,8 @@ class Kibuvits_fs
                ar_out.concat(ar_2)
                ar_2.clear
             end # loop
-            Dir.chdir(s_fp_wd_orig)
          end # loop
+         Dir.chdir(s_fp_wd_orig)
       rescue Exception => e
          # The idea is that may be the
          # client code catches the exception
@@ -1552,34 +1556,81 @@ class Kibuvits_fs
 
    #----------------------------------------------------------------------
 
-   # Folder paths have to be full paths.
-   # Throws, if the folder does not exist or could not be found.
-   #
-   # It temporarily changes the working directory to the s_fp_directory.
-   #
-   # The use of the
-   #
-   #     b_return_globbing_results and the
-   #     ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
-   #
-   # are documented next to the
-   #
-   #     ar_glob_locally_t1(...)
-   #
-   def ar_glob_recursively_t1(ar_or_s_fp_directory,
-      ar_or_s_glob_string,b_return_long_paths=true,
+   private
+
+   def exc_ar_glob_recursively_t1_input_verification(bn,
+      ar_or_s_fp_directory,ar_or_s_glob_string,
+      regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output,
+      b_return_long_paths, ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+      b_return_globbing_results)
+      #-------------
+      exc_ar_glob_x_verifications_t1(bn,ar_or_s_fp_directory,
+      ar_or_s_glob_string,b_return_long_paths,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+      b_return_globbing_results)
+      #----
+      # The filter-regex is not verified within the
+      # exc_ar_glob_x_verifications_t1, because
+      # it is specific to the recursive version of
+      # the glob function. If the ar_glob_locally_t1(...)
+      # receives a single root folder for globbing, it
+      # allocates space for everything anyways and the
+      # filter parameter is not added to the
+      # ar_glob_locally_t1(...) to keep the ar_glob_locally_t1(...)
+      # API simpler. It's an intentional tradeoff, where
+      # simplicity is preferred to the special-case speed increase.
+      kibuvits_typecheck bn, [Regexp,Array,Proc],regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output
+      cl=regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output.class
+      if cl==Array
+         kibuvits_assert_ar_elements_typecheck_if_is_array(bn,Proc,
+         regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output,
+         "GUID='4d550af3-1ddb-4f65-850a-c16050e1ced7'")
+      else
+         if cl==Proc
+            x_0=regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output.call(
+            $kibuvits_lc_linebreak)
+            bn_1=binding()
+            kibuvits_typecheck bn_1, [TrueClass,FalseClass],x_0
+         end # if
+      end # if
+      s_output_message_language=$kibuvits_lc_English
+      b_throw=true
+      s_optional_error_message_suffix="GUID='b2cce144-3f17-49c0-940a-c16050e1ced7'"
+      ht_test_failures=verify_access(ar_or_s_fp_directory,"readable,is_directory")
+      exit_if_any_of_the_filesystem_tests_failed(ht_test_failures,
+      s_output_message_language,b_throw,s_optional_error_message_suffix)
+   end # exc_ar_glob_recursively_t1_input_verification
+
+   def ar_glob_recursively_t1_impl(ar_or_s_fp_directory,
+      ar_or_s_glob_string,
+      regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output=/.+/,
+      b_return_long_paths=true,
       ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function=[],
       b_return_globbing_results=true)
+      #--------------------
       if KIBUVITS_b_DEBUG
          bn=binding()
-         exc_ar_glob_x_verifications_t1(bn,ar_or_s_fp_directory,
-         ar_or_s_glob_string,b_return_long_paths,
-         ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+         exc_ar_glob_recursively_t1_input_verification(bn,
+         ar_or_s_fp_directory,ar_or_s_glob_string,
+         regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output,
+         b_return_long_paths, ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
          b_return_globbing_results)
       end # if
+      #--------------------
       ar_fp_folder=Kibuvits_ix.normalize2array(ar_or_s_fp_directory)
       ar_globstrings=Kibuvits_ix.normalize2array(ar_or_s_glob_string)
-
+      #----
+      x_output_filter=regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output
+      ar_output_filter_rgxs=nil
+      func_output_filter=nil
+      cl_x_output_filter=x_output_filter.class
+      if cl_x_output_filter==Proc
+         func_output_filter=x_output_filter
+      else
+         ar_output_filter_rgxs=Kibuvits_ix.normalize2array(x_output_filter)
+      end # if
+      #--------------------
+      ar_folders_to_glob=Array.new
       ar_out=Array.new
       ar_fp_1=nil
       ar_fp_2=nil
@@ -1596,12 +1647,12 @@ class Kibuvits_fs
       end # if
       #--------------------
       ar_speedhack_1=[]
-      s_lc_globstring_all="*"
+      s_lc_globstring_all=$kibuvits_lc_star
       $kibuvits_lc_mx_streamaccess.synchronize do
          b_ignore_file_or_folder=nil
          ar_fp_folder.each do |s_fp_folder|
             if b_ignore_by_func
-               # This call to the func_b_ignore(...) migth delete the
+               # This call to the func_b_ignore(...) might delete the
                # s_fp_folder or change its content regardless of
                # whether the s_fp_folder points to a file or a folder.
                b_ignore_file_or_folder=func_b_ignore.call(s_fp_folder)
@@ -1611,47 +1662,113 @@ class Kibuvits_fs
                ar_fp_ignorables, s_fp_folder, ar_speedhack_1)
             end # if
             next if b_ignore_file_or_folder
+            #---------------
             ar_fp_1=ar_glob_locally_t1(s_fp_folder,ar_globstrings,b_return_long_paths,
             ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
             b_return_globbing_results)
-            # The next if-clause does not effect the ar_out
-            # content, but may be it's a little bit faster than
-            # a whole function call. It also saves time, when reading.
             ar_out.concat(ar_fp_1) if b_return_globbing_results
             #-----
-            # The func_b_ignore within the previous call to the
-            # ar_glob_locally_t1 might have deleted the s_fp_folder.
-            # That is allowed by the spec.
-            next if !File.exist? s_fp_folder
-            # In addition to the effect of the b_return_globbing_results,
-            # a reason, why the ar_fp_1 might not be good enough for
-            # recursive globbing is that the ar_globstrings might
-            # exclude all folders from the ar_fp_1. Same thing with the
-            # ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
-            ar_fp_2=ar_glob_locally_t1(s_fp_folder,s_lc_globstring_all,true)
-            ar_fp_2.each do |s_fp|
+            b_return_long_paths_for_recursion=true
+            ar_fp_recursion=ar_glob_locally_t1(s_fp_folder,ar_globstrings,
+            b_return_long_paths_for_recursion,
+            ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+            true) # ==true, because the ar_fp_1 is needed later for recursive globbing
+            #-----
+            md_0=nil
+            #-----
+            # There does exist the possibility that the ar_globstrings might
+            # exclude all folders from the ar_fp_1, but that's OK by the spec.
+            ar_fp_recursion.each do |s_fp|
+               # POOLELI
                if File.directory? s_fp
-                  ar_fp_3=ar_glob_recursively_t1(s_fp,
-                  ar_globstrings,b_return_long_paths,
+                  ar_folders_to_glob, ar_fp_3=ar_glob_recursively_t1_impl(s_fp,
+                  ar_globstrings,x_output_filter,b_return_long_paths,
                   ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
-                  b_return_globbing_results)
-                  # The next if-clause does not effect the ar_out
-                  # content, but may be it's a little bit faster than
-                  # a whole function call. It also saves time, when reading.
-                  ar_out.concat(ar_fp_3) if b_return_globbing_results
+                  true) # otherwise the "false" will go down with recursion and break the recursion
+                  if b_return_globbing_results
+                     if func_output_filter!=nil
+                        ar_fp_3.each do |s_fp_1a|
+                           ar_out<<s_fp_1a if func_output_filter.call(s_fp_1a)
+                        end # loop
+                     else
+                        ar_output_filter_rgxs.each do |rgx_output_filter|
+                           ar_fp_3.each do |s_fp_1a|
+                              md_0=s_fp_1a.match(rgx_output_filter)
+                              ar_out<<s_fp_1a if md_0!=nil
+                           end # loop
+                        end # loop
+                     end # if
+                  end # if
                end # if
             end # loop
          end # loop
       end # synchronize
+      return ar_folders_to_glob, ar_out
+   end # ar_glob_recursively_t1_impl
+
+   public
+
+   # Folder paths have to be full paths.
+   # Throws, if the folder does not exist or could not be found.
+   #
+   # It temporarily changes the working directory to the s_fp_directory.
+   #
+   # The use of the
+   #
+   #     b_return_globbing_results and the
+   #     ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function
+   #
+   # are documented next to the
+   #
+   #     ar_glob_locally_t1(...)
+   #
+   # Often the output of this function must be passed through a
+   # second filter, which might be
+   #
+   #     Kibuvits_ix.x_filter_t1(ar_or_ht_in,func_returns_true_if_element_is_part_of_output)
+   #
+   # For example a glob string "*.txt" will not
+   # descend to folders that do not have ".txt" as their name suffix.
+   # To search for text files recursively, the first operation is to get
+   # a recursive list of all files/folders, for example, by using
+   # "*" as the globstring, and then the second filter must be
+   # applied to the list of paths.
+   #
+   def ar_glob_recursively_t1(ar_or_s_fp_directory,
+      ar_or_s_glob_string,
+      regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output=/.+/,
+      b_return_long_paths=true,
+      ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function=[],
+      b_return_globbing_results=true)
+      #--------------------
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         exc_ar_glob_recursively_t1_input_verification(bn,
+         ar_or_s_fp_directory,ar_or_s_glob_string,
+         regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output,
+         b_return_long_paths, ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+         b_return_globbing_results)
+      end # if
+      #--------------------
+      ar_folders_to_glob, ar_out=ar_glob_recursively_t1_impl(ar_or_s_fp_directory,
+      ar_or_s_glob_string,
+      regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output,
+      b_return_long_paths,ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
+      b_return_globbing_results)
+      #--------------------
       return ar_out
    end # ar_glob_recursively_t1
 
    def Kibuvits_fs.ar_glob_recursively_t1(ar_or_s_fp_directory,
-      ar_or_s_glob_string,b_return_long_paths=true,
+      ar_or_s_glob_string,
+      regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output=/.+/,
+      b_return_long_paths=true,
       ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function=[],
       b_return_globbing_results=true)
       ar_out=Kibuvits_fs.instance.ar_glob_recursively_t1(ar_or_s_fp_directory,
-      ar_or_s_glob_string,b_return_long_paths,
+      ar_or_s_glob_string,
+      regex_or_ar_of_regex_or_func_that_returns_true_on_paths_that_will_be_part_of_output,
+      b_return_long_paths,
       ar_or_s_path_prefixes_of_ignorable_folders_and_files_or_a_function,
       b_return_globbing_results)
       return ar_out
@@ -1659,7 +1776,49 @@ class Kibuvits_fs
 
    #----------------------------------------------------------------------
 
-   # Returns a hasthable, where
+   # Searches all folders listed in the ar_or_s_fp_directory.
+   # Only the file paths that have a match with at least one of the
+   # regexes are included at the output.
+   def ar_glob_recursively_t2(ar_or_s_fp_directory,ar_or_rgx_file_path_regexes)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [Array,String],ar_or_s_fp_directory
+         kibuvits_typecheck bn, [Array,Regexp],ar_or_rgx_file_path_regexes
+         kibuvits_assert_ar_elements_typecheck_if_is_array(bn,Regexp,
+         ar_or_s_fp_directory,
+         "GUID='5c157734-6ba2-49f1-b40a-c16050e1ced7'\n")
+         if ar_or_s_fp_directory.class==Array
+            ar_fp_root_folder_candidates=ar_or_s_fp_directory
+            ht_failures=verify_access(ar_fp_root_folder_candidates,"is_directory,readable")
+            #----
+            s_output_message_language=$kibuvits_lc_English,
+            b_throw=true,
+            exit_if_any_of_the_filesystem_tests_failed(
+            ht_failures,s_output_message_language,b_throw,
+            "GUID='a414de75-92a8-422c-890a-c16050e1ced7'\n")
+         end # if
+      end # if
+      ar_fp_root_folders=Kibuvits_ix.normalize2array(ar_or_s_fp_directory)
+      ar_rgx=Kibuvits_ix.normalize2array(ar_or_rgx_file_path_regexes)
+
+
+      func_keep_in_output=lambda do |x_key,x_value|
+      end # func_keep_in_output
+
+      Kibuvits_ix.x_filter_t1(ar_or_ht_in,func_returns_true_if_element_is_part_of_output)
+      raise(Exception.new("Pooleli, "+
+      "GUID='5ce3af28-b53f-44d6-b1f9-c16050e1ced7'\n"))
+   end # ar_glob_recursively_t2
+
+   def Kibuvits_fs.ar_glob_recursively_t2(ar_or_s_fp_directory,ar_or_rgx_file_path_regexes)
+      ar_out=Kibuvits_fs.instance.ar_glob_recursively_t2(
+      ar_or_s_fp_directory,ar_or_rgx_file_path_regexes)
+      return ar_out
+   end # Kibuvits_fs.ar_glob_recursively_t2
+
+   #----------------------------------------------------------------------
+
+   # Returns a hashtable, where
    # keys are absolute paths of the symbolic links and
    # values are full paths of files that the symbolic links reference.
    #
@@ -1692,11 +1851,13 @@ class Kibuvits_fs
          return b_ignore
       end # func_exclude
       ar_or_s_glob_string=$kibuvits_lc_star
+      rgx_filter=/.+/
       b_return_long_paths=true
       ar_fp_symlinks=nil
       b_return_globbing_results=false
       ar_glob_recursively_t1(ar_or_s_fp_directory,
-      ar_or_s_glob_string,b_return_long_paths,
+      ar_or_s_glob_string,rgx_filter,
+      b_return_long_paths,
       func_exclude,b_return_globbing_results)
       return ht_out
    end # ht_find_nonbroken_symlinks_recursively_t1
@@ -1767,9 +1928,10 @@ class Kibuvits_fs
          ar_fp_files=Array.new
          ar_fp_files_and_folders=nil
          b_return_long_paths=true
-         ar_globstrings=["*"]
+         ar_globstrings=[$kibuvits_lc_star]
          b_ignore_file_or_folder=nil
          ar_speedhack_1=[]
+         rgx_filter=/.+/
          ar_fp.each do |s_fp|
             b_ignore_file_or_folder=Kibuvits_str.b_has_prefix(
             ar_fp_ignorables,s_fp,ar_speedhack_1)
@@ -1780,7 +1942,7 @@ class Kibuvits_fs
             next if !File.exists? s_fp
             if File.directory? s_fp
                ar_fp_files_and_folders=ar_glob_recursively_t1(s_fp,
-               ar_globstrings,b_return_long_paths,ar_fp_ignorables)
+               ar_globstrings,rgx_filter,b_return_long_paths,ar_fp_ignorables)
                ar_fp_files_and_folders.each do |s_fp_1|
                   if File.file? s_fp_1
                      # The Pathname.new(blabla) is for path normalization.

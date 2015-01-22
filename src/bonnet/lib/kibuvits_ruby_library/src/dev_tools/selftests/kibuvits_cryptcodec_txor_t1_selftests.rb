@@ -55,14 +55,14 @@ class Kibuvits_cryptcodec_txor_t1_selftests
    def initialize
    end #initialize
 
-   private
+   #   private
 
    #-----------------------------------------------------------------------
 
    def Kibuvits_cryptcodec_txor_t1_selftests.test_1
       msgcs=Kibuvits_msgc_stack.new
       #---------
-      i_key_lenght=1000
+      i_key_lenght=142
       ht_key=Kibuvits_cryptcodec_txor_t1.ht_generate_key_t1(i_key_lenght)
       s_0=Kibuvits_cryptcodec_txor_t1.s_serialize_key(ht_key)
       ht_x=Kibuvits_cryptcodec_txor_t1.ht_deserialize_key(s_0)
@@ -71,11 +71,12 @@ class Kibuvits_cryptcodec_txor_t1_selftests
       #---------
       msgcs.clear
       s_cleartext_1="Armas notsu!"
+$buoy_0=true
       s_x=Kibuvits_cryptcodec_txor_t1.s_encrypt_wearlevelling_t1(s_cleartext_1,ht_key)
+$buoy_0=false
       s_cleartext_2=Kibuvits_cryptcodec_txor_t1.s_decrypt_wearlevelling_t1(s_x,ht_x,msgcs)
       kibuvits_throw "test 2a " if msgcs.b_failure
       kibuvits_throw "test 2b" if s_cleartext_1!=s_cleartext_2
-      #puts s_cleartext_2
       #---------
    end # Kibuvits_cryptcodec_txor_t1_selftests.test_1
 
@@ -93,3 +94,4 @@ end # class Kibuvits_cryptcodec_txor_t1_selftests
 
 #==========================================================================
 # Kibuvits_cryptcodec_txor_t1_selftests.test_1
+

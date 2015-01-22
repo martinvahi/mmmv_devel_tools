@@ -90,9 +90,9 @@ class Kibuvits_boot_selftests
 
    def Kibuvits_boot_selftests.test_kibuvits_set_var_in_scope
       bn_x=binding()
-      raise "test 1a" if defined? aaa # may be in global scope, etc.
+      raise Exception.new("test 1a") if defined? aaa # may be in global scope, etc.
       kibuvits_set_var_in_scope(bn_x, "aaa",72)
-      raise "test 1b" if !defined? aaa
+      raise Exception.new("test 1b") if !defined? aaa
    end # Kibuvits_boot_selftests.test_kibuvits_set_var_in_scope
 
    #-----------------------------------------------------------------------
@@ -123,7 +123,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 2" if !b_thrown
+      raise Exception.new("test 2") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -133,7 +133,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 2.a" if !b_thrown
+      raise Exception.new("test 2.a") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -143,7 +143,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 2.b" if !b_thrown
+      raise Exception.new("test 2.b") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -153,7 +153,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 3" if !b_thrown
+      raise Exception.new("test 3") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -163,7 +163,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 3.a" if !b_thrown
+      raise Exception.new("test 3.a") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -173,7 +173,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 3.b" if !b_thrown
+      raise Exception.new("test 3.b") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -182,7 +182,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 4" if !b_thrown
+      raise Exception.new("test 4") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -191,7 +191,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 5" if !b_thrown
+      raise Exception.new("test 5") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -200,7 +200,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 5a" if !b_thrown
+      raise Exception.new("test 5a") if !b_thrown
 
       #kibuvits_throw "test 4" if ar[2]!="CC"
    end # Kibuvits_boot_selftests.test_kibuvits_assert_ht_has_keyvaluepairs_s
@@ -215,45 +215,40 @@ class Kibuvits_boot_selftests
          a_binding=binding()
          kibuvits_assert_arrayix(a_binding,ar,0)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1 e=="+e.to_s)
       end # rescue
-      raise "test 1" if b_thrown
       #------------
       b_thrown=false
       begin
          a_binding=binding()
          kibuvits_assert_arrayix(a_binding,ar,1)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 2 e=="+e.to_s)
       end # rescue
-      raise "test 2" if b_thrown
       #------------
       b_thrown=false
       begin
          a_binding=binding()
          kibuvits_assert_arrayix(a_binding,ar,2)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 3 e=="+e.to_s)
       end # rescue
-      raise "test 3" if b_thrown
       #------------
       b_thrown=false
       begin
          a_binding=binding()
          kibuvits_assert_arrayix(a_binding,ar,[0,1,2])
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 4 e=="+e.to_s)
       end # rescue
-      raise "test 4" if b_thrown
       #------------
       b_thrown=false
       begin
          a_binding=binding()
          kibuvits_assert_arrayix(a_binding,ar,[2])
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 5 e=="+e.to_s)
       end # rescue
-      raise "test 5" if b_thrown
 
       #-------start-of-tests-where-throwing-isneeded-for-passing---
       #------------
@@ -264,7 +259,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 6" if !b_thrown
+      raise Exception.new("test 6") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -273,7 +268,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 7" if !b_thrown
+      raise Exception.new("test 7") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -282,7 +277,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 8" if !b_thrown
+      raise Exception.new("test 8") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -291,7 +286,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 9" if !b_thrown
+      raise Exception.new("test 9") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -300,7 +295,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 10" if !b_thrown
+      raise Exception.new("test 10") if !b_thrown
       #------------
       ar=Array.new
       #------------
@@ -311,7 +306,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 11" if !b_thrown
+      raise Exception.new("test 11") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -320,7 +315,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 12" if !b_thrown
+      raise Exception.new("test 12") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -329,7 +324,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 13" if !b_thrown
+      raise Exception.new("test 13") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -338,7 +333,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 14" if !b_thrown
+      raise Exception.new("test 14") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -347,7 +342,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 15" if !b_thrown
+      raise Exception.new("test 15") if !b_thrown
    end # Kibuvits_boot_selftests.test_kibuvits_assert_arrayix
 
    #-----------------------------------------------------------------------
@@ -362,9 +357,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_ht_container_version(a_binding,
          {$kibuvits_lc_s_version=>"vvvX"},"vvvX")
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1 e=="+e.to_s)
       end # rescue
-      raise "test 1" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -372,9 +366,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_ht_container_version(a_binding,
          ht_xx,"vvvX")
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 2 e=="+e.to_s)
       end # rescue
-      raise "test 2" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -382,9 +375,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_ht_container_version(a_binding,
          ht_xx,"vvvX","Some sort of a error message suffix")
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 2.a e=="+e.to_s)
       end # rescue
-      raise "test 2.a" if b_thrown
       #-------start-of-tests-where-throwing-isneeded-for-passing---
       #------------
       b_thrown=false
@@ -395,7 +387,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 3" if !b_thrown
+      raise Exception.new("test 3") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -405,7 +397,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 4" if !b_thrown
+      raise Exception.new("test 4") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -415,7 +407,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 5" if !b_thrown
+      raise Exception.new("test 5") if !b_thrown
       #------------
       b_thrown=false
       ht_xx[$kibuvits_lc_s_version]="vZvX"
@@ -426,7 +418,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 6" if !b_thrown
+      raise Exception.new("test 6") if !b_thrown
    end # Kibuvits_boot_selftests.test_kibuvits_assert_ht_container_version
 
    #-----------------------------------------------------------------------
@@ -435,8 +427,8 @@ class Kibuvits_boot_selftests
       #------------
       s_script="ar_out<<42"
       ar_x=kibuvits_eval_t1(s_script)
-      raise "test 1" if ar_x.length!=1
-      raise "test 2" if ar_x[0]!=42
+      raise Exception.new("test 1") if ar_x.length!=1
+      raise Exception.new("test 2") if ar_x[0]!=42
       #------------
       if KIBUVITS_b_DEBUG
          b_thrown=false
@@ -446,7 +438,7 @@ class Kibuvits_boot_selftests
          rescue Exception => e
             b_thrown=true
          end # rescue
-         raise "test 3" if !b_thrown
+         raise Exception.new("test 3") if !b_thrown
          #------------
          b_thrown=false
          begin
@@ -455,7 +447,7 @@ class Kibuvits_boot_selftests
          rescue Exception => e
             b_thrown=true
          end # rescue
-         raise "test 4" if !b_thrown
+         raise Exception.new("test 4") if !b_thrown
          #------------
          b_thrown=false
          begin
@@ -464,7 +456,7 @@ class Kibuvits_boot_selftests
          rescue Exception => e
             b_thrown=true
          end # rescue
-         raise "test 5" if !b_thrown
+         raise Exception.new("test 5") if !b_thrown
          #------------
          b_thrown=false
          begin
@@ -473,14 +465,14 @@ class Kibuvits_boot_selftests
          rescue Exception => e
             b_thrown=true
          end # rescue
-         raise "test 6" if !b_thrown
+         raise Exception.new("test 6") if !b_thrown
       end # if
       #------------
       ar_in=[77,23]
       s_script="ar_out<<(ar_in[0]+ar_in[1])"
       ar_x=kibuvits_eval_t1(s_script,ar_in)
-      raise "test 7.a" if ar_x.length!=1
-      raise "test 7.b" if ar_x[0]!=100
+      raise Exception.new("test 7.a") if ar_x.length!=1
+      raise Exception.new("test 7.b") if ar_x[0]!=100
    end # Kibuvits_boot_selftests.test_kibuvits_eval_t1
 
    #-----------------------------------------------------------------------
@@ -494,9 +486,8 @@ class Kibuvits_boot_selftests
          ob="Hallo"
          kibuvits_assert_class_name_prefix(bn,ob,s_or_cl_prefix)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1 e=="+e.to_s)
       end # rescue
-      raise "test 1" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -507,7 +498,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 2" if !b_thrown
+      raise Exception.new("test 2") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -518,7 +509,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 3" if !b_thrown
+      raise Exception.new("test 3") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -527,9 +518,8 @@ class Kibuvits_boot_selftests
          ob=44
          kibuvits_assert_class_name_prefix(bn,ob,s_or_cl_prefix)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 4 e=="+e.to_s)
       end # rescue
-      raise "test 4" if b_thrown
       #------------
    end # Kibuvits_boot_selftests.test_kibuvits_assert_class_name_prefix
 
@@ -545,9 +535,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_responds_2_method(bn,ob,
          x_method_name_or_method_or_symbol)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1 e=="+e.to_s)
       end # rescue
-      raise "test 1" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -557,9 +546,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_responds_2_method(bn,ob,
          x_method_name_or_method_or_symbol)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 2 e=="+e.to_s)
       end # rescue
-      raise "test 2" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -569,9 +557,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_responds_2_method(bn,ob,
          x_method_name_or_method_or_symbol)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 3 e=="+e.to_s)
       end # rescue
-      raise "test 3" if b_thrown
       #------------
       # The start of throwing test cases.
       #------------
@@ -585,7 +572,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 4" if !b_thrown
+      raise Exception.new("test 4") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -597,7 +584,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 5" if !b_thrown
+      raise Exception.new("test 5") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -609,7 +596,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 6" if !b_thrown
+      raise Exception.new("test 6") if !b_thrown
       #------------
    end # Kibuvits_boot_selftests.test_kibuvits_assert_responds_2_method
 
@@ -624,9 +611,8 @@ class Kibuvits_boot_selftests
          s_in=""
          kibuvits_assert_string_min_length(bn,s_in,i_min_length)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1 e=="+e.to_s)
       end # rescue
-      raise "test 1" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -635,9 +621,8 @@ class Kibuvits_boot_selftests
          s_in="Something"
          kibuvits_assert_string_min_length(bn,s_in,i_min_length)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 2 e=="+e.to_s)
       end # rescue
-      raise "test 2" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -646,9 +631,8 @@ class Kibuvits_boot_selftests
          s_in="X"
          kibuvits_assert_string_min_length(bn,s_in,i_min_length)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 3 e=="+e.to_s)
       end # rescue
-      raise "test 3" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -657,9 +641,8 @@ class Kibuvits_boot_selftests
          s_in="xx"
          kibuvits_assert_string_min_length(bn,s_in,i_min_length)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 4 e=="+e.to_s)
       end # rescue
-      raise "test 4" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -668,9 +651,8 @@ class Kibuvits_boot_selftests
          s_in="xxxxx"
          kibuvits_assert_string_min_length(bn,s_in,i_min_length)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 5 e=="+e.to_s)
       end # rescue
-      raise "test 5" if b_thrown
       #------------
       # The start of the throwing test cases.
       #------------
@@ -683,7 +665,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 6" if !b_thrown
+      raise Exception.new("test 6") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -694,7 +676,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 7" if !b_thrown
+      raise Exception.new("test 7") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -705,9 +687,100 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 8" if !b_thrown
+      raise Exception.new("test 8") if !b_thrown
       #------------
    end # Kibuvits_boot_selftests.test_kibuvits_assert_string_min_length
+
+   #-----------------------------------------------------------------------
+
+   def Kibuvits_boot_selftests.test_kibuvits_assert_array_min_length
+      #------------
+      b_thrown=false
+      begin
+         bn=binding()
+         i_min_length=0
+         ar_in=[]
+         kibuvits_assert_array_min_length(bn,ar_in,i_min_length)
+      rescue Exception => e
+         raise Exception.new("test 1 e=="+e.to_s)
+      end # rescue
+      #------------
+      b_thrown=false
+      begin
+         bn=binding()
+         i_min_length=0
+         ar_in=["Something"]
+         kibuvits_assert_array_min_length(bn,ar_in,i_min_length)
+      rescue Exception => e
+         raise Exception.new("test 2 e=="+e.to_s)
+      end # rescue
+      #------------
+      b_thrown=false
+      begin
+         bn=binding()
+         i_min_length=1
+         ar_in=["X"]
+         kibuvits_assert_array_min_length(bn,ar_in,i_min_length)
+      rescue Exception => e
+         raise Exception.new("test 3 e=="+e.to_s)
+      end # rescue
+      #------------
+      b_thrown=false
+      begin
+         bn=binding()
+         i_min_length=1
+         ar_in=["xx",44]
+         kibuvits_assert_array_min_length(bn,ar_in,i_min_length)
+      rescue Exception => e
+         raise Exception.new("test 4 e=="+e.to_s)
+      end # rescue
+      #------------
+      b_thrown=false
+      begin
+         bn=binding()
+         i_min_length=1
+         ar_in=["xxxxx",44,22,44,444]
+         kibuvits_assert_array_min_length(bn,ar_in,i_min_length)
+      rescue Exception => e
+         raise Exception.new("test 5 e=="+e.to_s)
+      end # rescue
+      #------------
+      # The start of the throwing test cases.
+      #------------
+      b_thrown=false
+      begin
+         bn=binding()
+         i_min_length=99
+         ar_in=["xxxxx",33,55,66,77]
+         kibuvits_assert_array_min_length(bn,ar_in,i_min_length)
+      rescue Exception => e
+         b_thrown=true
+      end # rescue
+      raise Exception.new("test 6") if !b_thrown
+      #------------
+      b_thrown=false
+      begin
+         bn=binding()
+         i_min_length=1
+         ar_in=[]
+         kibuvits_assert_array_min_length(bn,ar_in,i_min_length)
+      rescue Exception => e
+         b_thrown=true
+      end # rescue
+      raise Exception.new("test 7") if !b_thrown
+      #------------
+      b_thrown=false
+      begin
+         bn=binding()
+         i_min_length=2
+         ar_in=["x"]
+         kibuvits_assert_array_min_length(bn,ar_in,i_min_length)
+      rescue Exception => e
+         b_thrown=true
+      end # rescue
+      raise Exception.new("test 8") if !b_thrown
+      #------------
+   end # Kibuvits_boot_selftests.test_kibuvits_assert_array_min_length
 
    #-----------------------------------------------------------------------
 
@@ -720,9 +793,8 @@ class Kibuvits_boot_selftests
          ar_method_arguments=[]
          kibuvits_call_by_ar_of_args(ob,x_method_name_or_symbol,ar_method_arguments)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1 e=="+e.to_s)
       end # rescue
-      raise "test 1" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -732,9 +804,8 @@ class Kibuvits_boot_selftests
          # A version with a block
          kibuvits_call_by_ar_of_args(ob,x_method_name_or_symbol,ar_method_arguments){}
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 3 e=="+e.to_s)
       end # rescue
-      raise "test 3" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -744,9 +815,8 @@ class Kibuvits_boot_selftests
          x=kibuvits_call_by_ar_of_args(ob,x_method_name_or_symbol,ar_method_arguments)
          raise "x=="+x.to_s if x!=34
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 4 e=="+e.to_s)
       end # rescue
-      raise "test 4" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -758,9 +828,8 @@ class Kibuvits_boot_selftests
          end # block
          raise "x=="+x.to_s if x!=(36+3)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 5 e=="+e.to_s)
       end # rescue
-      raise "test 5" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -776,9 +845,8 @@ class Kibuvits_boot_selftests
          x=kibuvits_call_by_ar_of_args(ob,x_method_name_or_symbol,ar_method_arguments)
          raise "x=="+x.to_s if x!=55
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 41 e=="+e.to_s)
       end # rescue
-      raise "test 41" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -790,9 +858,8 @@ class Kibuvits_boot_selftests
          end # block
          raise "x=="+x.to_s if x!=(55+3)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 44 e=="+e.to_s)
       end # rescue
-      raise "test 44" if b_thrown
       #------------
       # The start of the throwing test cases.
       #------------
@@ -806,7 +873,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 6" if !b_thrown
+      raise Exception.new("test 6") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -817,7 +884,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 7" if !b_thrown
+      raise Exception.new("test 7") if !b_thrown
       #------------
    end # Kibuvits_boot_selftests.test_kibuvits_call_by_ar_of_args
 
@@ -838,9 +905,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_is_inherited_from_or_equals_with_class(a_binding,
          ob,"Object")
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1 e=="+e.to_s)
       end # rescue
-      raise "test 1" if b_thrown
       #------------
       b_thrown=false
       begin
@@ -851,9 +917,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_is_inherited_from_and_does_not_equal_with_class(a_binding,
          ob,"Object")
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 2 e=="+e.to_s)
       end # rescue
-      raise "test 2" if b_thrown
       #------------
       # The start of the throwing test cases.
       #------------
@@ -866,7 +931,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 3" if !b_thrown
+      raise Exception.new("test 3") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -877,7 +942,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 4" if !b_thrown
+      raise Exception.new("test 4") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -888,7 +953,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 5" if !b_thrown
+      raise Exception.new("test 5") if !b_thrown
       #------------
       b_thrown=false
       begin
@@ -899,7 +964,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 6" if !b_thrown
+      raise Exception.new("test 6") if !b_thrown
    end # Kibuvits_boot_selftests.test_class_inheritance_related_assertions_t1
 
    #-----------------------------------------------------------------------
@@ -908,7 +973,7 @@ class Kibuvits_boot_selftests
       ar_1=["_","wow","x","xx","_xx_","KIBUVITS_SELFTESTS_TESTENV_1"]
       ar_1.each do |s_x|
          b_x=kibuvits_b_not_suitable_for_a_varname_t1(s_x)
-         raise("test 1 s_x=="+s_x.to_s)if b_x
+         raise Exception.new("test 1 s_x=="+s_x.to_s) if b_x
       end # loop
 
       ar_1=[""," ","a b","_ a","\n","\t","\r","(","(uhuu)","(x","x)",")"]
@@ -919,7 +984,7 @@ class Kibuvits_boot_selftests
       ar_1.concat(["4","42x"])
       ar_1.each do |s_x|
          b_x=kibuvits_b_not_suitable_for_a_varname_t1(s_x)
-         raise("test 2 s_x=="+s_x.to_s) if !b_x
+         raise Exception.new("test 2 s_x=="+s_x.to_s) if !b_x
       end # loop
    end # Kibuvits_boot_selftests.test_kibuvits_b_not_suitable_for_a_varname_t1
 
@@ -930,9 +995,8 @@ class Kibuvits_boot_selftests
          s_x="this_is_a_valid_variable_name"
          kibuvits_assert_ok_to_be_a_varname_t1(a_binding,s_x)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1 e=="+e.to_s)
       end # rescue
-      raise "test 1" if b_thrown
       b_thrown=false
       begin
          a_binding=binding()
@@ -941,7 +1005,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 2" if !b_thrown
+      raise Exception.new("test 2") if !b_thrown
    end # Kibuvits_boot_selftests.test_kibuvits_assert_ok_to_be_a_varname_t1
 
    #-----------------------------------------------------------------------
@@ -962,10 +1026,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_is_among_values(a_binding,ht,s_x)
          kibuvits_assert_is_among_values(a_binding,s_x,s_x)
       rescue Exception => e
-         b_thrown=true
-         s_0=e.to_s
+         raise Exception.new("test 1a e=="+e.to_s)
       end # rescue
-      raise "test 1a e.to_s=="+s_0 if b_thrown
       #--------------------
       s_0=""
       b_thrown=false
@@ -976,10 +1038,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_is_among_values(a_binding,ht,s_x)
          kibuvits_assert_is_among_values(a_binding,s_x,s_x)
       rescue Exception => e
-         b_thrown=true
-         s_0=e.to_s
+         raise Exception.new("test 1b e=="+e.to_s)
       end # rescue
-      raise "test 1b e.to_s=="+s_0 if b_thrown
       #--------------------
       s_0=""
       b_thrown=false
@@ -990,10 +1050,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_is_among_values(a_binding,ht,s_x)
          kibuvits_assert_is_among_values(a_binding,s_x,s_x)
       rescue Exception => e
-         b_thrown=true
-         s_0=e.to_s
+         raise Exception.new("test 1c e=="+e.to_s)
       end # rescue
-      raise "test 1c e.to_s=="+s_0 if b_thrown
       #-------------------------------------------------------
       s_0=""
       b_thrown=false
@@ -1006,7 +1064,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 2a " if !b_thrown
+      raise Exception.new("test 2a ") if !b_thrown
       #--------------------
       s_0=""
       b_thrown=false
@@ -1019,7 +1077,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 2b " if !b_thrown
+      raise Exception.new("test 2b ") if !b_thrown
       #--------------------
       s_0=""
       b_thrown=false
@@ -1032,7 +1090,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 2c " if !b_thrown
+      raise Exception.new("test 2c ") if !b_thrown
       #-------------------------------------------------------
       ar=[17,42,69]
       ht=Hash.new
@@ -1048,10 +1106,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_is_among_values(a_binding,ht,i_x)
          kibuvits_assert_is_among_values(a_binding,i_x,i_x)
       rescue Exception => e
-         b_thrown=true
-         s_0=e.to_s
+         raise Exception.new("test 3a e.to_s=="+e.to_s)
       end # rescue
-      raise "test 3a e.to_s=="+s_0 if b_thrown
       #--------------------
       s_0=""
       b_thrown=false
@@ -1063,9 +1119,8 @@ class Kibuvits_boot_selftests
          kibuvits_assert_is_among_values(a_binding,i_x,i_x)
       rescue Exception => e
          b_thrown=true
-         s_0=e.to_s
       end # rescue
-      raise "test 3b e.to_s=="+s_0 if !b_thrown
+      raise Exception.new("test 3b ") if !b_thrown
       #-------------------------------------------------------
    end # Kibuvits_boot_selftests.test_kibuvits_assert_is_among_values
 
@@ -1079,10 +1134,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_typecheck_ar_content(bn,[String,Fixnum],["test",42])
       rescue Exception => e
-         b_thrown=true
-         s_0=e.to_s
+         raise Exception.new("test 1a e=="+e.to_s)
       end # rescue
-      raise "test 1a e.to_s=="+s_0 if b_thrown
       #--------------------
       b_thrown=false
       begin
@@ -1090,9 +1143,8 @@ class Kibuvits_boot_selftests
          kibuvits_typecheck_ar_content(bn,[String,Fixnum],["test",33.9])
       rescue Exception => e
          b_thrown=true
-         s_0=e.to_s
       end # rescue
-      raise "test 1b " if !b_thrown
+      raise Exception.new("test 1b ") if !b_thrown
       #--------------------
       b_thrown=false
       begin
@@ -1100,92 +1152,81 @@ class Kibuvits_boot_selftests
          kibuvits_typecheck_ar_content(bn,String,["test",33.9],"testmsg")
       rescue Exception => e
          b_thrown=true
-         s_0=e.to_s
       end # rescue
-      raise "test 2a " if !b_thrown
+      raise Exception.new("test 2a ") if !b_thrown
       #--------------------
       b_thrown=false
       begin
          bn=binding()
          kibuvits_typecheck_ar_content(bn,String,["test","xxxx"],"testmsg")
       rescue Exception => e
-         b_thrown=true
-         s_0=e.to_s
+         raise Exception.new("test 2b  e=="+e.to_s)
       end # rescue
-      raise "test 2b s_0=="+s_0 if b_thrown
       #--------------------
       b_thrown=false
       begin
          bn=binding()
          kibuvits_typecheck_ar_content(bn,String,[],"testmsg")
       rescue Exception => e
-         b_thrown=true
-         s_0=e.to_s
+         raise Exception.new("test 3a  e=="+e.to_s)
       end # rescue
-      raise "test 3a s_0=="+s_0 if b_thrown
       #--------------------
       b_thrown=false
       begin
          bn=binding()
          kibuvits_typecheck_ar_content(bn,[String,Fixnum],[],"testmsg")
       rescue Exception => e
-         b_thrown=true
-         s_0=e.to_s
+         raise Exception.new("test 3b e=="+e.to_s)
       end # rescue
-      raise "test 3b s_0=="+s_0 if b_thrown
    end # test_kibuvits_typecheck_ar_content
 
    #-----------------------------------------------------------------------
 
-   def Kibuvits_boot_selftests.test_kibuvits_s_hash
+   def Kibuvits_boot_selftests.test_kibuvits_s_hash_t1
       s_in="xxxx"
       s_x=nil
       #--------------------
       b_thrown=false
       i_bitlen=256
       begin
-         s_x=kibuvits_s_hash(s_in,i_bitlen)
+         s_x=kibuvits_s_hash_t1(s_in,i_bitlen)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1a e=="+e.to_s+" i_bitlen=="+i_bitlen.to_s)
       end # rescue
-      raise "test 1."+i_bitlen.to_s if b_thrown
       #--------------------
       b_thrown=false
       i_bitlen=384
       begin
-         s_x=kibuvits_s_hash(s_in,i_bitlen)
+         s_x=kibuvits_s_hash_t1(s_in,i_bitlen)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1b e=="+e.to_s+" i_bitlen=="+i_bitlen.to_s)
       end # rescue
-      raise "test 1."+i_bitlen.to_s if b_thrown
       #--------------------
       b_thrown=false
       i_bitlen=512
       begin
-         s_x=kibuvits_s_hash(s_in,i_bitlen)
+         s_x=kibuvits_s_hash_t1(s_in,i_bitlen)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1c e=="+e.to_s+" i_bitlen=="+i_bitlen.to_s)
       end # rescue
-      raise "test 1."+i_bitlen.to_s if b_thrown
       #--------------------
       b_thrown=false
       i_bitlen=42
       begin
-         s_x=kibuvits_s_hash(s_in)
+         s_x=kibuvits_s_hash_t1(s_in)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 2.a e=="+e.to_s+" i_bitlen=="+i_bitlen.to_s)
       end # rescue
-      raise "test 2.a" if b_thrown
       #--------------------
       b_thrown=false
       i_bitlen=42
       begin
-         s_x=kibuvits_s_hash(s_in,i_bitlen)
+         s_x=kibuvits_s_hash_t1(s_in,i_bitlen)
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 2."+i_bitlen.to_s if !b_thrown
-   end # Kibuvits_boot_selftests.test_kibuvits_s_hash
+      raise Exception.new("test 2."+i_bitlen.to_s) if !b_thrown
+   end # Kibuvits_boot_selftests.test_kibuvits_s_hash_t1
 
    #-----------------------------------------------------------------------
 
@@ -1200,9 +1241,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_is_smaller_than_or_equal_to(bn,ar_x,x_supremum)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 1, GUID='cb3f9053-5bdf-4ef3-b32e-40a271601fd7' e=="+e.to_s)
       end # rescue
-      raise "test 1, GUID='ed8a8718-bb86-405b-83b2-50b241014dd7'" if b_thrown
       #--------------------
       b_thrown=false
       ar_x=[10]
@@ -1211,9 +1251,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_is_smaller_than_or_equal_to(bn,ar_x,x_supremum)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 2, GUID='bfa45b4d-5950-492b-b22e-40a271601fd7' e=="+e.to_s)
       end # rescue
-      raise "test 2, GUID='1007c65c-d0f9-4692-82b2-50b241014dd7'" if b_thrown
       #--------------------
       b_thrown=false
       ar_x=10
@@ -1222,9 +1261,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_is_smaller_than_or_equal_to(bn,ar_x,x_supremum)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 3, GUID='4dba1051-0772-44b0-a52e-40a271601fd7' e=="+e.to_s)
       end # rescue
-      raise "test 3, GUID='0a1af9d2-82fd-43f9-acb2-50b241014dd7'" if b_thrown
       #--------------------
       b_thrown=false
       ar_x=(-1)*(9**999)
@@ -1233,9 +1271,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_is_smaller_than_or_equal_to(bn,ar_x,x_supremum)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 4, GUID='5d502c15-173c-4c45-942e-40a271601fd7' e=="+e.to_s)
       end # rescue
-      raise "test 4, GUID='22d6cb43-51b4-4885-a8b2-50b241014dd7'" if b_thrown
       #--------------------
       b_thrown=false
       ar_x=(-1)*((9**999).to_r)
@@ -1244,9 +1281,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_is_smaller_than_or_equal_to(bn,ar_x,x_supremum)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 5, GUID='11fa0a81-3f8f-4460-822e-40a271601fd7' e=="+e.to_s)
       end # rescue
-      raise "test 5, GUID='35f0c05c-8243-4dd6-93b2-50b241014dd7'" if b_thrown
       #--------------------
       b_thrown=false
       ar_x=0
@@ -1255,9 +1291,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_is_smaller_than_or_equal_to(bn,ar_x,x_supremum)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 6a, GUID='356dd441-6758-417e-851e-40a271601fd7' e=="+e.to_s)
       end # rescue
-      raise "test 6a, GUID='d241e415-5d85-412d-81b2-50b241014dd7'" if b_thrown
       #--------------------
       b_thrown=false
       ar_x=0.0
@@ -1266,9 +1301,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_is_smaller_than_or_equal_to(bn,ar_x,x_supremum)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 6b, GUID='bcb3e4fe-0be4-42e7-841e-40a271601fd7' e=="+e.to_s)
       end # rescue
-      raise "test 6b, GUID='22a1cc59-a30a-40a3-a2b2-50b241014dd7'" if b_thrown
       #--------------------
       b_thrown=false
       ar_x=[-99,(-0.0001001),-999.0]
@@ -1277,9 +1311,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_is_smaller_than_or_equal_to(bn,ar_x,x_supremum)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 7a, GUID='32aa5b15-89ce-4898-b51e-40a271601fd7' e=="+e.to_s)
       end # rescue
-      raise "test 7a, GUID='c7126023-02a2-4763-81b2-50b241014dd7'" if b_thrown
       #--------------------
       b_thrown=false
       ar_x=[1,3,4,2,2,0,(-4)]
@@ -1288,9 +1321,8 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_is_smaller_than_or_equal_to(bn,ar_x,x_supremum)
       rescue Exception => e
-         b_thrown=true
+         raise Exception.new("test 7b, GUID='390932d2-b995-4307-b21e-40a271601fd7' e=="+e.to_s)
       end # rescue
-      raise "test 7b, GUID='4124abbf-c439-4140-93a2-50b241014dd7'" if b_thrown
       #
       #
       #------------style-change-from-nonthrowing-to-throwing--------
@@ -1304,7 +1336,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 8, GUID='5698e2f2-7f47-4500-b1a2-50b241014dd7'" if !b_thrown
+      raise Exception.new("test 8, GUID='5cd98751-c28c-464b-b41e-40a271601fd7'") if !b_thrown
       #--------------------
       b_thrown=false
       ar_x=[4,-5,7.to_r,9,9.99,(9**999)]
@@ -1315,7 +1347,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 9, GUID='55f2393f-8142-4527-85a2-50b241014dd7'" if !b_thrown
+      raise Exception.new("test 9, GUID='07629b26-8570-4a6b-811e-40a271601fd7'") if !b_thrown
       #--------------------
       b_thrown=false
       ar_x=0
@@ -1326,7 +1358,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 10, GUID='21475aeb-7215-452e-a242-50b241014dd7'" if !b_thrown
+      raise Exception.new("test 10, GUID='f8748017-88ac-44f0-811e-40a271601fd7'") if !b_thrown
       #--------------------
       b_thrown=false
       ar_x=(0.01).to_r/(9**99)
@@ -1337,7 +1369,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 11, GUID='66cd1b47-dbfb-45df-a242-50b241014dd7'" if !b_thrown
+      raise Exception.new("test 11, GUID='1df8805b-88c0-45e5-a31e-40a271601fd7'") if !b_thrown
       #--------------------
       b_thrown=false
       ar_x=[1,2]
@@ -1348,7 +1380,7 @@ class Kibuvits_boot_selftests
       rescue Exception => e
          b_thrown=true
       end # rescue
-      raise "test 12, GUID='456f49a2-e773-48e0-9c32-50b241014dd7'" if !b_thrown
+      raise Exception.new("test 12, GUID='c154f235-d710-498e-b21e-40a271601fd7'") if !b_thrown
       #--------------------
    end # Kibuvits_boot_selftests.test_kibuvits_assert_is_smaller_than_or_equal_to
 
@@ -1626,21 +1658,21 @@ class Kibuvits_boot_selftests
          bn=binding()
          kibuvits_assert_does_not_contain_common_special_characters_t1(bn,"abcd")
       rescue Exception => e
-         raise "test 1a e.to_s=="+e.to_s
+         raise Exception.new("test 1a e.to_s=="+e.to_s)
       end # rescue
       #----------------------
       begin
          bn=binding()
          kibuvits_assert_does_not_contain_common_special_characters_t1(bn,"")
       rescue Exception => e
-         raise "test 1b e.to_s=="+e.to_s
+         raise Exception.new("test 1b e.to_s=="+e.to_s)
       end # rescue
       #----------------------
       begin
          bn=binding()
          kibuvits_assert_does_not_contain_common_special_characters_t1(bn,"1234567890ABC")
       rescue Exception => e
-         raise "test 1c e.to_s=="+e.to_s
+         raise Exception.new("test 1c e.to_s=="+e.to_s)
       end # rescue
       #----------------------
       s_special_chars="|,.:;<>(){}^$\s\r\n+-*/\\+-~%'\""
@@ -1654,7 +1686,7 @@ class Kibuvits_boot_selftests
          rescue Exception => e
             b_thrown=true
          end # rescue
-         raise "test 2a s_char==\""+s_char+"\"" if !b_thrown
+         raise Exception.new("test 2a s_char==\""+s_char+"\"") if !b_thrown
          #-------------
          b_thrown=false
          begin
@@ -1663,7 +1695,7 @@ class Kibuvits_boot_selftests
          rescue Exception => e
             b_thrown=true
          end # rescue
-         raise "test 2b s_char==\""+s_char+"\"" if !b_thrown
+         raise Exception.new("test 2b s_char==\""+s_char+"\"") if !b_thrown
          #-------------
          b_thrown=false
          begin
@@ -1672,7 +1704,7 @@ class Kibuvits_boot_selftests
          rescue Exception => e
             b_thrown=true
          end # rescue
-         raise "test 2c s_char==\""+s_char+"\"" if !b_thrown
+         raise Exception.new("test 2c s_char==\""+s_char+"\"") if !b_thrown
       end # loop
       #----------------------
    end # Kibuvits_boot_selftests.test_kibuvits_assert_does_not_contain_common_special_characters_t1
@@ -1694,13 +1726,14 @@ class Kibuvits_boot_selftests
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_assert_class_name_prefix"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_assert_responds_2_method"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_assert_string_min_length"
+      kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_assert_array_min_length"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_call_by_ar_of_args"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_class_inheritance_related_assertions_t1"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_b_not_suitable_for_a_varname_t1"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_assert_ok_to_be_a_varname_t1"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_assert_is_among_values"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_typecheck_ar_content"
-      kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_s_hash"
+      kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_s_hash_t1"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_assert_is_smaller_than_or_equal_to"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_b_not_a_whole_number_t1_test_1"
       kibuvits_testeval bn, "Kibuvits_boot_selftests.test_kibuvits_b_not_a_whole_number_t1_test_2"

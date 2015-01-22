@@ -80,6 +80,17 @@ class Kibuvits_comments_detector
       ar_ruby=[ht_ruby1]
       @ht_multiliner["ruby"]=ar_ruby
 
+      ht_python1=Hash.new
+      ht_python1[@lc_start_tag]="'''"
+      ht_python1[@lc_end_tag]=ht_python1[@lc_start_tag]
+      ar_python=[ht_python1]
+      #----
+      ht_python2=Hash.new
+      ht_python2[@lc_start_tag]="\"\"\""
+      ht_python2[@lc_end_tag]=ht_python2[@lc_start_tag]
+      ar_python<<ht_python2
+      @ht_multiliner["python"]=ar_python
+
       ht_bash1=Hash.new
       ht_bash1[@lc_start_tag]=": << 'A_BASH_HEREDOCHACK_TAG'"
       ht_bash1[@lc_end_tag]="A_BASH_HEREDOCHACK_TAG"
@@ -151,6 +162,7 @@ class Kibuvits_comments_detector
 
       @ht_singleliner["haskell"]=ar_haskell_liner
       @ht_singleliner["ruby"]=ar_bash_liner
+      @ht_singleliner["python"]=ar_bash_liner
       @ht_singleliner["bash"]=ar_bash_liner
       @ht_singleliner["batch"]=ar_batch_liner
       @ht_singleliner["c++"]=ar_cpp_liner
@@ -803,14 +815,14 @@ class Kibuvits_comments_detector
       return ar_out
    end # Kibuvits_comments_detector.run
 
-   # Returns a string.
-   def get_singleliner_comment_start_tag s_language, msgcs
+   # Returns an array of strings
+   def ar_get_singleliner_comment_start_tags(s_language, msgcs)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, String, s_language
          kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
       end # if
-      s_out="undetermined"
+      s_out=$kibuvits_lc_undetermined
       s_lang=s_language.downcase
       if !@ht_singleliner.has_key? s_lang
          ar_s_langs=Array.new
@@ -825,18 +837,21 @@ class Kibuvits_comments_detector
          s_list_of_supported_languages+"."
          return s_out
       end # if
+      ar_out=Array.new
       ar_tags=@ht_singleliner[s_lang]
-      ht_tag=ar_tags[0]
-      s_out=$kibuvits_lc_emptystring+ht_tag[@lc_start_tag]
-      return s_out
-   end # get_singleliner_comment_start_tag
+      ar_tags.each do |ht_tag|
+         ar_out<<($kibuvits_lc_emptystring+ht_tag[@lc_start_tag])
+      end # loop
+      return ar_out
+   end # ar_get_singleliner_comment_start_tags
 
-   def Kibuvits_comments_detector.get_singleliner_comment_start_tag(
+
+   def Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags(
       s_language,msgcs)
-      s_out=Kibuvits_comments_detector.instance.get_singleliner_comment_start_tag(
+      ar_out=Kibuvits_comments_detector.instance.ar_get_singleliner_comment_start_tags(
       s_language,msgcs)
-      return s_out
-   end # Kibuvits_comments_detector.get_singleliner_comment_start_tag
+      return ar_out
+   end # Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags
 
 
    def sl2ml_is_collectable ht_comment, i_last_collected_oneliner_line_number

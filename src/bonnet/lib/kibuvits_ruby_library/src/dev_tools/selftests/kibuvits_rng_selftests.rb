@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 #==========================================================================
 =begin
- Copyright 2013, martin.vahi@softf1.com that has an
+ Copyright 2012, martin.vahi@softf1.com that has an
  Estonian personal identification code of 38108050020.
  All rights reserved.
 
@@ -45,42 +45,83 @@ if !defined? KIBUVITS_HOME
    ob_pth_0=nil; ob_pth_1=nil; s_KIBUVITS_HOME_b_fs=nil
 end # if
 
-require  KIBUVITS_HOME+"/src/include/security/kibuvits_security_core.rb"
+require  KIBUVITS_HOME+"/src/include/security/kibuvits_rng.rb"
 
 #==========================================================================
 
-class Kibuvits_hash_plaice_t1_selftests
-
+class Kibuvits_rng_selftests
    def initialize
    end #initialize
 
    private
+   #-----------------------------------------------------------------------
+
+   def Kibuvits_rng_selftests.testimpl_t1_tests_1_2_(func_rand)
+      i_0=0
+      i_1=0
+      b_flaw_or_the_unlikely_event_happened=false
+      i_power=2
+      while ((i_1<1) && (i_power<3))
+         i_n=10**i_power
+         i_n.times do |i_max|
+            i_0=func_rand.call(i_max)
+            kibuvits_throw "test 1a" if i_max<i_0
+            if 0<i_max
+               i_1=i_1+i_0
+            else
+               i_1=i_1+1
+            end # if
+         end # loop
+         i_0=func_rand.call(0)
+         kibuvits_throw "test 1b" if i_0!=0
+         i_power=i_power+1
+      end # loop
+      kibuvits_throw "test 1c" if i_1==0
+   end # Kibuvits_rng_selftests.testimpl_t1_tests_1_2_
 
    #-----------------------------------------------------------------------
 
-   def Kibuvits_hash_plaice_t1_selftests.test_1
-      #msgcs=Kibuvits_msgc_stack.new
-      i_m=256**4
-      #---------
-      #s_x=Kibuvits_hash_plaice_t1.s_mmmv_checksum_t1(s_0,i_number_of_columns,i_m)
-      #kibuvits_throw "test 1 s_x==\""+s_x.to_s+"\"" if s_x!=s_expected
-      #---------
-   end # Kibuvits_hash_plaice_t1_selftests.test_1
+   def Kibuvits_rng_selftests.test_1
+      func_rand=lambda do |i_max|
+         i_out=Kibuvits_rng.i_random_t1(i_max)
+         return i_out
+      end # func_rand
+      Kibuvits_rng_selftests.testimpl_t1_tests_1_2_(func_rand)
+      i_x=nil
+      100.times do |i|
+         i_x=Kibuvits_rng.i_random_t1(0)
+         kibuvits_throw "test 2a" if i_x!=0
+         i_x=Kibuvits_rng.i_random_fast_t1(0)
+         kibuvits_throw "test 2b" if i_x!=0
+      end # loop
+      #------------------
+   end # Kibuvits_rng_selftests.test_1
 
    #-----------------------------------------------------------------------
+
+   def Kibuvits_rng_selftests.test_i_random_fast_t1
+      func_rand=lambda do |i_max|
+         i_out=Kibuvits_rng.i_random_fast_t1(i_max)
+         return i_out
+      end # func_rand
+      Kibuvits_rng_selftests.testimpl_t1_tests_1_2_(func_rand)
+      #------------------
+   end # Kibuvits_rng_selftests.test_i_random_fast_t1
 
 
    #-----------------------------------------------------------------------
 
    public
-   def Kibuvits_hash_plaice_t1_selftests.selftest
+   def Kibuvits_rng_selftests.selftest
       ar_msgs=Array.new
       bn=binding()
-      #kibuvits_testeval bn, "Kibuvits_hash_plaice_t1_selftests.test_1"
+      kibuvits_testeval bn, "Kibuvits_rng_selftests.test_1"
+      kibuvits_testeval bn, "Kibuvits_rng_selftests.test_i_random_fast_t1"
       return ar_msgs
-   end # Kibuvits_hash_plaice_t1_selftests.selftest
+   end # Kibuvits_rng_selftests.selftest
 
-end # class Kibuvits_hash_plaice_t1_selftests
+end # class Kibuvits_rng_selftests
 
 #==========================================================================
-# Kibuvits_hash_plaice_t1_selftests.test_1
+#puts Kibuvits_rng_selftests.selftest.to_s
+

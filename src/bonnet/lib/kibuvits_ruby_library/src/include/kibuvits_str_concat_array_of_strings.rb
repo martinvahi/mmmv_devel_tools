@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby 
+#!/usr/bin/env ruby
 #==========================================================================
 =begin
 
@@ -66,6 +66,12 @@ end # kibuvits_s_concat_array_of_strings_plain
 
 #--------------------------------------------------------------------------
 
+# This is the main implementation of the
+# Kibuvits Ruby Library watershed concatenation algorithm, but
+#
+# Kibuvits_ix.x_apply_binary_operator_t1(...)
+#
+# is a commentless, general, copy of it.
 def kibuvits_s_concat_array_of_strings_watershed(ar_in)
    s_lc_emptystring=""
    if defined? KIBUVITS_b_DEBUG
@@ -227,4 +233,8 @@ def kibuvits_s_concat_array_of_strings(ar_in)
 end # kibuvits_s_concat_array_of_strings
 
 #=========================================================================
+# Demo code:
+#ar=["\n","Hello"," ","Watershed"," ","Concatenated"," ","World","!","\n\n"];
+#s=kibuvits_s_concat_array_of_strings(ar);
+#puts(s);
 

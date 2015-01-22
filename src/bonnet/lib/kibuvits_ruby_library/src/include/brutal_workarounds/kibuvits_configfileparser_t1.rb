@@ -44,9 +44,9 @@ class Kibuvits_configfileparser_t1
    # proper comment line.
    def ht_parse_configstring_azl_nonheredoc_line_is_a_comment_line(s_line)
       b_out=true
-      i_n_equals_signs=Kibuvits_str.count_substrings(s_line,$kibuvits_lc_equalssign)
+      i_n_equals_signs=Kibuvits_str.i_count_substrings(s_line,$kibuvits_lc_equalssign)
       return b_out if i_n_equals_signs==0
-      i_n_commented_equals_signs=Kibuvits_str.count_substrings(s_line,"\\=")
+      i_n_commented_equals_signs=Kibuvits_str.i_count_substrings(s_line,"\\=")
       return b_out if i_n_commented_equals_signs==i_n_equals_signs
       b_out=false
       return b_out
@@ -192,7 +192,7 @@ class Kibuvits_configfileparser_t1
          return
       end # if
 
-      i_n_of_spaces=Kibuvits_str.count_substrings(s_right_noralized,$kibuvits_lc_space)
+      i_n_of_spaces=Kibuvits_str.i_count_substrings(s_right_noralized,$kibuvits_lc_space)
       if i_n_of_spaces==0
          ht_opmem['b_in_heredoc']=true
          ht_opmem['s_heredoc_endtag']=ht_opmem['s_hredoc_end_tag_default']
@@ -350,6 +350,7 @@ class Kibuvits_configfileparser_t1
       end # if
       return ht_out
    end # ht_parse_configstring
+
 
    def Kibuvits_configfileparser_t1.ht_parse_configstring(s_a_config_file_style_string,
       msgcs=Kibuvits_msgc_stack.new)

@@ -50,6 +50,10 @@ x) Cases, where reflection or OO techniques in general would
    but dynamically created variables (JavaScript, Ruby, etc.) are
    firmly known only at run time and lack the IDE code completion support.
 
+x) May be in conjunction with something like the ASN.1 compiler?
+   http://ttsiodras.github.io/asn1.html
+   http://download.tuxfamily.org/taste/misc/presentation.pdf
+
 ---------------------------------------------------------------------------
                         2. Dependencies
 ---------------------------------------------------------------------------

@@ -15,6 +15,7 @@ if !defined? MMMV_DEVEL_TOOLS_HOME
    MMMV_DEVEL_TOOLS_HOME=ob_pth0.parent.parent.to_s.freeze
 end # if
 require MMMV_DEVEL_TOOLS_HOME+"/src/bonnet/api_core/mmmv_devel_tools_public_api_core.rb"
+require MMMV_DEVEL_TOOLS_HOME+"/src/bonnet/api_core/mmmv_devel_tools_info.rb"
 
 #--------------------------------------------------------------------------
 
@@ -66,6 +67,32 @@ class C_mmmv_devel_tools
       C_mmmv_devel_tools_public_api_core.run_breakdancemake_concat_t1(
       s_output_file_path,ar_or_s_input_file_paths,s_compress_mode)
    end # C_mmmv_devel_tools.run_breakdancemake_concat_t1
+
+   # Sample input:
+   # "s_GUID_trace_errorstack_file_path"
+   def C_mmmv_devel_tools.get_config(s_config_key)
+      if !defined? @@ob_C_mmmv_devel_tools_info
+         @@ob_C_mmmv_devel_tools_info=C_mmmv_devel_tools_info.new
+      end # if
+      s_out=@@ob_C_mmmv_devel_tools_info.get_config(s_config_key)
+      return s_out
+   end # C_mmmv_devel_tools.get_config
+
+
+   def C_mmmv_devel_tools.write_exception_text_2_GUIDtrace_errorstack_if_possible_t1(ob_exc)
+      begin
+         s_fp_errstack=C_mmmv_devel_tools_public_api_core.get_config("s_GUID_trace_errorstack_file_path")
+         return if ((s_fp_errstack==nil)||(s_fp_errstack==$kibuvits_lc_emptystring))
+         s_msg==ob_exc.to_s
+         str2file(s_msg,s_fp_errstack)
+      rescue Exception => e
+         puts e.to_s
+         # This function already processes
+         # thrown exceptions. Adding a new one
+         # only clutters up exception stack.
+      end # rescue
+   end # C_mmmv_devel_tools.write_exception_text_2_GUIDtrace_errorstack_if_possible_t1
+
 
 end # class C_mmmv_devel_tools
 

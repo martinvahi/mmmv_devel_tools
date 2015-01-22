@@ -149,6 +149,23 @@ class Kibuvits_msgc
 
    #-----------------------------------------------------------------------
 
+   # Throws, if self.b_failure==true
+   def assert_lack_of_failures(s_optional_error_message_suffix=nil)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [NilClass,String], s_optional_error_message_suffix
+      end # if
+      if b_failure
+         s_msg=$kibuvits_lc_linebreak+to_s()+$kibuvits_lc_linebreak
+         if s_optional_error_message_suffix.class==String
+            s_msg<<(s_optional_error_message_suffix+$kibuvits_lc_linebreak)
+         end # if
+         kibuvits_throw(s_msg)
+      end # if
+   end # assert_lack_of_failures
+
+   #-----------------------------------------------------------------------
+
    def [](s_language)
       s=self.to_s s_language
       return s
@@ -407,6 +424,7 @@ class Kibuvits_msgc_stack
       return b_out
    end # b_failure
 
+
    private
 
    # Only to be used as a private method and with care
@@ -648,8 +666,26 @@ class Kibuvits_msgc_stack
          # the @x_data so that it also has a to_s method.
          s_1=s_1+"\n\n"+@x_data.to_s
       end # if
+      s_1<<$kibuvits_lc_doublelinebreak
       return s_1
    end # to_s
+
+   #-----------------------------------------------------------------------
+
+   # Throws, if self.b_failure()==true
+   def assert_lack_of_failures(s_optional_error_message_suffix=nil)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [NilClass,String], s_optional_error_message_suffix
+      end # if
+      if b_failure
+         s_msg=$kibuvits_lc_linebreak+to_s()+$kibuvits_lc_linebreak
+         if s_optional_error_message_suffix.class==String
+            s_msg<<(s_optional_error_message_suffix+$kibuvits_lc_linebreak)
+         end # if
+         kibuvits_throw(s_msg)
+      end # if
+   end # assert_lack_of_failures
 
    #-----------------------------------------------------------------------
 
@@ -664,6 +700,14 @@ class Kibuvits_msgc_stack
    end # []
 
    #-----------------------------------------------------------------------
+
+   # Like the Array.first. It returns nil, if the
+   # array is empty.
+   def first
+      msgc_or_msgcs=nil
+      @mx.synchronize{msgc_or_msgcs=@ar_elements.first}
+      return msgc_or_msgcs
+   end # first
 
    # Like the Array.last. It returns nil, if the
    # array is empty.
@@ -680,5 +724,9 @@ class Kibuvits_msgc_stack
    end # each
 
 end # class Kibuvits_msgc_stack
+
+if !defined? $kibuvits_msgc_stack
+   $kibuvits_msgc_stack=Kibuvits_msgc_stack.new
+end # if
 
 #==========================================================================

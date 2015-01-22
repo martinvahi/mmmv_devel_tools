@@ -29,11 +29,14 @@ An Estonian word "mets" stands for "forest".
 Milestone releases of the Kibuvits Ruby Library (hereafter KRL) are
 published at
 
-http://kibuvits.rubyforge.org
+http://technology.softf1.com/kibuvits_ruby_library/
 
 Intermittent releases are part of the mmmv_devel_tools project at
 
 https://github.com/martinvahi/mmmv_devel_tools/
+
+Flawtrack/bugs:
+http://www.softf1.com/cgi-bin/tree1/technology/flaws/kibuvits_ruby_library.bash/
 
 
 The Kibuvits Ruby Library is a mixture of various Ruby routines
@@ -54,22 +57,26 @@ Forking the KRL is not just encouraged, but it is a necessity by design.
 ##                        2. Dependencies
 
 
-The Kibuvits Ruby Library (KRL) is UNIX specific. Ruby version
-has to be 2.1.0p0 or newer.
+The Kibuvits Ruby Library (KRL) is supported/tested only
+on Linux and FreeBSD. Ruby version has to be 2.1.3p242 or newer.
 
 Majority of the KRL can be run without installing any extra
-gems or special packages, but some components of the KRL, for example,
+gems or operating system packages, but some components of the KRL,
+for example,
 
     ./src/include/wrappers/*
 
-depend on the presence of some Linux packages that might not
-be present without explicitly installing them.
+depend on the presence of some operating system packages
+that might not be present without explicitly installing them.
+The current list of those packages is:
+
+    ImageMagick, rsync
 
 The
 
     ./src/dev_tools/install_dependency_gems.bash
 
-can be used for installing some optional dependencies.
+can be used for installing some dependencies.
 
 
 ---------------------------------------------------------------------------
@@ -227,6 +234,21 @@ Obviously the ideology that I just described here does not suite to
 lazy and passive people, but this project does not target lazy,
 passive, people, nor do I (martin.vahi@softf1.com)
 want to have anything to do with them.
+
+
+---------------------------------------------------------------------------
+
+##             7. Arbitrary list of Sources of Inspiration
+
+
+The Seed7 programming language, http://seed7.sourceforge.net/
+is very interesting, but as of 2014_11the authors of the Seed7
+find that regular expressions are against their design philosophy
+
+    http://seed7.sourceforge.net/faq.htm#regular_expressions
+
+and that's why in my(martin.vahi@softf1.com) view the Seed7
+is never able to compete with Ruby.
 
 
 ---------------------------------------------------------------------------

@@ -505,23 +505,37 @@ class Kibuvits_str_selftests
 
    #-----------------------------------------------------------------------
 
-   def Kibuvits_str_selftests.test_count_substrings
-      if !kibuvits_block_throws{ Kibuvits_str.count_substrings("xx",3)}
+   def Kibuvits_str_selftests.test_i_count_substrings_by_string
+      if !kibuvits_block_throws{ Kibuvits_str.i_count_substrings("xx",3)}
          kibuvits_throw "test 1"
       end # if
-      if !kibuvits_block_throws{ Kibuvits_str.count_substrings(4,"xx")}
+      if !kibuvits_block_throws{ Kibuvits_str.i_count_substrings(4,"xx")}
          kibuvits_throw "test 2"
       end # if
-      if !kibuvits_block_throws{ Kibuvits_str.count_substrings("xx","")}
+      if !kibuvits_block_throws{ Kibuvits_str.i_count_substrings("xx","")}
          kibuvits_throw "test 3"
       end # if
-      kibuvits_throw "test 4" if Kibuvits_str.count_substrings("aaa","b")!=0
-      kibuvits_throw "test 5" if Kibuvits_str.count_substrings("","b")!=0
-      kibuvits_throw "test 6" if Kibuvits_str.count_substrings("aabbab","b")!=3
-      kibuvits_throw "test 7" if Kibuvits_str.count_substrings("aabbab","bb")!=1
-      kibuvits_throw "test 8" if Kibuvits_str.count_substrings("baabba","bb")!=1
-      kibuvits_throw "test 9" if Kibuvits_str.count_substrings("aa","aaa")!=0
-   end # Kibuvits_str_selftests.test_count_substrings
+      kibuvits_throw "test 4" if Kibuvits_str.i_count_substrings("aaa","b")!=0
+      kibuvits_throw "test 5" if Kibuvits_str.i_count_substrings("","b")!=0
+      kibuvits_throw "test 6" if Kibuvits_str.i_count_substrings("aabbab","b")!=3
+      kibuvits_throw "test 7" if Kibuvits_str.i_count_substrings("aabbab","bb")!=1
+      kibuvits_throw "test 8" if Kibuvits_str.i_count_substrings("baabba","bb")!=1
+      kibuvits_throw "test 9" if Kibuvits_str.i_count_substrings("aa","aaa")!=0
+   end # Kibuvits_str_selftests.test_i_count_substrings_by_string
+
+
+   def Kibuvits_str_selftests.test_i_count_substrings_by_regex
+      if !kibuvits_block_throws{ Kibuvits_str.i_count_substrings("xx",3)}
+         kibuvits_throw "test 1"
+      end # if
+      #------------
+      s_hay="abcdr/aa/abcXr abr" # 2 times "abc.r"
+      rgx_x=/abc.r/
+      i_x=Kibuvits_str.i_count_substrings(s_hay,rgx_x)
+      kibuvits_throw "test 2 i_x=="+i_x.to_s if i_x!=2
+      #------------
+   end # Kibuvits_str_selftests.test_i_count_substrings_by_regex
+
 
    #-----------------------------------------------------------------------
 
@@ -968,23 +982,49 @@ class Kibuvits_str_selftests
 
    #-----------------------------------------------------------------------
 
-   def Kibuvits_str_selftests.test_commaseparated_list_2_ht
+   def Kibuvits_str_selftests.test_commaseparated_list
       s='aa,bb, cc'
-      ht=Kibuvits_str.commaseparated_list_2_ht(s)
+      ht=Kibuvits_str.commaseparated_list_2_ht_t1(s)
       kibuvits_throw "test 1" if !ht.has_key? "aa"
       kibuvits_throw "test 2" if !ht.has_key? "bb"
       kibuvits_throw "test 3" if !ht.has_key? "cc"
       kibuvits_throw "test 4" if ht.keys.size!=3
-
+      #------------
       s=' '
-      ht=Kibuvits_str.commaseparated_list_2_ht(s)
+      ht=Kibuvits_str.commaseparated_list_2_ht_t1(s)
       kibuvits_throw "test 5" if ht.keys.size!=0
-
+      #------------
       s='aa  bb'
-      ht=Kibuvits_str.commaseparated_list_2_ht(s)
+      ht=Kibuvits_str.commaseparated_list_2_ht_t1(s)
       kibuvits_throw "test 6" if ht.keys.size!=1
       kibuvits_throw "test 7" if ht.keys[0]!="aa  bb"
-   end # Kibuvits_str_selftests.test_commaseparated_list_2_ht
+      #------------
+      ar_x=Kibuvits_str.commaseparated_list_2_ar_t1(s)
+      kibuvits_throw "test 8" if ar_x.size!=1
+      kbuvits_throw "test 9" if ar_x[0]!="aa  bb"
+      #------------
+      s_separator="X"
+      s='aa  XbbXccXXX'
+      ar_x=Kibuvits_str.commaseparated_list_2_ar_t1(s,s_separator)
+      kibuvits_throw "test 10" if ar_x.size!=3
+      kbuvits_throw "test 11" if ar_x[0]!="aa"
+      kbuvits_throw "test 12" if ar_x[1]!="bb"
+      kbuvits_throw "test 13" if ar_x[2]!="cc"
+      #------------
+      s='aa X aa  XbbXccFFXXX'
+      ar_x=Kibuvits_str.normalize_s2ar_t1(s,s_separator)
+      kibuvits_throw "test 14" if ar_x.size!=4
+      kbuvits_throw "test 15" if ar_x[0]!="aa"
+      kbuvits_throw "test 16" if ar_x[1]!="aa"
+      kbuvits_throw "test 17" if ar_x[2]!="bb"
+      kbuvits_throw "test 18" if ar_x[3]!="ccFF"
+      #------------
+      ar_in=["gg","999f"]
+      ar_x=Kibuvits_str.normalize_s2ar_t1(ar_in,s_separator)
+      kibuvits_throw "test 14" if ar_x.size!=2
+      kbuvits_throw "test 19" if ar_x[0]!="gg"
+      kbuvits_throw "test 20" if ar_x[1]!="999f"
+   end # Kibuvits_str_selftests.test_commaseparated_list
 
    #-----------------------------------------------------------------------
 
@@ -1328,7 +1368,8 @@ class Kibuvits_str_selftests
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_batchreplace"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_ar_bisect"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_snatch_n_times_t1"
-      kibuvits_testeval bn, "Kibuvits_str_selftests.test_count_substrings"
+      kibuvits_testeval bn, "Kibuvits_str_selftests.test_i_count_substrings_by_string"
+      kibuvits_testeval bn, "Kibuvits_str_selftests.test_i_count_substrings_by_regex"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_ar_explode"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_trim"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_get_array_of_linebreaks"
@@ -1345,7 +1386,7 @@ class Kibuvits_str_selftests
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_str2strliteral"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_str_contains_spacestabslinebreaks"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_datestring_for_fs_prefix"
-      kibuvits_testeval bn, "Kibuvits_str_selftests.test_commaseparated_list_2_ht"
+      kibuvits_testeval bn, "Kibuvits_str_selftests.test_commaseparated_list"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_s_i2unicode"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_s_get_substring_by_bounds"
       kibuvits_testeval bn, "Kibuvits_str_selftests.test_s_escape_spaces_t1"

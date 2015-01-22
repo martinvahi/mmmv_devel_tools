@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 #==========================================================================
 
-require "singleton"
-
 # The reason, why the following if-else blocks are not within a function
 # is that the Ruby interpreter requires the constant initialization to be
 # in the global scope. That does not stop the programmers to try to
@@ -15,7 +13,7 @@ if !defined? MMMV_DEVEL_TOOLS_HOME
    raise(Exception.new("The Ruby constant, MMMV_DEVEL_TOOLS_HOME, "+
    "should have been defined before the control flow reaches the "+
    "file, from where this exception is thrown."+
-   "\nGUID=='53744e03-1a71-4a0c-914f-52c190b15dd7'"))
+   "\nGUID=='fd590255-3685-4153-b375-538231b1aed7'"))
    exit
 end # if
 
@@ -52,19 +50,18 @@ if !defined? KIBUVITS_s_NUMERICAL_VERSION
    msg="\nThe Ruby constant, KIBUVITS_s_NUMERICAL_VERSION, has not \n"+
    "been defined in the \n"+
    s_kibuvits_boot_path+
-   ". That indicates a Kibuvits Ruby Library version mismatch.\n\n"
-   kibuvits_writeln msg
-   exit
+   ". That indicates a Kibuvits Ruby Library version mismatch."+
+   "\n GUID='ce902441-93d1-4df9-b575-538231b1aed7'\n\n"
+   raise Exception.new(msg)
 end # if
-s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.7.0"
+s_expected_KIBUVITS_s_NUMERICAL_VERSION="1.7.1"
 if KIBUVITS_s_NUMERICAL_VERSION!=s_expected_KIBUVITS_s_NUMERICAL_VERSION
    msg="\nThis version of the mmmv_devel_tools expects the Ruby constant, \n"+
    "KIBUVITS_s_NUMERICAL_VERSION, to have the value of \""+s_expected_KIBUVITS_s_NUMERICAL_VERSION+"\", \n"+
-   "but the KIBUVITS_s_NUMERICAL_VERSION=="+KIBUVITS_s_NUMERICAL_VERSION.to_s+"\n\n"
-   kibuvits_writeln msg
-   exit
+   "but the KIBUVITS_s_NUMERICAL_VERSION=="+KIBUVITS_s_NUMERICAL_VERSION.to_s+
+   "\n GUID='e096ce3d-c538-41d5-9475-538231b1aed7'\n\n"
+   raise Exception.new(msg)
 end # if
-
 
 #--------------------------------------------------------------------------
 
@@ -88,7 +85,7 @@ class C_mmmv_devel_tools_global_singleton
    public
 
    def initialize
-      @msgcs_=Kibuvits_msgc_stack.new
+      @msgcs_=$kibuvits_msgc_stack
       @ht_global_configuration_cache=nil
       @fd_config_reading_time=Time.new(1981).to_f
    end # initialize
@@ -196,7 +193,7 @@ class C_mmmv_devel_tools_global_singleton
       b_parse=true if 3<(fd_t_now-@fd_config_reading_time)
       if (b_parse==false) && (@ht_global_configuration_cache==nil)
          kibuvits_throw("\n\nThis code has a flaw. \n"+
-         "GUID='4476c602-dfb6-42c3-8f1f-52c190b15dd7'\n\n")
+         "GUID='172cc4b5-be21-4852-b875-538231b1aed7'\n\n")
       end # if
       if b_parse
          ht_out=Hash.new
@@ -238,7 +235,7 @@ class C_mmmv_devel_tools_global_singleton
       # would have to be converted to strings before
       # the Kibuvits_ProgFTE.from_ht(...) could be called.
       s_signature=Marshal.dump(ht_config)
-      s_out=kibuvits_s_hash(s_signature)
+      s_out=kibuvits_s_hash_t1(s_signature)
       return s_out
    end # s_config_hash_t1
 
@@ -250,6 +247,23 @@ class C_mmmv_devel_tools_global_singleton
    #-----------------------------------------------------------------------
    include Singleton
 end # class C_mmmv_devel_tools_global_singleton
+
+#--------------------------------------------------------------------------
+
+# Writes the s_in to the JumpGUID error message stack, if possible.
+def mmmv_devel_tools_writeln_err_doc(s_in)
+   if KIBUVITS_b_DEBUG
+      bn=binding()
+      kibuvits_typecheck bn, [String], s_in
+   end # if
+   ht_cohfig=C_mmmv_devel_tools_global_singleton.ht_global_configuration
+   s_key_errstack="s_GUID_trace_errorstack_file_path"
+   if ht_cohfig.has_key? s_key_errstack
+      s_fp_errstack=ht_cohfig[s_key_errstack]
+      str2file(s_in,s_fp_errstack)
+   end # if
+   kibuvits_writeln(s_in)
+end # mmmv_devel_tools_writeln_err_doc
 
 #==========================================================================
 

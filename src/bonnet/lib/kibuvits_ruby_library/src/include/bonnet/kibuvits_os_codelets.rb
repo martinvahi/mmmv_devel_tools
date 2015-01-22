@@ -301,12 +301,12 @@ class Kibuvits_os_codelets
          # cygwin uses the Linux file paths, i.e. /c/blabla, but
          # the ENV['TEMP'] gives c:/blablabla  and that breaks things.
          # the solution:
-         s_out=KIBUVITS_HOME+"/src/bonnet/tmp"
+         s_out=KIBUVITS_HOME+"/src/include/bonnet/tmp"
          # There's nothing lost with that, because KRL relies on
          # unix tools anyway, which means that on Windows the KRL runs
-         # on cygwin or something like that.
+         # on cygwin or something similar.
       elsif s_system_name=="kibuvits_ostype_java"
-         s_out=KIBUVITS_HOME+"/src/bonnet/tmp"
+         s_out=KIBUVITS_HOME+"/src/include/bonnet/tmp"
       else
          kibuvits_throw 'System "'+s_system_name+'" is not supported.'
       end # elsif

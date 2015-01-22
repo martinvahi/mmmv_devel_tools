@@ -21,22 +21,29 @@ var s_MMMV_DEVEL_TOOLS_HOME = "";
 komodo.assertMacroVersion(3);
 //----------------------------------------------------------
 guidtrace = {};
-guidtrace.sh = function (command) {
-    /* The following has been mostly copy-pasted from
-     http://community.activestate.com/forum-topic/executing-command-from-ex#comment-1118
-     */
-    var cmd = command;
-    var cwd = "";
-    var env = "";
-    var input = "";
-    var o_output = new Object();
-    var o_error = new Object();
+guidtrace.sh = function(command) {
+	/* The following has been mostly copy-pasted from
+	 http://community.activestate.com/forum-topic/executing-command-from-ex#comment-1118
+	 */
+	var cmd = command;
+	var cwd = "";
+	var env = "";
+	var input = "";
+	var o_output = new Object();
+	var o_error = new Object();
 
-    var _gRunSvc = Components.classes["@activestate.com/koRunService;1"].getService(Components.interfaces.koIRunService);
-    var result = _gRunSvc.RunAndCaptureOutput(cmd, cwd, env, input, o_output,
-        o_error);
-    //alert("Output: " + o_output.value);
-    return o_output.value;
+	var _gRunSvc = Components.classes["@activestate.com/koRunService;1"].getService(Components.interfaces.koIRunService);
+	var result = _gRunSvc.RunAndCaptureOutput(cmd, cwd, env, input, o_output, o_error);
+	//alert("Output: " + o_output.value);
+	s_error=""+o_error.value;
+        if (0<s_error.length){
+	        alert("JumpGUID KomodoEdit macro crashed by a mechanism, where\n"+
+		      "the execution of a console command failed.\n\n"+
+		      "console command: \n"+cmd+
+		      "\n\nstderr==\n"+s_error);
+	        throw("flaw");
+        } // if
+	return o_output.value;
 } // guidtrace.sh
 guidtrace.trim = function (s_in) {
     return s_in.replace(/^\s+|\s+$/g, '');
@@ -92,7 +99,7 @@ cmd = s_full_path_to_jumpguid_core_bash_cript +
       " get_file_path " + s_stack_navigation_command;
 //alert(cmd);
 s_0 = guidtrace.kibuvits_sh(cmd);
-s_fp = guidtrace.trim(s_0);
+var s_fp = guidtrace.trim(s_0);
 
 cmd = s_full_path_to_jumpguid_core_bash_cript +
       " get_line_number no_cursor_movement ";

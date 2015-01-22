@@ -2,6 +2,20 @@
 ==========================  IDE_integration  ==============================
 ===========================================================================
 
+-------------------------------------------------------------------------------
+                       W A R N I N G     
+-------------------------------------------------------------------------------
+
+This is a dirty intermittent release of this tool and
+I know for a fact that this version is broken.
+I just wanted to publish the rest of the mmmv_devel_tools and
+wanted this tool to be archived, not thrown out, as it's fixable.
+
+
+-------------------------------------------------------------------------------
+
+
+
 The mmmv_devel_tools sub-project, IDE_integration, consists of 
 integrated development environment (IDE) specific scripts that
 facilitate the use of the rest of the mmmv_devel_tools sub-projects

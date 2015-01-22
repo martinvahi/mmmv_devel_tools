@@ -78,6 +78,9 @@ if b_selfwriting
       Dir.glob(kibuvits_home+"/src/include/security/*.rb").each do |a_file_path|
          s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
       end # loop
+      Dir.glob(kibuvits_home+"/src/include/numerics/*.rb").each do |a_file_path|
+         s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
+      end # loop
       Dir.glob(kibuvits_home+"/src/include/code_generation/*.rb").each do |a_file_path|
          s_list_for_gem=apply_to_genlist(s_mypath, a_file_path,s_list_for_gem)
       end # loop
@@ -143,12 +146,16 @@ else
     require KIBUVITS_HOME+"/src/include/kibuvits_eval.rb"
     require KIBUVITS_HOME+"/src/include/wrappers/kibuvits_data_transfer.rb"
     require KIBUVITS_HOME+"/src/include/wrappers/kibuvits_ImageMagick.rb"
+    require KIBUVITS_HOME+"/src/include/wrappers/kibuvits_REDUCE.rb"
     require KIBUVITS_HOME+"/src/include/incomplete/kibuvits_whiteboard.rb"
     require KIBUVITS_HOME+"/src/include/incomplete/kibuvits_MUD.rb"
     require KIBUVITS_HOME+"/src/include/brutal_workarounds/kibuvits_configfileparser_t1.rb"
+    require KIBUVITS_HOME+"/src/include/security/kibuvits_rng.rb"
     require KIBUVITS_HOME+"/src/include/security/kibuvits_cryptcodec_txor_t1.rb"
     require KIBUVITS_HOME+"/src/include/security/kibuvits_security_core.rb"
+    require KIBUVITS_HOME+"/src/include/security/kibuvits_cleartext_length_normalization.rb"
     require KIBUVITS_HOME+"/src/include/security/kibuvits_hash_plaice_t1.rb"
+    require KIBUVITS_HOME+"/src/include/numerics/kibuvits_numerics_set_0.rb"
     require KIBUVITS_HOME+"/src/include/code_generation/kibuvits_cg_php_t1.rb"
     require KIBUVITS_HOME+"/src/include/code_generation/kibuvits_cg_html_t1.rb"
     require KIBUVITS_HOME+"/src/include/code_generation/kibuvits_cg.rb"

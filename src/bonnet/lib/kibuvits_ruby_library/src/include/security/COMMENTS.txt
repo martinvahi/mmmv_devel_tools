@@ -21,4 +21,13 @@ at places/conditions that have been chosen by the "simple citizens".
 Further information can be found from:
 http://bitrary.softf1.com/index.php?title=Software_Development_:_Security
 
+
+
+---------------------------------------------------------------------------
+                        Some References
+---------------------------------------------------------------------------
+
+    http://longterm.softf1.com/2013/citations/2013_01_29_wikipedia_org_GOST_hash_function/
+
+
 ===========================================================================

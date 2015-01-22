@@ -404,30 +404,30 @@ class Kibuvits_comments_detector_selftests
 
    #-----------------------------------------------------------------------
 
-   def Kibuvits_comments_detector_selftests.test_get_singleliner_comment_start_tag
+   def Kibuvits_comments_detector_selftests.test_ar_get_singleliner_comment_start_tags
       msgcs=Kibuvits_msgc_stack.new
       if KIBUVITS_b_DEBUG
-         if !kibuvits_block_throws{Kibuvits_comments_detector.get_singleliner_comment_start_tag(42,msgcs)}
+         if !kibuvits_block_throws{Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags(42,msgcs)}
             kibuvits_throw "test 1"
          end # if
-         if !kibuvits_block_throws{Kibuvits_comments_detector.get_singleliner_comment_start_tag("ruby",42)}
+         if !kibuvits_block_throws{Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags("ruby",42)}
             kibuvits_throw "test 2"
          end # if
       end # if
-      s_tag=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
-      "ruby",msgcs)
+      ar_x_tags=Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags("ruby",msgcs)
+      s_tag=ar_x_tags[0]
       kibuvits_throw "test 3" if msgcs.b_failure
       kibuvits_throw "test 4" if s_tag!="#"
-      s_tag=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
-      "JavaScript",msgcs)
+      ar_x_tags=Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags("JavaScript",msgcs)
+      s_tag=ar_x_tags[0]
       kibuvits_throw "test 5" if msgcs.b_failure
       kibuvits_throw "test 6" if s_tag!="//"
-      s_tag=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
+      ar_x_tags=Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags(
       "ThisLanguageCanNotExist4_"+
       Kibuvits_GUID_generator.generate_GUID,msgcs)
       kibuvits_throw "test 7" if !msgcs.b_failure
       kibuvits_throw "test 8" if msgcs.last.s_message_id!="5"
-   end # Kibuvits_comments_detector_selftests.test_get_singleliner_comment_start_tag
+   end # Kibuvits_comments_detector_selftests.test_ar_get_singleliner_comment_start_tags
 
    #-----------------------------------------------------------------------
 
@@ -439,7 +439,7 @@ class Kibuvits_comments_detector_selftests
       kibuvits_testeval bn,"Kibuvits_comments_detector_selftests.test_singleline"
       kibuvits_testeval bn,"Kibuvits_comments_detector_selftests.test_multiline"
       kibuvits_testeval bn,"Kibuvits_comments_detector_selftests.test_extract_commentstrings"
-      kibuvits_testeval bn,"Kibuvits_comments_detector_selftests.test_get_singleliner_comment_start_tag"
+      kibuvits_testeval bn,"Kibuvits_comments_detector_selftests.test_ar_get_singleliner_comment_start_tags"
       return ar_msgs
    end # Kibuvits_comments_detector_selftests.selftest
 

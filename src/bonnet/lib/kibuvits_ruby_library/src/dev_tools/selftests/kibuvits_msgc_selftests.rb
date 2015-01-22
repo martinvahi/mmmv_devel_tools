@@ -104,6 +104,35 @@ class Kibuvits_msgc_selftests
 
    #-----------------------------------------------------------------------
 
+   def Kibuvits_msgc_selftests.test_msgc_assert_lack_of_failures
+      s_default_msg="Test 1A"
+      s_message_id="Test 1A ID"
+      b_failure=false
+      msgc_1=Kibuvits_msgc.new(s_default_msg,s_message_id,b_failure)
+      kibuvits_throw "test 1a " if msgc_1.b_failure
+      begin
+         msgc_1.assert_lack_of_failures
+      rescue Exception => e
+         kibuvits_throw "test 1a e.to_s=="+e.to_s
+      end # rescue
+      #---------------
+      b_failure=true
+      msgc_2=Kibuvits_msgc.new(s_default_msg,s_message_id,b_failure)
+      # The next test uses msgc_1 in stead of msgc_2 to
+      # test for lack of crosstalk.
+      kibuvits_throw "test 2a " if msgc_1.b_failure
+      kibuvits_throw "test 2b " if !msgc_2.b_failure
+      b_thrown=false
+      begin
+         msgc_2.assert_lack_of_failures
+      rescue Exception => e
+         b_thrown=true
+      end # rescue
+      kibuvits_throw "test 2c " if !b_thrown
+   end # Kibuvits_msgc_selftests.test_msgc_assert_lack_of_failures
+
+   #-----------------------------------------------------------------------
+
    def Kibuvits_msgc_selftests.test_eachfunc
       msgcs=Kibuvits_msgc_stack.new
       msgcs.cre "AA"
@@ -159,12 +188,15 @@ class Kibuvits_msgc_selftests
       kibuvits_throw "test 16" if msgcs.b_failure!=false
       msgcs2=Kibuvits_msgc_stack.new
       msgcs=Kibuvits_msgc_stack.new
-      msgcs.cre "Greeting", "code42",false
+      msgcs.cre "Greeting", "code_42",false
       kibuvits_throw "test 18" if msgcs.b_failure!=false
-      kibuvits_throw "test 19" if msgcs.length!=1
-      kibuvits_throw "test 20" if msgcs[0].s_instance_id!=msgcs.last.s_instance_id
+      msgcs.cre "Greetings from Borg!", "code_1984",false
+      kibuvits_throw "test 19" if msgcs.length!=2
+      kibuvits_throw "test 20" if msgcs[0].s_instance_id!=msgcs.first.s_instance_id
+      kibuvits_throw "test 21" if msgcs[1].s_instance_id!=msgcs.last.s_instance_id
+      kibuvits_throw "test 22" if msgcs.first.s_instance_id==msgcs.last.s_instance_id
       msgcs.cre "Greeting2", "code43"
-      kibuvits_throw "test 21" if msgcs.b_failure!=true
+      kibuvits_throw "test 23" if msgcs.b_failure!=true
       #-------------
       if kibuvits_block_throws{ msgcs.push(msgcs2)}
          kibuvits_throw "test 22"
@@ -183,6 +215,31 @@ class Kibuvits_msgc_selftests
       msgcs_2.cre "FF_2"
       msgcs_1<<msgcs_2
       msgcs_1.cre "GG_1"
+      kibuvits_throw "test 1a" if !msgcs_1.b_failure
+      kibuvits_throw "test 1b" if !msgcs_2.b_failure
+      #---------------
+      msgcs_3=Kibuvits_msgc_stack.new
+      kibuvits_throw "test 2a" if msgcs_3.b_failure
+      s_default_msg="T3A"
+      s_message_id="T3A_ID"
+      b_failure=false
+      msgcs_3.cre(s_default_msg,s_message_id,b_failure)
+      kibuvits_throw "test 2b" if msgcs_3.b_failure
+      begin
+         msgcs_3.assert_lack_of_failures
+      rescue Exception => e
+         kibuvits_throw "test 2c e.to_s=="+e.to_s
+      end # rescue
+      msgcs_3.cre "T3B"
+      kibuvits_throw "test 2d" if !msgcs_3.b_failure
+      b_thrown=false
+      begin
+         msgcs_3.assert_lack_of_failures
+      rescue Exception => e
+         b_thrown=true
+      end # rescue
+      kibuvits_throw "test 2e " if !b_thrown
+      #---------------
    end # Kibuvits_msgc_selftests.test_stack_within_stack
 
    def Kibuvits_msgc_selftests.test_serialization_and_to_s
@@ -221,6 +278,7 @@ class Kibuvits_msgc_selftests
       bn=binding()
       kibuvits_testeval bn, "Kibuvits_msgc_selftests.test_msgc_clone"
       kibuvits_testeval bn, "Kibuvits_msgc_selftests.test_msgc_set_1"
+      kibuvits_testeval bn, "Kibuvits_msgc_selftests.test_msgc_assert_lack_of_failures"
       kibuvits_testeval bn, "Kibuvits_msgc_selftests.test_eachfunc"
       kibuvits_testeval bn, "Kibuvits_msgc_selftests.test_msgcs_set_1"
       kibuvits_testeval bn, "Kibuvits_msgc_selftests.test_stack_within_stack"

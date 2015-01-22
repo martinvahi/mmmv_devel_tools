@@ -173,7 +173,7 @@ class Kibuvits_shell
       s_fp="/usr/bin/env"
       if !File.exist? s_fp
          kibuvits_throw("The file "+ s_fp+" does not exist."+
-         "\nGUID='dd842751-6e74-4d17-a346-d2a050c13ed7'")
+         "\nGUID='a05d2a54-1515-4cfb-951e-40d150011fd7'")
       end # if
       s_fp_stdout=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
       s_fp_stderr=Kibuvits_os_codelets.instance.generate_tmp_file_absolute_path
@@ -215,7 +215,7 @@ class Kibuvits_shell
          i_min_length=2 # May be it should be 1?
          # The i_min_length can be changed to 1, after problems emerge.
          kibuvits_assert_string_min_length(bn,s_program_name,i_min_length,
-         "GUID='a24863a2-f123-4440-9f26-d2a050c13ed7'")
+         "GUID='b3cf4512-5d46-4c10-821e-40d150011fd7'")
          kibuvits_typecheck bn, [TrueClass,FalseClass], b_throw_if_not_found
       end # if
       if !defined? @ht_s_exc_system_specific_path_by_caching_t1_cache
@@ -238,7 +238,7 @@ class Kibuvits_shell
          if b_throw_if_not_found
             kibuvits_throw("Program \""+ s_program_name+
             "\" could not be found on the PATH."+
-            "\nGUID='550272ca-5695-4592-b036-d2a050c13ed7'")
+            "\nGUID='308c735b-e911-4ad9-a31e-40d150011fd7'")
          end # if
       end # if
       return s_fp
@@ -277,16 +277,44 @@ class Kibuvits_shell
 
    #-----------------------------------------------------------------------
 
+   def b_stderr_has_content_t1(ht_stdstreams)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, Hash, ht_stdstreams
+         kibuvits_assert_ht_has_keys(bn,ht_stdstreams,
+         [$kibuvits_lc_s_stderr,$kibuvits_lc_s_stdout],
+         "\nGUID='53e69253-3fee-49cc-841e-40d150011fd7'")
+      end # if
+      s_err=ht_stdstreams[$kibuvits_lc_s_stderr]
+      if s_err.class!=String
+         # s_err==nil, if the key is missing from the hashtable and
+         # there is a flaw somewhere, if s_err is a number or
+         # some custom instance, etc.
+         kibuvits_throw("The ht_stdstreams does not seem to have the "+
+         "right content. \nGUID='85c18e71-5b30-4af8-b11e-40d150011fd7'")
+      end # if
+      return false if s_err.length==0
+      return true
+   end # b_stderr_has_content_t1
+
+   def Kibuvits_shell.b_stderr_has_content_t1(ht_stdstreams)
+      b_out=Kibuvits_shell.instance.b_stderr_has_content_t1(ht_stdstreams)
+      return b_out
+   end # Kibuvits_shell.b_stderr_has_content_t1
+
+
    def throw_if_stderr_has_content_t1(ht_stdstreams,
       s_optional_error_message_suffix=nil)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, Hash, ht_stdstreams
          kibuvits_typecheck bn, [NilClass,String], s_optional_error_message_suffix
+         kibuvits_assert_ht_has_keys(bn,ht_stdstreams,
+         [$kibuvits_lc_s_stderr,$kibuvits_lc_s_stdout],
+         "\nGUID='e6f03232-974e-4864-841e-40d150011fd7'")
       end # if
-      s_err=ht_stdstreams[$kibuvits_lc_s_stderr]
-      return if s_err.length==0
-      s_msg=s_err+$kibuvits_lc_linebreak
+      return if !b_stderr_has_content_t1(ht_stdstreams)
+      s_msg=ht_stdstreams[$kibuvits_lc_s_stderr]+$kibuvits_lc_linebreak
       if s_optional_error_message_suffix!=nil
          s_msg=s_msg+s_optional_error_message_suffix+$kibuvits_lc_linebreak
       end # if

@@ -2,6 +2,20 @@
 ============================  GUID_trace  =================================
 ===========================================================================
 
+-------------------------------------------------------------------------------
+                       W A R N I N G     
+-------------------------------------------------------------------------------
+
+This is a dirty intermittent release of this tool and
+I know for a fact that this version is broken.
+I just wanted to publish the rest of the mmmv_devel_tools and
+wanted this tool to be archived, not thrown out, as it's fixable.
+
+
+-------------------------------------------------------------------------------
+
+
+
 In the context of the GUID_trace the acronym "GUID" stands for
 "Globally Unique Identifier".
 http://en.wikipedia.org/wiki/Globally_Unique_Identifier

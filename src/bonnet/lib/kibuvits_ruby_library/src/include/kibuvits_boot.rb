@@ -96,7 +96,7 @@ end # if
 # The Ruby gem infrastructure requires a version that consists
 # of only numbers and dots. For library forking related
 # version checks there is another constant: KIBUVITS_s_VERSION.
-KIBUVITS_s_NUMERICAL_VERSION="1.7.0" if !defined? KIBUVITS_s_NUMERICAL_VERSION
+KIBUVITS_s_NUMERICAL_VERSION="1.7.1" if !defined? KIBUVITS_s_NUMERICAL_VERSION
 
 # The reason, why the version does not consist of only
 # numbers and points is that every application is
@@ -121,8 +121,8 @@ KIBUVITS_s_VERSION="kibuvits_"+KIBUVITS_s_NUMERICAL_VERSION.to_s if !defined? KI
 # self-declare it.
 # KIBUVITS_TMP_FOLDER_PATH=ENV['HOME'].to_s+"/tmp"
 
-KIBUVITS_b_DEBUG=true if !defined? KIBUVITS_b_DEBUG
-#KIBUVITS_b_DEBUG=false if !defined? KIBUVITS_b_DEBUG
+#KIBUVITS_b_DEBUG=true if !defined? KIBUVITS_b_DEBUG
+KIBUVITS_b_DEBUG=false if !defined? KIBUVITS_b_DEBUG
 
 #--------------------------------------------------------------------------
 $kibuvits_lc_emptystring="".freeze
@@ -155,6 +155,7 @@ $kibuvits_lc_minusminus="--".freeze
 $kibuvits_lc_pillar="|".freeze
 $kibuvits_lc_slash="/".freeze
 $kibuvits_lc_dotslash="./".freeze
+$kibuvits_lc_dotstar=".*".freeze
 $kibuvits_lc_slashslash="//".freeze
 $kibuvits_lc_slashstar="/*".freeze
 $kibuvits_lc_backslash="\\".freeze
@@ -181,8 +182,9 @@ $kibuvits_lc_s_ht_szr_progfte="s_ht_szr_progfte".freeze
 $kibuvits_lc_szrtype_ht_p="szrtype_ht_p".freeze
 $kibuvits_lc_szrtype_instance="szrtype_instance".freeze
 $kibuvits_lc_si_number_of_elements="si_number_of_elements".freeze
-$kibuvits_lc_b_failure="b_failure".freeze
 $s_lc_i_kibuvits_ar_ix_1="i_kibuvits_ar_ix_1".freeze
+$kibuvits_lc_b_failure="b_failure".freeze
+$kibuvits_lc_undetermined="undetermined".freeze
 
 $kibuvits_lc_boolean="boolean".freeze
 $kibuvits_lc_sb_true="t".freeze
@@ -246,6 +248,11 @@ $kibuvits_lc_s_stdout="s_stdout".freeze
 $kibuvits_lc_s_stderr="s_stderr".freeze
 
 $kibuvits_lc_s_localhost="localhost".freeze
+$kibuvits_lc_s_cleartext="s_cleartext".freeze
+$kibuvits_lc_s_ciphertext="s_ciphertext".freeze
+$kibuvits_lc_s_checksum_hash="s_checksum_hash".freeze
+$kibuvits_lc_s_pseudorandom_charstream="s_pseudorandom_charstream".freeze
+$kibuvits_lc_s_format_version="s_format_version".freeze
 
 $kibuvits_lc_s_Array="Array".freeze
 $kibuvits_lc_s_Hash="Hash".freeze
@@ -337,7 +344,7 @@ end # kibuvits_writeln
 def kibuvits_s_exception_2_stacktrace(e)
    if (e.class.kind_of? Exception)
       exc=Exception.new("e.class=="+e.class.to_s+
-      ", but Exception or any of its decendents was expected.")
+      ", but Exception or any of its descendents was expected.")
       raise(exc)
    end # if
    ar_stack_trace=e.backtrace.reverse
@@ -362,7 +369,7 @@ def kibuvits_throw(s_or_ob_exception,a_binding=nil)
    # Due to the lack of dependence on other
    # functions the implementation here is quite
    # verbose and duplicating, but that's the
-   # compromise where elegant core API is favoured
+   # compromise where elegant core API is favored
    # over an elegant core API implementation.
    #
    # A reminder: the keywords catch and throw have
@@ -488,7 +495,7 @@ def kibuvits_varname2varvalue(a_binding, s_varname,
    eval(s_script,a_binding)
    kibuvits_throw("ar.size==0") if ar.size==0
    x=ar[0]
-   # even the kibuvits_s_varvalue2varname depends on the emptyness of the ar
+   # even the kibuvits_s_varvalue2varname depends on the emptiness of the ar
    ar.clear
    return x
 end # kibuvits_varname2varvalue
@@ -808,7 +815,7 @@ end # kibuvits_assert_ht_has_keys
 # ht["hi"]="there"
 # ht["welcome"]="to heaven"
 # ht["nice"]="day"
-# ht["whatever"]="ohter string value"
+# ht["whatever"]="other string value"
 #
 # a_binding=binding()
 #
@@ -935,7 +942,8 @@ def kibuvits_get_binding_wrapper_instance_class(bn_caller_binding)
       "There's also the limitation that one can not use the "+
       "Kibuvits_msgc_stack and Kibuvits_msgc instances "+
       "in functions that are not wrapped into some instance.\n\n"+
-      "The caught exception message is:\n\n"+e.to_s+"\n\n")
+      "The caught exception message is:\n\n"+
+      e.to_s+$kibuvits_lc_doublelinebreak)
    end # rescue
    cl_out=ar[0]
    ar.clear
@@ -964,6 +972,29 @@ def kibuvits_assert_string_min_length(a_binding,s_in,i_min_length,
       "minimum allowed string length is "+i_min_length.to_s+".",a_binding)
    end # if
 end # kibuvits_assert_string_min_length
+
+#--------------------------------------------------------------------------
+
+def kibuvits_assert_array_min_length(a_binding,ar_in,i_min_length,
+   s_optional_error_message_suffix=nil)
+   if KIBUVITS_b_DEBUG
+      bn=binding()
+      kibuvits_typecheck bn, Binding, a_binding
+      kibuvits_typecheck bn, Array, ar_in
+      kibuvits_typecheck bn, Fixnum, i_min_length
+      kibuvits_typecheck bn, [NilClass,String],s_optional_error_message_suffix
+      if i_min_length<0
+         kibuvits_throw("i_min_length == "+i_min_length.to_s+" < 0");
+      end # if
+   end # if
+   i_len=ar_in.size
+   if i_len<i_min_length
+      s_varname=kibuvits_s_varvalue2varname(a_binding,ar_in)
+      s_varname="<an array>" if s_varname.length==0
+      kibuvits_throw(s_varname+".size=="+i_len.to_s+", but the "+
+      "minimum allowed array length is "+i_min_length.to_s+".",a_binding)
+   end # if
+end # kibuvits_assert_array_min_length
 
 #--------------------------------------------------------------------------
 
@@ -1040,24 +1071,100 @@ def kibuvits_assert_arrayix(a_binding,ar,
    end # if
    i_max_valid_ix=ar.size-1
    i_candidate=nil
+   #------
+   func_suffix=lambda do |s_or_nil_suffix|
+      x_out=nil
+      if s_or_nil_suffix!=nil
+         x_out=$kibuvits_lc_linebreak+s_or_nil_suffix.to_s
+      else
+         x_out=$kibuvits_lc_emptystring
+      end # if
+      return x_out
+   end # func_suffix
+   #------
    i_number_of_candidates.times do |i|
       i_candidate=ar_candidates[i]
       if i_candidate<0
+         s_suffix=func_suffix.call(s_optional_error_message_suffix)
          if i_number_of_candidates==1
             kibuvits_throw("<array index candidate>"+
-            " == "+i_candidate.to_s+" < 0 ",a_binding)
+            " == "+i_candidate.to_s+" < 0 "+s_suffix,a_binding)
          else
             kibuvits_throw("Array index candidate #"+i.to_s+
-            " == "+i_candidate.to_s+" < 0 ",a_binding)
+            " == "+i_candidate.to_s+" < 0 "+s_suffix,a_binding)
          end # if
       end # if
       if i_max_valid_ix<i_candidate
+         s_suffix=func_suffix.call(s_optional_error_message_suffix)
          kibuvits_throw("Maximum valid index is "+
          i_max_valid_ix.to_s+" < "+i_candidate.to_s+
-         " == <index candidate>",a_binding)
+         " == <index candidate>"+s_suffix,a_binding)
       end # if
    end # loop
 end # kibuvits_assert_arrayix
+
+
+# http://longterm.softf1.com/specifications/array_indexing_by_separators/
+def kibuvits_assert_arrayixs(a_binding,ar,
+   i_array_sindex_candidate_or_array_of_array_sindex_candidates,
+   s_optional_error_message_suffix=nil)
+   x_candidates=i_array_sindex_candidate_or_array_of_array_sindex_candidates
+   if KIBUVITS_b_DEBUG
+      bn=binding()
+      kibuvits_typecheck bn, Binding,a_binding
+      kibuvits_typecheck bn, Array,ar
+      kibuvits_typecheck bn, [Fixnum,Array],i_array_sindex_candidate_or_array_of_array_sindex_candidates
+      kibuvits_typecheck bn, [NilClass,String],s_optional_error_message_suffix
+      if x_candidates.class==Array
+         if x_candidates.size==0
+            kibuvits_throw("The array of candidate sindices is empty.")
+         end # if
+         x_candidates.each do |x|
+            bn=binding()
+            kibuvits_typecheck bn,Fixnum,x
+         end # loop
+      end # if
+   end # if
+   ar_candidates=x_candidates
+   ar_candidates=[x_candidates] if x_candidates.class==Fixnum
+   i_cand_sindex_max=ar_candidates.size # array separator index, min==0
+   i_number_of_candidates=i_cand_sindex_max # ==(i_cand_sindex_max-0)
+   if i_number_of_candidates==0
+      kibuvits_throw("The array of candidate sindices is empty.")
+   end # if
+   i_max_valid_ixs=ar.size
+   i_candidate=nil
+   #------
+   func_suffix=lambda do |s_or_nil_suffix|
+      x_out=nil
+      if s_or_nil_suffix!=nil
+         x_out=$kibuvits_lc_linebreak+s_or_nil_suffix.to_s
+      else
+         x_out=$kibuvits_lc_emptystring
+      end # if
+      return x_out
+   end # func_suffix
+   #------
+   i_number_of_candidates.times do |i|
+      i_candidate=ar_candidates[i]
+      if i_candidate<0
+         s_suffix=func_suffix.call(s_optional_error_message_suffix)
+         if i_number_of_candidates==1
+            kibuvits_throw("<array sindex candidate>"+
+            " == "+i_candidate.to_s+" < 0 "+s_suffix,a_binding)
+         else
+            kibuvits_throw("Array sindex candidate #"+i.to_s+
+            " == "+i_candidate.to_s+" < 0 "+s_suffix,a_binding)
+         end # if
+      end # if
+      if i_max_valid_ixs<i_candidate
+         s_suffix=func_suffix.call(s_optional_error_message_suffix)
+         kibuvits_throw("Maximum valid sindex is "+
+         i_max_valid_ixs.to_s+" < "+i_candidate.to_s+
+         " == <sindex candidate>"+s_suffix,a_binding)
+      end # if
+   end # loop
+end # kibuvits_assert_arrayixs
 
 #--------------------------------------------------------------------------
 
@@ -1123,11 +1230,11 @@ def kibuvits_assert_class_name_prefix(a_binding,ob,
       kibuvits_assert_string_min_length(a_binding,s_prefix,1)
    end # if
    s_cl=ob.class.to_s
-   rgx=Regexp.new($kibuvits_lc_powersign+s_prefix)
+   rgx=Regexp.new($kibuvits_lc_powersign+s_prefix+$kibuvits_lc_dotstar)
    md=rgx.match(s_cl)
    if md==nil
       s_varname=kibuvits_s_varvalue2varname(a_binding,ob)
-      s_varname="<an objec>" if s_varname.length==0
+      s_varname="<an object>" if s_varname.length==0
       msg=s_varname+".class.to_s==\""+s_cl+"\", but the "+
       "requested class name prefix is \""+s_prefix+"\". "
       if s_optional_error_message_suffix.class==String
@@ -1164,7 +1271,7 @@ def kibuvits_assert_responds_2_method(a_binding,ob,
    end # case x_method_name_or_method_or_symbol.class
    if !ob.respond_to? sym_x
       s_varname=kibuvits_s_varvalue2varname(a_binding,ob)
-      s_varname="<an objec>" if s_varname.length==0
+      s_varname="<an object>" if s_varname.length==0
       msg=s_varname+" is expected to have a method named \""+
       sym_x.to_s+"\", but it does not have it. "
       if s_optional_error_message_suffix.class==String
@@ -1199,7 +1306,7 @@ def kibuvits_impl_class_inheritance_assertion_funcs_t1(a_binding,ob,
    end # rescue
    if b_throw
       s_varname=kibuvits_s_varvalue2varname(a_binding,ob)
-      s_varname="<an objec>" if s_varname.length==0
+      s_varname="<an object>" if s_varname.length==0
       msg=s_varname+" is expected to be of class "+cl_or_s_class+
       ", but the Ruby source that describes "+
       "a class with that name has not been loaded. "
@@ -1213,7 +1320,7 @@ def kibuvits_impl_class_inheritance_assertion_funcs_t1(a_binding,ob,
       if ob.class!=cl
          if !(ob.kind_of?(cl))
             s_varname=kibuvits_s_varvalue2varname(a_binding,ob)
-            s_varname="<an objec>" if s_varname.length==0
+            s_varname="<an object>" if s_varname.length==0
             s_cl_name=cl_or_s_class.to_s
             msg=s_varname+".class is expected to be derived from the class "+
             s_cl_name+ ", but the "+s_varname+".class=="+ob.class.to_s+$kibuvits_lc_space
@@ -1226,7 +1333,7 @@ def kibuvits_impl_class_inheritance_assertion_funcs_t1(a_binding,ob,
    else
       if ob.class==cl
          s_varname=kibuvits_s_varvalue2varname(a_binding,ob)
-         s_varname="<an objec>" if s_varname.length==0
+         s_varname="<an object>" if s_varname.length==0
          s_cl_name=cl_or_s_class.to_s
          msg=s_varname+".class is expected to differ from class "+
          s_cl_name+", but the "+s_varname+".class=="+
@@ -1238,7 +1345,7 @@ def kibuvits_impl_class_inheritance_assertion_funcs_t1(a_binding,ob,
       else
          if !(ob.kind_of?(cl))
             s_varname=kibuvits_s_varvalue2varname(a_binding,ob)
-            s_varname="<an objec>" if s_varname.length==0
+            s_varname="<an object>" if s_varname.length==0
             s_cl_name=cl_or_s_class.to_s
             msg=s_varname+".class is expected to be derived from the class "+
             s_cl_name+ ", but the "+s_varname+".class=="+ob.class.to_s+$kibuvits_lc_space
@@ -1296,8 +1403,8 @@ def kibuvits_assert_is_among_values(a_binding,ob_or_ar_or_ht,
          end # if
       end # loop
       s_varname=kibuvits_s_varvalue2varname(a_binding,ob)
-      s_varname="<an objec>" if s_varname.length==0
-      msg="\n\n"+s_varname+
+      s_varname="<an object>" if s_varname.length==0
+      msg=$kibuvits_lc_doublelinebreak+s_varname+
       " does not have a value that is among the set of valid values. \n"+
       s_varname+"=="+ob.to_s
       if b_list_assembleable
@@ -1313,7 +1420,7 @@ def kibuvits_assert_is_among_values(a_binding,ob_or_ar_or_ht,
       if s_optional_error_message_suffix.class==String
          msg=msg+"\n"+s_optional_error_message_suffix
       end # if
-      msg=msg+"\n\n"
+      msg=msg+$kibuvits_lc_doublelinebreak
       kibuvits_throw(msg,a_binding)
    end # if
 end # kibuvits_assert_is_among_values
@@ -1353,11 +1460,11 @@ def kibuvits_assert_is_smaller_than_or_equal_to(a_binding,
    #------------------------------------------------------------
    # If the types in the array are wrong, then it's
    # probable that the values of those elements, that have
-   # a correct type, are alsow wrong. It's better to
-   # thorw before doing any calculations with the faulty
+   # a correct type, are also wrong. It's better to
+   # throw before doing any calculations with the faulty
    # values and throw at some other, more distant, place.
    # That explains the existence of this, extra, typechecking loop.
-   s_suffix="\nGUID='07cc9d2d-946e-46d1-917a-134180106ed7'"
+   s_suffix="\nGUID='f033d323-64f0-457b-b231-f09371c1ced7'"
    if s_optional_error_message_suffix!=nil
       s_suffix=(s_suffix+$kibuvits_lc_linebreak)+s_optional_error_message_suffix
    end # if
@@ -1366,7 +1473,7 @@ def kibuvits_assert_is_smaller_than_or_equal_to(a_binding,
       kibuvits_typecheck(a_binding,ar_allowed_classes,x_value,s_suffix)
    end # loop
    #---------------------
-   s_suffix="\nGUID='0aadb21a-91e1-494b-a17a-134180106ed7'"
+   s_suffix="\nGUID='23e89b05-d131-4875-ad31-f09371c1ced7'"
    if s_optional_error_message_suffix!=nil
       s_suffix=(s_suffix+$kibuvits_lc_linebreak)+s_optional_error_message_suffix
    end # if
@@ -1390,17 +1497,26 @@ def kibuvits_assert_is_smaller_than_or_equal_to(a_binding,
       break if b_throw
    end # loop
    if b_throw
+      s_0=" == "
       s_varname_1=kibuvits_s_varvalue2varname(a_binding,x_upper_bound_0)
-      s_varname_1="<an objec>" if s_varname_1.length==0
+      if s_varname_1.length==0 # Includes a case, where a numeric constant is an input
+         # Emtpystring.
+      else
+         s_varname_1<<s_0
+      end # if
       s_varname_2=kibuvits_s_varvalue2varname(a_binding,x_elem)
-      s_varname_2="<an objec>" if s_varname_2.length==0
-      msg="\n\n"+s_varname_1+" == "+x_upper_bound_0.to_s+
-      " < " + s_varname_2 + " == "+x_elem.to_s+
-      "\nGUID='1ce175bf-ce03-4aa5-b16a-134180106ed7'"
+      if s_varname_2.length==0 # Includes a case, where a numeric constant is an input
+         # Emtpystring.
+      else
+         s_varname_2<<s_0
+      end # if
+      msg=$kibuvits_lc_doublelinebreak+s_varname_1+x_upper_bound_0.to_s+
+      " < " + s_varname_2 + x_elem.to_s+
+      "\nGUID='1d450e86-31a3-4983-9831-f09371c1ced7'"
       if s_optional_error_message_suffix.class==String
          msg=msg+"\n"+s_optional_error_message_suffix
       end # if
-      msg=msg+"\n\n"
+      msg=msg+$kibuvits_lc_doublelinebreak
       kibuvits_throw(msg,a_binding)
    end # if
 end # kibuvits_assert_is_smaller_than_or_equal_to
@@ -1456,7 +1572,7 @@ def kibuvits_eval_t1(s_script, ar_in=nil)
          kibuvits_throw("The s_script seems to contain "+
          "something like ar_in=Array.new or ar_in=[] or something "+
          "similar. To avoid side-effects the ar_in must "+
-         "not be modified wihin the s_script.")
+         "not be modified within the s_script.")
       end # if
       rgx_ar_out=/([\s]|^|[;])ar_out[\s]*=[\s]*(\[|Array[.])/
       if s_script.match(rgx_ar_out)!=nil
@@ -1579,7 +1695,7 @@ end # kibuvits_call_by_ar_of_args
 #
 # i_bitlen in_Set{256,384,512}
 #
-def kibuvits_s_hash(s_in,i_bitlen=512)
+def kibuvits_s_hash_t1(s_in,i_bitlen=512)
    if KIBUVITS_b_DEBUG
       bn=binding()
       kibuvits_typecheck bn, String,s_in
@@ -1594,7 +1710,7 @@ def kibuvits_s_hash(s_in,i_bitlen=512)
    ob_hashfunc=Digest::SHA2.new(i_bitlen)
    s_out=ob_hashfunc.hexdigest(s_in)
    return s_out
-end # kibuvits_s_hash
+end # kibuvits_s_hash_t1
 
 
 #--------------------------------------------------------------------------
@@ -1622,7 +1738,7 @@ def kibuvits_assert_ar_elements_typecheck_if_is_array(a_binding,
    if KIBUVITS_b_DEBUG
       if ar_exp_classes.size==0
          msg="ar_exp_classes.size==0\n"+
-         "GUID='7fdf3a18-8a1b-428c-956a-134180106ed7'"
+         "GUID='81ccff7e-0ab3-4341-8121-f09371c1ced7'"
          kibuvits_throw(msg)
       end # if
       bn_1=nil
@@ -1723,10 +1839,10 @@ end # kibuvits_assert_does_not_contain_common_special_characters_t1
 
 #def kibuvits_s_file_permissions_t1(s_fp)
 #   if KIBUVITS_b_DEBUG
-#      s_suffix="\nGUID='cb7ff82d-acc7-44b1-946a-134180106ed7'"
+#      s_suffix="\nGUID='2738522c-d589-4163-b121-f09371c1ced7'"
 #      bn=binding()
 #      kibuvits_typecheck(bn,String,s_fp,s_suffix)
-#      s_suffix="\nGUID='d876555d-288f-4859-a46a-134180106ed7'"
+#      s_suffix="\nGUID='ad2fea40-12b0-45cd-b521-f09371c1ced7'"
 #      kibuvits_assert_string_min_length(bn,s_fp,1,s_suffix)
 #   end # if
 #
@@ -1764,4 +1880,3 @@ end # kibuvits_block_throws
 
 
 #==========================================================================
-

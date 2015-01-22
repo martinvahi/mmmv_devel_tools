@@ -334,6 +334,80 @@ class Kibuvits_ix_selftests
 
    #-----------------------------------------------------------------------
 
+   def Kibuvits_ix_selftests.test_x_apply_binary_operator_t1
+      func_oper_plus=lambda do |x_a,x_b|
+         x_out=x_a+x_b
+         return x_out
+      end # func_oper_plus
+      x_identity_element=""
+      ar_x=["ab","cd","ef"]
+      x_expected="abcdef"
+      x_0=Kibuvits_ix.x_apply_binary_operator_t1(x_identity_element,ar_x,func_oper_plus)
+      kibuvits_throw "test 1 x_0=="+x_0.to_s if x_0!=x_expected
+      #--------------
+      require "prime"
+      func_oper_star=lambda do |x_a,x_b|
+         x_out=x_a*x_b
+         return x_out
+      end # func_oper_star
+      i_n_of_primes=10000
+      ar_x=Prime.take(i_n_of_primes)
+      #----
+      ob_start_watershed=Time.new
+      x_0=Kibuvits_ix.x_apply_binary_operator_t1(x_identity_element,ar_x,func_oper_star)
+      ob_end_watershed=Time.new
+      ob_duration_watershed=ob_end_watershed-ob_start_watershed
+      #----
+      x_0=1
+      ob_start_plain=Time.new
+      i_n_of_primes.times do |ix|
+         x_0=x_0*ar_x[ix]
+      end # loop
+      ob_end_plain=Time.new
+      ob_duration_plain=ob_end_plain-ob_start_plain
+      #--------------
+      #puts "elephant_1 ob_duration_watershed=="+ob_duration_watershed.to_s
+      #puts "elephant_2 ob_duration_plain    =="+ob_duration_plain.to_s
+      if ob_duration_plain<=ob_duration_watershed
+         msg="ob_duration_watershed=="+ob_duration_watershed.to_s+
+         "\nob_duration_plain    =="+ob_duration_plain.to_s+
+         "\n GUID='b1950b61-30ae-4301-9ef2-22a35110ced7'\n\n"
+         kibuvits_throw "test 2 msg=="+msg
+      end # if
+   end # Kibuvits_ix_selftests.test_x_apply_binary_operator_t1
+
+   #-----------------------------------------------------------------------
+
+   def Kibuvits_ix_selftests.test_x_filter_t1
+      ar_in=[42,44,55,999,294,100,44]
+      ar_x_1_expected=[42,44,44]    # <= 50
+      ar_x_2_expected=[999,294,100] # >= 60
+      func_1=lambda do |x_key,x_value|
+         b_out=false
+         b_out=true if x_value<=50
+         return b_out
+      end # func_1
+      func_2=lambda do |x_key,x_value|
+         b_out=false
+         b_out=true if 60<=x_value
+         return b_out
+      end # func_2
+      ar_x_1=Kibuvits_ix.x_filter_t1(ar_in,func_1)
+      ar_x_2=Kibuvits_ix.x_filter_t1(ar_in,func_2)
+      i_ar_x_1_len=ar_x_1.size
+      i_ar_x_2_len=ar_x_2.size
+      kibuvits_throw "test 1a1 " if i_ar_x_1_len!=ar_x_1_expected.size
+      kibuvits_throw "test 1a2 " if i_ar_x_2_len!=ar_x_2_expected.size
+      i_ar_x_1_len.times do |ix|
+         kibuvits_throw "test 1b1" if  ar_x_1[ix]!=ar_x_1_expected[ix]
+      end # loop
+      i_ar_x_2_len.times do |ix|
+         kibuvits_throw "test 1b2" if  ar_x_2[ix]!=ar_x_2_expected[ix]
+      end # loop
+   end # Kibuvits_ix_selftests.test_x_filter_t1
+
+   #-----------------------------------------------------------------------
+
    public
    def Kibuvits_ix_selftests.selftest
       ar_msgs=Array.new
@@ -345,6 +419,8 @@ class Kibuvits_ix_selftests
       kibuvits_testeval bn, "Kibuvits_ix_selftests.test_normalize2array"
       kibuvits_testeval bn, "Kibuvits_ix_selftests.test_normalize2array_tests_2"
       kibuvits_testeval bn, "Kibuvits_ix_selftests.test_ht_merge_by_overriding_t1"
+      kibuvits_testeval bn, "Kibuvits_ix_selftests.test_x_apply_binary_operator_t1"
+      kibuvits_testeval bn, "Kibuvits_ix_selftests.test_x_filter_t1"
       return ar_msgs
    end # Kibuvits_ix_selftests.selftest
 

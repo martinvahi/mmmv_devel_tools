@@ -60,7 +60,9 @@ end # if
 
 class Renessaator_core
    attr_reader :s_renessaator_selftests_home
+
    private
+
    def init_constants
       @lc_ht_block='ht_block'.freeze
       @lc_ht_blocks='ht_blocks'.freeze
@@ -70,6 +72,7 @@ class Renessaator_core
       @lc_s_frame='s_frame'.freeze
       @lc_s_file_language='s_file_language'.freeze
       @lc_s_working_directory='s_working_directory'.freeze
+      @lc_s_singleliner_start_tag='s_singleliner_start_tag'.freeze
 
       @lc_block_ht_params='block_ht_params'.freeze
       @lc_block_ht_gen='block_ht_gen'.freeze # the generated output
@@ -100,7 +103,49 @@ class Renessaator_core
    def initialize
       init_constants
    end #initialize
+
    private
+
+   # Duplicates the call to the
+   #
+   #     Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags(...)
+   #
+   # but it's not called that often and the duplication
+   # allowes cleaner code elsewhere. Besides, the
+   #
+   #     Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags(...)
+   #
+   # should cache things anyway.
+   def exc_get_ar_singleliner_comment_start_tags(s_file_language,msgcs,
+      s_optional_error_message_suffix=nil)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, String, s_file_language
+         kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
+         kibuvits_typecheck bn, [String,NilClass],s_optional_error_message_suffix
+      end # if
+      ar_start_tags=Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags(
+      s_file_language,msgcs)
+      if msgcs.b_failure
+         msg="GUID='3e5422b4-3a54-4f3b-8e38-b16390611fd7'\n"
+         if s_optional_error_message_suffix!=nil
+            msg<<(s_optional_error_message_suffix+$kibuvits_lc_linebreak)
+         end # if
+         msgcs.assert_lack_of_failures(msg)
+      end # if
+      #------
+      if ar_start_tags.size<1
+         bn=binding()
+         msg="\nIt seems that no singleliner comment start tags \n"+
+         "have been declared for language \""+s_file_language+"\".\n"
+         if s_optional_error_message_suffix!=nil
+            msg<<(s_optional_error_message_suffix+$kibuvits_lc_linebreak)
+         end # if
+         kibuvits_assert_array_min_length(bn,ar_start_tags,1,msg)
+      end # if
+      return ar_start_tags
+   end # exc_get_ar_singleliner_comment_start_tags
+
 
    def create_ht_opmem(id_of_the_single_block_to_be_processed,
       msgcs,s_file_language,s_working_directory)
@@ -114,11 +159,16 @@ class Renessaator_core
       ht_opmem[@lc_s_block]=nil
       ht_opmem[@lc_s_file_language]=s_file_language
       ht_opmem[@lc_s_working_directory]=s_working_directory
-
-
       ht_opmem[@lc_tl_s_block_src_lang]=nil
+      #--------------------
+      ar_start_tags=exc_get_ar_singleliner_comment_start_tags(
+      s_file_language,msgcs,"GUID='5321ea4f-d820-40b8-9538-b16390611fd7'")
+      s_singleliner_start_tag=ar_start_tags[0]
+      ht_opmem[@lc_s_singleliner_start_tag]=s_singleliner_start_tag
+      #--------------------
       return ht_opmem
    end # create_ht_opmem
+
 
    def s_block_2_ht_block_remove_gensource ht_opmem
       msgcs=ht_opmem[@lc_msgcs]
@@ -133,12 +183,11 @@ class Renessaator_core
       @lc_tl_s_block_gen_start,@lc_tl_s_block_gen_end,s_block_frame,msgcs)
       return if msgcs.b_failure
       if ht_s_gensource_regions.length<1
-         s_comment_start_tag=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
-         s_file_language,msgcs)
+         s_singleliner_start_tag=ht_opmem[@lc_s_singleliner_start_tag]
          s_block_frame=s_block_frame+$kibuvits_lc_linebreak+
-         s_comment_start_tag+@lc_space+@lc_tl_s_block_gen_start+$kibuvits_lc_linebreak+
-         s_comment_start_tag+@lc_space+@lc_tl_s_block_gen_end+$kibuvits_lc_linebreak+
-         s_comment_start_tag+@lc_space
+         s_singleliner_start_tag+@lc_space+@lc_tl_s_block_gen_start+$kibuvits_lc_linebreak+
+         s_singleliner_start_tag+@lc_space+@lc_tl_s_block_gen_end+$kibuvits_lc_linebreak+
+         s_singleliner_start_tag+@lc_space
          s_block_frame,ht_s_gensource_regions=Kibuvits_str.pick_by_instance(
          @lc_tl_s_block_gen_start,@lc_tl_s_block_gen_end,
          s_block_frame,msgcs)
@@ -177,6 +226,7 @@ class Renessaator_core
          msgcs.last['Estonian']="Igas Renessaator'i blokis peab "+
          "olema täpselt 1 genereerimiskoodi blokk, kuid "+
          "antud juhtumil leiti neid "+x.to_s+" tükki."
+         return
       end # if
       ht_block[@lc_s_block_frame]=s_block_frame
       ht=Hash.new
@@ -197,12 +247,14 @@ class Renessaator_core
          @lc_tl_s_block_src_lang+"\" is missing.",6.to_s
          msgcs.last['Estonian']="Renessaator'i bloki parameeter "+
          "nimega \""+@lc_tl_s_block_src_lang+"\" on puudu."
+         return
       end # if
       if !ht_params.has_key? @lc_tl_s_block_id
          ht_params[@lc_tl_s_block_id]=nil # The block ID-s are optional.
       end # if
       ht_block[@lc_block_ht_params]=ht_params
    end # s_block_2_ht_block_extract_params
+
 
    def s_block_2_ht_block ht_opmem
       msgcs=ht_opmem[@lc_msgcs]
@@ -226,8 +278,9 @@ class Renessaator_core
       s_commentless_fame=$kibuvits_lc_emptystring
       ar_commentstrings.each{|s|s_commentless_fame=s_commentless_fame+s}
       ht_block[@lc_s_block_frame]=s_commentless_fame
-      s_block_2_ht_block_extract_src ht_opmem
-      s_block_2_ht_block_extract_params ht_opmem
+      s_block_2_ht_block_extract_src(ht_opmem)
+      return if msgcs.b_failure
+      s_block_2_ht_block_extract_params(ht_opmem)
    end # s_block_2_ht_block
 
 
@@ -321,9 +374,7 @@ class Renessaator_core
    def ht_block_2_s_block ht_opmem
       msgcs=ht_opmem[@lc_msgcs]
       s_file_language=ht_opmem[@lc_s_file_language]
-      s_oneliner_comment_start_tag=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
-      s_file_language,msgcs)
-      return if msgcs.b_failure
+      s_singleliner_start_tag=ht_opmem[@lc_s_singleliner_start_tag]
       ht_block=ht_opmem[@lc_ht_block]
       s_commentless_frame=ht_block[@lc_s_block_frame]
       s_stderr=ht_block[@lc_block_s_stderr]
@@ -331,29 +382,28 @@ class Renessaator_core
       # Hence the comment tag is skipped at first.
       s_gen=@lc_tl_s_block_gen_start+$kibuvits_lc_linebreak
       if s_stderr!=nil
-         s_gen=s_gen+s_oneliner_comment_start_tag+@lc_space+
+         s_gen=s_gen+s_singleliner_start_tag+@lc_space+
          @lc_tl_s_block_stderr_start+$kibuvits_lc_linebreak
          # The line-breaks of the stderr are probably OS specific.
          s_gen=s_gen+Kibuvits_str.surround_lines(
-         s_oneliner_comment_start_tag+@lc_space,s_stderr,"",false)
-         s_gen=s_gen+$kibuvits_lc_linebreak+s_oneliner_comment_start_tag+
+         s_singleliner_start_tag+@lc_space,s_stderr,"",false)
+         s_gen=s_gen+$kibuvits_lc_linebreak+s_singleliner_start_tag+
          @lc_space+@lc_tl_s_block_stderr_end+$kibuvits_lc_linebreak
       end # if
       s_gen=s_gen+ht_block[@lc_block_ht_gen]['s_gen']+$kibuvits_lc_linebreak
-      s_gen=s_gen+s_oneliner_comment_start_tag+
+      s_gen=s_gen+s_singleliner_start_tag+
       @lc_space+@lc_tl_s_block_gen_end
       s_gen_guid=ht_block[@lc_block_ht_gen]['GUID']
       s_src=@lc_tl_s_block_src_start+$kibuvits_lc_linebreak
       s_src_without_file_commenttag=ht_block[@lc_block_ht_src]['s_src']
       s_src=s_src+Kibuvits_str.surround_lines(
-      s_oneliner_comment_start_tag+@lc_space,
+      s_singleliner_start_tag+@lc_space,
       s_src_without_file_commenttag,"",true)
-      s_src=s_src+$kibuvits_lc_linebreak+s_oneliner_comment_start_tag+
+      s_src=s_src+$kibuvits_lc_linebreak+s_singleliner_start_tag+
       @lc_space+@lc_tl_s_block_src_end
       s_src_guid=ht_block[@lc_block_ht_src]['GUID']
       s_frame_with_filecommenttags=Kibuvits_str.surround_lines(
-      s_oneliner_comment_start_tag,
-      s_commentless_frame,"",true)
+      s_singleliner_start_tag,s_commentless_frame,"",true)
       ht_needles=Hash.new
       ht_needles[s_gen_guid]=s_gen
       ht_needles[s_src_guid]=s_src
@@ -367,7 +417,115 @@ class Renessaator_core
       ht_block[@lc_s_block]=s_block
    end # ht_block_2_s_block
 
+
+   def verify_renessaator_blocks_to_use_right_comment_strings(
+      ht_opmem,ht_s_blocks)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, Hash, ht_opmem
+         kibuvits_typecheck bn, Hash, ht_s_blocks
+         ar_ht_s_blocks_values=ht_s_blocks.values
+         kibuvits_typecheck_ar_content(bn,String,ar_ht_s_blocks_values,
+         "GUID='8261753c-34a1-4388-9338-b16390611fd7'")
+      end # if
+      msgcs=ht_opmem[@lc_msgcs]
+      msgcs.assert_lack_of_failures # just in case
+      s_file_language=ht_opmem[@lc_s_file_language]
+      #--------
+      # The
+      #
+      #     ht_opmem[@lc_s_singleliner_start_tag]
+      #
+      # is used for writing the blocks back to the code, but
+      # programming languages might support more than one singleliner
+      # start tag.
+      ar_start_tags=Kibuvits_comments_detector.ar_get_singleliner_comment_start_tags(
+      s_file_language,msgcs)
+      msgcs.assert_lack_of_failures # here will only detect a flaw in code,
+      # because the tests have been done at the first call to the method.
+      #--------
+      ar_b_starttag_starts_with_space=Array.new
+      i_ar_start_tags_len=ar_start_tags.size
+      b_starttag_starts_with_space=nil
+      s_singleliner_start_tag=nil
+      s_0=nil
+      rgx_0=/^[\s\n\r\t]/
+      i_ar_start_tags_len.times do |ix|
+         s_singleliner_start_tag=ar_start_tags[ix]
+         b_starttag_starts_with_space=false
+         s_0=s_singleliner_start_tag.sub(rgx_0,$kibuvits_lc_emptystring)
+         if s_0.length!=s_singleliner_start_tag.length
+            b_starttag_starts_with_space=true
+         end # if
+         ar_b_starttag_starts_with_space<<b_starttag_starts_with_space
+      end # loop
+      #--------
+      ar_ht_s_blocks_values=ht_s_blocks.values # mainly for non-debug-mode
+      ix_starttag=nil
+      b_line_has_proper_start_tag=nil
+      func_report_failure=lambda do |s_block_content_without_autogenerated_text|
+         s_separator=", "
+         s_left_brace=$kibuvits_lc_doublequote
+         s_right_brace=s_left_brace
+         s_0=Kibuvits_str.array2xseparated_list(ar_start_tags,
+         s_separator,s_left_brace,s_right_brace)
+         #----
+         s_default_msg="Language \""+s_file_language+"\" has only the following \n"+
+         "singleliner comment start tags  declared: "+s_0+
+         "\nThe following Renessaator block fragment uses \n"+
+         "an undeclared singleliner comment start tag\n"+
+         "or is missing a singleliner comment start tag:\n\n"+
+         s_block_content_without_autogenerated_text+
+         "\n\n\n\nGUID='39742585-b036-4dad-9e28-b16390611fd7'\n\n"
+         s_message_id="renessaator_data_wrong_singleliner_comment_start_tag_t1"
+         b_failure=true
+         msgcs.cre(s_default_msg,s_message_id,b_failure,
+         "a4a24e2a-3c04-40c2-9438-b16390611fd7")
+      end # func_report_failure
+      s_line_trimmed=nil
+      s_block_content_without_autogenerated_text=nil
+      ht_tmp_blocks=nil
+      ar_ht_s_blocks_values.each do |s_block_content| # without block star and end tags
+         #---------
+         # The autogenerated text needs to be removed, because
+         # it does not have to consist of outcommented text.
+         s_block_content_without_autogenerated_text,ht_tmp_blocks=Kibuvits_str.pick_by_instance(
+         @lc_tl_s_block_gen_start,@lc_tl_s_block_gen_end,s_block_content,msgcs)
+         return if msgcs.b_failure
+         ht_tmp_blocks.each_key do |s_key|
+            s_block_content_without_autogenerated_text.gsub!(s_key,$kibuvits_lc_emptystring)
+         end # loop
+         #---------
+         s_block_content_without_autogenerated_text.each_line do |s_line|
+            s_line_trimmed=Kibuvits_str.trim(s_line)
+            next if s_line_trimmed==$kibuvits_lc_emptystring
+            b_line_has_proper_start_tag=false
+            i_ar_start_tags_len.times do |ix_ar_start_tags|
+               s_singleliner_start_tag=ar_start_tags[ix_ar_start_tags]
+               b_starttag_starts_with_space=ar_b_starttag_starts_with_space[ix_ar_start_tags]
+               if b_starttag_starts_with_space # Not placed out of the loops to keep code compact.
+                  s_0=s_line
+               else # OK to trim every line in block
+                  s_0=s_line_trimmed
+               end # if
+               # "abc".index("b")==1     "abc".index("X")==nil
+               ix_starttag=s_0.index(s_singleliner_start_tag)
+               if ix_starttag==0
+                  b_line_has_proper_start_tag=true
+                  break
+               end # if
+            end # loop over singleliner start tags
+            if !b_line_has_proper_start_tag
+               func_report_failure.call(s_block_content_without_autogenerated_text)
+               break
+            end # if
+         end # loop over single lines
+         break if msgcs.b_failure
+      end # loop over blocks
+   end # verify_renessaator_blocks_to_use_right_comment_strings
+
    public
+
    # if the id_of_the_single_block_to_be_processed==nil,
    # the generative parts of all of the blocks will be processed.
    #
@@ -384,13 +542,31 @@ class Renessaator_core
       end # if
       ht_opmem=create_ht_opmem(id_of_the_single_block_to_be_processed,
       msgcs, s_file_language,s_working_directory)
+      #-----------
+      # The pick_by_instance does not study the
+      # comment marks at all, which means that it
+      # will extract Renessaator blocks that are
+      # outcommented by using comment marks that
+      # are not in use in the programming language
+      # that the file is written in. For example,
+      # a Renessaator block that has been
+      # outcommented by using "#" will get
+      # extracted from C file despite the fact that
+      # C does not support "#" as an outcommenting string.
+      # That will result further problems in the code that tries to
+      # process the extracted Renessaator block,
+      # unless the error is discovered and an exception is thrown.
       s_frame,ht_s_blocks=Kibuvits_str.pick_by_instance(
       @lc_tl_s_block_start,@lc_tl_s_block_end,s_file_content,msgcs)
+      return if msgcs.b_failure
+      verify_renessaator_blocks_to_use_right_comment_strings(
+      ht_opmem,ht_s_blocks)
+      #-----------
       ht_opmem[@lc_s_frame]=s_frame
       ht_opmem[@lc_ht_s_blocks]=ht_s_blocks
       ht_s_blocks_2_ht_blocks(ht_opmem)
-      ht_blocks=ht_opmem[@lc_ht_blocks]
       return if msgcs.b_failure
+      ht_blocks=ht_opmem[@lc_ht_blocks]
       s_block=nil
       ht_blocks.each_pair do |s_guid,ht_block|
          ht_opmem[@lc_ht_block]=ht_block
@@ -410,19 +586,23 @@ class Renessaator_core
       id_of_the_single_block_to_be_processed=nil)
       s_out=Renessaator_core.instance.run(s_source,
       id_of_the_single_block_to_be_processed)
+      return if msgcs.b_failure # an overkill, but partly as a comment
       return s_out
    end # Renessaator_core.run
 
-   def get_bloc_template s_file_language,msgcs
+   def get_bloc_template(s_file_language,msgcs)
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_typecheck bn, String, s_file_language
          kibuvits_typecheck bn, Kibuvits_msgc_stack, msgcs
       end # if
-      s_start_tag=Kibuvits_comments_detector.get_singleliner_comment_start_tag(
-      s_file_language,msgcs)
-      s_lns=s_start_tag+@lc_space
-      s_out=""
+      #----------
+      ar_start_tags=exc_get_ar_singleliner_comment_start_tags(
+      s_file_language,msgcs,"GUID='69a74a50-6fab-419f-a128-b16390611fd7'")
+      s_singleliner_start_tag=ar_start_tags[0]
+      #----------
+      s_lns=s_singleliner_start_tag+@lc_space
+      s_out=$kibuvits_lc_emptystring
       # The start and end of the s_id are for simplifying
       # the use of vimscript based editing. The GUIDs are used
       # for preventing ID collisions.
@@ -447,10 +627,14 @@ class Renessaator_core
    end # Renessaator_core.get_bloc_template
 
    public
+
    include Singleton
    # The selftest part is done through the Renessaator_console_UI
    # selftests.
+
 end # class Renessaator_core
+
+
 
 #--------------------------------------------------------------------------
 class Renessaator_console_UI
@@ -597,13 +781,13 @@ class Renessaator_console_UI
    def run_renessaator_file_path_2_file_container_directory s_file_path
       if s_file_path.length==0
          kibuvits_throw("\n\ns_file_path.length==0\n"+
-         "\nGUID='917a8d42-cf62-4393-91a9-331301b13dd7'")
+         "\nGUID='95b6b194-c394-43e4-b228-b16390611fd7'")
       end #if
       s_out=Pathname.new(s_file_path).realpath.parent.to_s
       return s_out
    end # run_renessaator_file_path_2_file_container_directory
 
-   def run_renessaator ht_args, msgcs
+   def run_renessaator(ht_args, msgcs)
       normalize_ht_args ht_args#for assumption localization, used in selftests
       ar_file_path_candidates=ht_args['--files']
       kibuvits_writeln helpstring(ht_args) if ar_file_path_candidates.length==0
@@ -625,7 +809,7 @@ class Renessaator_console_UI
       if s_renessaator_block_id!=nil
          s_renessaator_block_id=ht_args['--block-id'][0]
       end # if
-      s_file_path_for_errmsg="undetermined"
+      s_file_path_for_errmsg=$kibuvits_lc_undetermined
       s_working_directory=nil
       ar_file_path_candidates.each do |s_file_path|
          s_file_path_for_errmsg=s_file_path
@@ -707,14 +891,17 @@ class Renessaator_console_UI
       return false
    end # dirty_workaround_to_the_lack_of_zeroormore_parse_option
 
-   def exit_if_bloc_printing_requested ht_args, msgcs
+
+   # The exit_if_the_displaying_of_a_random_block_example_requested
+   # is very similar to this mehtod.
+   def exit_if_the_displaying_of_a_block_template_requested ht_args, msgcs
       return if ht_args['--the_displaying_of_a_block_template']==nil
       s_fp=ht_args['--files'][0]
       s_file_language=Kibuvits_file_intelligence.file_language_by_file_extension(s_fp,msgcs)
       if msgcs.b_failure
          if ht_args['--language']!=nil
             s_language=ht_args['--language'][0]
-            kibuvits_writeln msgcs.to_s[s_language]
+            kibuvits_writeln msgcs.to_s(s_language+$kibuvits_lc_doublelinebreak)
          else
             kibuvits_writeln msgcs.to_s
          end # if
@@ -723,26 +910,20 @@ class Renessaator_console_UI
       s_block_template=Renessaator_core.get_bloc_template(s_file_language,msgcs)
       kibuvits_writeln s_block_template
       exit
-   end # exit_if_bloc_printing_requested
+   end # exit_if_the_displaying_of_a_block_template_requested
 
-   # The exit_if_bloc_printing_requested partly duplicates this mehtod.
-   def exit_if_template_printing_requested ht_args, msgcs
+
+   # The exit_if_the_displaying_of_a_block_template_requested
+   # is very similar to this mehtod.
+   def exit_if_the_displaying_of_a_random_block_example_requested ht_args, msgcs
       return if ht_args['--the_displaying_of_a_random_block_example']==nil
       s_block_template=Renessaator_core.get_bloc_template("ruby",msgcs)
-      if msgcs.b_failure
-         if ht_args['--language']!=nil
-            s_language=ht_args['--language'][0]
-            kibuvits_writeln msgcs.to_s[s_language]
-         else
-            kibuvits_writeln msgcs.to_s
-         end # if
-         exit
-      end # if
+      msgcs.assert_lack_of_failures("GUID='39030721-ba53-4814-b428-b16390611fd7'")
       s_msg="\nRenessaator block example for a Ruby file:\n\n"+
       s_block_template+$kibuvits_lc_doublelinebreak
       kibuvits_writeln s_msg
       exit
-   end # exit_if_template_printing_requested
+   end # exit_if_the_displaying_of_a_random_block_example_requested
 
    public
 
@@ -763,9 +944,9 @@ class Renessaator_console_UI
          # TODO: the language parameter gets lost with the ext_if funcs.
          exit_if_true ht_args,msgcs.b_failure
          exit_if_true ht_args,help_requested_or_erroneous_console_input(ht_args)
-         exit_if_bloc_printing_requested ht_args,msgcs
-         exit_if_template_printing_requested ht_args,msgcs
-         run_renessaator ht_args, msgcs
+         exit_if_the_displaying_of_a_block_template_requested ht_args,msgcs
+         exit_if_the_displaying_of_a_random_block_example_requested ht_args,msgcs
+         run_renessaator(ht_args, msgcs)
          if msgcs.b_failure
             b_failure=false
             s_out=$kibuvits_lc_emptystring
@@ -775,7 +956,7 @@ class Renessaator_console_UI
                if ht_args['--throw_on_input_verification_failures']!=nil
                   b_throw_on_input_verification_failures=true
                end # if
-               s_out=$kibuvits_lc_emptystring+msgcs.to_s[ht_args['--language'][0]]
+               s_out=$kibuvits_lc_emptystring+msgcs.to_s(ht_args['--language'][0])
             rescue
                b_failure=true
                # TODO: The next line should be outcommented,
@@ -848,7 +1029,7 @@ class Renessaator_console_UI
          ht_filesystemtest_failures)
          File.delete(s_fp)
       end # if
-      sh "cp "+s_fp_template+@lc_space+s_fp+" ;"
+      kibuvits_sh("cp "+s_fp_template+@lc_space+s_fp+" ;")
       ht_filesystemtest_failures=Kibuvits_fs.verify_access(
       s_fp,"is_file,readable,writable")
       Kibuvits_fs.exit_if_any_of_the_filesystem_tests_failed(
@@ -888,6 +1069,7 @@ class Renessaator_console_UI
    end # Renessaator_console_UI.test_1
 
    def test_2
+      kibuvits_write("\nThe test_2 has been temporarily removed from the set of tests.\n\n")
    end # test_2
 
    def Renessaator_console_UI.test_2

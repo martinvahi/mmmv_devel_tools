@@ -47,6 +47,8 @@ if !defined? KIBUVITS_HOME
 end # if
 
 require  KIBUVITS_HOME+"/src/include/kibuvits_str_concat_array_of_strings.rb"
+require  KIBUVITS_HOME+"/src/include/security/kibuvits_rng.rb"
+require  KIBUVITS_HOME+"/src/include/kibuvits_msgc.rb"
 
 #==========================================================================
 
@@ -85,7 +87,7 @@ class Kibuvits_security_core
             if ar_of_ar_speedhack.size!=i_number_of_columns
                msg="ar_of_ar_speedhack.size=="+ar_of_ar_speedhack.size.to_s+
                " != i_number_of_columns=="+i_number_of_columns.to_s
-               "GUID='e3a4bf26-913a-4e15-b1d2-c251d0914ed7'"
+               "GUID='63750a36-24d6-4732-825b-60d01021ced7'"
                kibuvits_throw(msg)
             end # if
          end # if
@@ -1747,7 +1749,21 @@ class Kibuvits_security_core
          ar_chars_raw=ar_chars_raw+(s_0+s_1).scan(rgx)
          #------------------------
          ar_chars_raw.uniq! # expensive due to data set size
-         @ar_s_set_of_alphabets_t1_ar_chars=ar_chars_raw.freeze
+         #---------------------------
+         # The freezing of characters in the alphabet avoids
+         # memory allocation at random charstream generation.
+         # The next loop will probably allocate more memory
+         # than would usually be done at random charstream generation,
+         # but it makes applications more robust, fault proof.
+         # The freezing targets methods String.upcase, String.downcase, etc.
+         i_ar_chars_raw_len=ar_chars_raw.size
+         ar_chars_raw_frozen=Array.new(i_ar_chars_raw_len,$kibuvits_lc_emptystring)
+         i_ar_chars_raw_len.times do |ix|
+            ar_chars_raw_frozen[ix]=ar_chars_raw[ix].freeze
+         end # loop
+         ar_chars_raw.clear
+         #---------------------------
+         @ar_s_set_of_alphabets_t1_ar_chars=ar_chars_raw_frozen.freeze
       end # synchronize
       ar_out=@ar_s_set_of_alphabets_t1_ar_chars
       return ar_out
@@ -1757,6 +1773,67 @@ class Kibuvits_security_core
       ar_out=Kibuvits_security_core.instance.ar_s_set_of_alphabets_t1
       return ar_out
    end # Kibuvits_security_core.ar_s_set_of_alphabets_t1
+
+   #-----------------------------------------------------------------------
+
+   # If string of random characters is needed, then it is
+   # recommended to concatenate the characters like that:
+   #
+   #     s_charstream=kibuvits_s_concat_array_of_strings(ar_array_of_characters)
+   #
+   def ar_random_charstream_t1(i_lenght_or_output_array=1,b_fast_in_stead_of_thorough=true)
+      cl=i_lenght_or_output_array.class
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [Fixnum,Array,Bignum], i_lenght_or_output_array
+         kibuvits_typecheck bn, [TrueClass,FalseClass], b_fast_in_stead_of_thorough
+         if cl==Array
+            i_ar_lenght=i_lenght_or_output_array.size
+            kibuvits_assert_is_smaller_than_or_equal_to(bn,
+            0, i_ar_lenght,"\n GUID='4606bf59-39f2-409d-944b-60d01021ced7'\n\n")
+         else
+            kibuvits_assert_is_smaller_than_or_equal_to(bn,
+            0, i_lenght_or_output_array,
+            "\n GUID='58b71b74-5e7c-4b42-8c2b-60d01021ced7'\n\n")
+         end # if
+      end # if
+      #----------
+      ar_out=nil
+      i_len=nil
+      if cl==Array
+         ar_out=i_lenght_or_output_array
+         i_len=ar_out.size
+         return ar_out if i_len==0
+      else
+         i_len=i_lenght_or_output_array
+         return [] if i_len==0
+         ar_out=Array.new(i_len,42)
+      end # if
+      #----------
+      ar_alphabet=ar_s_set_of_alphabets_t1()
+      i_max_index_in_ar_alphabet=ar_alphabet.size-1
+      ix_char=nil
+      if (b_fast_in_stead_of_thorough)
+         i_len.times do |ix|
+            ix_char=Kibuvits_rng.i_random_fast_t1(i_max_index_in_ar_alphabet)
+            ar_out[ix]=ar_alphabet[ix_char]
+         end # loop
+      else
+         i_len.times do |ix|
+            ix_char=Kibuvits_rng.i_random_t1(i_max_index_in_ar_alphabet)
+            ar_out[ix]=ar_alphabet[ix_char]
+         end # loop
+      end # if
+      return ar_out
+   end # ar_random_charstream_t1
+
+
+   def Kibuvits_security_core.ar_random_charstream_t1(
+      i_lenght_or_output_array=1,b_fast_in_stead_of_thorough=true)
+      ar_out=Kibuvits_security_core.instance.ar_random_charstream_t1(
+      i_lenght_or_output_array,b_fast_in_stead_of_thorough)
+   end  # Kibuvits_security_core.ar_random_charstream_t1
+
 
    #-----------------------------------------------------------------------
 
@@ -1784,7 +1861,7 @@ class Kibuvits_security_core
    # an output hashtable that mimics a sparse table.
    #
    # Any of the integers within the the key-value pairs
-   # that the func_gen retunrs is allowed to be greater
+   # that the func_gen returns is allowed to be greater
    # than the maximum index of the alphabet or smaller than
    # zero, because they are placed to the output
    # hashtable according to the following formula:
@@ -1803,17 +1880,17 @@ class Kibuvits_security_core
          if i_ar_params_len!=1
             kibuvits_throw("i_ar_params_len == "+
             i_ar_params_len.to_s+" != 1\n"+
-            "GUID='116b0a65-4770-472b-a1b2-c251d0914ed7'\n")
+            "GUID='49046758-c92e-4b18-b41b-60d01021ced7'\n")
          end # if
          ar_paramdesc=ar_params[0]
          if ar_paramdesc[0]!=:req
             kibuvits_throw("ar_paramdesc[0]=="+ar_paramdesc[0].to_s+
-            "GUID='5009f043-62a3-44f4-95a2-c251d0914ed7'\n")
+            "GUID='3a5d7548-6723-4a5a-92fa-60d01021ced7'\n")
          end # if
          #-----------
          i_alphabet_max_index=i_alphabet_length-1
          kibuvits_assert_is_smaller_than_or_equal_to(bn,1,i_alphabet_max_index,
-         "GUID='5080b934-8e36-4006-8482-c251d0914ed7'\n")
+         "GUID='9bacf720-64f7-4f8e-a3ea-60d01021ced7'\n")
          #-----------
          i_0=20
          i_0=i_alphabet_length if i_alphabet_length<i_0
@@ -1828,7 +1905,7 @@ class Kibuvits_security_core
                if i_ar_keyvalue_pair_len!=2
                   kibuvits_throw("i_ar_keyvalue_pair_len == "+
                   i_ar_keyvalue_pair_len.to_s+" != 2 \n"+
-                  "GUID='d4f27356-c0b0-40e1-a572-c251d0914ed7'\n")
+                  "GUID='b0d1075a-216d-42d3-83ca-60d01021ced7'\n")
                end # if
                i_key=ar_keyvalue_pair[0]
                i_value=ar_keyvalue_pair[1]
@@ -1882,7 +1959,7 @@ class Kibuvits_security_core
       bn=binding()
       kibuvits_typecheck bn, [Fixnum,Bignum], i_year if KIBUVITS_b_DEBUG
       kibuvits_assert_is_smaller_than_or_equal_to(bn,2014,i_year,
-      "GUID='ecac9921-7680-486a-a562-c251d0914ed7'\n")
+      "GUID='5f22014c-3fe4-4ebf-92ba-60d01021ced7'\n")
       #------------------
       # According to
       # http://www.theguardian.com/world/2014/feb/12/utah-lawmaker-nsa-data-centre-water-supply
@@ -1895,9 +1972,9 @@ class Kibuvits_security_core
       fd_water_litres_per_second=fd_water_gallons_per_second*i_litres_per_gallon
       fd_water_kg_per_second=fd_water_litres_per_second*1
       # They probably will not import the water in ice form
-      # and shuld they use standard materials for
+      # and should they use standard materials for
       # building steam infrastructure, then the best that they can
-      # get their hands on is probably equpment that is used for
+      # get their hands on is probably equipment that is used for
       # nuclear submarines. The temperature of
       # steam in nuclear reactors is about 315C.
       #
@@ -1932,7 +2009,7 @@ class Kibuvits_security_core
       i_nsa_cpu_operations_per_second_i_year=i_nsa_cpu_operations_per_second_2014+
       i_nsa_cpu_operations_per_second_2014*i_2n
       # There are probably more than one data centers and
-      # some computing resource is rented from Anazon, etc.
+      # some computing resource is rented from Amazon, etc.
       i_out=i_nsa_cpu_operations_per_second_i_year.floor*2
       return i_out
    end # i_nsa_cpu_cycles_per_second_t1
@@ -1962,9 +2039,12 @@ class Kibuvits_security_core
       m=i_m
       if KIBUVITS_b_DEBUG
          bn=binding()
-         kibuvits_typecheck bn, [Fixnum,Bignum], i_cleartext_or_chiphertext
-         kibuvits_typecheck bn, [Fixnum,Bignum], i_key
-         kibuvits_typecheck bn, [Fixnum,Bignum], i_m
+         kibuvits_typecheck(bn, [Fixnum,Bignum], i_cleartext_or_chiphertext,
+         "GUID='531c75f1-d7b7-4eb2-a39a-60d01021ced7'")
+         kibuvits_typecheck(bn, [Fixnum,Bignum], i_key,
+         "GUID='bd54d3a7-c69c-4f9c-928a-60d01021ced7'")
+         kibuvits_typecheck(bn, [Fixnum,Bignum], i_m,
+         "GUID='9793c021-a4b9-4395-b58a-60d01021ced7'")
          kibuvits_assert_is_smaller_than_or_equal_to(bn,2,m)
          kibuvits_assert_is_smaller_than_or_equal_to(bn,0,aa)
          kibuvits_assert_is_smaller_than_or_equal_to(bn,0,bb)

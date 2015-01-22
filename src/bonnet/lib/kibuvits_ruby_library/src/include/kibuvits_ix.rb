@@ -259,6 +259,11 @@ class Kibuvits_ix
    # normalize2array_insert_2_ht(
    #         ht_values_that_result_an_empty_array,<the value>)
    #
+   # To normalize a commaseparated string to an array of strings,
+   #
+   #     Kibuvits_str.normalize_str_2_array_of_s_t1(...)
+   #
+   # should be used.
    def normalize2array(x_array_or_something_else,
       ht_values_that_result_an_empty_array=nil)
       if KIBUVITS_b_DEBUG
@@ -291,6 +296,56 @@ class Kibuvits_ix
    end # Kibuvits_ix.normalize2array
 
    #-----------------------------------------------------------------------
+
+   # The func_returns_true_if_element_is_part_of_output is fed
+   # 2 arguments: x_key, x_value. For arrays the x_key is an index.
+   #
+   # If the ar_or_ht_in is an array, then the
+   # output will also be an array. Otherwise the output will be
+   # a hashtable.
+   def x_filter_t1(ar_or_ht_in,func_returns_true_if_element_is_part_of_output)
+      if KIBUVITS_b_DEBUG
+         bn=binding()
+         kibuvits_typecheck bn, [Array,Hash],ar_or_ht_in
+         kibuvits_typecheck bn, Proc,func_returns_true_if_element_is_part_of_output
+      end # if
+      x_out=nil
+      cl=ar_or_ht_in.class
+      b_add_2_output=nil
+      if cl==Array
+         ar_in=ar_or_ht_in
+         ar_out=Array.new
+         i_ar_in_len=ar_in.size
+         x_value=nil
+         i_ar_in_len.times do |ix|
+            x_value=ar_in[ix]
+            b_add_2_output=func_returns_true_if_element_is_part_of_output.call(
+            ix,x_value)
+            ar_out<<x_value if b_add_2_output
+         end # loop
+         return ar_out
+      else # cl==Hash
+         ht_in=ar_or_ht_in
+         ht_out=Hash.new
+         ht_in.each_pair do |x_key, x_value|
+            b_add_2_output=func_returns_true_if_element_is_part_of_output.call(
+            x_key,x_value)
+            ht_out[x_key]=x_vaoue if b_add_2_output
+         end # loop
+         return ht_out
+      end # if
+      kibuvits_throw("There's a flaw. \n"+
+      "GUID='13f6a514-750d-4573-8146-409140211fd7'\n\n")
+   end # x_filter_t1
+
+   def Kibuvits_ix.x_filter_t1(ar_or_ht_in,func_returns_true_if_element_is_part_of_output)
+      x_out=Kibuvits_ix.instance.x_filter_t1(
+      ar_or_ht_in,func_returns_true_if_element_is_part_of_output)
+      return x_out
+   end # Kibuvits_ix.x_filter_t1
+
+   #-----------------------------------------------------------------------
+
    # Explanation by example:
    # ht_1=Hash.new
    # ht_2=Hash.new
@@ -337,6 +392,183 @@ class Kibuvits_ix
       ar_hashtables)
       return ar_out
    end # Kibuvits_ix.ht_merge_by_overriding_t1
+
+   #-----------------------------------------------------------------------
+
+   # This function is a generalisation of the
+   # kibuvits_s_concat_array_of_strings(...), which is
+   # a memory access paterns based speed optimization of
+   # the 2-liner:
+   #
+   #     s_sum=""
+   #     ar_strings.size.times{|ix| s_sum=s_sum+ar_strings[ix]}
+   #
+   # and yes, in the case of huge strings and arrays with
+   # lots of elements the speed improvement can be 50%.
+   #
+   # The x_identity_element is defined by the following formula:
+   #
+   #  (  func_operator_that_might_be_noncommutative.call(ar_in[ix],x_identity_element)==
+   #   ==func_operator_that_might_be_noncommutative.call(x_identity_element,ar_in[ix])==
+   #   ==ar_in[ix] ) === true
+   #
+   # -----demo--code---start-----
+   #
+   #     require "prime"
+   #     func_oper_star=lambda do |x_a,x_b|
+   #        x_out=x_a*x_b
+   #        return x_out
+   #     end # func_oper_star
+   #     i_n_of_primes=100000
+   #     ar_x=Prime.take(i_n_of_primes)
+   #     #----
+   #     ob_start_1=Time.new
+   #     x_0=Kibuvits_ix.x_apply_binary_operator_t1(x_identity_element,ar_x,func_oper_star)
+   #     ob_end_1=Time.new
+   #     ob_duration_1=ob_end_1-ob_start_1
+   #     #----
+   #     x_0=1
+   #     ob_start_2=Time.new
+   #     i_n_of_primes.times do |ix|
+   #        x_0=x_0*ar_x[ix]
+   #     end # loop
+   #     ob_end_2=Time.new
+   #     ob_duration_2=ob_end_2-ob_start_2
+   #     #--------------
+   #     puts "elephant_1 ob_duration_1=="+ob_duration_1.to_s
+   #     puts "elephant_2 ob_duration_2=="+ob_duration_2.to_s
+   #
+   # -----demo--code---end-------
+   #
+   # The console output of the demo code:
+   #
+   #     elephant_1 ob_duration_1==0.245117211
+   #     elephant_2 ob_duration_2==28.308270365
+   #
+   # Yes, speed improvement is over 300% (three hundred) percent!
+   #
+   def x_apply_binary_operator_t1(x_identity_element,ar_in,
+      func_operator_that_might_be_noncommutative)
+      # There is no point of reading this code, because
+      # it is a slightly edited version of the
+      # kibuvits_s_concat_array_of_strings(...) core.
+      # The comments and explanations are mostly there.
+      if defined? KIBUVITS_b_DEBUG
+         if KIBUVITS_b_DEBUG
+            bn=binding()
+            kibuvits_typecheck bn, Array, ar_in
+            kibuvits_typecheck bn, Proc, func_operator_that_might_be_noncommutative
+         end # if
+      end # if
+      func_oper=func_operator_that_might_be_noncommutative
+      i_n=ar_in.size
+      if i_n<3
+         if i_n==2
+            x_out=func_oper.call(ar_in[0],ar_in[1])
+            return x_out
+         else
+            if i_n==1
+               # For the sake of consistency one
+               # wants to make sure that the returned
+               # string instance always differs from those
+               # that are within the ar_in.
+               x_out=func_oper.call(x_identity_element,ar_in[0])
+               return x_out
+            else # i_n==0
+               x_out=x_identity_element
+               return x_out
+            end # if
+         end # if
+      end # if
+      x_out=x_identity_element # needs to be inited to the x_identity_element
+      ar_1=ar_in
+      b_ar_1_equals_ar_in=true # to avoid modifying the received Array
+      ar_2=Array.new
+      b_take_from_ar_1=true
+      b_not_ready=true
+      i_reminder=nil
+      i_loop=nil
+      i_ar_in_len=nil
+      i_ar_out_len=0 # code after the while loop needs a number
+      x_1=nil
+      x_2=nil
+      x_3=nil
+      i_2=nil
+      while b_not_ready
+         # The next if-statement is to avoid copying temporary
+         # strings between the ar_1 and the ar_2.
+         if b_take_from_ar_1
+            i_ar_in_len=ar_1.size
+            i_reminder=i_ar_in_len%2
+            i_loop=(i_ar_in_len-i_reminder)/2
+            i_loop.times do |i|
+               i_2=i*2
+               x_1=ar_1[i_2]
+               x_2=ar_1[i_2+1]
+               x_3=func_oper.call(x_1,x_2)
+               ar_2<<x_3
+            end # loop
+            if i_reminder==1
+               x_3=ar_1[i_ar_in_len-1]
+               ar_2<<x_3
+            end # if
+            i_ar_out_len=ar_2.size
+            if 1<i_ar_out_len
+               if b_ar_1_equals_ar_in
+                  ar_1=Array.new
+                  b_ar_1_equals_ar_in=false
+               else
+                  ar_1.clear
+               end # if
+            else
+               b_not_ready=false
+            end # if
+         else # b_take_from_ar_1==false
+            i_ar_in_len=ar_2.size
+            i_reminder=i_ar_in_len%2
+            i_loop=(i_ar_in_len-i_reminder)/2
+            i_loop.times do |i|
+               i_2=i*2
+               x_1=ar_2[i_2]
+               x_2=ar_2[i_2+1]
+               x_3=func_oper.call(x_1,x_2)
+               ar_1<<x_3
+            end # loop
+            if i_reminder==1
+               x_3=ar_2[i_ar_in_len-1]
+               ar_1<<x_3
+            end # if
+            i_ar_out_len=ar_1.size
+            if 1<i_ar_out_len
+               ar_2.clear
+            else
+               b_not_ready=false
+            end # if
+         end # if
+         b_take_from_ar_1=!b_take_from_ar_1
+      end # loop
+      if i_ar_out_len==1
+         if b_take_from_ar_1
+            x_out=ar_1[0]
+         else
+            x_out=ar_2[0]
+         end # if
+      else
+         # The x_out has been inited to "".
+         if 0<i_ar_out_len
+            raise Exception.new("This function is flawed."+
+            "\n GUID='57da7a36-acfb-4edf-9146-409140211fd7'\n\n")
+         end # if
+      end # if
+      return x_out
+   end # x_apply_binary_operator_t1
+
+   def Kibuvits_ix.x_apply_binary_operator_t1(x_identity_element,ar_in,
+      func_operator_that_might_be_noncommutative)
+      x_out=Kibuvits_ix.instance.x_apply_binary_operator_t1(
+      x_identity_element,ar_in,func_operator_that_might_be_noncommutative)
+      return x_out
+   end # Kibuvits_ix.x_apply_binary_operator_t1
 
    #-----------------------------------------------------------------------
 

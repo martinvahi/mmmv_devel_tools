@@ -93,7 +93,7 @@ class Kibuvits_file_intelligence_selftests
          if 20<s_fp.length
             ht_stdstreams=kibuvits_sh("rm -fr "+s_fp)
             Kibuvits_shell.throw_if_stderr_has_content_t1(ht_stdstreams,
-            "GUID='d21620d4-bad9-417a-a53f-60a280106ed7'\n")
+            "GUID='1251f456-9ff8-44f3-b2e2-13b370e1ced7'\n")
          else
             raise Exception.new("Selftests are flawed.\n"+"GUID=="+s_guid)
          end # if
@@ -137,7 +137,7 @@ class Kibuvits_file_intelligence_selftests
          end # rescue
          if s_fp_x_0==s_fp_x # current version must re-copy folders
             kibuvits_throw("test 2b \n"+
-            "GUID='12cee018-7700-473f-a33f-60a280106ed7'\n"+
+            "GUID='3377a55f-a5a7-4692-b5d2-13b370e1ced7'\n"+
             "  s_fp_x == "+s_fp_x+
             "\ns_fp_x_0 == "+s_fp_x_0)
          end # if
@@ -153,19 +153,34 @@ class Kibuvits_file_intelligence_selftests
          end # rescue
          if s_fp_x_0!=s_fp_x # Back-up files must not duplicate themselves.
             kibuvits_throw("test 3b \n"+
-            "GUID='129c54c4-62a0-4719-943f-60a280106ed7'\n"+
+            "GUID='49484d5a-7ecf-41b9-a8d2-13b370e1ced7'\n"+
             "  s_fp_x == "+s_fp_x+
             "\ns_fp_x_0 == "+s_fp_x_0)
          end # if
       rescue Exception => e
-         func_erase_tmp_dir.call("a3b6c7ee-30ba-404f-a33f-60a280106ed7")
+         func_erase_tmp_dir.call("41f75f35-32f3-45b2-84d2-13b370e1ced7")
          kibuvits_throw e.to_s
       end # rescue
-      func_erase_tmp_dir.call("347cee04-ce15-4593-b43f-60a280106ed7")
+      func_erase_tmp_dir.call("1784715f-9784-4c81-a3d2-13b370e1ced7")
       FileUtils.chdir(s_working_directory_orig)
    end # Kibuvits_file_intelligence_selftests.test_exm_s_create_backup_copy_t1
 
-   #def Kibuvits_file_intelligence.exm_s_create_backup_copy_t1(
+   #-----------------------------------------------------------------------
+
+   def Kibuvits_file_intelligence_selftests.test_s_get_MIME_type
+      s_x=Kibuvits_file_intelligence.s_get_MIME_type(__FILE__)
+      kibuvits_throw "test 1a s_x=="+s_x if s_x!="text/x-ruby"
+      b_x=Kibuvits_file_intelligence.b_mimetype_certainly_refers_to_a_binary_format_t1(s_x)
+      kibuvits_throw "test 1b s_x=="+s_x if b_x
+      #------
+      s_fp=KIBUVITS_HOME+"/src/dev_tools/selftests"+
+      "/data_for_selftests/kibuvits_ImageMagick_selftests/uhuu.bmp"
+      s_x=Kibuvits_file_intelligence.s_get_MIME_type(s_fp)
+      kibuvits_throw "test 2a s_x=="+s_x if s_x!="application/octet-stream"
+      b_x=Kibuvits_file_intelligence.b_mimetype_certainly_refers_to_a_binary_format_t1(s_x)
+      kibuvits_throw "test 2b s_x=="+s_x if !b_x
+   end # Kibuvits_file_intelligence_selftests.test_s_get_MIME_type
+
    #-----------------------------------------------------------------------
 
    public
@@ -174,6 +189,7 @@ class Kibuvits_file_intelligence_selftests
       bn=binding()
       kibuvits_testeval bn, "Kibuvits_file_intelligence_selftests.test_file_language_by_file_extension"
       kibuvits_testeval bn, "Kibuvits_file_intelligence_selftests.test_exm_s_create_backup_copy_t1"
+      kibuvits_testeval bn, "Kibuvits_file_intelligence_selftests.test_s_get_MIME_type"
       return ar_msgs
    end # Kibuvits_file_intelligence_selftests.selftest
 

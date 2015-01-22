@@ -66,12 +66,12 @@ class Kibuvits_hash_plaice_t1
       @i_ar_s_set_of_alphabets_t1_len=@ar_s_set_of_alphabets_t1.size
       #---------------
       # The variables that contain string "_algorithm_constant_"
-      # in their names, must be transfered to the PHP and JavaScript sources.
+      # in their names, must be transferred to the PHP and JavaScript sources.
       s="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
       @s_algorithm_constant_arabic_digits_and_english_alphabet=("0123456789"+s+
       s.downcase).freeze
       @i_algorithm_constant_prime_t1=397
-      @s_algorithm_constant_version="v_plaice_t1_c".freeze
+      @s_algorithm_constant_version="v_plaice_t1_e".freeze
       #---------
       @lc_s_ar_i_s_in="ar_i_s_in".freeze
       @lc_s_i_len_alphabet="i_len_alphabet".freeze
@@ -85,7 +85,7 @@ class Kibuvits_hash_plaice_t1
    def ht_substitution_box_t1
       func_substbox=lambda do |ix|
          # The i_interval has to be small enough to fit
-         # more than once into the 26 character latin alphabet.
+         # more than once into the 26 character Latin alphabet.
          # Otherwise many of the real-life texts might
          # not get shuffled "enough".
          i_interval=5
@@ -264,7 +264,7 @@ class Kibuvits_hash_plaice_t1
             bn=binding()
             kibuvits_assert_is_smaller_than_or_equal_to(bn,
             (i_delta+1),i_len_alphabet, "There's a flaw in the code.\n"+
-            "GUID='4883ed5a-bed4-4897-84cc-006290315ed7'\n\n")
+            "GUID='52412b11-3327-4d34-b796-d1526021ced7'\n\n")
          end # if
          while ix_ar_opmem<i_opmem_length
             i_char=(i_char+i_delta)%i_len_alphabet
@@ -303,13 +303,36 @@ class Kibuvits_hash_plaice_t1
       #---------------------
       ix=0
       i_char=nil
-      while ix<i_opmem_length
-         i_char=ar_i_s_in[ix_ar_x_in_cursor]
-         ar_opmem_raw[ix]=i_char
-         ix_ar_x_in_cursor=ix_ar_x_in_cursor+1
-         ix_ar_x_in_cursor=0 if ix_ar_x_in_cursor==i_s_in_len
-         ix=ix+1
-      end # while
+      if KIBUVITS_b_DEBUG
+         i_char=nil
+         bn=binding()
+         while ix<i_opmem_length
+            i_char=ar_i_s_in[ix_ar_x_in_cursor]
+            #---------
+            if i_char.class!=Fixnum
+               # The if-clause wrapping current comment
+               # is code bloat, but it's for speed, because
+               # otherwise the error message string should
+               # be assembled at every call to the typecheck.
+               kibuvits_typecheck(bn, Fixnum, i_char,
+               "\n ix_ar_x_in_cursor=="+ix_ar_x_in_cursor.to_s+
+               "\nGUID='422c5582-57bb-4477-bcc4-d1526021ced7'")
+            end # if
+            #---------
+            ar_opmem_raw[ix]=i_char
+            ix_ar_x_in_cursor=ix_ar_x_in_cursor+1
+            ix_ar_x_in_cursor=0 if ix_ar_x_in_cursor==i_s_in_len
+            ix=ix+1
+         end # while
+      else
+         while ix<i_opmem_length
+            i_char=ar_i_s_in[ix_ar_x_in_cursor]
+            ar_opmem_raw[ix]=i_char
+            ix_ar_x_in_cursor=ix_ar_x_in_cursor+1
+            ix_ar_x_in_cursor=0 if ix_ar_x_in_cursor==i_s_in_len
+            ix=ix+1
+         end # while
+      end # if
       #---------------------
       ht_opmem[$kibuvits_lc_ix_ar_x_in_cursor]=ix_ar_x_in_cursor
    end # read_2_ar_opmem_raw
@@ -321,7 +344,7 @@ class Kibuvits_hash_plaice_t1
       if KIBUVITS_b_DEBUG
          bn=binding()
          kibuvits_assert_arrayix(bn,ar_substboxes,i_substitution_box_index,
-         "GUID='3983dc95-9ecb-4e2c-a3cc-006290315ed7'\n")
+         "GUID='fa2319c7-9034-4534-bc91-d1526021ced7'\n")
       end # if
       ht_substbox=ar_substboxes[i_substitution_box_index]
       #-----------
@@ -381,6 +404,8 @@ class Kibuvits_hash_plaice_t1
       ix=0
       while ix<i_opmem_length
          i_char_old=ar_orig[ix]
+         # The ar_opmem_raw has the same length as
+         # the ar_opmem_0 and ar_opmem_1.
          i_char_raw=ar_opmem_raw[ix]
          i_char_new=Kibuvits_security_core.txor(
          i_char_old,i_char_raw,i_len_alphabet)
@@ -460,7 +485,7 @@ class Kibuvits_hash_plaice_t1
    # The purpose of this operation is to distribute
    # opmem characters to the whole alphabet, even, if
    # all of the opmem characters are equal. It's harder
-   # to conduct cryptoanalysis, if the distribution of
+   # to conduct cryptanalysis, if the distribution of
    # the output hash characters is uniform regardless of
    # the distribution of the input characters.
    #
@@ -614,12 +639,26 @@ class Kibuvits_hash_plaice_t1
    # The 30  characters per headerless hash is roughly  30*14b~ 420b
    # Approximately 7 (seven) characters should be enough to
    # hide the s_in from the NSA for 20 years, prior to the year 2150.
-   #
-   # For security reasons the minimum value for the i_minimum_n_of_rounds is 40
+   # For security reasons the minimum value for the i_minimum_n_of_rounds
+   # should be 40, but for file checksums it can be 1.
    # The i_minimum_n_of_rounds is part of the parameters only
    # to make it possible to increase the strength of the
    # hash, should the extra number of rounds be enough to
    # compensate design vulnerabilities.
+   #
+   # In addition to byte endianness CPU-s vary in
+   # bit endianness (order of bits in a byte).
+   #
+   #     http://en.wikipedia.org/wiki/Bit_numbering
+   #
+   # The conversion of bitstream to text is a complex
+   # problem and this hash function has been designed to AVIOID
+   # solving that problem in cases, where the conversion
+   # has been already performed by programming language stdlib.
+   # It is discouraged to use this function for calculating
+   # file checksums, because other, bitstream oriented,
+   # hash function implementations are a lot faster than
+   # the implementation of this hash function.
    def generate(s_in,i_headerless_hash_length=30,
       i_minimum_n_of_rounds=40)
       if KIBUVITS_b_DEBUG
@@ -629,10 +668,10 @@ class Kibuvits_hash_plaice_t1
          kibuvits_typecheck bn, Fixnum, i_minimum_n_of_rounds
          kibuvits_assert_is_smaller_than_or_equal_to(bn,1,
          i_headerless_hash_length,
-         "GUID='117eed56-7076-4d17-b2cc-006290315ed7'\n")
-         kibuvits_assert_is_smaller_than_or_equal_to(bn,40,
+         "GUID='833cacf3-4eec-4376-bb41-d1526021ced7'\n")
+         kibuvits_assert_is_smaller_than_or_equal_to(bn,1,
          i_minimum_n_of_rounds,
-         "GUID='27b632ab-6be2-4bab-a4cc-006290315ed7'\n")
+         "GUID='6a18c818-65fd-42b6-a854-d1526021ced7'\n")
       end # if
       #---------------
       # The next step is essential for making sure
@@ -643,16 +682,26 @@ class Kibuvits_hash_plaice_t1
       # i_headerless_hash_length has a value greater than
       # both of the strings. The @s_algorithm_constant_arabic_digits_and_english_alphabet
       # is just an extra measure.
-      s_in=s_in+(@s_algorithm_constant_arabic_digits_and_english_alphabet+s_in.length.to_s)
+      s_in=(@s_algorithm_constant_arabic_digits_and_english_alphabet+s_in.length.to_s)+s_in
+      # A simplistic countermeasure to the "length extension attack" resides
+      # near the "rounds" loop.
       #---------------
       ht_opmem=Hash.new
       ht_opmem["i_headerless_hash_length"]=i_headerless_hash_length
       ht_opmem["i_minimum_n_of_rounds"]=i_minimum_n_of_rounds
-      #---------------
-      # Actual alphabet:
-      ar_s_in=s_in.scan(/./).freeze
-      ht_opmem["ar_s_in"]=ar_s_in
       #-------------------------------
+      # The
+      #     "ab\nc".scan(/./)
+      # gives
+      #     ["a","b","c"]
+      # but the
+      #     "ab\nc".scan(/.|[\n\r\s\t]/)
+      # gives
+      #     ["a","b","\n","c"]
+      #
+      ar_s_in=s_in.scan(/.|[\n\r\s\t]/).freeze
+      #---------------
+      ht_opmem["ar_s_in"]=ar_s_in
       ar_0=ar_s_in.uniq
       ar_s_alphabet=(ar_0+@ar_s_set_of_alphabets_t1).uniq.freeze
       i_len_alphabet=ar_s_alphabet.size
@@ -664,7 +713,7 @@ class Kibuvits_hash_plaice_t1
       # 1 giga-character, where in average 1 character
       # is approximately 2B, has a size of 2GB. 2G fits
       # perfectly in the range of the 4B int. This means that
-      # due to practical speed considreations the ix
+      # due to practical speed considerations the ix
       # will never exit the 4B int range.
       i_len_alphabet.times do |ix|
          s_char=ar_s_alphabet[ix]
@@ -686,8 +735,25 @@ class Kibuvits_hash_plaice_t1
       #---------------
       i_s_in_len=s_in.length
       ar_i_s_in=Array.new(i_s_in_len,42)
+      s_in_char=nil
+      i_s_in_char=nil
       i_s_in_len.times do |ix|
-         ar_i_s_in[ix]=ht_alphabet_char2ix[ar_s_in[ix]]
+         s_in_char=ar_s_in[ix]
+         i_s_in_char=ht_alphabet_char2ix[s_in_char]
+         if i_s_in_char==nil
+            kibuvits_throw("\nCharacter \""+s_in_char+
+            "\" is missing from the \n"+
+            "alphabet that this hash function uses.\n"+
+            "The character is missing ONLY because the \n"+
+            "hash algorithm implementation is flawed.\n"+
+            "GUID='b4a25dd0-1522-4e41-b73f-d1526021ced7'\n\n")
+            # That situation can actually happen in real life.
+            # Hopefully the exception text allows somewhat
+            # gradual degradation by trying to give the end
+            # users a temporary semi-workaround in the form
+            # of a chance to avoid the character in the input text.
+         end # if
+         ar_i_s_in[ix]=i_s_in_char
       end # loop
       ar_i_s_in=ar_i_s_in.freeze
       ht_opmem[@lc_s_ar_i_s_in]=ar_i_s_in
@@ -702,25 +768,71 @@ class Kibuvits_hash_plaice_t1
       # s_in are inserted to the hashing operation,
       # the number of rounds might have to be increased.
       #
-      i_n_blocks_per_round=4 # read manually from the rounds loop
-      i_n_chars_taken_to_account=i_n_blocks_per_round*i_minimum_n_of_rounds*
-      i_opmem_length  # ==<block size>
+      i_n_blocks_per_round=5 # read manually from the rounds loop
+      i_n_chars_per_round=i_n_blocks_per_round*i_opmem_length  # i_opmem_length==<block size>
+      i_n_chars_taken_to_account=i_minimum_n_of_rounds*i_n_chars_per_round
       i_n_rounds_adjusted=nil
       if i_n_chars_taken_to_account<i_s_in_len
          i_chars_omitted=i_s_in_len-i_n_chars_taken_to_account
-         i_rounds_to_add=i_chars_omitted.div(i_opmem_length) # +1-1
-         # The "-1" at the previous line is because
-         # the very first block is read from the s_in
-         # during the ar_opmem initialization at ar_gen_ar_opmem(...)
+         i_rounds_to_add=i_chars_omitted.div(i_n_chars_per_round)+1
          # The "+1" was to compensate a situation, where
          #
-         #     i_chars_omitted.to_f < 0.5*i_opmem_length.to_f
+         # i_chars_omitted.div(i_n_chars_per_round)*i_n_chars_per_round < i_chars_omitted
          #
          i_n_rounds_adjusted=i_minimum_n_of_rounds+i_rounds_to_add
       else
          i_n_rounds_adjusted=i_minimum_n_of_rounds
       end # if
       #---------------
+      # If I (martin.vahi@softf1.com) understand the
+      # idea behind a "length extension attack" correctly, (a BIG IF), then
+      # the idea behind the "length extension attack" is that the
+      # tail part of the s_hashable_string=secret+publicly_known_message
+      # is changed by unrolling the hash function from the
+      # input datastream tail to somewhere in the middle, replacing the
+      # tail and then rolling the hash function back on the tail, the new tail,
+      # again.
+      # https://en.wikipedia.org/wiki/Length_extension_attack
+      # https://github.com/bwall/HashPump
+      # https://github.com/iagox86/hash_extender
+      #
+      # The scheme of the simplistic countermeasure here
+      # is that in stead of calculating
+      #
+      #     s_in=s_secret+s_publicly_known_text
+      #     or
+      #     s_in=s_publicly_known_text+s_secret
+      #     hash(s_in)
+      #
+      # the countermeasure tries to make sure that
+      # "roughly" the following is calculated:
+      #
+      #     hash(s_secret+s_publicly_known_text+s_secret)
+      #
+      # A way to do that, approximately, "roughly", is to
+      # re-read the start of the
+      #
+      #     s_in=s_secret+s_publicly_known_text
+      #
+      # The case, where the "s_secret" is part of the tail, i.e.
+      #
+      #     s_in=s_publicly_known_text+s_secret
+      #
+      # is covered by the fact that the tail part, the s_secret part,
+      # is fed to the hash algorithm at the very end.
+      # So, here it goes, with a semirandom constant of 10% equiv 0.1:
+      i_antimeasure_rounds=(i_s_in_len.to_f*0.1/i_n_chars_per_round).round
+      i_antimeasure_rounds=i_antimeasure_rounds+1 # also covers the i_antimeasure_rounds==0
+      i_n_rounds_adjusted=i_n_rounds_adjusted+i_antimeasure_rounds
+      # POOLELI uuendada PHP koodi
+      #---------------
+      # There is no need to call the
+      #
+      # blockoper_txor_raw_and_opmem(...)
+      #
+      # prior to this loop, because the first
+      # reading of raw data has been performed
+      # within ar_gen_ar_opmem(...)
       i_n_rounds_adjusted.times do |i_round|
          blockoper_scatter_t1(ht_opmem)
          read_2_ar_opmem_raw(ht_opmem)
@@ -744,6 +856,14 @@ class Kibuvits_hash_plaice_t1
          blockoper_txor_raw_and_opmem(ht_opmem)
       end # loop
       #---------------
+      # Improve the hash algorithm by adding a loop here,
+      # where the Prüfer Code is generated from part
+      # of the output of the previous loop, may be the
+      # very first character code. The tree as a graph
+      # is "sorted" and the nodes of the tree are
+      # the substitution boxes and other operations
+      # that modify the ht_opmem content.
+      #---------------
       s_out=gather_the_hash_string_from_data_structures(ht_opmem)
       return s_out
    end # generate
@@ -752,7 +872,7 @@ class Kibuvits_hash_plaice_t1
    def Kibuvits_hash_plaice_t1.generate(s_in,
       i_headerless_hash_length=30,i_minimum_n_of_rounds=40)
       s_out=Kibuvits_hash_plaice_t1.instance.generate(
-      s_in,i_headerless_hash_length)
+      s_in,i_headerless_hash_length,i_minimum_n_of_rounds)
       return s_out
    end # Kibuvits_hash_plaice_t1.generate
 

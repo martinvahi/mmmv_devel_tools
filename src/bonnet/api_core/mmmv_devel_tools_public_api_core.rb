@@ -5,7 +5,7 @@ if !defined? MMMV_DEVEL_TOOLS_HOME
    raise(Exception.new("The Ruby constant, MMMV_DEVEL_TOOLS_HOME, "+
    "should have been defined before the control flow reaches the "+
    "file, from where this exception is thrown."+
-   "\nGUID=='48434244-a92e-43d7-9343-d0f130b15dd7'"))
+   "\nGUID=='6a238e15-dfa8-4ac5-b1b0-7002d0b16ed7'"))
    exit
 end # if
 
@@ -208,6 +208,24 @@ class C_mmmv_devel_tools_public_api_core
    end # C_mmmv_devel_tools_public_api_core.run_breakdancemake_concat_t1
 
    #-----------------------------------------------------------------------
+
+   def get_config(s_config_ht_key)
+      #--------
+      bn=binding()
+      kibuvits_typecheck bn, String, s_config_ht_key
+      #--------
+      ht_config=C_mmmv_devel_tools_global_singleton.ht_global_configuration
+      s_out=ht_config[s_config_ht_key]
+      if s_out==nil
+         kibuvits_throw("\nGUID=='1b936255-accf-48a9-b8a0-7002d0b16ed7'\n\n")
+      end # if
+      return s_out
+   end # get_config
+
+   def C_mmmv_devel_tools_public_api_core.get_config(s_config_ht_key)
+      s_out=C_mmmv_devel_tools_public_api_core.instance.get_config(s_config_ht_key)
+      return s_out
+   end # C_mmmv_devel_tools_public_api_core.get_config
 
    include Singleton
 end # class C_mmmv_devel_tools_public_api_core
