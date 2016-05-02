@@ -82,6 +82,8 @@ class Kibuvits_file_intelligence
          s_file_language="C"
       when "hpp"
          s_file_language="C++"
+      when "cs"
+         s_file_language="C#"
       when "c"
          s_file_language="C"
       when "cpp"
@@ -495,6 +497,7 @@ class Kibuvits_file_intelligence
          ht_yes["image/gif"]=42
          ht_yes["image/png"]=42
          ht_yes["image/bmp"]=42
+         ht_yes["image/x-ms-bmp"]=42
          ht_yes["image/webp"]=42
          ht_yes["image/tiff"]=42
          ht_yes["application/octet-stream"]=42 # BMP image files and LibreOffice odb files.

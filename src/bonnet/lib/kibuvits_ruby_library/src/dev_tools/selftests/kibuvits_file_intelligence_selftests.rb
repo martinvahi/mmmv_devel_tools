@@ -176,7 +176,9 @@ class Kibuvits_file_intelligence_selftests
       s_fp=KIBUVITS_HOME+"/src/dev_tools/selftests"+
       "/data_for_selftests/kibuvits_ImageMagick_selftests/uhuu.bmp"
       s_x=Kibuvits_file_intelligence.s_get_MIME_type(s_fp)
-      kibuvits_throw "test 2a s_x=="+s_x if s_x!="application/octet-stream"
+      if (s_x!="application/octet-stream") && (s_x!="image/x-ms-bmp")
+         kibuvits_throw "test 2a s_x=="+s_x
+      end
       b_x=Kibuvits_file_intelligence.b_mimetype_certainly_refers_to_a_binary_format_t1(s_x)
       kibuvits_throw "test 2b s_x=="+s_x if !b_x
    end # Kibuvits_file_intelligence_selftests.test_s_get_MIME_type
