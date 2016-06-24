@@ -582,7 +582,7 @@ func_mmmv_GUID_t1() {
         S_FUNC_MMMV_GUID_T1_RESULT="$S_TMP_0"
     fi
     #--------------------
-    S_TMP_0="`printf \"$S_FUNC_MMMV_GUID_T1_RESULT\" | wc -m `"
+    S_TMP_0="`printf \"$S_FUNC_MMMV_GUID_T1_RESULT\" | wc -m | gawk '{gsub(/\s/,"");printf "%s", $1 }'`"
     S_TMP_1="36"
     if [ "$S_TMP_0" != "$S_TMP_1" ]; then
         echo ""
@@ -750,7 +750,7 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
         fi
     fi
     #--------------------
-    S_TMP_0="`printf \"$S_FUNC_MMMV_SHA256_T1_RESULT\" | wc -m `"
+    S_TMP_0="`printf \"$S_FUNC_MMMV_SHA256_T1_RESULT\" | wc -m | gawk '{gsub(/\s/,"");printf "%s", $1 }'`"
     S_TMP_1="64"
     if [ "$S_TMP_0" != "$S_TMP_1" ]; then
         echo ""
@@ -871,7 +871,7 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
         S_FUNC_MMMV_TIGERHASH_T1_RESULT="`echo \"$S_TMP_0\" | gawk '{printf $1}'`"
     fi
     #--------------------
-    S_TMP_0="`printf \"$S_FUNC_MMMV_TIGERHASH_T1_RESULT\" | wc -m `"
+    S_TMP_0="`printf \"$S_FUNC_MMMV_TIGERHASH_T1_RESULT\" | wc -m | gawk '{gsub(/\s/,"");printf "%s", $1 }'`"
     S_TMP_1="48"
     if [ "$S_TMP_0" != "$S_TMP_1" ]; then
         echo ""
@@ -992,7 +992,7 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
         S_FUNC_MMMV_WHIRLPOOLHASH_T1_RESULT="`echo \"$S_TMP_0\" | gawk '{printf $1}'`"
     fi
     #--------------------
-    S_TMP_0="`printf \"$S_FUNC_MMMV_WHIRLPOOLHASH_T1_RESULT\" | wc -m `"
+    S_TMP_0="`printf \"$S_FUNC_MMMV_WHIRLPOOLHASH_T1_RESULT\" | wc -m | gawk '{gsub(/\s/,"");printf "%s", $1 }'`"
     S_TMP_1="128"
     if [ "$S_TMP_0" != "$S_TMP_1" ]; then
         echo ""
@@ -2030,7 +2030,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
     #----
     func_mmmv_silktorrent_packager_t1_bash_blob2filename_t1 "$S_FP_TMP_SILKTORRENT_PACKET_TAR"
     local S_FP_TMP_SILKTORRENT_PACKET_PUBLISHINGNAME="$S_FP_ORIG/$S_FUNC_MMMV_SILKTORRENT_PACKAGER_T1_BASH_BLOB2FILENAME_T1_RESULT"
-    mv $S_FP_TMP_SILKTORRENT_PACKET_TAR $S_FP_TMP_SILKTORRENT_PACKET_PUBLISHINGNAME
+    mv $S_FP_TMP_SILKTORRENT_PACKET_TAR $S_FP_TMP_SILKTORRENT_PACKET_PUBLISHINGNAME 2>/dev/null
     if [ "$?" != "0" ]; then
         echo ""
         echo "Something went wrong."

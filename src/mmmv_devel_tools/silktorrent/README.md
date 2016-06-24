@@ -58,7 +58,7 @@ service can be implemented by saving extra
 records to a separate database, where there is a
 relation between the tar-file name, recipient ID and 
 suggested-deletion-date.** 
-Counter-measures for Denial-of-Service attacks is 
+Counter-measures for Denial-of-Service attacks are 
 based on authentication, timing, location(channel).
 
 
@@ -66,9 +66,9 @@ One of the core ideas of the Silktorrent is that
 the Silktorrent applications must assume that the 
 location of the tar-file can not be concluded from
 its name. Silktorrent applications ask for tar-files
-from agents, who might not have the asked tar-file 
+from agents, who might not have the requested tar-file 
 available and the agents might not even be able to 
-retrieve the asked tar-file. The agents are free to
+retrieve the requested tar-file. The agents are free to
 use whatever [crazy](http://longterm.softf1.com/specifications/lightmsgp/v2/)
 addressing scheme that they want.
 
@@ -102,7 +102,7 @@ named
     ./silktorrent_salt.txt
     
 which probabilistically guarantees that the 
-size and bits-tream of the payload can not be
+size and bit-stream of the payload can not be
 fully deduced from the tar-file name, forcing
 censoring parties to download a considerable 
 amount of tar-files that they do not need.
