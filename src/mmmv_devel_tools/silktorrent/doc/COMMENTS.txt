@@ -1,0 +1,26 @@
+
+You may want find out, whether more up to date
+documentation is available from the 
+
+    http://www.silktorrent.ch
+
+The 
+
+    ./clone_of_the_public_regions_of_the_Fossil_repository
+
+is likely to be a waste of Your time.
+It exists only to make at least something 
+available, if the online version is not available
+or has been compromised in some relevant manner.
+
+
+The 
+
+    ./clone_of_the_public_regions_of_the_Fossil_repository/mmmv_Fossil_operator_t1.bash
+
+is a convenience script, a wrapper to the Fossil. 
+It requires Bash and has been properly tested only on Linux.
+If it is executed without any arguments, it 
+displays a help message that describes the possible arguments.
+
+
