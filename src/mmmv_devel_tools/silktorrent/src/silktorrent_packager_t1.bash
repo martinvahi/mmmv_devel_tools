@@ -1,38 +1,31 @@
 #!/usr/bin/env bash
 #==========================================================================
 #
-# Copyright 2016, martin.vahi@softf1.com that has an
+# The MIT license from the 
+# http://www.opensource.org/licenses/mit-license.php
+# 
+# Copyright (c) 2016, Martin.Vahi@softf1.com that has an
 # Estonian personal identification code of 38108050020.
-# All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or
-# without modification, are permitted provided that the following
-# conditions are met:
+# Permission is hereby granted, free of charge, to 
+# any person obtaining a copy of this software and 
+# associated documentation files (the "Software"), 
+# to deal in the Software without restriction, including 
+# without limitation the rights to use, copy, modify, merge, publish, 
+# distribute, sublicense, and/or sell copies of the Software, and 
+# to permit persons to whom the Software is furnished to do so, 
+# subject to the following conditions:
 #
-# * Redistributions of source code must retain the above copyright
-#   notice, this list of conditions and the following disclaimer.
-# * Redistributions in binary form must reproduce the above copyright
-#   notice, this list of conditions and the following disclaimer
-#   in the documentation and/or other materials provided with the
-#   distribution.
-# * Neither the name of the Martin Vahi nor the names of its
-#   contributors may be used to endorse or promote products derived
-#   from this software without specific prior written permission.
+# The above copyright notice and this permission notice shall be included 
+# in all copies or substantial portions of the Software.
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-# CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 #--------------------------------------------------------------------------
 # TODO: 
@@ -87,7 +80,7 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # RENESSAATOR_SOURCE_START
 # #----------------------------------------------------------
 # func_throw_t1=lambda do |s_in,s_guid_0|
-# s_guid_1="401ec65f-5b1f-4504-a37f-802070e031e7"
+# s_guid_1="01da8718-de97-44ce-a101-21b170e031e7"
 # puts("\n")
 # puts("echo \"\"")
 # puts("echo \"Code generation script failed.\" \n")
@@ -107,7 +100,7 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # #--------------
 # func_assert_s_0_format_t1=lambda do |s_in|
 # if (s_in!="0")&&(s_in!="1")
-# s_guid_0="4a232c25-89db-4ec7-b57f-802070e031e7"
+# s_guid_0="b4947c85-3148-4f0d-b101-21b170e031e7"
 # func_throw_t1.call(s_in,s_guid_0)
 # end # if
 # end # func_assert_s_0_format_t1
@@ -125,7 +118,7 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # if s_0=="0"
 # s_guid_generation_program_name="uuid"
 # else
-# s_guid_2="35309005-bf20-49ac-b27f-802070e031e7"
+# s_guid_2="2f771037-9949-405b-9301-21b170e031e7"
 # func_throw_t1.call(s_0,s_guid_2)
 # end # if
 # #-------------
@@ -138,7 +131,7 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # s_0=s_0.gsub(/[\n\s\r]/,"")
 # func_assert_s_0_format_t1.call(s_0)
 # if s_0!="0"
-# s_guid_3="77ae3663-07ab-4e74-976f-802070e031e7"
+# s_guid_3="35587944-1c7f-4e9f-b501-21b170e031e7"
 # func_throw_t1.call(s_0,s_guid_3)
 # end # if
 # #--------------
@@ -148,7 +141,7 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # s_script_version=s_0
 # #----
 # if s_script_version.length!=36
-# s_guid_4="a24d2e3c-f4d4-49b4-956f-802070e031e7"
+# s_guid_4="01895941-fb78-4960-8401-21b170e031e7"
 # func_throw_t1.call(s_script_version,s_guid_4)
 # end # if
 # #--------------
@@ -184,11 +177,11 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # the error message GUIDs to be updated without 
 # unsyncing the S_SCRIPT_VERSION from the 
 # S_SCRIPT_VERSION_GENERATION_DATE.
-S_SCRIPT_VERSION_SUBPART_1="cd56e610-cc52"
-S_SCRIPT_VERSION_SUBPART_2="-4776-b024-9ec382af71d4"
+S_SCRIPT_VERSION_SUBPART_1="2375db56-ee2a"
+S_SCRIPT_VERSION_SUBPART_2="-4a48-ad91-25311e670560"
 S_SCRIPT_VERSION="$S_SCRIPT_VERSION_SUBPART_1$S_SCRIPT_VERSION_SUBPART_2"
 
-S_SCRIPT_VERSION_GENERATION_DATE="2017y_3month_14day_7h_2min_4sec_547231usec"
+S_SCRIPT_VERSION_GENERATION_DATE="2017y_3month_14day_7h_27min_13sec_672869usec"
 
 # RENESSAATOR_AUTOGENERATED_TEXT_END
 # RENESSAATOR_BLOCK_END
@@ -202,7 +195,7 @@ func_mmmv_exit_if_not_on_path_t2() { # S_COMMAND_NAME
         echo ""
         echo "Command \"$S_COMMAND_NAME\" could not be found from the PATH. "
         echo "The execution of the Bash script is aborted."
-        echo "GUID=='1ab9ed41-0d69-4aa5-b77f-802070e031e7'"
+        echo "GUID=='1d1a537e-6d2f-4170-b111-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -244,7 +237,7 @@ func_mmmv_exit_if_not_on_path_t2() { # S_COMMAND_NAME
 #         echo "Neither \"awk\", nor \"gawk\" is usable,"
 #         echo "but at least one of them is required to be usable."
 #         echo "The execution of the Bash script is aborted."
-#         echo "GUID=='979a642b-6b93-436c-a47f-802070e031e7'"
+#         echo "GUID=='3cdd7832-1e9c-46de-9301-21b170e031e7'"
 #         echo ""
 #         #----
 #         cd $S_FP_ORIG
@@ -261,7 +254,7 @@ func_mmmv_exit_if_not_on_path_t2() { # S_COMMAND_NAME
 #         echo ""
 #         echo "    SB_USE_GAWK_IN_STEAD_OF_AWK=$SB_USE_GAWK_IN_STEAD_OF_AWK"
 #         echo ""
-#         echo "GUID=='375e9340-6011-4561-927f-802070e031e7'"
+#         echo "GUID=='dcd4a44e-7464-4d19-a301-21b170e031e7'"
 #         echo ""
 #         #----
 #         cd $S_FP_ORIG
@@ -310,7 +303,7 @@ if [ "$S_FUNC_MMMV_OPERATING_SYSTEM_TYPE_T1_RESULT" != "Linux" ]; then
         echo "  within a virtual machine or, if virtual machines are not"
         echo "  an option, as some new operating system user that does not have "
         echo "  any access to the vital data/files."
-        echo "  GUID=='0e2ad440-7a2b-42a7-a27f-802070e031e7'"
+        echo "  GUID=='2d84a004-7553-4fde-b101-21b170e031e7'"
         echo ""
         echo "  Aborting script without doing anything."
         echo ""
@@ -345,7 +338,7 @@ func_sb_exists_on_path_t1 () {
         echo ""
         echo "is not designed to handle an argument that "
         echo "equals with an empty string."
-        echo "GUID=='419b1786-df9e-4f50-856f-802070e031e7'"
+        echo "GUID=='276e63f4-5cd6-4024-8101-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -361,7 +354,7 @@ func_sb_exists_on_path_t1 () {
         echo "is not designed to handle an argument value that contains "
         echo "spaces or tabulation characters."
         echo "The received value in parenthesis:($S_NAME_OF_THE_EXECUTABLE_1)."
-        echo "GUID=='84cd9645-2a1b-4881-a56f-802070e031e7'"
+        echo "GUID=='4bbf0804-165e-484f-84f0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -427,7 +420,7 @@ func_assert_exists_on_path_t2 () {
         echo ""
         echo "is not designed to handle series of arguments, where "
         echo "empty strings precede non-empty strings."
-        echo "GUID=='1f7ef235-2182-44c7-a26f-802070e031e7'"
+        echo "GUID=='dfeabb47-2adc-41e8-b2f0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -436,7 +429,7 @@ func_assert_exists_on_path_t2 () {
     if [ "$5" != "" ] ; then
         echo ""
         echo "This Bash function is designed to work with at most 4 input arguments"
-        echo "GUID=='794ad84b-a08a-424e-816f-802070e031e7'"
+        echo "GUID=='17e2c2c9-e24b-404d-b1f0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -459,7 +452,7 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_1" != "$S_TMP_0" ] ; then
             SB_THROW="t" 
             S_TMP_1="$S_NAME_OF_THE_EXECUTABLE_1"
-            S_TMP_2="GUID=='13f85894-0f63-4f5d-855f-802070e031e7'"
+            S_TMP_2="GUID=='484d2559-e6ad-4ed4-92f0-21b170e031e7'"
         fi
     fi
     #----
@@ -468,7 +461,7 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_2" != "$S_TMP_0" ] ; then
             SB_THROW="t" 
             S_TMP_1="$S_NAME_OF_THE_EXECUTABLE_2"
-            S_TMP_2="GUID=='58d3e782-de58-4948-955f-802070e031e7'"
+            S_TMP_2="GUID=='a487a993-9260-4e88-b5f0-21b170e031e7'"
         fi
     fi
     #----
@@ -477,7 +470,7 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_3" != "$S_TMP_0" ] ; then
             SB_THROW="t" 
             S_TMP_1="$S_NAME_OF_THE_EXECUTABLE_3"
-            S_TMP_2="GUID=='458621df-baae-44b3-845f-802070e031e7'"
+            S_TMP_2="GUID=='09d1253f-ac94-4a23-91e0-21b170e031e7'"
         fi
     fi
     #----
@@ -486,7 +479,7 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_4" != "$S_TMP_0" ] ; then
             SB_THROW="t" 
             S_TMP_1="$S_NAME_OF_THE_EXECUTABLE_4"
-            S_TMP_2="GUID=='e47b0f21-ca52-4c16-925f-802070e031e7'"
+            S_TMP_2="GUID=='ffbf5053-e7cd-4056-84e0-21b170e031e7'"
         fi
     fi
     #--------
@@ -500,7 +493,7 @@ func_assert_exists_on_path_t2 () {
         echo "spaces or tabulation characters."
         echo "The unaccepted value in parenthesis:($S_TMP_1)."
         echo "Branch $S_TMP_2."
-        echo "GUID=='7f763031-0dfe-4ae6-835f-802070e031e7'"
+        echo "GUID=='4579e24d-91d4-4a01-92e0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -519,7 +512,7 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_4" == "" ] ; then
             echo ""
             echo "This bash script requires the \"$S_NAME_OF_THE_EXECUTABLE_1\" to be on the PATH."
-            echo "GUID=='7f2264f1-a416-4f98-834f-802070e031e7'"
+            echo "GUID=='2175161e-23d9-475e-a4e0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -542,7 +535,7 @@ func_assert_exists_on_path_t2 () {
             echo ""
             echo "This bash script requires that either \"$S_NAME_OF_THE_EXECUTABLE_1\" or "
             echo " \"$S_NAME_OF_THE_EXECUTABLE_2\" is available on the PATH."
-            echo "GUID=='7bad5248-aedd-4b92-b24f-802070e031e7'"
+            echo "GUID=='fd92845d-7441-46ab-b1e0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -564,7 +557,7 @@ func_assert_exists_on_path_t2 () {
             echo "This bash script requires that either \"$S_NAME_OF_THE_EXECUTABLE_1\" or "
             echo " \"$S_NAME_OF_THE_EXECUTABLE_2\" or \"$S_NAME_OF_THE_EXECUTABLE_3\" "
             echo "is available on the PATH."
-            echo "GUID=='52da2cb7-f5d3-4ada-b14f-802070e031e7'"
+            echo "GUID=='94e16d22-b33f-430e-a6e0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -584,7 +577,7 @@ func_assert_exists_on_path_t2 () {
         echo "This bash script requires that either \"$S_NAME_OF_THE_EXECUTABLE_1\" or "
         echo " \"$S_NAME_OF_THE_EXECUTABLE_2\" or \"$S_NAME_OF_THE_EXECUTABLE_3\" or "
         echo " \"$S_NAME_OF_THE_EXECUTABLE_4\" is available on the PATH."
-        echo "GUID=='0f19542b-b29f-48cb-a44f-802070e031e7'"
+        echo "GUID=='33d77c63-f841-49ff-add0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1005,7 +998,7 @@ func_mmmv_assert_arg_is_absent_t1() {
         echo ""
         echo "misses the third function argument, "
         echo "which is expected to be a GUID."
-        echo "GUID=='34b848b2-0751-425d-bf4f-802070e031e7'"
+        echo "GUID=='4b17d249-3ea2-4b7d-a3d0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1023,7 +1016,7 @@ func_mmmv_assert_arg_is_absent_t1() {
         echo "    func_mmmv_assert_arg_is_absent_t1"
         echo ""
         echo "misses the second function argument."
-        echo "GUID=='53caac5b-c560-4e59-844f-802070e031e7'"
+        echo "GUID=='61f89944-37b6-4110-b1d0-21b170e031e7'"
         echo "GUID=='$S_GUID'"
         echo ""
         #----
@@ -1039,7 +1032,7 @@ func_mmmv_assert_arg_is_absent_t1() {
         echo ""
         echo "    <$S_ARG_X_NAME>=$S_ARG_X"
         echo ""
-        echo "GUID=='3fba6917-df0d-4112-b14f-802070e031e7'"
+        echo "GUID=='495dd213-9b2a-45bc-93d0-21b170e031e7'"
         echo "GUID=='$S_GUID'"
         echo ""
         #----
@@ -1070,7 +1063,7 @@ func_mmmv_exc_hash_function_input_verification_t1() {
         echo "    func_mmmv_exc_hash_function_input_verification_t1"
         echo ""
         echo "misses the first argument or the first argument is an empty string."
-        echo "GUID=='bc69232e-5669-4d65-a34f-802070e031e7'"
+        echo "GUID=='4763d3c3-73c0-455a-91d0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1085,7 +1078,7 @@ func_mmmv_exc_hash_function_input_verification_t1() {
         echo "    func_mmmv_exc_hash_function_input_verification_t1"
         echo ""
         echo "is flawed. Function names are not allowed to contain spaces or tabs."
-        echo "GUID=='8b227e42-7961-4605-a34f-802070e031e7'"
+        echo "GUID=='7d2fca19-9734-475a-b1d0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1107,7 +1100,7 @@ func_mmmv_exc_hash_function_input_verification_t1() {
         echo ""
         echo "is not designed to handle an argument that "
         echo "equals with an empty string or a series of spaces and tabs."
-        echo "GUID=='006fc725-72b5-4cfb-833f-802070e031e7'"
+        echo "GUID=='31815720-20b4-43a3-82d0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1121,7 +1114,7 @@ func_mmmv_exc_hash_function_input_verification_t1() {
         echo "    $S_FP_2_AN_EXISTING_FILE "
         echo ""
         echo "is missing or it is a broken link."
-        echo "GUID=='a2497139-9757-4665-b23f-802070e031e7'"
+        echo "GUID=='823b9855-f6d3-4ed7-a4d0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1134,7 +1127,7 @@ func_mmmv_exc_hash_function_input_verification_t1() {
         echo "    $S_FP_2_AN_EXISTING_FILE "
         echo ""
         echo "references a folder, but a file is expected."
-        echo "GUID=='eeb1bb35-bb83-49f9-823f-802070e031e7'"
+        echo "GUID=='c0bc2927-29c0-43ca-a1d0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1180,7 +1173,7 @@ func_mmmv_GUID_t1() {
             echo "All of the GUID generation implementations that this script " 
             echo "is capable of using (uuidgen, uuid) "
             echo "are missing from the PATH."
-            echo "GUID=='206f4814-201e-4a2f-b33f-802070e031e7'"
+            echo "GUID=='45055ef0-ca54-456d-94c0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1190,7 +1183,7 @@ func_mmmv_GUID_t1() {
         if [ "$?" != "0" ]; then
             echo ""
             echo "This script is flawed."
-            echo "GUID=='bb150913-c9b9-499d-843f-802070e031e7'"
+            echo "GUID=='23948835-b3b1-45ca-abc0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1212,7 +1205,7 @@ func_mmmv_GUID_t1() {
             echo "`uuidgen`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='eda70544-4dbf-4cb7-a13f-802070e031e7'"
+            echo "GUID=='03b89341-916b-417a-b2c0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1233,7 +1226,7 @@ func_mmmv_GUID_t1() {
             echo "`uuid`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='e209473a-96ba-41df-b23f-802070e031e7'"
+            echo "GUID=='788ef224-c42f-4f11-b5c0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1263,7 +1256,7 @@ func_mmmv_GUID_t1() {
         echo "The length candidate of the flawed GUID candidate in parenthesis:"
         echo "($S_TMP_0)."
         echo ""
-        echo "GUID=='a37e5410-207d-4349-953f-802070e031e7'"
+        echo "GUID=='1bb6ef7a-3f57-493b-93c0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1319,7 +1312,7 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
             echo "All of the SHA-256 implementations that this script " 
             echo "is capable of using (sha256sum, rhash, sha256) "
             echo "are missing from the PATH."
-            echo "GUID=='d0bda5b5-afe3-4d98-a33f-802070e031e7'"
+            echo "GUID=='684c321f-4e75-465d-81c0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1329,7 +1322,7 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
         if [ "$?" != "0" ]; then
             echo ""
             echo "This script is flawed."
-            echo "GUID=='8dbe0d5b-49d9-4ff1-912f-802070e031e7'"
+            echo "GUID=='2cc42f14-9cce-448a-94c0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1351,7 +1344,7 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
             echo "`sha256sum $S_FP_2_AN_EXISTING_FILE`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='beca8510-daa3-4e5d-952f-802070e031e7'"
+            echo "GUID=='af218748-2b29-4ab9-85c0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1371,7 +1364,7 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
             echo "`rhash --sha256 $S_FP_2_AN_EXISTING_FILE `"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='ab91f85a-ec98-4500-852f-802070e031e7'"
+            echo "GUID=='c047af35-1a2e-4e5e-94b0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1395,7 +1388,7 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
             "`S_TMP_0=\"\`sha256 $S_FP_2_AN_EXISTING_FILE\`\" ruby -e \"s0=ENV['S_TMP_0'].to_s;ix_0=s0.index(') = ');print s0[(ix_0+4)..(-1)]\"`"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='f962bf2d-cc00-49b0-922f-802070e031e7'"
+            echo "GUID=='37a0cab3-314b-4dd4-b1b0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1423,7 +1416,7 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
         echo "The length candidate of the flawed hash candidate in parenthesis:"
         echo "($S_TMP_0)."
         echo ""
-        echo "GUID=='43a74951-a648-48c6-8d2f-802070e031e7'"
+        echo "GUID=='185aad45-4bb1-4749-b8b0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1469,7 +1462,7 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
             echo "All of the Tiger hash implementations that this script " 
             echo "is capable of using (tigerdeep, rhash) "
             echo "are missing from the PATH."
-            echo "GUID=='90b8e050-605e-4739-a12f-802070e031e7'"
+            echo "GUID=='4a5a0972-33b0-4a3e-85b0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1479,7 +1472,7 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
         if [ "$?" != "0" ]; then
             echo ""
             echo "This script is flawed."
-            echo "GUID=='1493164d-7f39-403d-a52f-802070e031e7'"
+            echo "GUID=='0e25c336-4bfb-418c-b3b0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1491,7 +1484,7 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
             echo ""
             echo "\"ruby\" is missing from the PATH, but "
             echo "this function requires that it is on the PATH."
-            echo "GUID=='6ae5d3c3-8172-4f53-a42f-802070e031e7'"
+            echo "GUID=='3d1720a3-e2e7-4308-93b0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1501,7 +1494,7 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
         if [ "$?" != "0" ]; then
             echo ""
             echo "This script is flawed."
-            echo "GUID=='12a86372-9c15-497a-922f-802070e031e7'"
+            echo "GUID=='53d96e4d-682c-4075-b6b0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1523,7 +1516,7 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
             echo "`tigerdeep $S_FP_2_AN_EXISTING_FILE`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='e181fb22-837b-43a1-851f-802070e031e7'"
+            echo "GUID=='3a31f72a-5ba0-4922-82b0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1548,7 +1541,7 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
             echo "`rhash --tiger $S_FP_2_AN_EXISTING_FILE `"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='a33c823b-57d7-4cd0-a11f-802070e031e7'"
+            echo "GUID=='f24b6a22-a08c-447a-adb0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1577,7 +1570,7 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
         echo "The length candidate of the flawed hash candidate in parenthesis:"
         echo "($S_TMP_0)."
         echo ""
-        echo "GUID=='cc5bba27-d0cb-4b45-841f-802070e031e7'"
+        echo "GUID=='b413bb3c-8911-47e7-b1a0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1621,7 +1614,7 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
             echo "All of the Whirlpool hash implementations that this script " 
             echo "is capable of using (whirlpooldeep, rhash) "
             echo "are missing from the PATH."
-            echo "GUID=='1057ae42-12a7-4a43-9b1f-802070e031e7'"
+            echo "GUID=='3f740226-1e7e-4cf3-81a0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1631,7 +1624,7 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
         if [ "$?" != "0" ]; then
             echo ""
             echo "This script is flawed."
-            echo "GUID=='254cbf85-edf6-470f-a11f-802070e031e7'"
+            echo "GUID=='df392514-316e-4ff6-94a0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1653,7 +1646,7 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
             echo "`whirlpooldeep $S_FP_2_AN_EXISTING_FILE`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='25b4bd13-b0b6-4d0d-941f-802070e031e7'"
+            echo "GUID=='63fc0642-9757-4781-85a0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1673,7 +1666,7 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
             echo "`rhash --whirlpool $S_FP_2_AN_EXISTING_FILE `"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='2eaf4542-d700-4137-931f-802070e031e7'"
+            echo "GUID=='e8f4bcc9-b30d-4b8b-a5a0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1702,7 +1695,7 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
         echo "The length candidate of the flawed hash candidate in parenthesis:"
         echo "($S_TMP_0)."
         echo ""
-        echo "GUID=='a34afc59-ecee-4d4d-850f-802070e031e7'"
+        echo "GUID=='4615c816-fb53-4a2f-b5a0-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1746,7 +1739,7 @@ func_mmmv_filesize_t1() {
             echo "All of the applications that this function is " 
             echo "capable of using for finding out file size (filesize, ruby)"
             echo "are missing from the PATH."
-            echo "GUID=='2406f8f2-b4d4-4a87-810f-802070e031e7'"
+            echo "GUID=='c2086757-332a-4965-b2a0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1756,7 +1749,7 @@ func_mmmv_filesize_t1() {
         if [ "$?" != "0" ]; then
             echo ""
             echo "This script is flawed."
-            echo "GUID=='f8128f65-9fbd-4d2c-b30f-802070e031e7'"
+            echo "GUID=='3e3d3e21-3aee-4aa4-91a0-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1778,7 +1771,7 @@ func_mmmv_filesize_t1() {
             echo "`filesize $S_FP_2_AN_EXISTING_FILE`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='35da64ce-6da9-4143-920f-802070e031e7'"
+            echo "GUID=='f72b001d-c581-426a-9590-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1798,7 +1791,7 @@ func_mmmv_filesize_t1() {
             echo "`ruby -e \"printf(File.size('$S_FP_2_AN_EXISTING_FILE').to_s)\"`"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='6efcd543-0ae5-4369-950f-802070e031e7'"
+            echo "GUID=='3384863e-c0a1-4927-8590-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -1830,7 +1823,7 @@ func_mmmv_filesize_t1() {
         echo "either contain spaces, tabs or is an empty string," 
         echo "which is wrong, because even a file with the size of 0 "
         echo "should have a file size of \"0\", which is not an empty string."
-        echo "GUID=='14ab3053-b0f1-4c5c-930f-802070e031e7'"
+        echo "GUID=='4a133b5e-c7bd-4cb1-a590-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1890,7 +1883,7 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
         echo "The 2. console argument is expected to be "
         echo "a path to a file, but currently "
         echo "the 2. console argument is missing."
-        echo "GUID=='4ca91a2f-28bd-4347-810f-802070e031e7'"
+        echo "GUID=='7a6f5f3f-e5a5-4413-a490-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1909,7 +1902,7 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
             echo "The reason, why symlinks to files are not supported is that "
             echo "the file size of symlinks can differ from "
             echo "the file size of the target of the symlink."
-            echo "GUID=='5740b6b3-90b4-4500-810f-802070e031e7'"
+            echo "GUID=='bcfe8e4b-9c8c-4ea4-8390-21b170e031e7'"
             echo ""
         else
             echo ""
@@ -1918,7 +1911,7 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
             echo "    $S_FP_0"
             echo ""
             echo "does not exist."
-            echo "GUID=='87c16d21-e78b-48af-b6fe-802070e031e7'"
+            echo "GUID=='2db4b292-d5d5-4286-8190-21b170e031e7'"
             echo ""
         fi
         #----
@@ -1935,7 +1928,7 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
             echo ""
             echo "references a symlink that references folder, but "
             echo "a file is expected."
-            echo "GUID=='9ad6cd5d-5668-435f-b5fe-802070e031e7'"
+            echo "GUID=='03516057-64fc-4913-8190-21b170e031e7'"
             echo ""
         else
             echo ""
@@ -1945,7 +1938,7 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
             echo ""
             echo "references a folder, but it is expected to "
             echo "to reference a file."
-            echo "GUID=='3e955ea5-497b-4d25-81fe-802070e031e7'"
+            echo "GUID=='221d8e2b-c10b-42b9-a480-21b170e031e7'"
             echo ""
         fi
         #----
@@ -1963,7 +1956,7 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
         echo "The reason, why symlinks to files are not supported is that "
         echo "the file size of symlinks can differ from "
         echo "the file size of the target of the symlink."
-        echo "GUID=='95383c69-07f5-47c0-89fe-802070e031e7'"
+        echo "GUID=='4556d523-1e93-49f8-9380-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -1982,7 +1975,7 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_packet_name_candidate_exists_t
         echo "The 2. console argument is expected to be "
         echo "a Silktorrent packet name candidate, but currently "
         echo "the 2. console argument is missing."
-        echo "GUID=='31e54d03-8016-436b-85bd-802070e031e7'"
+        echo "GUID=='9dd80125-f4b8-40c5-b180-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2016,7 +2009,7 @@ func_mmmv_silktorrent_packager_t1_bash_reverse_string() {
             echo "All of the applications that this function is " 
             echo "capable of using for reversing a string(ruby)"
             echo "are missing from the PATH."
-            echo "GUID=='85bbf612-0a2b-485f-b4bd-802070e031e7'"
+            echo "GUID=='bc77b41d-6478-4e1a-9380-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -2026,7 +2019,7 @@ func_mmmv_silktorrent_packager_t1_bash_reverse_string() {
         if [ "$?" != "0" ]; then
             echo ""
             echo "This script is flawed."
-            echo "GUID=='e779be52-3b1a-402e-91bd-802070e031e7'"
+            echo "GUID=='4f324635-b98e-4198-a780-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -2049,7 +2042,7 @@ func_mmmv_silktorrent_packager_t1_bash_reverse_string() {
             echo "`ruby -e \"puts('$S_IN'.reverse)\"`" # with the stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='32b59258-f7d6-4a83-95bd-802070e031e7'"
+            echo "GUID=='ccd82816-37c5-405c-823f-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -2206,7 +2199,7 @@ func_mmmv_delete_tmp_folder_t1(){
         echo "    $S_FP_0"
         echo "is expected to exist during the "
         echo "call to this function."
-        echo "GUID=='7574bf34-b0c4-4ba9-a5bd-802070e031e7'"
+        echo "GUID=='2e447df2-5321-4928-b73f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2226,7 +2219,7 @@ func_mmmv_delete_tmp_folder_t1(){
         echo "This script is flawed. The folder "
         echo "    $S_FP_1"
         echo "is missing."
-        echo "GUID=='89fc6c50-6a1b-4e68-b4bd-802070e031e7'"
+        echo "GUID=='6aab1d10-8e8a-477c-b23f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2244,7 +2237,7 @@ func_mmmv_delete_tmp_folder_t1(){
         echo ""
         echo "S_TMP_0==$S_TMP_0"
         echo ""
-        echo "GUID=='33f9e721-d141-4a15-93ad-802070e031e7'"
+        echo "GUID=='e1050d4e-34fd-46c0-b42f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2264,7 +2257,7 @@ func_mmmv_delete_tmp_folder_t1(){
         echo ""
         echo "S_TMP_0==$S_TMP_0"
         echo ""
-        echo "GUID=='5322e2c5-5408-456c-96ad-802070e031e7'"
+        echo "GUID=='5b136271-52e5-4c30-812f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2277,7 +2270,7 @@ func_mmmv_delete_tmp_folder_t1(){
         echo "Something went wrong. The recursive deletion of the temporary folder, "
         echo "    $S_FP_1"
         echo "failed."
-        echo "GUID=='53d85f13-83de-4ab2-85ad-802070e031e7'"
+        echo "GUID=='40f04834-df5a-4bff-822f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2300,7 +2293,7 @@ func_mmmv_create_folder_if_it_does_not_already_exist_t1(){
         # if it misses a path argument. 
         echo ""
         echo "S_FP_0==\"\""
-        echo "GUID=='7a6a8222-46a8-4fc2-a3ad-802070e031e7'"
+        echo "GUID=='110c6012-b75d-4c23-832f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2313,7 +2306,7 @@ func_mmmv_create_folder_if_it_does_not_already_exist_t1(){
             echo "The path that is suppose to reference either "
             echo "an existing folder or a non-existent folder, "
             echo "references a file."
-            echo "GUID=='568dee95-94ef-4508-b5ad-802070e031e7'"
+            echo "GUID=='065bb01e-c77c-4f67-912f-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -2327,7 +2320,7 @@ func_mmmv_create_folder_if_it_does_not_already_exist_t1(){
         echo "mkdir for path "
         echo "    $S_FP_0"
         echo "failed."
-        echo "GUID=='47dbaf49-8151-467d-939d-802070e031e7'"
+        echo "GUID=='11ea94b4-e5a9-4891-a61f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2339,7 +2332,7 @@ func_mmmv_create_folder_if_it_does_not_already_exist_t1(){
         echo "mkdir execution succeeded, but for some other reason the folder "
         echo "    $S_FP_0"
         echo "does not exist."
-        echo "GUID=='87415d1b-e2b5-4f0e-829d-802070e031e7'"
+        echo "GUID=='9ae79e10-eaae-4233-951f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2364,7 +2357,7 @@ func_mmmv_create_tmp_folder_t1(){
         echo "This script is flawed. GUID generation failed and "
         echo "the GUID generation function did not throw despite "
         echo "the fact that it should have detected its own failure."
-        echo "GUID=='594ff3b3-10bd-42db-b19d-802070e031e7'"
+        echo "GUID=='9664b33c-7123-482b-b11f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2394,7 +2387,7 @@ func_mmmv_create_tmp_folder_t1(){
     if [ -e "$S_TMP_0" ]; then
         echo ""
         echo "This script failed to generate a locally unique path."
-        echo "GUID=='59d91812-4ab7-4c2a-879d-802070e031e7'"
+        echo "GUID=='20353ff1-ac7d-40be-b11f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2406,7 +2399,7 @@ func_mmmv_create_tmp_folder_t1(){
         echo "mkdir for path "
         echo "    $S_TMP_0"
         echo "failed."
-        echo "GUID=='5c8e3d01-c703-4ea0-a28d-802070e031e7'"
+        echo "GUID=='316a2a61-32e2-4a0e-811f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2428,7 +2421,7 @@ func_mmmv_silktorrent_packager_t1_bash_get_packet_format_version_t1() {
     if [ "$S_FP_0" == "" ]; then
         echo ""
         echo "The file path candidate must not be an empty string."
-        echo "GUID=='ef933b2b-a50e-4957-818d-802070e031e7'"
+        echo "GUID=='21e00e39-7bd1-4595-910f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2460,7 +2453,7 @@ func_mmmv_silktorrent_packager_t1_bash_get_packet_format_version_t1() {
         echo ""
         echo "    S_TMP_0==$S_TMP_0"
         echo ""
-        echo "GUID=='6a5dc354-4293-4c9f-b28d-802070e031e7'"
+        echo "GUID=='b511aafc-7d2e-4f17-b50f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2474,7 +2467,7 @@ func_mmmv_silktorrent_packager_t1_bash_get_packet_format_version_t1() {
         echo "    basename $S_FP_0 "
         echo ""
         echo "exited with an error."
-        echo "GUID=='ec6c175c-bab0-408a-b38d-802070e031e7'"
+        echo "GUID=='d58ce8a5-65c5-4d43-950f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2486,7 +2479,7 @@ func_mmmv_silktorrent_packager_t1_bash_get_packet_format_version_t1() {
         echo "The file path candidate must be a string that "
         echo "is not an empty string after "
         echo "all of the spaces and tabs have been removed from it."
-        echo "GUID=='1b402ae2-09dd-45fc-b28d-802070e031e7'"
+        echo "GUID=='d0ad852c-39f9-49d6-910f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2541,7 +2534,7 @@ func_mmmv_silktorrent_packager_t1_bash_verify_file_name_t1() {
         echo ""
         echo "    $S_FP_0"
         echo ""
-        echo "GUID=='5aa78147-2c10-4f63-947d-802070e031e7'"
+        echo "GUID=='d9cc81e3-6682-4097-810f-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2559,7 +2552,7 @@ func_mmmv_silktorrent_packager_t1_bash_verify_file_name_t1() {
         echo ""
         echo "This script is flawed."
         echo "It should have thrown before the control flow reaches this line."
-        echo "GUID=='318cca35-4f39-4a2c-937d-802070e031e7'"
+        echo "GUID=='73ce445c-9318-49ba-81fe-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2626,7 +2619,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo "This script is flawed, because the folder "
         echo "creation function should have thrown "
         echo "before the control flow reaches this branch." 
-        echo "GUID=='dc42402d-7e17-46e1-b57d-802070e031e7'"
+        echo "GUID=='516b9b78-fe98-4f0d-95fe-21b170e031e7'"
         #----
         cd $S_FP_ORIG
         exit 1 # exit with error
@@ -2638,7 +2631,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo "the folder creation function returned a valid path, but"
         echo "did not actually create the folder that it was supposed create."
         echo "S_FP_TMP_0==$S_FP_TMP_0"
-        echo "GUID=='3511389d-bb47-4185-a57d-802070e031e7'"
+        echo "GUID=='ecbecd41-a615-4261-82fe-21b170e031e7'"
         #----
         cd $S_FP_ORIG
         exit 1 # exit with error
@@ -2664,7 +2657,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
             echo "    $S_TMP_0"
             echo ""
             echo "exists, but it is not a folder."
-            echo "GUID=='46e9e734-c3b4-44f5-847d-802070e031e7'"
+            echo "GUID=='4499105f-06d7-477a-a3fe-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -2681,7 +2674,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
             echo "    pwd=`pwd`"
             echo "    S_TMP_0=$S_TMP_0"
             echo ""
-            echo "GUID=='65b01b46-fdbb-4aa0-b46d-802070e031e7'"
+            echo "GUID=='4588f6b7-8b7a-4531-b1fe-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -2696,7 +2689,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
                 echo "    $S_TMP_0 "
                 echo ""
                 echo "failed with an error code of $?."
-                echo "GUID=='2a2c784c-31d4-4c87-816d-802070e031e7'"
+                echo "GUID=='a4b8ae20-fddb-4243-84ee-21b170e031e7'"
                 echo ""
                 #----
                 cd $S_FP_ORIG
@@ -2756,7 +2749,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
     if [ "$?" != "0" ]; then
         echo ""
         echo "Salting failed. \$?==$?"
-        echo "GUID=='39232452-bcfd-42cb-915d-802070e031e7'"
+        echo "GUID=='d25c74fd-d0a8-4cc9-94ee-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2776,7 +2769,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo ""
         echo "    S_FP_TMP_PAYLOAD=$S_FP_TMP_PAYLOAD"
         echo ""
-        echo "GUID=='786ab828-2356-4699-a55d-802070e031e7'"
+        echo "GUID=='5217362e-6043-4bc2-94ee-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2799,7 +2792,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo ""
         echo "    S_FP_TMP_SILKTORRENT_PACKET_TAR==$S_FP_TMP_SILKTORRENT_PACKET_TAR"
         echo ""
-        echo "GUID=='b1be543c-0c81-42c8-825d-802070e031e7'"
+        echo "GUID=='1ecc8ae3-16f1-4b7b-91ee-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2822,7 +2815,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo "to "
         echo "    $S_FP_TMP_SILKTORRENT_PACKET_PUBLISHINGNAME "
         echo "failed."
-        echo "GUID=='cd0cd93e-d77d-4baf-925d-802070e031e7'"
+        echo "GUID=='24adbab5-2724-4b56-b1ee-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2841,7 +2834,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo ""
         echo "failed. The mv command succeed, but for some reason "
         echo "the destination file does not exist."
-        echo "GUID=='c9a3b13f-36b4-4aac-955d-802070e031e7'"
+        echo "GUID=='6249805d-3970-4ae0-83de-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2857,7 +2850,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo "    $S_FP_TMP_0"
         echo ""
         echo "failed."
-        echo "GUID=='a2020c3b-30cf-49ee-a44d-802070e031e7'"
+        echo "GUID=='2b5ea76a-9cbc-4b17-a4de-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2887,7 +2880,7 @@ func_mmmv_silktorrent_packager_t1_bash_unwrap_t1() {
         echo "this is an older version of the Silktorrent implementation and "
         echo "this, the older, version does not support "
         echo "newer Silktorrent packet formats. "
-        echo "GUID=='64351e84-6947-4dd0-954d-802070e031e7'"
+        echo "GUID=='4963c1ad-f3b4-448b-b3de-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2908,7 +2901,7 @@ func_mmmv_silktorrent_packager_t1_bash_unwrap_t1() {
             echo "    ./silktorrent_packet"
             echo ""
             echo "must be explicitly deleted before calling this script."
-            echo "GUID=='571e3875-32e0-48d8-933d-802070e031e7'"
+            echo "GUID=='23c45aa4-a11a-4465-b8de-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -2923,7 +2916,7 @@ func_mmmv_silktorrent_packager_t1_bash_unwrap_t1() {
             echo "    tar -xf $S_FP_0"
             echo ""
             echo "exited with an error code, which is $? ."
-            echo "GUID=='1485b83e-0109-401a-b13d-802070e031e7'"
+            echo "GUID=='a48be003-4597-4171-b5de-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -2940,7 +2933,7 @@ func_mmmv_silktorrent_packager_t1_bash_unwrap_t1() {
             echo ""
             echo "failed. The folder \"silktorrent_packet\" "
             echo "is missing after the \"tar\" exited without any errors."
-            echo "GUID=='56860551-0d8f-4d2e-a32d-802070e031e7'"
+            echo "GUID=='fd13e654-54dc-4fc0-84ce-21b170e031e7'"
             echo ""
             #----
             cd $S_FP_ORIG
@@ -2952,7 +2945,7 @@ func_mmmv_silktorrent_packager_t1_bash_unwrap_t1() {
         echo ""
         echo "This script is flawed."
         echo "There is at least one branch missing from this function."
-        echo "GUID=='12813f55-2652-4329-a42d-802070e031e7'"
+        echo "GUID=='1e48d97b-0cfd-419f-a2ce-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -2971,7 +2964,7 @@ func_mmmv_silktorrent_packager_t1_bash_verify_packet_name_format_v1(){
         echo "This script is flawed."
         echo "Input verification should have caught the "
         echo "\"\" case before the control flow reaches this line."
-        echo "GUID=='dcdaa214-e5cf-4d89-a32d-802070e031e7'"
+        echo "GUID=='e455ec4a-e47b-4300-b2ce-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -3018,7 +3011,7 @@ func_mmmv_silktorrent_packager_t1_bash_verify_packet_name_format_v1(){
         echo ""
         echo "Something went wrong. \$?==$? "
         echo "    S_PACKET_NAME_CANDIDATE==$S_PACKET_NAME_CANDIDATE"
-        echo "GUID=='7ad3893e-ac0a-4e5f-b22d-802070e031e7'"
+        echo "GUID=='14e79072-40db-4f61-9fce-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -3083,7 +3076,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_1" \
                 "2. console argument" \
-                "adf5cf2f-6fb0-4e01-836f-802070e031e7"
+                "6fc27b31-acd4-47e5-98f0-21b170e031e7"
         func_mmmv_silktorrent_packager_t1_bash_print_help_msg_t1
         #----
         cd $S_FP_ORIG
@@ -3110,7 +3103,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_1" \
                 "2. console argument" \
-                "546a64c2-96fe-41fa-8c6f-802070e031e7"
+                "f7d51543-a78b-4d25-84f0-21b170e031e7"
         echo "$S_SCRIPT_VERSION"
         #----
         cd $S_FP_ORIG
@@ -3137,7 +3130,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_1" \
                 "2. console argument" \
-                "39de2191-edc0-4e2a-b26f-802070e031e7"
+                "70144819-1b55-4635-92f0-21b170e031e7"
         echo "$S_SCRIPT_VERSION_GENERATION_DATE"
         #----
         cd $S_FP_ORIG
@@ -3177,7 +3170,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
                 echo ""
                 echo "The N_OF_RANDOM_TEXT_BLOCKS(==$S_ARGV_2) is expected "
                 echo "to be a positive whole number."
-                echo "GUID=='3e1e0843-9eb1-44ce-a51d-802070e031e7'"
+                echo "GUID=='8060bc3b-8a91-4b14-93ce-21b170e031e7'"
                 echo ""
                 # func_mmmv_silktorrent_packager_t1_bash_print_help_msg_t1
                 #----
@@ -3192,7 +3185,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
             func_mmmv_assert_arg_is_absent_t1 \
                     "$S_ARGV_3" \
                     "4. console argument" \
-                    "1357302b-c0e2-4951-835f-802070e031e7"
+                    "7237cea6-9a81-4a19-98f0-21b170e031e7"
             #-------------------------
             S_SILKTORRENT_PACKAGER_T1_ACTION_WARP_NRAND="$S_TMP_1" # ==N_OF_RANDOM_TEXT_BLOCKS
         fi
@@ -3221,7 +3214,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         # func_mmmv_assert_arg_is_absent_t1 \
         #         "$S_ARGV_3" \
         #         "4. console argument" \
-        #         "cefb292e-5c50-4f00-b45f-802070e031e7"
+        #         "27f24511-05e7-4265-8be0-21b170e031e7"
         #
         # but in the case of the unwrap command the hack in this if-clause
         # gives a more informative error message for 
@@ -3240,7 +3233,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_2" \
                 "3. console argument" \
-                "23069114-3e88-40ca-b55f-802070e031e7"
+                "f4a36b43-4b94-453f-81e0-21b170e031e7"
     fi
     #----
     S_TMP_0="test_hash_t1" 
@@ -3252,7 +3245,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_2" \
                 "3. console argument" \
-                "f4081fa5-06ca-440d-915f-802070e031e7"
+                "e49c8607-3481-4033-94e0-21b170e031e7"
     fi
     #--------
     # Start of actions that do not require a file:
@@ -3358,7 +3351,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         echo "" 
         echo "This bash script is flawed. The control flow " 
         echo "should have never reached this line."
-        echo "GUID=='30c24214-2845-45ad-841d-802070e031e7'"
+        echo "GUID=='2c787ea3-4baa-4f6f-84be-21b170e031e7'"
         echo ""
         #----
         cd $S_FP_ORIG
