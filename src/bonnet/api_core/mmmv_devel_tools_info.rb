@@ -58,7 +58,6 @@ when "get_config"
    s_out=ob_info.get_config(s_config_key)
    kibuvits_write s_out
 else
-puts "ihii"
    kibuvits_writeln(ob_info.s_doc("'5295c1a4-7c85-44da-85a5-409170b16ed7'"))
    exit
 end # case s_cmd
