@@ -40,27 +40,33 @@ end # class C_mmmv_devel_tools_info
 
 ob_info=C_mmmv_devel_tools_info.new
 
-if ARGV.size==0
-   kibuvits_writeln(ob_info.s_doc("'0728c25b-76a2-49f0-93a5-409170b16ed7'"))
-   exit
-end # if
+# The following if-clause causes problems in this
+# old version/branch of the mmmv_devel_tools. 
+# The newer, currently probably yet unpublished, branch 
+# has this nonsense all refactored out. It's a very dirty, temporary "fix".
+#if ARGV.size==0
+#   kibuvits_writeln(ob_info.s_doc("'0728c25b-76a2-49f0-93a5-409170b16ed7'"))
+#   exit
+#end # if
 
-s_cmd=ARGV[0].to_s
+if ARGV.size!=0  # part of the dirty "fix"
+   s_cmd=ARGV[0].to_s
 
 
-case s_cmd
-when "get_config"
-   if ARGV.size!=2
-      kibuvits_writeln(ob_info.s_doc("'375c45d1-763b-4dc9-97a5-409170b16ed7'"))
+   case s_cmd
+   when "get_config"
+      if ARGV.size!=2
+         kibuvits_writeln(ob_info.s_doc("'375c45d1-763b-4dc9-97a5-409170b16ed7'"))
+         exit
+      end # if
+      s_config_key=ARGV[1]
+      s_out=ob_info.get_config(s_config_key)
+      kibuvits_write s_out
+   else
+      kibuvits_writeln(ob_info.s_doc("'5295c1a4-7c85-44da-85a5-409170b16ed7'"))
       exit
-   end # if
-   s_config_key=ARGV[1]
-   s_out=ob_info.get_config(s_config_key)
-   kibuvits_write s_out
-else
-   kibuvits_writeln(ob_info.s_doc("'5295c1a4-7c85-44da-85a5-409170b16ed7'"))
-   exit
-end # case s_cmd
+   end # case s_cmd
+end # if # part of the dirty "fix"
 
 #==========================================================================
 

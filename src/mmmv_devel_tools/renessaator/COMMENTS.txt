@@ -69,11 +69,12 @@ which is bundled with the mmmv_devel_tools package.
                             3. Caveats
 ---------------------------------------------------------------------------
 
-Currently Renessaator can not be used on HTML or XML, because
-HTML and XML do not have single-liner comment tags. Internally the 
-Renessaator connects subsequent single-liner comments to a single
-comment block, which means that the absence of single-liner commenting
-possibility is not a fundamental showstopper, but a shortcoming of 
+Currently Renessaator can not be used on HTML or XML without
+using some qurks, because HTML and XML do not have single-liner 
+comment tags. Internally the Renessaator connects subsequent 
+single-liner comments to a single comment block, which means that 
+the absence of single-liner commenting possibility is not a 
+fundamental showstopper, but a shortcoming of 
 the current implementation of the Renessaator.
 
 ===========================================================================
