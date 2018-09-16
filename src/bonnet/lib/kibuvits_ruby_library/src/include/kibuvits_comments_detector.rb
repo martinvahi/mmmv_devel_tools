@@ -168,6 +168,7 @@ class Kibuvits_comments_detector
       @ht_singleliner["c++"]=ar_cpp_liner
       @ht_singleliner["c#"]=ar_cpp_liner
       @ht_singleliner["c"]=ar_cpp_liner
+      @ht_singleliner["html"]=ar_cpp_liner # hack to support HTML at Renessaator
       @ht_singleliner["php"]=ar_cpp_liner
       @ht_singleliner["javascript"]=ar_cpp_liner
       @ht_singleliner["java"]=ar_cpp_liner
