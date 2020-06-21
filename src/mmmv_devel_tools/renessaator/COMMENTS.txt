@@ -26,6 +26,7 @@ Examples can be found from ./doc/lesson_01_hello_world
 1. Use Cases
 2. Dependencies
 3. Caveats
+4. List of Similar Projects by Third Parties
 
 ---------------------------------------------------------------------------
                            1. Use Cases
@@ -37,9 +38,9 @@ x) Dumb, built-in, structured code duplication, like most of the C++ and
    C header files.
 
 x) Speed-optimized code, where the algorithm properties make it 
-   unacceptably laborous to write the code manually. 
+   unacceptably laborious to write the code manually. 
    (One possible scheme of a speed-optimized algorithm that is too 
-   laborous to implement manually: generate tables, apply optimizations, 
+   laborious to implement manually: generate tables, apply optimizations, 
    and then write the code according to the tables.)
 
 x) Code, where reflection can not be used due to speed considerations.
@@ -58,7 +59,7 @@ x) May be in conjunction with something like the ASN.1 compiler?
                         2. Dependencies
 ---------------------------------------------------------------------------
 
-Ruby 1.9.x or newer, rubygems, 
+Tested with Ruby 2.3.x, will NOT work with Ruby 2.4.x and newer.
 Bash and other common Linux command line tools.
 
 The Renessaator and its applications depend heavily on the 
@@ -69,13 +70,31 @@ which is bundled with the mmmv_devel_tools package.
                             3. Caveats
 ---------------------------------------------------------------------------
 
-Currently Renessaator can not be used on HTML or XML without
-using some qurks, because HTML and XML do not have single-liner 
-comment tags. Internally the Renessaator connects subsequent 
-single-liner comments to a single comment block, which means that 
-the absence of single-liner commenting possibility is not a 
-fundamental showstopper, but a shortcoming of 
-the current implementation of the Renessaator.
+Currently Renessaator can not be used on HTML or XML without 
+using some quirks, because the HTML and the XML do not have 
+single-liner comment tags. Internally the Renessaator connects 
+subsequent single-liner comments to a single comment block, 
+which means that the absence of single-liner commenting
+possibility is not a fundamental showstopper, but a shortcoming 
+from the perspective of the current implementation of the Renessaator. 
+As there is a quirky workaround that allows code to be generated to 
+programming/description languages that do not have 
+single-liner comment tags, a proper, elegant, solution to
+that issue will probably never be implemented, at least
+not by me(Martin.Vahi@softf1.com). The documentation
+includes a demo, how to generate code to HTML files.
+
+
+---------------------------------------------------------------------------
+              4. List of Similar Projects by Third Parties
+---------------------------------------------------------------------------
+
+x) ribosome 
+       https://github.com/sustrik/ribosome
+       http://sustrik.github.io/ribosome/
+   by Martin Sústrik
+       http://250bpm.com/
+
 
 ===========================================================================
 
