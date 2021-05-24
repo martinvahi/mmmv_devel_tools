@@ -59,14 +59,21 @@ end # if
 #==========================================================================
 
 class GUID_trace_UpGUID_core
+
    def initialize
+      #--------------------------------------
       @s_repl_prefix="AlL_oF_THe_OlD_GLObAlLY_UnIQuE_IDeNTI"+
       "fIErS_aRe_rePlAcEd_wIth_tHiS4"
+      #--------------------------------------
+      s_0=""
+      7.times{|i| s_0=s_0+($kibuvits_lc_underscore+(rand(900000).to_s))}
       # The 
-      @s_repl_suffix="_SuFFFFFiX_49112299Df91fffffffff191Df991"
+      @s_repl_suffix=("_SuFFFFFiX_49112299Df91fffffffff191Df991"+s_0).freeze
       # is neded to overcome the problem that 
       # "foo_1" is a substring of "foo_11" , 
       # which is a substring of   "foo_111", etc.
+      # The "+s_0" is for security, just in case.
+      #--------------------------------------
    end # initialize
 
    def copyright
