@@ -33,6 +33,8 @@
  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+ The following line is a spdx.org license label line:
+ SPDX-License-Identifier: BSD-3-Clause-Clear
 =end
 #==========================================================================
 

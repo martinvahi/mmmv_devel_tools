@@ -33,6 +33,8 @@
  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+ The following line is a spdx.org license label line:
+ SPDX-License-Identifier: BSD-3-Clause-Clear
 =end
 #==========================================================================
 
@@ -58,8 +60,13 @@ end # if
 
 class GUID_trace_UpGUID_core
    def initialize
-      @s_repl="AlL_oF_THe_OlD_GLObAlLY_UnIQuE_IDeNTI"+
+      @s_repl_prefix="AlL_oF_THe_OlD_GLObAlLY_UnIQuE_IDeNTI"+
       "fIErS_aRe_rePlAcEd_wIth_tHiS4"
+      # The 
+      @s_repl_suffix="_SuFFFFFiX_49112299Df91fffffffff191Df991"
+      # is neded to overcome the problem that 
+      # "foo_1" is a substring of "foo_11" , 
+      # which is a substring of   "foo_111", etc.
    end # initialize
 
    def copyright
@@ -80,27 +87,34 @@ class GUID_trace_UpGUID_core
       old_GUID=nil
       go_on=true
       while go_on do
+         #-----------------------------------------------------
          go_on=false
          # The String.match returns either nil or MatchData instance
          # That is to say, String.match DOES NOT, return a string.
+         # To avoid some Ruby version related testing, 
+         # a lambda function is intentionally not usd at the 
+         # next 2 subsections at this while clause.
+         #-----------------------------------------------------
          old_GUID=s_source.match(s_regex_single_quotes)
          if old_GUID!=nil
             old_GUID=old_GUID.to_s
             i=i+1
-            s_tmprplmnt=@s_repl+i.to_s
+            s_tmprplmnt=@s_repl_prefix+(i.to_s+@s_repl_suffix)
             ar_replacements<<s_tmprplmnt
             s_source.sub!(old_GUID,"'"+s_tmprplmnt+"'")
             go_on=true
          end # if
+         #-----------------------------------------------------
          old_GUID=s_source.match(s_regex_double_quotes)
          if old_GUID!=nil
             old_GUID=old_GUID.to_s
             i=i+1
-            s_tmprplmnt=@s_repl+i.to_s
+            s_tmprplmnt=@s_repl_prefix+(i.to_s+@s_repl_suffix)
             ar_replacements<<s_tmprplmnt
             s_source.sub!(old_GUID,"\""+s_tmprplmnt+"\"")
             go_on=true
          end # if
+         #-----------------------------------------------------
       end # while
       n=ar_replacements.length
       return s_source if n==0
