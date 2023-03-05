@@ -16,6 +16,33 @@ which frees one from the manual list-assembling.
 
 =end
 #==========================================================================
+# Ruby language version related normalization:
+#--------------------------------------------------------------------------
+# Most Ruby versions prior to Ruby version 3.2.0
+# had that method. This code makes old code that
+# worked with those older Ruby versions
+# work with the Ruby version 3.2.0 .
+if !defined? File.exists?
+   def File.exists? x
+      b=File.exist? x
+      return b
+   end # File.exists?
+end # if
+# Ruby 2.4.0 introduced a change, where
+# classes Fixnum and Bignum were deprecated
+# their use triggered a warning text to stderr
+# and their common parent class, Integer,
+# was expected to be used instead of them.
+# Ruby version 2.7.2 removed the warning from the stderr.
+# Ruby version 3.2.0 missed the classes, Fixnum and Bignum.
+# The following 2 if-clauses keep the old code working.
+if !defined? Fixnum
+   Fixnum=Integer
+end # if
+if !defined? Bignum
+   Bignum=Integer
+end # if
+#==========================================================================
 
 if !defined? KIBUVITS_HOME
    require 'pathname'
@@ -163,4 +190,6 @@ else
 
  # SELFWRIGING_REGION_END
 end # if
+#--------------------------------------------------------------------------
+# S_VERSION_OF_THIS_FILE="af1e1745-ecd4-4809-b154-2111115037e7"
 #==========================================================================

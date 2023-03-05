@@ -4,14 +4,37 @@ mmmv_devel_tools
 The mmmv_devel_tools is a collection of software development
 utilities and IDE integration scripts.
 
-The tools set depends on Ruby 2.x.x, rubygems, Bash, a set of
-common Linux/BSD command line tools.  The mmmv_devel_tools is
-Linux/BSD specific.
+The tools depends on Ruby, Bash and
+a set of common Linux/BSD command line tools.  
+
+mmmv_devel_tools subprojects MIGHT work with Ruby versions 1.8 till 2.3.x,
+but as of 2023_03 they have NOT been tested with so old versions for a while.
+mmmv_devel_tools subprojects will probably NOT work with Ruby versions 2.4.0 till 2.7.1,
+because those versions put the Fixnum and Bignum deprecation
+warnings to stderr and the included Kibuvits Ruby Library (hereafter: KRL)
+is designed to throw, whenever the KRL code finds anything from the stderr.
+mmmv_devel_tools subprojects MIGHT work with Ruby versions 2.7.2 and greater,
+because since the Ruby version 2.7.2 the Fixnum and Bignum deprecation
+warnings were removed from the stderr.
+
+The mmmv_devel_tools is Linux/BSD specific, but
+it has worked with some Ruby versions
+under the Windows Subsystem for Linux (WSL).
+Some sub-parts of the KRL MIGHT work with 
+some Windows specific Ruby binaries, so at least some of the the 
+mmmv_devel_tools components MIGHT occasionally work with 
+those Windows specific Ruby binaries, but officially 
+WINDOWS IS NOT SUPPORTED. 
 
 Almost all of the mmmv_devel_tools has been written by
 the Martin.Vahi@softf1.com and is licensed under the BSD license:
 http://www.opensource.org/licenses/BSD-3-Clause
+SPDX-License-Identifier: BSD-3-Clause-Clear
 
+Backwards compatibility between different mmmv_devel_tools
+versions IS NOT EVEN A GOAL. Projects that depend on the 
+mmmv_devel_tools should have a project specific copy 
+of it as part of their development deliverables.
 
 ---------------------------------------------------------------------------
 
@@ -141,4 +164,6 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+---------------------------------------------------------------------------
+S_VERSION_OF_THIS_FILE="46dc9635-7ead-47de-b3d1-3232115037e7"
 ---------------------------------------------------------------------------

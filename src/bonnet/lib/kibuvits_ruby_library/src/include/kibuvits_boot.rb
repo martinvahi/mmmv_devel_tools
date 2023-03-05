@@ -36,6 +36,33 @@
 
 =end
 #==========================================================================
+# Ruby language version related normalization:
+#--------------------------------------------------------------------------
+# Most Ruby versions prior to Ruby version 3.2.0
+# had that method. This code makes old code that
+# worked with those older Ruby versions
+# work with the Ruby version 3.2.0 .
+if !defined? File.exists?
+   def File.exists? x
+      b=File.exist? x
+      return b
+   end # File.exists?
+end # if
+# Ruby 2.4.0 introduced a change, where
+# classes Fixnum and Bignum were deprecated
+# their use triggered a warning text to stderr
+# and their common parent class, Integer,
+# was expected to be used instead of them.
+# Ruby version 2.7.2 removed the warning from the stderr.
+# Ruby version 3.2.0 missed the classes, Fixnum and Bignum.
+# The following 2 if-clauses keep the old code working.
+if !defined? Fixnum
+   Fixnum=Integer
+end # if
+if !defined? Bignum
+   Bignum=Integer
+end # if
+#==========================================================================
 # Common initialization stuff:
 
 require 'pathname'
@@ -1464,7 +1491,7 @@ def kibuvits_assert_is_smaller_than_or_equal_to(a_binding,
    # throw before doing any calculations with the faulty
    # values and throw at some other, more distant, place.
    # That explains the existence of this, extra, typechecking loop.
-   s_suffix="\nGUID='f033d323-64f0-457b-b231-f09371c1ced7'"
+   s_suffix="\nGUID='4968c677-c522-4792-91b8-8121115037e7'"
    if s_optional_error_message_suffix!=nil
       s_suffix=(s_suffix+$kibuvits_lc_linebreak)+s_optional_error_message_suffix
    end # if
@@ -1473,7 +1500,7 @@ def kibuvits_assert_is_smaller_than_or_equal_to(a_binding,
       kibuvits_typecheck(a_binding,ar_allowed_classes,x_value,s_suffix)
    end # loop
    #---------------------
-   s_suffix="\nGUID='23e89b05-d131-4875-ad31-f09371c1ced7'"
+   s_suffix="\nGUID='132d7d24-1d76-4bc3-94b8-8121115037e7'"
    if s_optional_error_message_suffix!=nil
       s_suffix=(s_suffix+$kibuvits_lc_linebreak)+s_optional_error_message_suffix
    end # if
@@ -1512,7 +1539,7 @@ def kibuvits_assert_is_smaller_than_or_equal_to(a_binding,
       end # if
       msg=$kibuvits_lc_doublelinebreak+s_varname_1+x_upper_bound_0.to_s+
       " < " + s_varname_2 + x_elem.to_s+
-      "\nGUID='1d450e86-31a3-4983-9831-f09371c1ced7'"
+      "\nGUID='96193f20-5dd2-4c3b-a3b8-8121115037e7'"
       if s_optional_error_message_suffix.class==String
          msg=msg+"\n"+s_optional_error_message_suffix
       end # if
@@ -1738,7 +1765,7 @@ def kibuvits_assert_ar_elements_typecheck_if_is_array(a_binding,
    if KIBUVITS_b_DEBUG
       if ar_exp_classes.size==0
          msg="ar_exp_classes.size==0\n"+
-         "GUID='81ccff7e-0ab3-4341-8121-f09371c1ced7'"
+         "GUID='e6f71550-1dc0-4014-a2a8-8121115037e7'"
          kibuvits_throw(msg)
       end # if
       bn_1=nil
@@ -1839,10 +1866,10 @@ end # kibuvits_assert_does_not_contain_common_special_characters_t1
 
 #def kibuvits_s_file_permissions_t1(s_fp)
 #   if KIBUVITS_b_DEBUG
-#      s_suffix="\nGUID='2738522c-d589-4163-b121-f09371c1ced7'"
+#      s_suffix="\nGUID='2eedf834-3f84-48c3-97a8-8121115037e7'"
 #      bn=binding()
 #      kibuvits_typecheck(bn,String,s_fp,s_suffix)
-#      s_suffix="\nGUID='ad2fea40-12b0-45cd-b521-f09371c1ced7'"
+#      s_suffix="\nGUID='82a45a18-10fb-4189-85a8-8121115037e7'"
 #      kibuvits_assert_string_min_length(bn,s_fp,1,s_suffix)
 #   end # if
 #
