@@ -26,15 +26,14 @@ mmmv_devel_tools components MIGHT occasionally work with
 those Windows specific Ruby binaries, but officially 
 WINDOWS IS NOT SUPPORTED. 
 
+**Backwards compatibility between different mmmv_devel_tools versions IS NOT EVEN A GOAL.** 
+Projects that depend on the mmmv_devel_tools should have a project specific copy 
+of it as part of their development deliverables.
+
 Almost all of the mmmv_devel_tools has been written by
 the Martin.Vahi@softf1.com and is licensed under the BSD license:
 http://www.opensource.org/licenses/BSD-3-Clause
 SPDX-License-Identifier: BSD-3-Clause-Clear
-
-Backwards compatibility between different mmmv_devel_tools
-versions IS NOT EVEN A GOAL. Projects that depend on the 
-mmmv_devel_tools should have a project specific copy 
-of it as part of their development deliverables.
 
 ---------------------------------------------------------------------------
 
@@ -163,7 +162,6 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 ---------------------------------------------------------------------------
-S_VERSION_OF_THIS_FILE="46dc9635-7ead-47de-b3d1-3232115037e7"
+S_VERSION_OF_THIS_FILE="9ef89e21-6af7-4b5a-84f9-7383115037e7"
 ---------------------------------------------------------------------------
