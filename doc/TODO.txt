@@ -43,5 +43,6 @@ Low-priority but interesting:
     *) ScriptEclipse(http://www.viplugin.com/scripteclipse.htm )
        based Eclipse IDE-driver for JumpGUID
 
-
+---------------------------------------------------------------------------
+S_VERSION_OF_THIS_FILE="8c1b5ec1-cd06-471b-81e5-7292215037e7"
 ===========================================================================
