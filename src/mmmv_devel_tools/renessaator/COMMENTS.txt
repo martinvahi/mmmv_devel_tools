@@ -18,6 +18,9 @@ Currently supported generating languages are: Ruby, PHP
 Currently supported target languages are: 
     Ruby, PHP, C++, JavaScript, C, Java
 
+Generating code can get its origin file path from an 
+environment variable "S_FP_RENESSAATOR_BLOCK_ORIGIN".
+
 Examples can be found from ./doc/lesson_01_hello_world
 
 ---------------------------------------------------------------------------
