@@ -36,8 +36,22 @@
 #     gawk/awk has been intentionally thrown out, because the gawk and awk 
 #     behave differently from each other. On BSD there tends to be only "awk",
 #     while the Linux tends to have only the "gawk".
-#     At some point most of this script must be re-written, reimplemented, 
-#     in something more advanced than Bash. Most likely Ruby. 
+#     At some point most of this script must be either 
+#     re-written, reimplemented in something more advanced than Bash,
+#     preferably Ruby, or the calls to the "ruby" interpreter
+#     must be replaced with a call to a very lightweight 
+#     command line utility that executes the Ruby 
+#     command line scripts at a Ruby application based servlet
+#     that gets started at the end of this Bash script and 
+#     gets killed, if not explicitly, then by its own timer-thread, 
+#     at the execution end of this Bash script. That 
+#     Ruby application wavelet might also be a nice gradual development based 
+#     speed-up technique of other Bash scripts and it might be
+#     one version of the first step at developing the 
+#     Babel architecture:
+#
+#         https://martin.softf1.com/g/yellow_soap_opera_blog/babel-architecture-version-0
+#         (archival copy: https://archive.is/yogkH )
 #
 #     The need for the rewrite comes mainly from the fact that 
 #     the passing of string values as console parameters 
@@ -71,6 +85,16 @@ S_FP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 S_FP_ORIG="`pwd`"
 S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date +%S`s"
 
+echo ""
+echo "Due to the dumb design flaw of this script "
+echo -e "\e[33mit can take a while to come up with some reasonable text feedback.\e[39m"
+echo "The dumb mistake is described as a comment at the "
+echo ""
+echo "    ${BASH_SOURCE[0]}"
+echo ""
+echo "GUID=='8266b5f9-b10b-4bc9-b3c9-b042218128e7'"
+echo ""
+
 #--------------------------------------------------------------------------
 # Semi-auto-stamps:
 
@@ -80,19 +104,19 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # RENESSAATOR_SOURCE_START
 # #----------------------------------------------------------
 # func_throw_t1=lambda do |s_in,s_guid_0|
-# s_guid_1="01da8718-de97-44ce-a101-21b170e031e7"
+# s_guid_1="3f02e921-3512-4fa2-b3c9-b042218128e7"
 # puts("\n")
 # puts("echo \"\"")
 # puts("echo \"Code generation script failed.\" \n")
 # puts("echo \"GUID=='"+s_guid_1+"'\";  \n")
 # puts("echo \"GUID=='"+s_guid_0+"'\";  \n")
 # puts("echo \"\"")
-# puts("exit 1 # exit with error \n")
+# puts("exit 1 # exit with an error \n")
 # raise(Exception.new("\n\n s_in=="+s_in+"\n GUID=="+s_guid_0+"\n\n"))
 # end # func_throw_t1
 # #--------------
 # # The problem is that neither the "uuid", nor the "uuidgen"
-# # might be available on the PATH. The creation of the inital value of the
+# # might be available on the PATH. The creation of the initial value of the
 # # s_0 has been tested on both, Linux and BSD, but not with all shells.
 # s_0=(`which uuidgen 2>/dev/null 1>/dev/null; echo $?`).to_s
 # s_0=s_0.gsub(/[\n\s\r]/,"")
@@ -100,7 +124,7 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # #--------------
 # func_assert_s_0_format_t1=lambda do |s_in|
 # if (s_in!="0")&&(s_in!="1")
-# s_guid_0="b4947c85-3148-4f0d-b101-21b170e031e7"
+# s_guid_0="28250b26-c2ca-48c2-91c9-b042218128e7"
 # func_throw_t1.call(s_in,s_guid_0)
 # end # if
 # end # func_assert_s_0_format_t1
@@ -118,7 +142,7 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # if s_0=="0"
 # s_guid_generation_program_name="uuid"
 # else
-# s_guid_2="2f771037-9949-405b-9301-21b170e031e7"
+# s_guid_2="85f74127-6885-4488-93c9-b042218128e7"
 # func_throw_t1.call(s_0,s_guid_2)
 # end # if
 # #-------------
@@ -131,7 +155,7 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # s_0=s_0.gsub(/[\n\s\r]/,"")
 # func_assert_s_0_format_t1.call(s_0)
 # if s_0!="0"
-# s_guid_3="35587944-1c7f-4e9f-b501-21b170e031e7"
+# s_guid_3="eb1cbb24-755b-42ed-b5c9-b042218128e7"
 # func_throw_t1.call(s_0,s_guid_3)
 # end # if
 # #--------------
@@ -141,24 +165,24 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # s_script_version=s_0
 # #----
 # if s_script_version.length!=36
-# s_guid_4="01895941-fb78-4960-8401-21b170e031e7"
+# s_guid_4="a5f6ed12-0f43-4fd6-b4b9-b042218128e7"
 # func_throw_t1.call(s_script_version,s_guid_4)
 # end # if
 # #--------------
 # s="\n"
-# s<<"# The S_SCRIPT_VERSION is in 2 parts to allow \n"
+# s<<"# The S_VERSION_OF_THIS_FILE is in 2 parts to allow \n"
 # s<<"# the error message GUIDs to be updated without \n"
-# s<<"# unsyncing the S_SCRIPT_VERSION from the \n"
-# s<<"# S_SCRIPT_VERSION_GENERATION_DATE.\n"
+# s<<"# unsyncing the S_VERSION_OF_THIS_FILE from the \n"
+# s<<"# S_VERSION_OF_THIS_FILE_GENERATION_DATE.\n"
 # i_0=12
-# s<<"S_SCRIPT_VERSION_SUBPART_1=\""+s_script_version[0..i_0]+"\"\n"
-# s<<"S_SCRIPT_VERSION_SUBPART_2=\""+s_script_version[(i_0+1)..(-1)]+"\"\n"
-# s<<"S_SCRIPT_VERSION=\"$S_SCRIPT_VERSION_SUBPART_1$S_SCRIPT_VERSION_SUBPART_2\""
+# s<<"S_VERSION_OF_THIS_FILE_SUBPART_1=\""+s_script_version[0..i_0]+"\"\n"
+# s<<"S_VERSION_OF_THIS_FILE_SUBPART_2=\""+s_script_version[(i_0+1)..(-1)]+"\"\n"
+# s<<"S_VERSION_OF_THIS_FILE=\"$S_VERSION_OF_THIS_FILE_SUBPART_1$S_VERSION_OF_THIS_FILE_SUBPART_2\""
 # puts(s)
 # #----------------------------------------------------------
 # ob_date=Time.new
 # s=""
-# s<<"\nS_SCRIPT_VERSION_GENERATION_DATE=\""
+# s<<"\nS_VERSION_OF_THIS_FILE_GENERATION_DATE=\""
 # s<<(ob_date.year.to_s+"y_")
 # s<<(ob_date.month.to_s+"month_")
 # s<<(ob_date.day.to_s+"day_")
@@ -173,15 +197,15 @@ S_TIMESTAMP="`date +%Y`_`date +%m`_`date +%d`_T_`date +%H`h_`date +%M`min_`date 
 # 
 # RENESSAATOR_AUTOGENERATED_TEXT_START
 
-# The S_SCRIPT_VERSION is in 2 parts to allow 
+# The S_VERSION_OF_THIS_FILE is in 2 parts to allow 
 # the error message GUIDs to be updated without 
-# unsyncing the S_SCRIPT_VERSION from the 
-# S_SCRIPT_VERSION_GENERATION_DATE.
-S_SCRIPT_VERSION_SUBPART_1="2375db56-ee2a"
-S_SCRIPT_VERSION_SUBPART_2="-4a48-ad91-25311e670560"
-S_SCRIPT_VERSION="$S_SCRIPT_VERSION_SUBPART_1$S_SCRIPT_VERSION_SUBPART_2"
+# unsyncing the S_VERSION_OF_THIS_FILE from the 
+# S_VERSION_OF_THIS_FILE_GENERATION_DATE.
+S_VERSION_OF_THIS_FILE_SUBPART_1="a3cfb29a-5136"
+S_VERSION_OF_THIS_FILE_SUBPART_2="-416a-bb42-4f5a43a6c87b"
+S_VERSION_OF_THIS_FILE="$S_VERSION_OF_THIS_FILE_SUBPART_1$S_VERSION_OF_THIS_FILE_SUBPART_2"
 
-S_SCRIPT_VERSION_GENERATION_DATE="2017y_3month_14day_7h_27min_13sec_672869usec"
+S_VERSION_OF_THIS_FILE_GENERATION_DATE="2022y_8month_12day_2h_16min_0sec_493602usec"
 
 # RENESSAATOR_AUTOGENERATED_TEXT_END
 # RENESSAATOR_BLOCK_END
@@ -193,13 +217,13 @@ func_mmmv_exit_if_not_on_path_t2() { # S_COMMAND_NAME
     local S_LOCAL_VARIABLE="`which $S_COMMAND_NAME 2>/dev/null`"
     if [ "$S_LOCAL_VARIABLE" == "" ]; then
         echo ""
-        echo "Command \"$S_COMMAND_NAME\" could not be found from the PATH. "
+        echo -e "Command \"\e[31m$S_COMMAND_NAME\e[39m\" could not be found from the PATH. "
         echo "The execution of the Bash script is aborted."
-        echo "GUID=='1d1a537e-6d2f-4170-b111-21b170e031e7'"
+        echo "GUID=='24a16c15-4693-433e-93c9-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
 } # func_mmmv_exit_if_not_on_path_t2
 
@@ -234,14 +258,14 @@ func_mmmv_exit_if_not_on_path_t2() { # S_COMMAND_NAME
 #     #--------
 #     if [ "$SB_AWK_AND_GAWK_ARE_BOTH_UNUSABLE" == "t" ]; then
 #         echo ""
-#         echo "Neither \"awk\", nor \"gawk\" is usable,"
+#         echo "Neither \"\e[31mawk\e[39m\", nor \"\e[31mgawk\e[39m\" is usable,"
 #         echo "but at least one of them is required to be usable."
 #         echo "The execution of the Bash script is aborted."
-#         echo "GUID=='3cdd7832-1e9c-46de-9301-21b170e031e7'"
+#         echo "GUID=='3302cc45-c064-4909-a5c9-b042218128e7'"
 #         echo ""
 #         #----
 #         cd $S_FP_ORIG
-#         exit 1 # exit with error
+#         exit 1 # exit with an error
 #     fi
 # } # func_mmmv_silktorrent_init_awk_versus_gawk
 # 
@@ -250,15 +274,15 @@ func_mmmv_exit_if_not_on_path_t2() { # S_COMMAND_NAME
 # if [ "$SB_USE_GAWK_IN_STEAD_OF_AWK" != "t" ]; then
 #     if [ "$SB_USE_GAWK_IN_STEAD_OF_AWK" != "f" ]; then
 #         echo ""
-#         echo "This script is flawed."
+#         echo -e "\e[31mThis script is flawed.\e[39m"
 #         echo ""
 #         echo "    SB_USE_GAWK_IN_STEAD_OF_AWK=$SB_USE_GAWK_IN_STEAD_OF_AWK"
 #         echo ""
-#         echo "GUID=='dcd4a44e-7464-4d19-a301-21b170e031e7'"
+#         echo "GUID=='0f5bd355-206e-4366-84c9-b042218128e7'"
 #         echo ""
 #         #----
 #         cd $S_FP_ORIG
-#         exit 1 # exit with error
+#         exit 1 # exit with an error
 #     fi
 # fi
 
@@ -303,11 +327,11 @@ if [ "$S_FUNC_MMMV_OPERATING_SYSTEM_TYPE_T1_RESULT" != "Linux" ]; then
         echo "  within a virtual machine or, if virtual machines are not"
         echo "  an option, as some new operating system user that does not have "
         echo "  any access to the vital data/files."
-        echo "  GUID=='2d84a004-7553-4fde-b101-21b170e031e7'"
+        echo "  GUID=='4d4fda1f-9fbc-45b3-83b9-b042218128e7'"
         echo ""
-        echo "  Aborting script without doing anything."
+        echo -e "\e[33m  Aborting script without doing anything.\e[39m"
         echo ""
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
 fi
 
@@ -336,13 +360,13 @@ func_sb_exists_on_path_t1 () {
         echo ""
         echo "    func_sb_exists_on_path_t1 "
         echo ""
-        echo "is not designed to handle an argument that "
-        echo "equals with an empty string."
-        echo "GUID=='276e63f4-5cd6-4024-8101-21b170e031e7'"
+        echo -e "\e[31mis not designed to handle an argument that \e[39m"
+        echo -e "\e[31mequals with an empty string.\e[39m"
+        echo "GUID=='3eefa63d-61eb-4478-93b9-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     S_TMP_0="`ruby -e \"print('$S_NAME_OF_THE_EXECUTABLE_1'.to_s.gsub(/[\s]+/,''));\" `"
     if [ "$S_NAME_OF_THE_EXECUTABLE_1" != "$S_TMP_0" ] ; then
@@ -351,14 +375,14 @@ func_sb_exists_on_path_t1 () {
         echo ""
         echo "    func_sb_exists_on_path_t1 "
         echo ""
-        echo "is not designed to handle an argument value that contains "
-        echo "spaces or tabulation characters."
+        echo -e "\e[31mis not designed to handle an argument value that contains \e[39m"
+        echo -e "\e[31mspaces or tabulation characters.\e[39m"
         echo "The received value in parenthesis:($S_NAME_OF_THE_EXECUTABLE_1)."
-        echo "GUID=='4bbf0804-165e-484f-84f0-21b170e031e7'"
+        echo "GUID=='646e06ab-b20b-497f-82b9-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     S_TMP_0="\`which $S_NAME_OF_THE_EXECUTABLE_1 2>/dev/null\`"
@@ -418,22 +442,23 @@ func_assert_exists_on_path_t2 () {
         echo ""
         echo "    func_assert_exists_on_path_t2 "
         echo ""
-        echo "is not designed to handle series of arguments, where "
-        echo "empty strings precede non-empty strings."
-        echo "GUID=='dfeabb47-2adc-41e8-b2f0-21b170e031e7'"
+        echo -e "\e[31mis not designed to handle series of arguments, where \e[39m"
+        echo -e "\e[31mempty strings precede non-empty strings.\e[39m"
+        echo "GUID=='2ba5ae19-1b60-4f46-95b9-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     if [ "$5" != "" ] ; then
         echo ""
-        echo "This Bash function is designed to work with at most 4 input arguments"
-        echo "GUID=='17e2c2c9-e24b-404d-b1f0-21b170e031e7'"
+        echo -e "\e[31mThis Bash function is designed to \e[39m"
+        echo -e "\e[31mwork with at most 4 input arguments.\e[39m"
+        echo "GUID=='6cada12b-9840-4656-95b9-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     # Function calls like
@@ -452,7 +477,7 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_1" != "$S_TMP_0" ] ; then
             SB_THROW="t" 
             S_TMP_1="$S_NAME_OF_THE_EXECUTABLE_1"
-            S_TMP_2="GUID=='484d2559-e6ad-4ed4-92f0-21b170e031e7'"
+            S_TMP_2="GUID=='a1f31884-d84b-4b6d-95b9-b042218128e7'"
         fi
     fi
     #----
@@ -461,7 +486,7 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_2" != "$S_TMP_0" ] ; then
             SB_THROW="t" 
             S_TMP_1="$S_NAME_OF_THE_EXECUTABLE_2"
-            S_TMP_2="GUID=='a487a993-9260-4e88-b5f0-21b170e031e7'"
+            S_TMP_2="GUID=='2f25cdc2-0f3c-4c01-84b9-b042218128e7'"
         fi
     fi
     #----
@@ -470,7 +495,7 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_3" != "$S_TMP_0" ] ; then
             SB_THROW="t" 
             S_TMP_1="$S_NAME_OF_THE_EXECUTABLE_3"
-            S_TMP_2="GUID=='09d1253f-ac94-4a23-91e0-21b170e031e7'"
+            S_TMP_2="GUID=='bea9f453-5c22-45a7-94a9-b042218128e7'"
         fi
     fi
     #----
@@ -479,7 +504,7 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_4" != "$S_TMP_0" ] ; then
             SB_THROW="t" 
             S_TMP_1="$S_NAME_OF_THE_EXECUTABLE_4"
-            S_TMP_2="GUID=='ffbf5053-e7cd-4056-84e0-21b170e031e7'"
+            S_TMP_2="GUID=='04cc5d43-458d-4438-82a9-b042218128e7'"
         fi
     fi
     #--------
@@ -489,15 +514,15 @@ func_assert_exists_on_path_t2 () {
         echo ""
         echo "    func_assert_exists_on_path_t2 "
         echo ""
-        echo "is not designed to handle an argument value that contains "
-        echo "spaces or tabulation characters."
+        echo -e "\e[31mis not designed to handle an argument value that contains \e[39m"
+        echo -e "\e[31mspaces or tabulation characters.\e[39m"
         echo "The unaccepted value in parenthesis:($S_TMP_1)."
         echo "Branch $S_TMP_2."
-        echo "GUID=='4579e24d-91d4-4a01-92e0-21b170e031e7'"
+        echo "GUID=='45625f6a-b636-4c6f-ada9-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     SB_THROW="f" # Just a reset, should I forget to reset it later.
     #---------------
@@ -511,12 +536,13 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_3" == "" ] ; then
         if [ "$S_NAME_OF_THE_EXECUTABLE_4" == "" ] ; then
             echo ""
-            echo "This bash script requires the \"$S_NAME_OF_THE_EXECUTABLE_1\" to be on the PATH."
-            echo "GUID=='2175161e-23d9-475e-a4e0-21b170e031e7'"
+            echo "This bash script requires the "
+            echo -e "\"\e[31m$S_NAME_OF_THE_EXECUTABLE_1\e[39m\" to be on the PATH."
+            echo "GUID=='85eca437-9111-4020-92a9-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         fi
         fi
@@ -533,13 +559,14 @@ func_assert_exists_on_path_t2 () {
         if [ "$S_NAME_OF_THE_EXECUTABLE_3" == "" ] ; then
         if [ "$S_NAME_OF_THE_EXECUTABLE_4" == "" ] ; then
             echo ""
-            echo "This bash script requires that either \"$S_NAME_OF_THE_EXECUTABLE_1\" or "
-            echo " \"$S_NAME_OF_THE_EXECUTABLE_2\" is available on the PATH."
-            echo "GUID=='fd92845d-7441-46ab-b1e0-21b170e031e7'"
+            echo "This bash script requires that either "
+            echo -e "\"\e[31m$S_NAME_OF_THE_EXECUTABLE_1\e[39m\" or \"\e[31m$S_NAME_OF_THE_EXECUTABLE_2\e[39m\" "
+            echo "is available on the PATH."
+            echo "GUID=='07422e45-d349-4002-b4a9-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         fi
     else
@@ -554,14 +581,14 @@ func_assert_exists_on_path_t2 () {
     if [ "$S_TMP_1" == "" ] ; then
         if [ "$S_NAME_OF_THE_EXECUTABLE_4" == "" ] ; then
             echo ""
-            echo "This bash script requires that either \"$S_NAME_OF_THE_EXECUTABLE_1\" or "
-            echo " \"$S_NAME_OF_THE_EXECUTABLE_2\" or \"$S_NAME_OF_THE_EXECUTABLE_3\" "
+            echo -e "This bash script requires that either \"\e[31m$S_NAME_OF_THE_EXECUTABLE_1\e[39m\" or "
+            echo -e " \"\e[31m$S_NAME_OF_THE_EXECUTABLE_2\e[39m\" or \"\e[31m$S_NAME_OF_THE_EXECUTABLE_3\e[39m\" "
             echo "is available on the PATH."
-            echo "GUID=='94e16d22-b33f-430e-a6e0-21b170e031e7'"
+            echo "GUID=='da102355-9b0b-43b0-9ea9-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
     else
         return # at least one of the programs was available at the PATH
@@ -574,14 +601,14 @@ func_assert_exists_on_path_t2 () {
     #----
     if [ "$S_TMP_1" == "" ] ; then
         echo ""
-        echo "This bash script requires that either \"$S_NAME_OF_THE_EXECUTABLE_1\" or "
-        echo " \"$S_NAME_OF_THE_EXECUTABLE_2\" or \"$S_NAME_OF_THE_EXECUTABLE_3\" or "
-        echo " \"$S_NAME_OF_THE_EXECUTABLE_4\" is available on the PATH."
-        echo "GUID=='33d77c63-f841-49ff-add0-21b170e031e7'"
+        echo -e "This bash script requires that either \"\e[31m$S_NAME_OF_THE_EXECUTABLE_1\e[39m\" or "
+        echo -e " \"\e[31m$S_NAME_OF_THE_EXECUTABLE_2\e[39m\" or \"\e[31m$S_NAME_OF_THE_EXECUTABLE_3\e[39m\" or "
+        echo -e " \"\e[31m$S_NAME_OF_THE_EXECUTABLE_4\e[39m\" is available on the PATH."
+        echo "GUID=='12ef9927-7301-4a36-84a9-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     else
         return # at least one of the programs was available at the PATH
     fi
@@ -603,7 +630,7 @@ func_assert_exists_on_path_t2 "tar"
 func_assert_exists_on_path_t2 "file"   # for checking the MIME type of the potential tar file
 func_assert_exists_on_path_t2 "filesize" "ruby"
 #--------
-# The following commands have been already checked at the start of this cript.
+# The following commands have been already checked at the start of this script.
 #     func_assert_exists_on_path_t2 "gawk" 
 #     func_assert_exists_on_path_t2 "grep"
 #     func_assert_exists_on_path_t2 "uname"  # to check the OS type
@@ -656,7 +683,7 @@ func_mmmv_x_positive_whole_number_or_an_emptystring_t1() { # S_CANDIDATE
     fi
     #--------
     if [ "$SB_FAILED" == "f" ]; then
-        # This is a bugfix/workarond that does not have almost anything 
+        # This is a bugfix/workaround that does not have almost anything 
         # to do with the algorithm itself, but it exists only to cope with 
         # with the Ruby macro line.
         # blabla="`ruby -e \"print('$S_CANDIDATE'.to_s. blabla
@@ -731,7 +758,7 @@ func_mmmv_x_positive_whole_number_or_an_emptystring_t1_tester_t1() { # S_IN S_EX
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
 } # func_mmmv_x_positive_whole_number_or_an_emptystring_t1_tester_t1
 
@@ -992,17 +1019,17 @@ func_mmmv_assert_arg_is_absent_t1() {
         echo ""
         echo "    func_mmmv_assert_arg_is_absent_t1"
         echo ""
-        echo "is flawed. The call to the "
+        echo -e "is flawed. \e[31mThe call to the \e[39m"
         echo ""
-        echo "    func_mmmv_assert_arg_is_absent_t1"
+        echo -e "\e[31m    func_mmmv_assert_arg_is_absent_t1\e[39m"
         echo ""
-        echo "misses the third function argument, "
+        echo -e "\e[31mmisses the third function argument, \e[39m"
         echo "which is expected to be a GUID."
-        echo "GUID=='4b17d249-3ea2-4b7d-a3d0-21b170e031e7'"
+        echo "GUID=='6258110f-4122-433d-83a9-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     if [ "$S_ARG_X_NAME" == "" ] ; then
         echo ""
@@ -1011,33 +1038,33 @@ func_mmmv_assert_arg_is_absent_t1() {
         echo ""
         echo "    func_mmmv_assert_arg_is_absent_t1"
         echo ""
-        echo "is flawed. The call to the "
+        echo -e "is flawed. \e[31mThe call to the \e[39m"
         echo ""
-        echo "    func_mmmv_assert_arg_is_absent_t1"
+        echo -e "\e[31m    func_mmmv_assert_arg_is_absent_t1\e[39m"
         echo ""
-        echo "misses the second function argument."
-        echo "GUID=='61f89944-37b6-4110-b1d0-21b170e031e7'"
+        echo -e "\e[31mmisses the second function argument.\e[39m"
+        echo "GUID=='6d64ff20-e9a7-4ed3-81a9-b042218128e7'"
         echo "GUID=='$S_GUID'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     if [ "$S_ARG_X" != "" ] ; then
         echo ""
         echo "If the first console argument is \"$S_ARGV_0\", then "
-        echo "the $S_ARG_X_NAME is required to be absent, "
+        echo -e "the\e[31m $S_ARG_X_NAME is required to be absent, \e[39m"
         echo "but currently "
         echo ""
         echo "    <$S_ARG_X_NAME>=$S_ARG_X"
         echo ""
-        echo "GUID=='495dd213-9b2a-45bc-93d0-21b170e031e7'"
+        echo "GUID=='a2098d37-5b89-493f-b5a9-b042218128e7'"
         echo "GUID=='$S_GUID'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
 } # func_mmmv_assert_arg_is_absent_t1
 
@@ -1058,16 +1085,16 @@ func_mmmv_exc_hash_function_input_verification_t1() {
         echo ""
         echo "    func_mmmv_exc_hash_function_input_verification_t1"
         echo ""
-        echo "is flawed. The call to the "
+        echo -e "is flawed.\e[31m The call to the \e[39m"
         echo ""
-        echo "    func_mmmv_exc_hash_function_input_verification_t1"
+        echo -e "\e[31m    func_mmmv_exc_hash_function_input_verification_t1\e[39m"
         echo ""
-        echo "misses the first argument or the first argument is an empty string."
-        echo "GUID=='4763d3c3-73c0-455a-91d0-21b170e031e7'"
+        echo -e "\e[31mmisses the first argument or the first argument is an empty string.\e[39m"
+        echo "GUID=='b83d0a12-575f-4cca-8399-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     S_TMP_0="`ruby -e \"print('$S_NAME_OF_THE_BASH_FUNCTION'.to_s.gsub(/[\s]+/,''));\" `"
     if [ "$S_NAME_OF_THE_BASH_FUNCTION" != "$S_TMP_0" ] ; then
@@ -1077,12 +1104,12 @@ func_mmmv_exc_hash_function_input_verification_t1() {
         echo ""
         echo "    func_mmmv_exc_hash_function_input_verification_t1"
         echo ""
-        echo "is flawed. Function names are not allowed to contain spaces or tabs."
-        echo "GUID=='7d2fca19-9734-475a-b1d0-21b170e031e7'"
+        echo -e "is flawed. \e[31mFunction names are not allowed to contain spaces or tabs.\e[39m"
+        echo "GUID=='23093482-f00f-482e-8499-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     # Function calls like
@@ -1098,40 +1125,40 @@ func_mmmv_exc_hash_function_input_verification_t1() {
         echo ""
         echo "    $S_NAME_OF_THE_BASH_FUNCTION"
         echo ""
-        echo "is not designed to handle an argument that "
-        echo "equals with an empty string or a series of spaces and tabs."
-        echo "GUID=='31815720-20b4-43a3-82d0-21b170e031e7'"
+        echo -e "\e[31mis not designed to handle an argument that \e[39m"
+        echo -e "\e[31mequals with an empty string or a series of spaces and tabs.\e[39m"
+        echo "GUID=='a6773349-99ea-4c41-b299-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
-    if [ ! -e $S_FP_2_AN_EXISTING_FILE ] ; then
+    if [ ! -e "$S_FP_2_AN_EXISTING_FILE" ] ; then
         echo ""
         echo "The file "
         echo ""
         echo "    $S_FP_2_AN_EXISTING_FILE "
         echo ""
-        echo "is missing or it is a broken link."
-        echo "GUID=='823b9855-f6d3-4ed7-a4d0-21b170e031e7'"
+        echo -e "\e[31mis missing or it is a broken link.\e[39m"
+        echo "GUID=='88e12d53-32b4-4861-b199-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
-    if [ -d $S_FP_2_AN_EXISTING_FILE ] ; then
+    if [ -d "$S_FP_2_AN_EXISTING_FILE" ] ; then
         echo ""
         echo "The file path "
         echo ""
         echo "    $S_FP_2_AN_EXISTING_FILE "
         echo ""
-        echo "references a folder, but a file is expected."
-        echo "GUID=='c0bc2927-29c0-43ca-a1d0-21b170e031e7'"
+        echo -e "\e[31mreferences a folder, but a file is expected.\e[39m"
+        echo "GUID=='0abd462d-fe84-4b51-9499-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------------------
     # At this line the verifications have all passed.
@@ -1172,22 +1199,22 @@ func_mmmv_GUID_t1() {
             echo ""
             echo "All of the GUID generation implementations that this script " 
             echo "is capable of using (uuidgen, uuid) "
-            echo "are missing from the PATH."
-            echo "GUID=='45055ef0-ca54-456d-94c0-21b170e031e7'"
+            echo -e "\e[31mare missing from the PATH.\e[39m"
+            echo "GUID=='e0cf28a5-abe8-4320-9199-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
         if [ "$?" != "0" ]; then
             echo ""
-            echo "This script is flawed."
-            echo "GUID=='23948835-b3b1-45ca-abc0-21b170e031e7'"
+            echo -e "\e[31mThis script is flawed.\e[39m"
+            echo "GUID=='7dbebc4c-8ff1-4cbb-8389-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
     fi
@@ -1198,18 +1225,18 @@ func_mmmv_GUID_t1() {
         S_TMP_0="`uuidgen`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"uuidgen\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"uuidgen\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`uuidgen`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='03b89341-916b-417a-b2c0-21b170e031e7'"
+            echo "GUID=='e2cafd5b-e641-49a0-8289-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #---- 
         S_FUNC_MMMV_GUID_T1_RESULT="$S_TMP_0"
@@ -1219,18 +1246,18 @@ func_mmmv_GUID_t1() {
         S_TMP_0="`uuid`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"uuid\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"uuid\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`uuid`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='788ef224-c42f-4f11-b5c0-21b170e031e7'"
+            echo "GUID=='a1c40915-07a1-4421-9289-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #---- 
         S_FUNC_MMMV_GUID_T1_RESULT="$S_TMP_0"
@@ -1256,11 +1283,11 @@ func_mmmv_GUID_t1() {
         echo "The length candidate of the flawed GUID candidate in parenthesis:"
         echo "($S_TMP_0)."
         echo ""
-        echo "GUID=='1bb6ef7a-3f57-493b-93c0-21b170e031e7'"
+        echo "GUID=='14730f17-98c3-4f52-ae89-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------------------
 } # func_mmmv_GUID_t1
@@ -1311,22 +1338,22 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
             echo ""
             echo "All of the SHA-256 implementations that this script " 
             echo "is capable of using (sha256sum, rhash, sha256) "
-            echo "are missing from the PATH."
-            echo "GUID=='684c321f-4e75-465d-81c0-21b170e031e7'"
+            echo -e "\e[31mare missing from the PATH.\e[39m"
+            echo "GUID=='03d100e3-0b30-4037-a489-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
         if [ "$?" != "0" ]; then
             echo ""
-            echo "This script is flawed."
-            echo "GUID=='2cc42f14-9cce-448a-94c0-21b170e031e7'"
+            echo -e "\e[31mThis script is flawed.\e[39m"
+            echo "GUID=='845c3c44-786d-4386-8189-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
     fi
@@ -1337,18 +1364,18 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
         S_TMP_0="`sha256sum $S_FP_2_AN_EXISTING_FILE 2>/dev/null`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"sha256sum\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"sha256sum\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`sha256sum $S_FP_2_AN_EXISTING_FILE`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='af218748-2b29-4ab9-85c0-21b170e031e7'"
+            echo "GUID=='84c5c258-de62-46b0-9379-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         S_FUNC_MMMV_SHA256_T1_RESULT="`ruby -e \"print(ARGV[0]);\" $S_TMP_0 `"
     fi
@@ -1357,18 +1384,18 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
         S_TMP_0="`rhash --sha256 $S_FP_2_AN_EXISTING_FILE 2>/dev/null`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"rhash\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"rhash\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`rhash --sha256 $S_FP_2_AN_EXISTING_FILE `"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='c047af35-1a2e-4e5e-94b0-21b170e031e7'"
+            echo "GUID=='5acf3475-4947-46e5-aa79-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         S_FUNC_MMMV_SHA256_T1_RESULT="`ruby -e \"print(ARGV[0]);\" $S_TMP_0 `"
     fi
@@ -1380,19 +1407,19 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
         #----
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"sha256\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"sha256\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo \
             "`S_TMP_0=\"\`sha256 $S_FP_2_AN_EXISTING_FILE\`\" ruby -e \"s0=ENV['S_TMP_0'].to_s;ix_0=s0.index(') = ');print s0[(ix_0+4)..(-1)]\"`"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='37a0cab3-314b-4dd4-b1b0-21b170e031e7'"
+            echo "GUID=='20449214-251f-4072-ad79-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
     fi
     #--------------------
@@ -1416,11 +1443,11 @@ func_mmmv_sha256_t1() { # requires also ruby and gawk
         echo "The length candidate of the flawed hash candidate in parenthesis:"
         echo "($S_TMP_0)."
         echo ""
-        echo "GUID=='185aad45-4bb1-4749-b8b0-21b170e031e7'"
+        echo "GUID=='3cb1f921-e05c-4919-8379-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------------------
 } # func_mmmv_sha256_t1
@@ -1461,44 +1488,44 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
             echo ""
             echo "All of the Tiger hash implementations that this script " 
             echo "is capable of using (tigerdeep, rhash) "
-            echo "are missing from the PATH."
-            echo "GUID=='4a5a0972-33b0-4a3e-85b0-21b170e031e7'"
+            echo -e "\e[31mare missing from the PATH.\e[39m"
+            echo "GUID=='1a507a82-61b1-44ba-ac79-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
         if [ "$?" != "0" ]; then
             echo ""
-            echo "This script is flawed."
-            echo "GUID=='0e25c336-4bfb-418c-b3b0-21b170e031e7'"
+            echo -e "\e[31mThis script is flawed.\e[39m"
+            echo "GUID=='06a9dd5f-7a23-41c0-b379-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
         func_sb_exists_on_path_t1 "ruby" 
         if [ "$SB_EXISTS_ON_PATH_T1_RESULT" == "f" ] ; then
             echo ""
-            echo "\"ruby\" is missing from the PATH, but "
+            echo -e "\e[31m\"ruby\" is missing from the PATH\e[39m, but"
             echo "this function requires that it is on the PATH."
-            echo "GUID=='3d1720a3-e2e7-4308-93b0-21b170e031e7'"
+            echo "GUID=='5feff435-e942-4884-b879-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
         if [ "$?" != "0" ]; then
             echo ""
-            echo "This script is flawed."
-            echo "GUID=='53d96e4d-682c-4075-b6b0-21b170e031e7'"
+            echo -e "\e[31mThis script is flawed.\e[39m"
+            echo "GUID=='66ba7514-34b7-4d2b-a479-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
     fi
@@ -1509,18 +1536,18 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
         S_TMP_0="`tigerdeep $S_FP_2_AN_EXISTING_FILE 2>/dev/null`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"tigerdeep\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"tigerdeep\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`tigerdeep $S_FP_2_AN_EXISTING_FILE`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='3a31f72a-5ba0-4922-82b0-21b170e031e7'"
+            echo "GUID=='443597e3-c8f4-4d8a-8579-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         # The "tigerdeep" returns a single line that has the format of 
         #
@@ -1534,18 +1561,18 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
         S_TMP_0="`rhash --tiger $S_FP_2_AN_EXISTING_FILE 2>/dev/null`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"rhash\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"rhash\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`rhash --tiger $S_FP_2_AN_EXISTING_FILE `"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='f24b6a22-a08c-447a-adb0-21b170e031e7'"
+            echo "GUID=='5511f8ea-b755-4650-a179-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         S_FUNC_MMMV_TIGERHASH_T1_RESULT="`ruby -e \"print(ARGV[0]);\" $S_TMP_0`"
     fi
@@ -1570,11 +1597,11 @@ func_mmmv_tigerhash_t1() { # requires also ruby and gawk
         echo "The length candidate of the flawed hash candidate in parenthesis:"
         echo "($S_TMP_0)."
         echo ""
-        echo "GUID=='b413bb3c-8911-47e7-b1a0-21b170e031e7'"
+        echo "GUID=='739ad215-c843-4d8b-9479-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------------------
 } # func_mmmv_tigerhash_t1
@@ -1613,22 +1640,22 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
             echo ""
             echo "All of the Whirlpool hash implementations that this script " 
             echo "is capable of using (whirlpooldeep, rhash) "
-            echo "are missing from the PATH."
-            echo "GUID=='3f740226-1e7e-4cf3-81a0-21b170e031e7'"
+            echo -e "\e[31mare missing from the PATH.\e[39m"
+            echo "GUID=='fbb9285d-87af-43fc-8479-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
         if [ "$?" != "0" ]; then
             echo ""
-            echo "This script is flawed."
-            echo "GUID=='df392514-316e-4ff6-94a0-21b170e031e7'"
+            echo -e "\e[31mThis script is flawed.\e[39m"
+            echo "GUID=='25c4d7d3-40a4-40a8-b479-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
     fi
@@ -1639,18 +1666,18 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
         S_TMP_0="`whirlpooldeep $S_FP_2_AN_EXISTING_FILE 2>/dev/null`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"whirlpooldeep\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"whirlpooldeep\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`whirlpooldeep $S_FP_2_AN_EXISTING_FILE`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='63fc0642-9757-4781-85a0-21b170e031e7'"
+            echo "GUID=='caeb9940-cb50-412d-8369-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         S_FUNC_MMMV_WHIRLPOOLHASH_T1_RESULT="`ruby -e \"print(ARGV[0]);\" $S_TMP_0 `"
     fi
@@ -1659,18 +1686,18 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
         S_TMP_0="`rhash --whirlpool $S_FP_2_AN_EXISTING_FILE 2>/dev/null`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"rhash\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"rhash\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`rhash --whirlpool $S_FP_2_AN_EXISTING_FILE `"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='e8f4bcc9-b30d-4b8b-a5a0-21b170e031e7'"
+            echo "GUID=='4771aa91-ae08-44a2-8369-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         S_FUNC_MMMV_WHIRLPOOLHASH_T1_RESULT="`ruby -e \"print(ARGV[0]);\" $S_TMP_0 `"
     fi
@@ -1695,11 +1722,11 @@ func_mmmv_whirlpoolhash_t1() { # requires also ruby and gawk
         echo "The length candidate of the flawed hash candidate in parenthesis:"
         echo "($S_TMP_0)."
         echo ""
-        echo "GUID=='4615c816-fb53-4a2f-b5a0-21b170e031e7'"
+        echo "GUID=='14a9d43c-97b1-42d2-b569-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------------------
 } # func_mmmv_whirlpoolhash_t1
@@ -1738,22 +1765,22 @@ func_mmmv_filesize_t1() {
             echo ""
             echo "All of the applications that this function is " 
             echo "capable of using for finding out file size (filesize, ruby)"
-            echo "are missing from the PATH."
-            echo "GUID=='c2086757-332a-4965-b2a0-21b170e031e7'"
+            echo -e "\e[31mare missing from the PATH.\e[39m"
+            echo "GUID=='8057505e-a8b5-475a-8469-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
         if [ "$?" != "0" ]; then
             echo ""
-            echo "This script is flawed."
-            echo "GUID=='3e3d3e21-3aee-4aa4-91a0-21b170e031e7'"
+            echo -e "\e[31mThis script is flawed.\e[39m"
+            echo "GUID=='a9aed3f1-dbf9-4c1d-8369-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
     fi
@@ -1764,18 +1791,18 @@ func_mmmv_filesize_t1() {
         S_TMP_0="`filesize $S_FP_2_AN_EXISTING_FILE 2>/dev/null`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"filesize\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"filesize\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`filesize $S_FP_2_AN_EXISTING_FILE`" # stdout and stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='f72b001d-c581-426a-9590-21b170e031e7'"
+            echo "GUID=='67c8d951-0c6f-4163-8269-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         S_FUNC_MMMV_FILESIZE_T1_RESULT="`ruby -e \"print(ARGV[0]);\" $S_TMP_0 `"
     fi
@@ -1784,18 +1811,18 @@ func_mmmv_filesize_t1() {
         S_TMP_0="`ruby -e \"printf(File.size('$S_FP_2_AN_EXISTING_FILE').to_s)\" 2>/dev/null`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"ruby\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"ruby\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`ruby -e \"printf(File.size('$S_FP_2_AN_EXISTING_FILE').to_s)\"`"
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='3384863e-c0a1-4927-8590-21b170e031e7'"
+            echo "GUID=='545fffac-9c20-4036-9369-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         S_FUNC_MMMV_FILESIZE_T1_RESULT="$S_TMP_0"
     fi
@@ -1820,14 +1847,14 @@ func_mmmv_filesize_t1() {
         echo ""
         echo "($S_FUNC_MMMV_FILESIZE_T1_RESULT)"
         echo ""
-        echo "either contain spaces, tabs or is an empty string," 
+        echo -e "\e[31meither contain spaces, tabs or is an empty string,\e[39m"
         echo "which is wrong, because even a file with the size of 0 "
         echo "should have a file size of \"0\", which is not an empty string."
-        echo "GUID=='4a133b5e-c7bd-4cb1-a590-21b170e031e7'"
+        echo "GUID=='b87d8604-c2ac-4033-9469-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------------------
 } # func_mmmv_filesize_t1
@@ -1857,7 +1884,7 @@ func_mmmv_silktorrent_packager_t1_bash_print_help_msg_t1() {
     echo ""
     echo "If this API is used correctly and there are no other "
     echo "reasons for the failure of this script, then "
-    echo "all of the verification commands exit with error code 0 "
+    echo "all of the verification commands exit with an error code 0 "
     echo "regardless of whether the verification fails or passes."
     echo "All verification commands return a string that "
     echo "belongs to the set {\"verification_passed\", "
@@ -1882,12 +1909,12 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
         echo ""
         echo "The 2. console argument is expected to be "
         echo "a path to a file, but currently "
-        echo "the 2. console argument is missing."
-        echo "GUID=='7a6f5f3f-e5a5-4413-a490-21b170e031e7'"
+        echo -e "\e[31mthe 2. console argument is missing.\e[39m"
+        echo "GUID=='f1921638-e539-495d-b559-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     if [ ! -e "$S_FP_0" ]; then
@@ -1897,12 +1924,12 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
             echo ""
             echo "    $S_FP_0"
             echo ""
-            echo "is a path of a broken symlink, but symlinks "
-            echo "are not supported at all."
+            echo -e "\e[31mis a path of a broken symlink, but symlinks \e[39m"
+            echo -e "\e[31mare not supported at all.\e[39m"
             echo "The reason, why symlinks to files are not supported is that "
             echo "the file size of symlinks can differ from "
             echo "the file size of the target of the symlink."
-            echo "GUID=='bcfe8e4b-9c8c-4ea4-8390-21b170e031e7'"
+            echo "GUID=='59468164-7b41-4c97-a459-b042218128e7'"
             echo ""
         else
             echo ""
@@ -1910,13 +1937,13 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
             echo ""
             echo "    $S_FP_0"
             echo ""
-            echo "does not exist."
-            echo "GUID=='2db4b292-d5d5-4286-8190-21b170e031e7'"
+            echo -e "\e[31mdoes not exist.\e[39m"
+            echo "GUID=='1245134d-f904-4792-8159-b042218128e7'"
             echo ""
         fi
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     if [ -d "$S_FP_0" ]; then
@@ -1926,9 +1953,9 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
             echo ""
             echo "    $S_FP_0"
             echo ""
-            echo "references a symlink that references folder, but "
-            echo "a file is expected."
-            echo "GUID=='03516057-64fc-4913-8190-21b170e031e7'"
+            echo -e "\e[31mreferences a symlink that references folder, but \e[39m"
+            echo -e "\e[31ma file is expected.\e[39m"
+            echo "GUID=='ac7e2b55-a408-45e0-8559-b042218128e7'"
             echo ""
         else
             echo ""
@@ -1936,14 +1963,14 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
             echo ""
             echo "    $S_FP_0"
             echo ""
-            echo "references a folder, but it is expected to "
-            echo "to reference a file."
-            echo "GUID=='221d8e2b-c10b-42b9-a480-21b170e031e7'"
+            echo -e "\e[31mreferences a folder, but it is expected to \e[39m"
+            echo -e "\e[31mto reference a file.\e[39m"
+            echo "GUID=='36c0201d-e306-4f25-a159-b042218128e7'"
             echo ""
         fi
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     if [ -h "$S_FP_0" ]; then
@@ -1952,15 +1979,15 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1() {
         echo ""
         echo "    $S_FP_0"
         echo ""
-        echo "references a symlink, a file is expected."
+        echo -e "\e[31mreferences a symlink, a file is expected.\e[39m"
         echo "The reason, why symlinks to files are not supported is that "
         echo "the file size of symlinks can differ from "
         echo "the file size of the target of the symlink."
-        echo "GUID=='4556d523-1e93-49f8-9380-21b170e031e7'"
+        echo "GUID=='5f256115-d202-47ae-9959-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
 } # func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1
 
@@ -1974,12 +2001,12 @@ func_mmmv_silktorrent_packager_t1_bash_exc_assert_packet_name_candidate_exists_t
         echo ""
         echo "The 2. console argument is expected to be "
         echo "a Silktorrent packet name candidate, but currently "
-        echo "the 2. console argument is missing."
-        echo "GUID=='9dd80125-f4b8-40c5-b180-21b170e031e7'"
+        echo -e "\e[31mthe 2. console argument is missing.\e[39m"
+        echo "GUID=='e3e83434-5cf2-49aa-b259-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
 } # func_mmmv_silktorrent_packager_t1_bash_exc_assert_packet_name_candidate_exists_t1
 
@@ -2008,22 +2035,22 @@ func_mmmv_silktorrent_packager_t1_bash_reverse_string() {
             echo ""
             echo "All of the applications that this function is " 
             echo "capable of using for reversing a string(ruby)"
-            echo "are missing from the PATH."
-            echo "GUID=='bc77b41d-6478-4e1a-9380-21b170e031e7'"
+            echo -e "\e[31mare missing from the PATH.\e[39m"
+            echo "GUID=='5350424a-a3d7-42c7-8549-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
         if [ "$?" != "0" ]; then
             echo ""
-            echo "This script is flawed."
-            echo "GUID=='4f324635-b98e-4198-a780-21b170e031e7'"
+            echo -e "\e[31mThis script is flawed.\e[39m"
+            echo "GUID=='24b508da-4a67-4b53-b549-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #--------
     fi
@@ -2035,18 +2062,18 @@ func_mmmv_silktorrent_packager_t1_bash_reverse_string() {
         S_TMP_0="`ruby -e \"puts(ARGV[0].to_s.reverse)\" "$S_IN" 2>/dev/null`"
         if [ "$?" != "0" ]; then
             echo ""
-            echo "The console application \"ruby\" "
-            echo "exited with an error."
+            echo -e "\e[31mThe console application \"ruby\" \e[39m"
+            echo -e "\e[31mexited with an error.\e[39m"
             echo ""
             echo "----console--output--citation--start-----"
             echo "`ruby -e \"puts('$S_IN'.reverse)\"`" # with the stderr
             echo "----console--output--citation--end-------"
             echo ""
-            echo "GUID=='ccd82816-37c5-405c-823f-21b170e031e7'"
+            echo "GUID=='a55c0024-4b26-4cc2-b149-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         S_FUNC_MMMV_SILKTORRENT_PACKAGER_T1_BASH_REVERSE_STRING_REGISTER="$S_TMP_0"
     fi
@@ -2069,7 +2096,7 @@ func_mmmv_silktorrent_packager_t1_bash_reverse_string() {
 # archival copy: https://archive.is/UKBmd
 #     "Windows limits a single path to 260 characters."
 #
-# A citation from CygWin mailing list:
+# A citation from Cygwin mailing list:
 # https://cygwin.com/ml/cygwin/2004-10/msg01323.html
 # archival copy: https://archive.is/GRvFK
 #     "The Unicode versions of several functions permit a 
@@ -2102,7 +2129,7 @@ func_mmmv_silktorrent_packager_t1_bash_reverse_string() {
 # file name to be parsed computationally cheaply.
 #
 # As of 2016_05 the file extension  .stblob seems to be unused.
-# Therefore the "silktorrent blob", .stblob, can be used for the 
+# Therefore the "Silktorrent blob", .stblob, can be used for the 
 # extension of the blob files.
 #
 # Compression of the blobs IS NOT ALLOWED, because the 
@@ -2197,13 +2224,13 @@ func_mmmv_delete_tmp_folder_t1(){
         echo ""
         echo "This script is flawed. The folder "
         echo "    $S_FP_0"
-        echo "is expected to exist during the "
-        echo "call to this function."
-        echo "GUID=='2e447df2-5321-4928-b73f-21b170e031e7'"
+        echo -e "\e[31mis expected to exist during the \e[39m"
+        echo -e "\e[31mcall to this function.\e[39m"
+        echo "GUID=='0c065d36-0668-4a35-9149-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     # To avoid a situation, where due to some 
@@ -2218,17 +2245,17 @@ func_mmmv_delete_tmp_folder_t1(){
         echo ""
         echo "This script is flawed. The folder "
         echo "    $S_FP_1"
-        echo "is missing."
-        echo "GUID=='6aab1d10-8e8a-477c-b23f-21b170e031e7'"
+        echo -e "\e[31mis missing.\e[39m"
+        echo "GUID=='251c735d-3244-4cda-8349-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     local S_TMP_0="`echo \"$S_FP_1\" | grep -E ^/home `"
     if [ "$S_TMP_0" != "" ]; then
         echo ""
-        echo "This script is flawed."
+        echo -e "\e[31mThis script is flawed.\e[39m"
         echo "The temporary sandbox folder must reside in /tmp."
         echo ""
         echo "S_FP_0==$S_FP_0"
@@ -2237,18 +2264,18 @@ func_mmmv_delete_tmp_folder_t1(){
         echo ""
         echo "S_TMP_0==$S_TMP_0"
         echo ""
-        echo "GUID=='e1050d4e-34fd-46c0-b42f-21b170e031e7'"
+        echo "GUID=='59fd903a-25bd-45cf-a549-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     # Just to be sure, the same thing is checked by a slightly 
     # different regex and using the "==" in stead of the "!=".
     S_TMP_0="`echo \"$S_FP_1\" | grep -E ^/tmp/`" 
     if [ "$S_TMP_0" == "" ]; then
         echo ""
-        echo "This script is flawed."
+        echo -e "\e[31mThis script is flawed.\e[39m"
         echo "The temporary sandbox folder must reside in /tmp."
         echo ""
         echo "S_FP_0==$S_FP_0"
@@ -2257,11 +2284,11 @@ func_mmmv_delete_tmp_folder_t1(){
         echo ""
         echo "S_TMP_0==$S_TMP_0"
         echo ""
-        echo "GUID=='5b136271-52e5-4c30-812f-21b170e031e7'"
+        echo "GUID=='48704e83-8f72-4423-ac39-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     rm -fr $S_FP_1
@@ -2270,11 +2297,11 @@ func_mmmv_delete_tmp_folder_t1(){
         echo "Something went wrong. The recursive deletion of the temporary folder, "
         echo "    $S_FP_1"
         echo "failed."
-        echo "GUID=='40f04834-df5a-4bff-822f-21b170e031e7'"
+        echo "GUID=='e62d85c1-b317-4823-b139-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
 } # func_mmmv_delete_tmp_folder_t1
 
@@ -2293,11 +2320,11 @@ func_mmmv_create_folder_if_it_does_not_already_exist_t1(){
         # if it misses a path argument. 
         echo ""
         echo "S_FP_0==\"\""
-        echo "GUID=='110c6012-b75d-4c23-832f-21b170e031e7'"
+        echo "GUID=='b401624b-2b10-47bd-a339-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------------------
     if [ -e "$S_FP_0" ]; then
@@ -2305,12 +2332,12 @@ func_mmmv_create_folder_if_it_does_not_already_exist_t1(){
             echo ""
             echo "The path that is suppose to reference either "
             echo "an existing folder or a non-existent folder, "
-            echo "references a file."
-            echo "GUID=='065bb01e-c77c-4f67-912f-21b170e031e7'"
+            echo -e "\e[31mreferences a file.\e[39m"
+            echo "GUID=='5ca906a2-5aea-4ab6-bd39-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
     fi
     #--------
@@ -2320,23 +2347,23 @@ func_mmmv_create_folder_if_it_does_not_already_exist_t1(){
         echo "mkdir for path "
         echo "    $S_FP_0"
         echo "failed."
-        echo "GUID=='11ea94b4-e5a9-4891-a61f-21b170e031e7'"
+        echo "GUID=='2e06f740-d097-43a1-a439-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #----
     if [ ! -e "$S_FP_0" ]; then
         echo ""
         echo "mkdir execution succeeded, but for some other reason the folder "
         echo "    $S_FP_0"
-        echo "does not exist."
-        echo "GUID=='9ae79e10-eaae-4233-951f-21b170e031e7'"
+        echo -e "\e[31mdoes not exist.\e[39m"
+        echo "GUID=='1071a111-fc55-40b9-b239-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
 } # func_mmmv_create_folder_if_it_does_not_already_exist_t1
 
@@ -2354,14 +2381,14 @@ func_mmmv_create_tmp_folder_t1(){
     func_mmmv_GUID_t1
     if [ "$S_FUNC_MMMV_GUID_T1_RESULT" == "" ]; then
         echo ""
-        echo "This script is flawed. GUID generation failed and "
+        echo -e "\e[31mThis script is flawed.\e[39m GUID generation failed and "
         echo "the GUID generation function did not throw despite "
         echo "the fact that it should have detected its own failure."
-        echo "GUID=='9664b33c-7123-482b-b11f-21b170e031e7'"
+        echo "GUID=='9b662e12-6c6a-4b21-8339-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #----
     local S_TMP_0="/tmp/tmp_silktorrent_$S_FUNC_MMMV_GUID_T1_RESULT"
@@ -2386,12 +2413,12 @@ func_mmmv_create_tmp_folder_t1(){
     #----
     if [ -e "$S_TMP_0" ]; then
         echo ""
-        echo "This script failed to generate a locally unique path."
-        echo "GUID=='20353ff1-ac7d-40be-b11f-21b170e031e7'"
+        echo -e "\e[31mThis script failed to generate a locally unique path.\e[39m"
+        echo "GUID=='c8393024-8d16-4c79-a529-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     func_mmmv_create_folder_if_it_does_not_already_exist_t1 "$S_TMP_0"
     if [ ! -e "$S_TMP_0" ]; then
@@ -2399,11 +2426,11 @@ func_mmmv_create_tmp_folder_t1(){
         echo "mkdir for path "
         echo "    $S_TMP_0"
         echo "failed."
-        echo "GUID=='316a2a61-32e2-4a0e-811f-21b170e031e7'"
+        echo "GUID=='76aad15a-3458-4c5e-8229-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     S_FUNC_FUNC_MMMV_CREATE_TMP_FOLDER_T1_RESULT="$S_TMP_0"
 } # func_mmmv_create_tmp_folder_t1 
@@ -2420,12 +2447,12 @@ func_mmmv_silktorrent_packager_t1_bash_get_packet_format_version_t1() {
     # func_mmmv_silktorrent_packager_t1_bash_exc_assert_wrappable_file_exists_t1 "$S_FP_0"
     if [ "$S_FP_0" == "" ]; then
         echo ""
-        echo "The file path candidate must not be an empty string."
-        echo "GUID=='21e00e39-7bd1-4595-910f-21b170e031e7'"
+        echo -e "\e[31mThe file path candidate must not be an empty string.\e[39m"
+        echo "GUID=='259d7680-f50f-4eab-9429-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi 
     #----
     # The 
@@ -2447,43 +2474,43 @@ func_mmmv_silktorrent_packager_t1_bash_get_packet_format_version_t1() {
         \"`"
     if [ "$S_TMP_0" != "noslash" ]; then
         echo ""
-        echo "The path candidate must not end with a slash."
+        echo -e "\e[31mThe path candidate must not end with a slash.\e[39m"
         echo ""
         echo "    S_FP_0==$S_FP_0"
         echo ""
         echo "    S_TMP_0==$S_TMP_0"
         echo ""
-        echo "GUID=='b511aafc-7d2e-4f17-b50f-21b170e031e7'"
+        echo "GUID=='93984650-916c-4bf8-bd29-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     basename $S_FP_0 1>/dev/null # to set a value to the $? in this scope 
     if [ "$?" != "0" ]; then
         echo ""
         echo "The command "
         echo ""
-        echo "    basename $S_FP_0 "
+        echo -e "\e[31m    basename $S_FP_0 \e[39m"
         echo ""
-        echo "exited with an error."
-        echo "GUID=='d58ce8a5-65c5-4d43-950f-21b170e031e7'"
+        echo -e "\e[31mexited with an error.\e[39m"
+        echo "GUID=='6fa4901b-3f1a-4d47-a529-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi 
     S_TMP_0="`basename $S_FP_0`"
     if [ "$S_TMP_0" == "" ]; then
         echo ""
-        echo "The file path candidate must be a string that "
-        echo "is not an empty string after "
-        echo "all of the spaces and tabs have been removed from it."
-        echo "GUID=='d0ad852c-39f9-49d6-910f-21b170e031e7'"
+        echo -e "\e[31mThe file path candidate must be a string that \e[39m"
+        echo -e "\e[31mis not an empty string after \e[39m"
+        echo -e "\e[31mall of the spaces and tabs have been removed from it.\e[39m"
+        echo "GUID=='d6504d10-8b42-4c93-8529-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi 
     #--------
     S_FUNC_MMMV_SILKTORRENT_PACKAGER_T1_BASH_GET_PACKET_FORMAT_VERSION_T1_RESULT=""
@@ -2534,11 +2561,11 @@ func_mmmv_silktorrent_packager_t1_bash_verify_file_name_t1() {
         echo ""
         echo "    $S_FP_0"
         echo ""
-        echo "GUID=='d9cc81e3-6682-4097-810f-21b170e031e7'"
+        echo "GUID=='4f581652-bd7b-4240-b929-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     local S_TMP_1=""
@@ -2550,13 +2577,13 @@ func_mmmv_silktorrent_packager_t1_bash_verify_file_name_t1() {
     #----
     if [ "$S_TMP_1" == "" ]; then
         echo ""
-        echo "This script is flawed."
+        echo -e "\e[31mThis script is flawed.\e[39m"
         echo "It should have thrown before the control flow reaches this line."
-        echo "GUID=='73ce445c-9318-49ba-81fe-21b170e031e7'"
+        echo "GUID=='6485cf4e-09a6-4a54-a219-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     local S_TMP_0="`basename $S_FP_0`" # The S_TMP_0 must be evaluated 
@@ -2616,25 +2643,25 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
     #--------
     func_mmmv_create_tmp_folder_t1
     if [ "$S_FUNC_FUNC_MMMV_CREATE_TMP_FOLDER_T1_RESULT" == "" ]; then
-        echo "This script is flawed, because the folder "
+        echo -e "\e[31mThis script is flawed\e[39m, because the folder "
         echo "creation function should have thrown "
         echo "before the control flow reaches this branch." 
-        echo "GUID=='516b9b78-fe98-4f0d-95fe-21b170e031e7'"
+        echo "GUID=='a2334af2-f5c9-4388-8119-b042218128e7'"
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     local S_FP_TMP_0="$S_FUNC_FUNC_MMMV_CREATE_TMP_FOLDER_T1_RESULT"
     if [ ! -e "$S_FP_TMP_0" ]; then
-        echo "This script is flawed."
+        echo -e "\e[31mThis script is flawed.\e[39m"
         echo "May be some other thread deleted the folder or"
         echo "the folder creation function returned a valid path, but"
         echo "did not actually create the folder that it was supposed create."
         echo "S_FP_TMP_0==$S_FP_TMP_0"
-        echo "GUID=='ecbecd41-a615-4261-82fe-21b170e031e7'"
+        echo "GUID=='33815033-8ad8-49df-a319-b042218128e7'"
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     local S_TMP_0="" # declaration
@@ -2657,11 +2684,11 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
             echo "    $S_TMP_0"
             echo ""
             echo "exists, but it is not a folder."
-            echo "GUID=='4499105f-06d7-477a-a3fe-21b170e031e7'"
+            echo "GUID=='cc981a2f-703d-4739-a219-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #----
         # Number of files/folders in the $S_TMP_0, if counted non-recursively.
@@ -2669,16 +2696,16 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         #----
         if [ "$S_TMP_1" == "" ]; then
             echo ""
-            echo "This script is flawed."
+            echo -e "\e[31mThis script is flawed.\e[39m"
             echo ""
             echo "    pwd=`pwd`"
             echo "    S_TMP_0=$S_TMP_0"
             echo ""
-            echo "GUID=='4588f6b7-8b7a-4531-b1fe-21b170e031e7'"
+            echo "GUID=='7abbe654-194d-4665-a319-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         if [ "$S_TMP_1" != "0" ]; then
             cp -f -R $S_TMP_0 $S_FP_TMP_HEADER/
@@ -2688,12 +2715,12 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
                 echo ""
                 echo "    $S_TMP_0 "
                 echo ""
-                echo "failed with an error code of $?."
-                echo "GUID=='a4b8ae20-fddb-4243-84ee-21b170e031e7'"
+                echo -e "\e[31mfailed with an error code of $?.\e[39m"
+                echo "GUID=='b70f1e55-1eca-4fd1-9419-b042218128e7'"
                 echo ""
                 #----
                 cd $S_FP_ORIG
-                exit 1 # exit with error
+                exit 1 # exit with an error
             fi
         fi
     fi
@@ -2704,7 +2731,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
     # parties to download packages 
     # that they are not looking for and allowing
     # censorship dodgers to publish the same payload bitstream
-    # in multiple, differet, Silktorrent packages.
+    # in multiple, different, Silktorrent packages.
     func_mmmv_GUID_t1
     echo "$S_FUNC_MMMV_GUID_T1_RESULT" >> $S_FP_TMP_HEADER_SALT_TXT
     func_mmmv_GUID_t1
@@ -2718,7 +2745,7 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
     func_mmmv_GUID_t1
     echo "$S_FUNC_MMMV_GUID_T1_RESULT" >> $S_FP_TMP_HEADER_SALT_TXT
     #-------------------------
-    # The file size/Silktorrent pakcket size must also be salted.
+    # The file size/Silktorrent packet size must also be salted.
     if [ "$S_SILKTORRENT_PACKAGER_T1_ACTION_WARP_NRAND" != "" ]; then
         ruby -e \
             "Random.new_seed;i=0;\
@@ -2748,12 +2775,12 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
     fi
     if [ "$?" != "0" ]; then
         echo ""
-        echo "Salting failed. \$?==$?"
-        echo "GUID=='d25c74fd-d0a8-4cc9-94ee-21b170e031e7'"
+        echo -e "\e[31mSalting failed.\e[39m \$?==$?"
+        echo "GUID=='b3c6be93-9a60-4eee-b119-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #-------------------------
     cp -f $S_FP_0 $S_FP_TMP_PAYLOAD/
@@ -2763,17 +2790,17 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo ""
         echo "    cp -f \$S_FP_0 \$S_FP_TMP_PAYLOAD/ "
         echo ""
-        echo "failed. Either this script is flawed or something else went wrong. "
+        echo -e "failed. \e[31mEither this script is flawed or something else went wrong. \e[39m"
         echo ""
         echo "    S_FP_0==$S_FP_0"
         echo ""
         echo "    S_FP_TMP_PAYLOAD=$S_FP_TMP_PAYLOAD"
         echo ""
-        echo "GUID=='5217362e-6043-4bc2-94ee-21b170e031e7'"
+        echo "GUID=='49ae8027-873f-4766-ab09-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     local S_FP_TMP_ORIG_0="`pwd`"
@@ -2786,17 +2813,17 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo ""
         echo "    tar -cf \$S_FP_TMP_SILKTORRENT_PACKET_TAR \$S_FP_TMP_SILKTORRENT_PACKET "
         echo ""
-        echo "failed. Either this script is flawed or something else went wrong. "
+        echo -e "failed. \e[31mEither this script is flawed or something else went wrong. \e[39m"
         echo ""
         echo "    S_FP_TMP_SILKTORRENT_PACKET=$S_FP_TMP_SILKTORRENT_PACKET"
         echo ""
         echo "    S_FP_TMP_SILKTORRENT_PACKET_TAR==$S_FP_TMP_SILKTORRENT_PACKET_TAR"
         echo ""
-        echo "GUID=='1ecc8ae3-16f1-4b7b-91ee-21b170e031e7'"
+        echo "GUID=='72c55c22-4c2e-4381-a209-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #----
     func_mmmv_silktorrent_packager_t1_bash_blob2filename_t1 "$S_FP_TMP_SILKTORRENT_PACKET_TAR"
@@ -2815,11 +2842,11 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo "to "
         echo "    $S_FP_TMP_SILKTORRENT_PACKET_PUBLISHINGNAME "
         echo "failed."
-        echo "GUID=='24adbab5-2724-4b56-b1ee-21b170e031e7'"
+        echo "GUID=='4ceb9752-8a7c-4983-8409-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     if [ ! -e "$S_FP_TMP_SILKTORRENT_PACKET_PUBLISHINGNAME" ]; then
         echo ""
@@ -2832,13 +2859,13 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo ""
         echo "    $S_FP_TMP_SILKTORRENT_PACKET_PUBLISHINGNAME "
         echo ""
-        echo "failed. The mv command succeed, but for some reason "
-        echo "the destination file does not exist."
-        echo "GUID=='6249805d-3970-4ae0-83de-21b170e031e7'"
+        echo -e "failed.\e[31m The mv command succeed, but for some reason \e[39m"
+        echo -e "\e[31mthe destination file does not exist.\e[39m"
+        echo "GUID=='d0c1d918-aac0-4c02-8109-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     func_mmmv_delete_tmp_folder_t1 "$S_FP_TMP_0"
@@ -2850,11 +2877,11 @@ func_mmmv_silktorrent_packager_t1_bash_wrap_t1() {
         echo "    $S_FP_TMP_0"
         echo ""
         echo "failed."
-        echo "GUID=='2b5ea76a-9cbc-4b17-a4de-21b170e031e7'"
+        echo "GUID=='8b843d2e-7c6e-4d35-a409-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
 } # func_mmmv_silktorrent_packager_t1_bash_wrap_t1
 
@@ -2874,17 +2901,17 @@ func_mmmv_silktorrent_packager_t1_bash_unwrap_t1() {
         echo ""
         echo "    $S_FP_0"
         echo ""
-        echo "failed Silktorrent packet name verification."
+        echo -e "\e[31mfailed Silktorrent packet name verification.\e[39m"
         echo "There exists a possibility that the "
         echo "Silktorrent packet candidate is actually OK, but "
         echo "this is an older version of the Silktorrent implementation and "
         echo "this, the older, version does not support "
         echo "newer Silktorrent packet formats. "
-        echo "GUID=='4963c1ad-f3b4-448b-b3de-21b170e031e7'"
+        echo "GUID=='da854985-9c34-4dbb-b209-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     local SB_FORMAT_BRANCH_EXISTS_IN_THIS_FUNCTION="f"
@@ -2892,20 +2919,20 @@ func_mmmv_silktorrent_packager_t1_bash_unwrap_t1() {
         SB_FORMAT_BRANCH_EXISTS_IN_THIS_FUNCTION="t"
         #----
         local S_FP_TMP_SILKTORRENT_PACKET="`pwd`/silktorrent_packet"
-        if [ -e $S_FP_TMP_SILKTORRENT_PACKET ]; then
+        if [ -e "$S_FP_TMP_SILKTORRENT_PACKET" ]; then
             echo ""
             echo "To avoid accidental deletion of files, "
             echo "and some other types of flaws, "
-            echo "there is a requirement that the folder "
+            echo -e "there is a requirement that the \e[31mfolder\e[39m"
             echo ""
-            echo "    ./silktorrent_packet"
+            echo -e "\e[31m    ./silktorrent_packet\e[39m"
             echo ""
-            echo "must be explicitly deleted before calling this script."
-            echo "GUID=='23c45aa4-a11a-4465-b8de-21b170e031e7'"
+            echo -e "\e[31mmust be explicitly deleted before calling this script.\e[39m"
+            echo "GUID=='2dd4f885-0e9b-4e4d-94f8-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         #----
         tar -xf $S_FP_0 2>/dev/null
@@ -2913,14 +2940,14 @@ func_mmmv_silktorrent_packager_t1_bash_unwrap_t1() {
             echo ""
             echo "Something went wrong. The command "
             echo ""
-            echo "    tar -xf $S_FP_0"
+            echo -e "\e[31m    tar -xf $S_FP_0\e[39m"
             echo ""
-            echo "exited with an error code, which is $? ."
-            echo "GUID=='a48be003-4597-4171-b5de-21b170e031e7'"
+            echo -e "\e[31mexited with an error code, which is $? .\e[39m"
+            echo "GUID=='1940e622-71bb-4cd3-91f8-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
         rm -f $S_FP_TMP_SILKTORRENT_PACKET/header/silktorrent_salt.txt
         #----
@@ -2931,25 +2958,25 @@ func_mmmv_silktorrent_packager_t1_bash_unwrap_t1() {
             echo ""
             echo "    $S_FP_0"
             echo ""
-            echo "failed. The folder \"silktorrent_packet\" "
-            echo "is missing after the \"tar\" exited without any errors."
-            echo "GUID=='fd13e654-54dc-4fc0-84ce-21b170e031e7'"
+            echo -e "failed.\e[31m The folder \"silktorrent_packet\" \e[39m"
+            echo -e "\e[31mis missing after the \"tar\" exited without any errors.\e[39m"
+            echo "GUID=='d071f736-f829-439a-93f8-b042218128e7'"
             echo ""
             #----
             cd $S_FP_ORIG
-            exit 1 # exit with error
+            exit 1 # exit with an error
         fi
     fi # silktorrent_packet_format_version_1
     #--------
     if [ "$SB_FORMAT_BRANCH_EXISTS_IN_THIS_FUNCTION" != "t" ]; then
         echo ""
-        echo "This script is flawed."
+        echo -e "\e[31mThis script is flawed.\e[39m"
         echo "There is at least one branch missing from this function."
-        echo "GUID=='1e48d97b-0cfd-419f-a2ce-21b170e031e7'"
+        echo "GUID=='1b2daad4-b975-4a16-97f8-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
 } # func_mmmv_silktorrent_packager_t1_bash_unwrap_t1
@@ -2961,14 +2988,14 @@ func_mmmv_silktorrent_packager_t1_bash_verify_packet_name_format_v1(){
     local S_PACKET_NAME_CANDIDATE="$1" 
     if [ "$S_PACKET_NAME_CANDIDATE" == "" ]; then
         echo ""
-        echo "This script is flawed."
+        echo -e "\e[31mThis script is flawed.\e[39m"
         echo "Input verification should have caught the "
         echo "\"\" case before the control flow reaches this line."
-        echo "GUID=='e455ec4a-e47b-4300-b2ce-21b170e031e7'"
+        echo "GUID=='224c4b5e-0acf-4f50-b3f8-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     local S_OUT="verification_failed" # opposite: "verification_passed"
@@ -3011,11 +3038,11 @@ func_mmmv_silktorrent_packager_t1_bash_verify_packet_name_format_v1(){
         echo ""
         echo "Something went wrong. \$?==$? "
         echo "    S_PACKET_NAME_CANDIDATE==$S_PACKET_NAME_CANDIDATE"
-        echo "GUID=='14e79072-40db-4f61-9fce-21b170e031e7'"
+        echo "GUID=='e95acc40-0be8-4908-a4f8-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
-        exit 1 # exit with error
+        exit 1 # exit with an error
     fi
     #--------
     # If the file name starts like "./foo" in stead of "foo", 
@@ -3076,7 +3103,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_1" \
                 "2. console argument" \
-                "6fc27b31-acd4-47e5-98f0-21b170e031e7"
+                "491cb705-ea46-4310-b1b9-b042218128e7"
         func_mmmv_silktorrent_packager_t1_bash_print_help_msg_t1
         #----
         cd $S_FP_ORIG
@@ -3103,8 +3130,8 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_1" \
                 "2. console argument" \
-                "f7d51543-a78b-4d25-84f0-21b170e031e7"
-        echo "$S_SCRIPT_VERSION"
+                "2b402976-8cfb-41df-a3b9-b042218128e7"
+        echo "$S_VERSION_OF_THIS_FILE"
         #----
         cd $S_FP_ORIG
         exit 0 # exit without an error
@@ -3130,8 +3157,8 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_1" \
                 "2. console argument" \
-                "70144819-1b55-4635-92f0-21b170e031e7"
-        echo "$S_SCRIPT_VERSION_GENERATION_DATE"
+                "147a9a24-536c-4cb4-a5b9-b042218128e7"
+        echo "$S_VERSION_OF_THIS_FILE_GENERATION_DATE"
         #----
         cd $S_FP_ORIG
         exit 0 # exit without an error
@@ -3168,9 +3195,9 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
             if [ "$S_TMP_1" == "" ]; then
                 echo ""
                 echo ""
-                echo "The N_OF_RANDOM_TEXT_BLOCKS(==$S_ARGV_2) is expected "
-                echo "to be a positive whole number."
-                echo "GUID=='8060bc3b-8a91-4b14-93ce-21b170e031e7'"
+                echo -e "The N_OF_RANDOM_TEXT_BLOCKS(==$S_ARGV_2) \e[31mis expected\e[39m "
+                echo -e "\e[31mto be a positive whole number.\e[39m"
+                echo "GUID=='4f976953-a2a4-4832-87f8-b042218128e7'"
                 echo ""
                 # func_mmmv_silktorrent_packager_t1_bash_print_help_msg_t1
                 #----
@@ -3185,7 +3212,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
             func_mmmv_assert_arg_is_absent_t1 \
                     "$S_ARGV_3" \
                     "4. console argument" \
-                    "7237cea6-9a81-4a19-98f0-21b170e031e7"
+                    "990d831f-5fb8-4f07-a2b9-b042218128e7"
             #-------------------------
             S_SILKTORRENT_PACKAGER_T1_ACTION_WARP_NRAND="$S_TMP_1" # ==N_OF_RANDOM_TEXT_BLOCKS
         fi
@@ -3214,7 +3241,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         # func_mmmv_assert_arg_is_absent_t1 \
         #         "$S_ARGV_3" \
         #         "4. console argument" \
-        #         "27f24511-05e7-4265-8be0-21b170e031e7"
+        #         "cb8bbed2-6006-4e06-a3b9-b042218128e7"
         #
         # but in the case of the unwrap command the hack in this if-clause
         # gives a more informative error message for 
@@ -3233,7 +3260,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_2" \
                 "3. console argument" \
-                "f4a36b43-4b94-453f-81e0-21b170e031e7"
+                "1184b310-a655-4082-91b9-b042218128e7"
     fi
     #----
     S_TMP_0="test_hash_t1" 
@@ -3245,7 +3272,7 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
         func_mmmv_assert_arg_is_absent_t1 \
                 "$S_ARGV_2" \
                 "3. console argument" \
-                "e49c8607-3481-4033-94e0-21b170e031e7"
+                "c6842632-2420-4ac9-b5a9-b042218128e7"
     fi
     #--------
     # Start of actions that do not require a file:
@@ -3349,9 +3376,9 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
     fi
     #--------------------------
         echo "" 
-        echo "This bash script is flawed. The control flow " 
+        echo -e "\e[31mThis bash script is flawed.\e[39m The control flow "
         echo "should have never reached this line."
-        echo "GUID=='2c787ea3-4baa-4f6f-84be-21b170e031e7'"
+        echo "GUID=='85ec5a24-1f68-4ed6-94e8-b042218128e7'"
         echo ""
         #----
         cd $S_FP_ORIG
@@ -3359,10 +3386,6 @@ func_mmmv_silktorrent_packager_t1_bash_determine_action() {
 } # func_mmmv_silktorrent_packager_t1_bash_determine_action
 
 func_mmmv_silktorrent_packager_t1_bash_determine_action $1 $2 $3 $4 $5 $6 $7
-
-
-#--------------------------------------------------------------------------
-
 
 #--------------------------------------------------------------------------
 cd $S_FP_ORIG
